@@ -1,0 +1,19 @@
+//
+// Prefix header for all source files of the 'Glint' target in the 'Glint' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+    #import <UIKit/UIKit.h>
+#endif
+
+#define FILTER_DISTANCE 5
+#define MINIMUM_MULTIPLIER 3
+#define DESIRED_MULTIPLIER 12
+#define UPDATE_INTERVAL 0.5
+#define MEASUREMENT_INTERVAL [[NSUserDefaults standardUserDefaults] integerForKey:@"average_interval"]
+#define MINIMUM_PRECISION [[NSUserDefaults standardUserDefaults] integerForKey:@"gps_minprec"]
+#define UNITSET [[NSUserDefaults standardUserDefaults] integerForKey:@"units"]
+#define ENABLE_PROXIMITY [[NSUserDefaults standardUserDefaults] boolForKey:@"enable_proximity"]
+#define DISABLE_IDLE [[NSUserDefaults standardUserDefaults] boolForKey:@"disable_idle"]
+
