@@ -2,17 +2,17 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">768</int>
-		<string key="IBDocument.SystemVersion">10A380</string>
+		<string key="IBDocument.SystemVersion">10A394</string>
 		<string key="IBDocument.InterfaceBuilderVersion">731</string>
-		<string key="IBDocument.AppKitVersion">1025.2</string>
-		<string key="IBDocument.HIToolboxVersion">427.00</string>
+		<string key="IBDocument.AppKitVersion">1027.1</string>
+		<string key="IBDocument.HIToolboxVersion">430.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">58</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="6"/>
+			<integer value="16"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -222,7 +222,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">0.0 %</string>
+						<string key="IBUIText">0.0 °</string>
 						<reference key="IBUIFont" ref="125184238"/>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
@@ -325,7 +325,7 @@
 					<object class="IBUILabel" id="857982158">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{214, 336}, {32, 16}}</string>
+						<string key="NSFrame">{{214, 336}, {44, 16}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -334,7 +334,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">slope</string>
+						<string key="IBUIText">bearing</string>
 						<reference key="IBUIFont" ref="96194369"/>
 						<reference key="IBUITextColor" ref="537793649"/>
 						<nil key="IBUIHighlightedColor"/>
@@ -462,14 +462,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">slopeLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="462814815"/>
-					</object>
-					<int key="connectionID">32</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">statusIndicator</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="794382144"/>
@@ -491,6 +483,14 @@
 						<reference key="destination" ref="1019930471"/>
 					</object>
 					<int key="connectionID">35</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">bearingLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="462814815"/>
+					</object>
+					<int key="connectionID">36</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -692,7 +692,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">35</int>
+			<int key="maxID">36</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -707,11 +707,11 @@
 							<string>accuracyLabel</string>
 							<string>averageProgress</string>
 							<string>averageSpeedLabel</string>
+							<string>bearingLabel</string>
 							<string>currentSpeedLabel</string>
 							<string>currentTimePerKmLabel</string>
 							<string>elapsedTimeLabel</string>
 							<string>positionLabel</string>
-							<string>slopeLabel</string>
 							<string>statusIndicator</string>
 							<string>statusLabel</string>
 							<string>totalDistanceLabel</string>

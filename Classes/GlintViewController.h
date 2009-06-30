@@ -27,6 +27,7 @@
         CLLocation* currentLocation;
         NSMutableArray* directMeasurements;
         int lastSampleSize;
+        bool inTrackSegment;
         
         UIImageView *statusIndicator;
         UILabel *positionLabel;
@@ -36,7 +37,7 @@
         UILabel *currentTimePerKmLabel;
         UILabel *totalDistanceLabel;
         UILabel *statusLabel;
-        UILabel *slopeLabel;
+        UILabel *bearingLabel;
         UILabel *accuracyLabel;
         UIProgressView* averageProgress;
 }
@@ -51,7 +52,7 @@
 @property (retain) IBOutlet UILabel *totalDistanceLabel;
 @property (retain) IBOutlet UILabel *totalDistanceUnitLabel;
 @property (retain) IBOutlet UILabel *statusLabel;
-@property (retain) IBOutlet UILabel *slopeLabel;
+@property (retain) IBOutlet UILabel *bearingLabel;
 @property (retain) IBOutlet UILabel *accuracyLabel;
 @property (retain) IBOutlet UIProgressView* averageProgress;
 @property (retain) CLLocation* lastLocation;
