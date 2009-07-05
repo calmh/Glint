@@ -13,7 +13,6 @@
 @interface GlintViewController : UIViewController  <CLLocationManagerDelegate> {
         CLLocationManager *locationManager;
         NSArray *unitSets;
-        int unitSetIndex;
         
         NSMutableArray *locations;
         NSString *filename;
@@ -23,7 +22,6 @@
         JBSoundEffect *badSound;
         bool stateGood;
         int averagedMeasurements;
-        CLLocation* lastLocation;
         CLLocation* currentLocation;
         NSMutableArray* directMeasurements;
         int lastSampleSize;
@@ -34,7 +32,8 @@
         UILabel *elapsedTimeLabel;
         UILabel *currentSpeedLabel;
         UILabel *averageSpeedLabel;
-        UILabel *currentTimePerKmLabel;
+        UILabel *currentTimePerDistanceLabel;
+        UILabel *currentTimePerDistanceDescrLabel;
         UILabel *totalDistanceLabel;
         UILabel *statusLabel;
         UILabel *bearingLabel;
@@ -48,14 +47,13 @@
 @property (retain) IBOutlet UILabel *elapsedTimeLabel;
 @property (retain) IBOutlet UILabel *currentSpeedLabel;
 @property (retain) IBOutlet UILabel *averageSpeedLabel;
-@property (retain) IBOutlet UILabel *currentTimePerKmLabel;
+@property (retain) IBOutlet UILabel *currentTimePerDistanceLabel;
+@property (retain) IBOutlet UILabel *currentTimePerDistanceDescrLabel;
 @property (retain) IBOutlet UILabel *totalDistanceLabel;
-@property (retain) IBOutlet UILabel *totalDistanceUnitLabel;
 @property (retain) IBOutlet UILabel *statusLabel;
 @property (retain) IBOutlet UILabel *bearingLabel;
 @property (retain) IBOutlet UILabel *accuracyLabel;
 @property (retain) IBOutlet UIProgressView* averageProgress;
-@property (retain) CLLocation* lastLocation;
 @property (retain) CLLocation* currentLocation;
 
 @end

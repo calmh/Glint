@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>description</key>
+		<string>Metric</string>
+		<key>speedFormat</key>
+		<string>%.01f km/h</string>
+		<key>distFormat</key>
+		<string>%.02f km</string>
+		<key>distFactor</key>
+		<real>1</real>
+		<key>speedFactor</key>
+		<real>1</real>
+	</dict>
+	<dict>
+		<key>description</key>
+		<string>Nautical</string>
+		<key>speedFormat</key>
+		<string>%.01f kn</string>
+		<key>distFormat</key>
+		<string>%.02f M</string>
+		<key>distFactor</key>
+		<real>0.5399568034</real>
+		<key>speedFactor</key>
+		<real>0.5399568034</real>
+	</dict>
+	<dict>
+		<key>description</key>
+		<string>Statute</string>
+		<key>speedFormat</key>
+		<string>%.01f mph</string>
+		<key>distFormat</key>
+		<string>%.02f mi</string>
+		<key>distFactor</key>
+		<real>0.6213711922</real>
+		<key>speedFactor</key>
+		<real>0.6213711922</real>
+	</dict>
+</array>
+</plist>

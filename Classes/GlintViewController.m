@@ -11,9 +11,9 @@
 @implementation GlintViewController
 
 @synthesize locationManager;
-@synthesize statusIndicator, positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerKmLabel;
+@synthesize statusIndicator, positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerDistanceLabel, currentTimePerDistanceDescrLabel;
 @synthesize totalDistanceLabel, statusLabel, averageSpeedLabel, bearingLabel, accuracyLabel;
-@synthesize averageProgress, lastLocation, currentLocation;
+@synthesize averageProgress, currentLocation;
 
 /*
  // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -72,24 +72,9 @@
         startTime  = nil;
         distance = 0;
         
-        NSDictionary *metric = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                @"%.01f km/h", @"speedFormat",
-                                @"%.02f km", @"distFormat",
-                                [NSNumber numberWithFloat:1.0], @"distFactor",
-                                [NSNumber numberWithFloat:1.0], @"speedFactor",
-                                nil
-                                ];
-        NSDictionary *nautical = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                  @"%.01f kn", @"speedFormat",
-                                  @"%.02f M", @"distFormat",
-                                  [NSNumber numberWithFloat:1.0/1.852], @"distFactor",
-                                  [NSNumber numberWithFloat:1.0/1.852], @"speedFactor",
-                                  nil
-                                  ];
-        
-        unitSets = [NSArray arrayWithObjects:metric, nautical, nil];
+        NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
+        unitSets = [NSArray arrayWithContentsOfFile:path];
         [unitSets retain];
-        unitSetIndex = 0;
         
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
 	NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -97,6 +82,7 @@
         [filename retain];
         
         locations = [[NSMutableArray alloc] init];
+        
         self.locationManager = [[[CLLocationManager alloc] init] autorelease];
         //self.locationManager.distanceFilter = FILTER_DISTANCE;
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
@@ -115,7 +101,7 @@
         totalDistanceLabel.text = @"-";
         currentSpeedLabel.text = @"-";
         averageSpeedLabel.text = @"-";
-        currentTimePerKmLabel.text = @"-";
+        currentTimePerDistanceLabel.text = @"-";
         bearingLabel.text = @"-";
         statusLabel.text = @"-";
         
@@ -166,9 +152,9 @@
 
 - (double) bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2 {
         double lat1 = loc1.coordinate.latitude / 180.0 * M_PI;
-        double lon1 = loc1.coordinate.longitude / 180.0 * M_PI;
+        double lon1 = -loc1.coordinate.longitude / 180.0 * M_PI;
         double lat2 = loc2.coordinate.latitude / 180.0 * M_PI;
-        double lon2 = loc2.coordinate.longitude / 180.0 * M_PI;
+        double lon2 = -loc2.coordinate.longitude / 180.0 * M_PI;
         double y = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(lon2-lon1);
         double x = sin(lon2-lon1) * cos(lat2);
         double t = atan2(y, x);
@@ -179,51 +165,65 @@
 }
 
 
-- (double) averageSpeed {
+- (double) averageSpeedOverSeconds:(double)cutoff {
         if ([locations count] < 2)
                 return 0.0;
         
-        double totSpeed = 0.0;
+        double totDist = 0.0;
         double totTime = 0.0;
-        
         NSDate *now = [NSDate date];
-        int cutoff = USERPREF_AVERAGE_SECONDS;
-        CLLocation *last = [locations lastObject];
-        for (int i = [locations count] - 2; i >= 0; i--) {
-                CLLocation*  loc = [locations objectAtIndex:i];
-                double secs = [now timeIntervalSinceDate:loc.timestamp];
-                if (secs <= cutoff) {
-                        double speed = [self speedFromLocation:loc toLocation:last];
-                        double timeinterval = [last.timestamp timeIntervalSinceDate:loc.timestamp];
-                        
-                        totSpeed += timeinterval * speed;
-                        totTime += timeinterval;
-                        
-                        last = loc;
+        
+        if (cutoff == 0) {
+                CLLocation *locA, *locB;
+                locA = [locations objectAtIndex:[locations count] - 2];
+                locB = [locations objectAtIndex:[locations count] - 1];
+                return [self speedFromLocation:locA toLocation:locB];
+        } else {
+                CLLocation *last = [locations lastObject];
+                for (int i = [locations count] - 2; i >= 0; i--) {
+                        CLLocation*  loc = [locations objectAtIndex:i];
+                        double secs = [now timeIntervalSinceDate:loc.timestamp];
+                        if (secs <= cutoff) {
+                                double dist = [self distanceBetweenLocation:last andLocation:loc];
+                                double timeinterval = [last.timestamp timeIntervalSinceDate:loc.timestamp];
+                                
+                                totDist += dist;
+                                totTime += timeinterval;
+                                
+                                last = loc;
+                        }
                 }
         }
-        return totSpeed / totTime;
+        
+        [now release];
+        return totDist / totTime;
 }
 
-- (double) currentSpeed {
+- (double) averageCourseOverSeconds:(double)cutoff {
         if ([locations count] < 2)
                 return 0.0;
-        CLLocation *locA, *locB;
-        locA = [locations objectAtIndex:[locations count] - 2];
-        locB = [locations lastObject];
-        return [self speedFromLocation:locA toLocation:locB];
-}
-
-- (double) currentBearing {
-        if ([locations count] < 2)
+        
+        NSDate *now = [NSDate date];
+        CLLocation *locA = nil, *locB = nil;
+        locB = [locations objectAtIndex:[locations count] - 1];
+        if (cutoff == 0) {
+                locA = [locations objectAtIndex:[locations count] - 2];
+        } else {
+                for (int i = [locations count] - 2; i >= 0; i--) {
+                        locA = [locations objectAtIndex:i];
+                        double secs = [now timeIntervalSinceDate:locA.timestamp];
+                        if (secs > cutoff)
+                                break;
+                }
+        }
+        [now release];
+        if (!locA)
                 return 0.0;
-        CLLocation *locA, *locB;
-        locA = [locations objectAtIndex:[locations count] - 2];
-        locB = [locations lastObject];
-        return [self bearingFromLocation:locA toLocation:locB];
+        else
+                return [self bearingFromLocation:locA toLocation:locB];
 }
 
-- (NSString*) formatBearing:(double)bearing {
+- (NSString*) formatCourse:(double)bearing {
         int quadrant = (int) ((bearing + 11.25) / 22.5);
         NSString *names[] = { @"N", @"NNE", @"NE", @"ENE", @"E", @"ESE", @"SE", @"SSE", @"S", @"SSW", @"SW", @"WSW", @"W", @"WNW", @"NW", @"NNW", @"N" };
         return [NSString stringWithFormat:@"%.0f° %@", bearing, names[quadrant]];
@@ -322,11 +322,10 @@
         averagedMeasurements++;
         
         // distanceBetweenLocation:andLocation will return 0.0 for any nil argument
-        distance += [self distanceBetweenLocation:self.lastLocation andLocation:location];
+        distance += [self distanceBetweenLocation:[locations lastObject] andLocation:location];
         
         // Save the averaged reading
         [locations addObject:location];
-        self.lastLocation = location;
         
         if (!inTrackSegment) {
                 [self beginGPXTrackSegment];
@@ -338,6 +337,10 @@
 - (void)updateDisplay:(NSTimer*)timer
 {
         static BOOL prevStateGood = NO;
+        static double distFactor = 0.0;
+        static double speedFactor = 0.0;
+        static NSString *distFormat = nil;
+        static NSString *speedFormat = nil;
         
         if (stateGood != prevStateGood) {
                 if (stateGood) {
@@ -350,18 +353,21 @@
                 prevStateGood = stateGood;
         }
         
-        NSDictionary* units = [unitSets objectAtIndex:UNITSET];
-        double distFactor = [[units objectForKey:@"distFactor"] floatValue];
-        double speedFactor = [[units objectForKey:@"speedFactor"] floatValue];
-        NSString* distFormat = [units objectForKey:@"distFormat"];
-        NSString* speedFormat = [units objectForKey:@"speedFormat"];
+        if (distFactor == 0) {
+                int unitsetIndex = USERPREF_UNITSET;
+                NSDictionary* units = [unitSets objectAtIndex:unitsetIndex];
+                distFactor = [[units objectForKey:@"distFactor"] floatValue];
+                speedFactor = [[units objectForKey:@"speedFactor"] floatValue];
+                distFormat = [units objectForKey:@"distFormat"];
+                speedFormat = [units objectForKey:@"speedFormat"];
+        }
         
-        // Calculate our current speed and slope
         double progress = ((double) lastSampleSize / DESIRED_MULTIPLIER);
         if (progress > 1.0)
                 progress = 1.0;
         
-        positionLabel.text = [NSString stringWithFormat:@"%@\n%@\nelev %.0f m", [self formatLat: self.currentLocation.coordinate.latitude], [self formatLon: self.currentLocation.coordinate.longitude], self.currentLocation.altitude];
+        if (currentLocation)
+                positionLabel.text = [NSString stringWithFormat:@"%@\n%@\nelev %.0f m", [self formatLat: currentLocation.coordinate.latitude], [self formatLon: currentLocation.coordinate.longitude], currentLocation.altitude];
         if (currentLocation.verticalAccuracy < 0)
                 accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±inf v.", currentLocation.horizontalAccuracy];
         else
@@ -370,13 +376,14 @@
         if (startTime != nil)
                 elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:startTime] maxTime:86400];
         
-        double curSpeed = [self currentSpeed];
+        double curSpeed = [self averageSpeedOverSeconds:USERPREF_CURRENT_SECONDS];
         totalDistanceLabel.text = [NSString stringWithFormat:distFormat, distance*distFactor];
         currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, curSpeed*speedFactor];
-        averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, [self averageSpeed]*speedFactor];
-        currentTimePerKmLabel.text = [self formatTimestamp:10 * 3600.0 / curSpeed maxTime:86400];
+        averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, [self averageSpeedOverSeconds:USERPREF_AVERAGE_SECONDS]*speedFactor];
+        currentTimePerDistanceLabel.text = [self formatTimestamp:USERPREF_ESTIMATE_DISTANCE * 3600.0 / curSpeed maxTime:86400];
+        currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"per %.2f km", USERPREF_ESTIMATE_DISTANCE];
         statusLabel.text = [NSString stringWithFormat:@"%04d measurements", averagedMeasurements];
-        bearingLabel.text = [self formatBearing:[self currentBearing]];
+        bearingLabel.text = [self formatCourse:[self averageCourseOverSeconds:USERPREF_CURRENT_SECONDS]];
         averageProgress.progress = progress;
 }
 

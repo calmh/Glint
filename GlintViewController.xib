@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="16"/>
+			<integer value="6"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -334,7 +334,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">bearing</string>
+						<string key="IBUIText">course</string>
 						<reference key="IBUIFont" ref="96194369"/>
 						<reference key="IBUITextColor" ref="537793649"/>
 						<nil key="IBUIHighlightedColor"/>
@@ -438,14 +438,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">currentTimePerKmLabel</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="461179647"/>
-					</object>
-					<int key="connectionID">29</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">elapsedTimeLabel</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="695841944"/>
@@ -491,6 +483,22 @@
 						<reference key="destination" ref="462814815"/>
 					</object>
 					<int key="connectionID">36</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">currentTimePerDistanceDescrLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="161885405"/>
+					</object>
+					<int key="connectionID">37</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">currentTimePerDistanceLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="461179647"/>
+					</object>
+					<int key="connectionID">38</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -692,7 +700,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">36</int>
+			<int key="maxID">38</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -709,13 +717,13 @@
 							<string>averageSpeedLabel</string>
 							<string>bearingLabel</string>
 							<string>currentSpeedLabel</string>
-							<string>currentTimePerKmLabel</string>
+							<string>currentTimePerDistanceDescrLabel</string>
+							<string>currentTimePerDistanceLabel</string>
 							<string>elapsedTimeLabel</string>
 							<string>positionLabel</string>
 							<string>statusIndicator</string>
 							<string>statusLabel</string>
 							<string>totalDistanceLabel</string>
-							<string>totalDistanceUnitLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -727,8 +735,8 @@
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
-							<string>UIImageView</string>
 							<string>UILabel</string>
+							<string>UIImageView</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
 						</object>
