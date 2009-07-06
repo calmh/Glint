@@ -8,8 +8,8 @@
 #endif
 
 #define FILTER_DISTANCE 5
-#define MINIMUM_MULTIPLIER 3
-#define DESIRED_MULTIPLIER 12
+#define MINIMUM_MULTIPLIER 2
+#define DESIRED_MULTIPLIER 10
 #define UPDATE_INTERVAL 0.5
 #define MEASUREMENT_INTERVAL [[NSUserDefaults standardUserDefaults] integerForKey:@"average_interval"]
 #define MINIMUM_PRECISION [[NSUserDefaults standardUserDefaults] integerForKey:@"gps_minprec"]
@@ -19,3 +19,4 @@
 #define USERPREF_AVERAGE_SECONDS [[NSUserDefaults standardUserDefaults] integerForKey:@"average_seconds"]
 #define USERPREF_CURRENT_SECONDS [[NSUserDefaults standardUserDefaults] integerForKey:@"current_seconds"]
 #define USERPREF_ESTIMATE_DISTANCE [[NSUserDefaults standardUserDefaults] doubleForKey:@"estimate_distance"]
+#define COMPASS_WIDTH 45.0

@@ -13,7 +13,7 @@
 @synthesize locationManager;
 @synthesize statusIndicator, positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerDistanceLabel, currentTimePerDistanceDescrLabel;
 @synthesize totalDistanceLabel, statusLabel, averageSpeedLabel, bearingLabel, accuracyLabel;
-@synthesize averageProgress, currentLocation;
+@synthesize averageProgress, currentLocation, compass;
 
 /*
  // Implement loadView to create a view hierarchy programmatically, without using a nib.
@@ -102,7 +102,6 @@
         currentSpeedLabel.text = @"-";
         averageSpeedLabel.text = @"-";
         currentTimePerDistanceLabel.text = @"-";
-        bearingLabel.text = @"-";
         statusLabel.text = @"-";
         
         [self beginGPXFile];
@@ -383,7 +382,7 @@
         currentTimePerDistanceLabel.text = [self formatTimestamp:USERPREF_ESTIMATE_DISTANCE * 3600.0 / curSpeed maxTime:86400];
         currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"per %.2f km", USERPREF_ESTIMATE_DISTANCE];
         statusLabel.text = [NSString stringWithFormat:@"%04d measurements", averagedMeasurements];
-        bearingLabel.text = [self formatCourse:[self averageCourseOverSeconds:USERPREF_CURRENT_SECONDS]];
+        compass.course = [self averageCourseOverSeconds:USERPREF_CURRENT_SECONDS];
         averageProgress.progress = progress;
 }
 

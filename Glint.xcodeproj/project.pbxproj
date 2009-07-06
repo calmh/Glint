@@ -17,6 +17,7 @@
 		28D7ACF80DDB3853001CB0EB /* GlintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* GlintViewController.m */; };
 		291C24D510011B7B0086EE86 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 291C24D410011B7B0086EE86 /* unitsets.plist */; };
 		29874F9A0FF776EB0080E20D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
+		29C7910510027A8E00EA28CC /* GlintCompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* GlintCompassView.m */; };
 		29FE31E30FF4359D00E9FE05 /* Basso.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DD0FF4359D00E9FE05 /* Basso.aiff */; };
 		29FE31E50FF4359D00E9FE05 /* green-sphere.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DF0FF4359D00E9FE05 /* green-sphere.png */; };
 		29FE31E60FF4359D00E9FE05 /* Purr.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31E00FF4359D00E9FE05 /* Purr.aiff */; };
@@ -42,6 +43,8 @@
 		291C24D410011B7B0086EE86 /* unitsets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = unitsets.plist; sourceTree = "<group>"; };
 		29874F990FF776EB0080E20D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29C7910310027A8E00EA28CC /* GlintCompassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlintCompassView.h; sourceTree = "<group>"; };
+		29C7910410027A8E00EA28CC /* GlintCompassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlintCompassView.m; sourceTree = "<group>"; };
 		29FE31DD0FF4359D00E9FE05 /* Basso.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Basso.aiff; path = Resources/Basso.aiff; sourceTree = "<group>"; };
 		29FE31DF0FF4359D00E9FE05 /* green-sphere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "green-sphere.png"; path = "Resources/green-sphere.png"; sourceTree = "<group>"; };
 		29FE31E00FF4359D00E9FE05 /* Purr.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Purr.aiff; path = Resources/Purr.aiff; sourceTree = "<group>"; };
@@ -81,6 +84,8 @@
 				1D3623250D0F684500981E51 /* GlintAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* GlintViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* GlintViewController.m */,
+				29C7910310027A8E00EA28CC /* GlintCompassView.h */,
+				29C7910410027A8E00EA28CC /* GlintCompassView.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -210,6 +215,7 @@
 				1D3623260D0F684500981E51 /* GlintAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* GlintViewController.m in Sources */,
 				29FE31EB0FF435DB00E9FE05 /* JBSoundEffect.m in Sources */,
+				29C7910510027A8E00EA28CC /* GlintCompassView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

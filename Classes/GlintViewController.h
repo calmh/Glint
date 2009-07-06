@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "JBSoundEffect.h"
+#import "GlintCompassView.h"
 
 @interface GlintViewController : UIViewController  <CLLocationManagerDelegate> {
         CLLocationManager *locationManager;
@@ -38,7 +39,8 @@
         UILabel *statusLabel;
         UILabel *bearingLabel;
         UILabel *accuracyLabel;
-        UIProgressView* averageProgress;
+        UIProgressView *averageProgress;
+        GlintCompassView *compass;
 }
 
 @property (retain) CLLocationManager *locationManager;
@@ -55,6 +57,7 @@
 @property (retain) IBOutlet UILabel *accuracyLabel;
 @property (retain) IBOutlet UIProgressView* averageProgress;
 @property (retain) CLLocation* currentLocation;
+@property (retain) IBOutlet GlintCompassView *compass;
 
 @end
 
