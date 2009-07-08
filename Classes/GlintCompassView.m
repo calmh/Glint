@@ -73,42 +73,46 @@
         for (NSNumber* nsposition in [markers allKeys]) {
                 NSString* label = [markers objectForKey:nsposition];
                 double position = [nsposition doubleValue];
+                position -= course;
                 if (position >= 180.0)
                         position -= 360.0;
-                position -= course;
+                else if (position <= -180.0)
+                        position += 360.0;
                 position /= -COMPASS_WIDTH;
                 position *= rect.size.width;
                 position += rect.size.width / 2.0;
 
-                [self drawCenteredText:label inContext:ctx atPosition:CGPointMake(position, 20.0)];
+                [self drawCenteredText:label inContext:ctx atPosition:CGPointMake(position, 15.0)];
         }
 
 
         CGContextSelectFont (ctx, "Helvetica-Bold", 12, kCGEncodingMacRoman);
         for (int i = 0; i < 360; i++) {
                 double position = i;
+                position -= course;
                 if (position >= 180.0)
                         position -= 360.0;
-                position -= course;
+                else if (position <= -180.0)
+                        position += 360.0;
                 position /= -COMPASS_WIDTH;
                 position *= rect.size.width;
                 position += rect.size.width / 2.0;
-                double start = 1.3 * rect.size.height / 3.0;
-                double stop = 1.8 * rect.size.height / 3.0;
+                double start = 20;
+                double stop = 30;
                 if (i % 45 == 0) {
                         CGContextSetLineWidth(ctx, 3.0);
-                        start = 1.2 * rect.size.height / 3.0;
-                        stop = 2.3 * rect.size.height / 3.0;
+                        start = 18;
+                        stop = 35;
                 }
                 else if (i % 5 == 0) {
                         CGContextSetLineWidth(ctx, 1.0);
-                        stop = 2.1 * rect.size.height / 3.0;
+                        stop = 33;
                 }
                 else
                         CGContextSetLineWidth(ctx, 1.0);
 
                 if (i % 10 == 0)
-                        [self drawCenteredText:[NSString stringWithFormat:@"%d", i] inContext:ctx atPosition:CGPointMake(position, 50.0)];
+                        [self drawCenteredText:[NSString stringWithFormat:@"%d", i] inContext:ctx atPosition:CGPointMake(position, 45.0)];
 
                 CGContextBeginPath(ctx);
                 CGContextMoveToPoint(ctx, position, start);
@@ -116,10 +120,18 @@
                 CGContextStrokePath(ctx);
         }
 
+        // Border
         CGContextBeginPath(ctx);
         CGContextSetLineWidth(ctx, 2.0);
         CGContextSetRGBStrokeColor(ctx, 0.2, 0.2, 0.2, 1.0);
         CGContextAddRect(ctx, rect);
+        CGContextStrokePath(ctx);
+
+        // Red marker
+        CGContextBeginPath(ctx);
+        CGContextSetLineWidth(ctx, 1.0);
+        CGContextSetRGBStrokeColor(ctx, 1.0, 0.2, 0.2, 0.8);
+        CGContextAddRect(ctx, CGRectMake(rect.size.width / 2 - 3, 2, 6, rect.size.height - 4));
         CGContextStrokePath(ctx);
 } 
 

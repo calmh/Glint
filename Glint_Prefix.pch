@@ -8,7 +8,7 @@
 #endif
 
 #define FILTER_DISTANCE 5
-#define MINIMUM_MULTIPLIER 2
+#define MINIMUM_MULTIPLIER 1
 #define DESIRED_MULTIPLIER 10
 #define UPDATE_INTERVAL 0.5
 #define MEASUREMENT_INTERVAL [[NSUserDefaults standardUserDefaults] integerForKey:@"average_interval"]

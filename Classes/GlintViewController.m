@@ -7,6 +7,7 @@
 //
 
 #import "GlintViewController.h"
+//#define DEBUG
 
 @implementation GlintViewController
 
@@ -86,7 +87,6 @@
         self.locationManager = [[[CLLocationManager alloc] init] autorelease];
         //self.locationManager.distanceFilter = FILTER_DISTANCE;
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        self.locationManager.delegate = self;
         [self.locationManager startUpdatingLocation];
         
         if (DISABLE_IDLE)
@@ -110,8 +110,10 @@
         
         NSTimer* displayUpdater = [NSTimer timerWithTimeInterval:UPDATE_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:displayUpdater forMode:NSDefaultRunLoopMode];
-        NSTimer* measurementTaker = [NSTimer timerWithTimeInterval:MEASUREMENT_INTERVAL target:self selector:@selector(takeAveragedMeasurement:) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:measurementTaker forMode:NSDefaultRunLoopMode];
+        NSTimer* averagedMeasurementTaker = [NSTimer timerWithTimeInterval:MEASUREMENT_INTERVAL target:self selector:@selector(takeAveragedMeasurement:) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:averagedMeasurementTaker forMode:NSDefaultRunLoopMode];
+        NSTimer* directMeasurementTaker = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(takeDirectMeasurement:) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:directMeasurementTaker forMode:NSDefaultRunLoopMode];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -150,12 +152,12 @@
 }
 
 - (double) bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2 {
-        double lat1 = loc1.coordinate.latitude / 180.0 * M_PI;
-        double lon1 = -loc1.coordinate.longitude / 180.0 * M_PI;
-        double lat2 = loc2.coordinate.latitude / 180.0 * M_PI;
-        double lon2 = -loc2.coordinate.longitude / 180.0 * M_PI;
-        double y = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(lon2-lon1);
-        double x = sin(lon2-lon1) * cos(lat2);
+        double y1 = -loc1.coordinate.latitude / 180.0 * M_PI;
+        double x1 = loc1.coordinate.longitude / 180.0 * M_PI;
+        double y2 = -loc2.coordinate.latitude / 180.0 * M_PI;
+        double x2 = loc2.coordinate.longitude / 180.0 * M_PI;
+        double y = cos(x1) * sin(x2) - sin(x1) * cos(x2) * cos(y2-y1);
+        double x = sin(y2-y1) * cos(x2);
         double t = atan2(y, x);
         double b = t / M_PI * 180.0 + 360.0;
         if (b >= 360.0)
@@ -187,14 +189,13 @@
                                 double timeinterval = [last.timestamp timeIntervalSinceDate:loc.timestamp];
                                 
                                 totDist += dist;
-                                totTime += timeinterval;
+                                totTime += (timeinterval / 3600.0);
                                 
                                 last = loc;
                         }
                 }
         }
         
-        [now release];
         return totDist / totTime;
 }
 
@@ -215,7 +216,7 @@
                                 break;
                 }
         }
-        [now release];
+
         if (!locA)
                 return 0.0;
         else
@@ -276,10 +277,20 @@
         return averageLocation;
 }
 
-- (void)locationManager:(CLLocationManager *)manager
-    didUpdateToLocation:(CLLocation *)newLocation
-           fromLocation:(CLLocation *)oldLocation
+- (void)takeDirectMeasurement:(NSTimer*)timer
 {
+        // Nil locations are not good
+        if (!locationManager.location)
+                return;
+        
+#ifdef DEBUG
+        static double offset = 0.0;
+        CLLocation *newLocation = [[CLLocation alloc] initWithLatitude:locationManager.location.coordinate.latitude + offset longitude:locationManager.location.coordinate.longitude + offset];
+        offset += 0.00001;
+#else
+        CLLocation *newLocation = locationManager.location;
+#endif
+        
         // Save it so it can be displayed etc.
         self.currentLocation = newLocation;
         
@@ -303,7 +314,7 @@
                         startTime = [[NSDate date] retain];
                 
                 // Save a "direct measurement"
-                [directMeasurements addObject:newLocation];                
+                [directMeasurements addObject:newLocation];
         }
 }
 
@@ -383,6 +394,7 @@
         currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"per %.2f km", USERPREF_ESTIMATE_DISTANCE];
         statusLabel.text = [NSString stringWithFormat:@"%04d measurements", averagedMeasurements];
         compass.course = [self averageCourseOverSeconds:USERPREF_CURRENT_SECONDS];
+        //bearingLabel.text = [NSString stringWithFormat:@"%.0f°", [self averageCourseOverSeconds:USERPREF_CURRENT_SECONDS]];
         averageProgress.progress = progress;
 }
 
