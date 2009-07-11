@@ -22,6 +22,8 @@
         JBSoundEffect *badSound;
         int averagedMeasurements;
         bool recording;
+        double currentCourse;
+        double currentSpeed;
         
         UIImageView *statusIndicator;
         UILabel *positionLabel;
