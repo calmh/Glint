@@ -18,6 +18,7 @@
 		291C24D510011B7B0086EE86 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 291C24D410011B7B0086EE86 /* unitsets.plist */; };
 		29874F9A0FF776EB0080E20D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
 		29C7910510027A8E00EA28CC /* GlintCompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* GlintCompassView.m */; };
+		29CE3C9510079BAD00AEC5A4 /* GlintGPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CE3C9410079BAD00AEC5A4 /* GlintGPXWriter.m */; };
 		29FE31E30FF4359D00E9FE05 /* Basso.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DD0FF4359D00E9FE05 /* Basso.aiff */; };
 		29FE31E50FF4359D00E9FE05 /* green-sphere.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DF0FF4359D00E9FE05 /* green-sphere.png */; };
 		29FE31E60FF4359D00E9FE05 /* Purr.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31E00FF4359D00E9FE05 /* Purr.aiff */; };
@@ -45,6 +46,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29C7910310027A8E00EA28CC /* GlintCompassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlintCompassView.h; sourceTree = "<group>"; };
 		29C7910410027A8E00EA28CC /* GlintCompassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlintCompassView.m; sourceTree = "<group>"; };
+		29CE3C9310079BAD00AEC5A4 /* GlintGPXWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlintGPXWriter.h; sourceTree = "<group>"; };
+		29CE3C9410079BAD00AEC5A4 /* GlintGPXWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlintGPXWriter.m; sourceTree = "<group>"; };
 		29FE31DD0FF4359D00E9FE05 /* Basso.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Basso.aiff; path = Resources/Basso.aiff; sourceTree = "<group>"; };
 		29FE31DF0FF4359D00E9FE05 /* green-sphere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "green-sphere.png"; path = "Resources/green-sphere.png"; sourceTree = "<group>"; };
 		29FE31E00FF4359D00E9FE05 /* Purr.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Purr.aiff; path = Resources/Purr.aiff; sourceTree = "<group>"; };
@@ -86,6 +89,8 @@
 				28D7ACF70DDB3853001CB0EB /* GlintViewController.m */,
 				29C7910310027A8E00EA28CC /* GlintCompassView.h */,
 				29C7910410027A8E00EA28CC /* GlintCompassView.m */,
+				29CE3C9310079BAD00AEC5A4 /* GlintGPXWriter.h */,
+				29CE3C9410079BAD00AEC5A4 /* GlintGPXWriter.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -216,6 +221,7 @@
 				28D7ACF80DDB3853001CB0EB /* GlintViewController.m in Sources */,
 				29FE31EB0FF435DB00E9FE05 /* JBSoundEffect.m in Sources */,
 				29C7910510027A8E00EA28CC /* GlintCompassView.m in Sources */,
+				29CE3C9510079BAD00AEC5A4 /* GlintGPXWriter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,11 +259,13 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 5;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				SDKROOT = iphoneos3.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
 		};
@@ -266,11 +274,13 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 5;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				SDKROOT = iphoneos3.0;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
 		};

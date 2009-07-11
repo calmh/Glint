@@ -10,23 +10,18 @@
 #import <CoreLocation/CoreLocation.h>
 #import "JBSoundEffect.h"
 #import "GlintCompassView.h"
+#import "GlintGPXWriter.h"
 
 @interface GlintViewController : UIViewController  <CLLocationManagerDelegate> {
         CLLocationManager *locationManager;
         NSArray *unitSets;
-        
-        NSMutableArray *locations;
-        NSString *filename;
-        NSDate *startTime;
-        double distance;
+        GlintGPXWriter *gpxWriter;
+        NSDate *startedLogging;
+        double totalDistance;
         JBSoundEffect *goodSound;
         JBSoundEffect *badSound;
-        bool stateGood;
         int averagedMeasurements;
-        CLLocation* currentLocation;
-        NSMutableArray* directMeasurements;
-        int lastSampleSize;
-        bool inTrackSegment;
+        bool recording;
         
         UIImageView *statusIndicator;
         UILabel *positionLabel;
@@ -41,9 +36,11 @@
         UILabel *accuracyLabel;
         UIProgressView *averageProgress;
         GlintCompassView *compass;
+        UIBarButtonItem *playStopButton;
+        UIBarButtonItem *unlockButton;
+        UIActivityIndicatorView *recordingIndicator;
 }
 
-@property (retain) CLLocationManager *locationManager;
 @property (retain) IBOutlet UIImageView *statusIndicator;
 @property (retain) IBOutlet UILabel *positionLabel;
 @property (retain) IBOutlet UILabel *elapsedTimeLabel;
@@ -55,9 +52,13 @@
 @property (retain) IBOutlet UILabel *statusLabel;
 @property (retain) IBOutlet UILabel *bearingLabel;
 @property (retain) IBOutlet UILabel *accuracyLabel;
-@property (retain) IBOutlet UIProgressView* averageProgress;
-@property (retain) CLLocation* currentLocation;
+@property (retain) IBOutlet UIBarButtonItem *playStopButton;
+@property (retain) IBOutlet UIBarButtonItem *unlockButton;
 @property (retain) IBOutlet GlintCompassView *compass;
+@property (retain) IBOutlet UIActivityIndicatorView *recordingIndicator;
+
+- (IBAction)startStopRecording:(id)sender;
+- (IBAction)unlock:(id)sender;
 
 @end
 

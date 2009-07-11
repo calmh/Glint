@@ -11,12 +11,13 @@
 #define MINIMUM_MULTIPLIER 1
 #define DESIRED_MULTIPLIER 10
 #define UPDATE_INTERVAL 0.5
-#define MEASUREMENT_INTERVAL [[NSUserDefaults standardUserDefaults] integerForKey:@"average_interval"]
-#define MINIMUM_PRECISION [[NSUserDefaults standardUserDefaults] integerForKey:@"gps_minprec"]
+#define COMPASS_WIDTH 70.0
+
+#define USERPREF_MEASUREMENT_INTERVAL [[NSUserDefaults standardUserDefaults] integerForKey:@"average_interval"]
+#define USERPREF_MINIMUM_PRECISION [[NSUserDefaults standardUserDefaults] integerForKey:@"gps_minprec"]
 #define USERPREF_UNITSET [[NSUserDefaults standardUserDefaults] integerForKey:@"units"]
-#define ENABLE_PROXIMITY [[NSUserDefaults standardUserDefaults] boolForKey:@"enable_proximity"]
-#define DISABLE_IDLE [[NSUserDefaults standardUserDefaults] boolForKey:@"disable_idle"]
+#define USERPREF_ENABLE_PROXIMITY [[NSUserDefaults standardUserDefaults] boolForKey:@"enable_proximity"]
+#define USERPREF_DISABLE_IDLE [[NSUserDefaults standardUserDefaults] boolForKey:@"disable_idle"]
 #define USERPREF_AVERAGE_SECONDS [[NSUserDefaults standardUserDefaults] integerForKey:@"average_seconds"]
 #define USERPREF_CURRENT_SECONDS [[NSUserDefaults standardUserDefaults] integerForKey:@"current_seconds"]
 #define USERPREF_ESTIMATE_DISTANCE [[NSUserDefaults standardUserDefaults] doubleForKey:@"estimate_distance"]
-#define COMPASS_WIDTH 45.0

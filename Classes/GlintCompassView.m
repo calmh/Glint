@@ -21,27 +21,27 @@
 {
 	[super awakeFromNib];        
         
-        course = 15.0;
-                markers = [NSDictionary dictionaryWithObjectsAndKeys:
-                           @"N", [NSNumber numberWithDouble:0.0],
-                           @"NNE", [NSNumber numberWithDouble:22.5],
-                           @"NE", [NSNumber numberWithDouble:2*22.5],
-                           @"ENE", [NSNumber numberWithDouble:3*22.5],
-                           @"E", [NSNumber numberWithDouble:4*22.5],
-                           @"ESE", [NSNumber numberWithDouble:5*22.5],
-                           @"SE", [NSNumber numberWithDouble:6*22.5],
-                           @"SSE", [NSNumber numberWithDouble:7*22.5],
-                           @"S", [NSNumber numberWithDouble:8*22.5],
-                           @"SSW", [NSNumber numberWithDouble:9*22.5],
-                           @"SW", [NSNumber numberWithDouble:10*22.5],
-                           @"WSW", [NSNumber numberWithDouble:11*22.5],
-                           @"W", [NSNumber numberWithDouble:12*22.5],
-                           @"WNW", [NSNumber numberWithDouble:13*22.5],
-                           @"NW", [NSNumber numberWithDouble:14*22.5],
-                           @"NNW", [NSNumber numberWithDouble:15*22.5],
-                           nil];
-                [markers retain];
-        }
+        course = 0.0;
+        markers = [NSDictionary dictionaryWithObjectsAndKeys:
+                   @"N", [NSNumber numberWithDouble:0.0],
+                   @"NNE", [NSNumber numberWithDouble:22.5],
+                   @"NE", [NSNumber numberWithDouble:2*22.5],
+                   @"ENE", [NSNumber numberWithDouble:3*22.5],
+                   @"E", [NSNumber numberWithDouble:4*22.5],
+                   @"ESE", [NSNumber numberWithDouble:5*22.5],
+                   @"SE", [NSNumber numberWithDouble:6*22.5],
+                   @"SSE", [NSNumber numberWithDouble:7*22.5],
+                   @"S", [NSNumber numberWithDouble:8*22.5],
+                   @"SSW", [NSNumber numberWithDouble:9*22.5],
+                   @"SW", [NSNumber numberWithDouble:10*22.5],
+                   @"WSW", [NSNumber numberWithDouble:11*22.5],
+                   @"W", [NSNumber numberWithDouble:12*22.5],
+                   @"WNW", [NSNumber numberWithDouble:13*22.5],
+                   @"NW", [NSNumber numberWithDouble:14*22.5],
+                   @"NNW", [NSNumber numberWithDouble:15*22.5],
+                   nil];
+        [markers retain];
+}
 
 - (void) drawCenteredText:(NSString *)label inContext:(CGContextRef)ctx atPosition:(CGPoint)point  {
         CGPoint before = CGContextGetTextPosition(ctx);
@@ -81,11 +81,11 @@
                 position /= -COMPASS_WIDTH;
                 position *= rect.size.width;
                 position += rect.size.width / 2.0;
-
+                
                 [self drawCenteredText:label inContext:ctx atPosition:CGPointMake(position, 15.0)];
         }
-
-
+        
+        
         CGContextSelectFont (ctx, "Helvetica-Bold", 12, kCGEncodingMacRoman);
         for (int i = 0; i < 360; i++) {
                 double position = i;
@@ -110,23 +110,23 @@
                 }
                 else
                         CGContextSetLineWidth(ctx, 1.0);
-
+                
                 if (i % 10 == 0)
                         [self drawCenteredText:[NSString stringWithFormat:@"%d", i] inContext:ctx atPosition:CGPointMake(position, 45.0)];
-
+                
                 CGContextBeginPath(ctx);
                 CGContextMoveToPoint(ctx, position, start);
                 CGContextAddLineToPoint(ctx, position, stop);
                 CGContextStrokePath(ctx);
         }
-
+        
         // Border
         CGContextBeginPath(ctx);
         CGContextSetLineWidth(ctx, 2.0);
         CGContextSetRGBStrokeColor(ctx, 0.2, 0.2, 0.2, 1.0);
         CGContextAddRect(ctx, rect);
         CGContextStrokePath(ctx);
-
+        
         // Red marker
         CGContextBeginPath(ctx);
         CGContextSetLineWidth(ctx, 1.0);
@@ -136,7 +136,7 @@
 } 
 
 - (void)dealloc {
-    [super dealloc];
+        [super dealloc];
 }
 
 

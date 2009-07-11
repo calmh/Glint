@@ -10,9 +10,9 @@
 		<key>distFormat</key>
 		<string>%.02f km</string>
 		<key>distFactor</key>
-		<real>1</real>
+		<real>0.0001</real>
 		<key>speedFactor</key>
-		<real>1</real>
+		<real>0.27777777777777</real>
 	</dict>
 	<dict>
 		<key>description</key>
@@ -22,9 +22,9 @@
 		<key>distFormat</key>
 		<string>%.02f M</string>
 		<key>distFactor</key>
-		<real>0.5399568034</real>
+		<integer>0</integer>
 		<key>speedFactor</key>
-		<real>0.5399568034</real>
+		<real>1.94384449</real>
 	</dict>
 	<dict>
 		<key>description</key>
@@ -34,9 +34,9 @@
 		<key>distFormat</key>
 		<string>%.02f mi</string>
 		<key>distFactor</key>
-		<real>0.6213711922</real>
+		<real>0.000621371192</real>
 		<key>speedFactor</key>
-		<real>0.6213711922</real>
+		<real>2.23693629</real>
 	</dict>
 </array>
 </plist>
