@@ -10,7 +10,13 @@
 
 @implementation GlintGPXWriter
 
-@synthesize inTrackSegment;
+@synthesize inTrackSegment, inFile;
+
+- (void)dealloc
+{
+        [filename release];
+        [super dealloc];
+}
 
 - (id)initWithFilename:(NSString*)newFilename
 {

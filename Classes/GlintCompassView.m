@@ -12,6 +12,11 @@
 
 @synthesize course;
 
+- (void)dealloc {
+        [markers release];
+        [super dealloc];
+}
+
 -(void)setCourse:(double)newCourse {
         course = newCourse;
         [self setNeedsDisplay];
@@ -134,10 +139,5 @@
         CGContextAddRect(ctx, CGRectMake(rect.size.width / 2 - 3, 2, 6, rect.size.height - 4));
         CGContextStrokePath(ctx);
 } 
-
-- (void)dealloc {
-        [super dealloc];
-}
-
 
 @end

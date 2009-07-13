@@ -9,19 +9,55 @@
 #import "GlintViewController.h"
 #define DEBUG
 
-@implementation GlintViewController
+//
+// Private methods
+//
+@interface GlintViewController ()
+- (NSString*)formatTimestamp:(double)seconds maxTime:(double)max;
+- (NSString*) formatDMS:(double)latLong;
+- (NSString*)formatLat:(double)lat;
+- (NSString*)formatLon:(double)lon;
+- (bool)precisionAcceptable:(CLLocation*)location;
+- (double) speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
+- (double) bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2;
+@end
 
+//
+// Background threads
+//
+@interface GlintViewController (backgroundThreads)
+- (void)updateDisplay:(NSTimer*)timer;
+- (void)takeAveragedMeasurement:(NSTimer*)timer;
+@end
+
+
+@implementation GlintViewController
 @synthesize statusIndicator, positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerDistanceLabel, currentTimePerDistanceDescrLabel;
 @synthesize totalDistanceLabel, statusLabel, averageSpeedLabel, bearingLabel, accuracyLabel;
 @synthesize compass, playStopButton, unlockButton, recordingIndicator;
 
-/*
- // Implement loadView to create a view hierarchy programmatically, without using a nib.
- - (void)loadView {
- }
- */
+- (void)dealloc {
+        self.statusIndicator = nil;
+        self.positionLabel = nil;
+        self.elapsedTimeLabel = nil;
+        self.currentSpeedLabel = nil;
+        self.currentTimePerDistanceLabel = nil;
+        self.currentTimePerDistanceDescrLabel = nil;
+        self.totalDistanceLabel = nil;
+        self.statusLabel = nil;
+        self.averageSpeedLabel = nil;
+        self.bearingLabel = nil;
+        self.accuracyLabel = nil;
+        self.compass = nil;
+        self.playStopButton = nil;
+        self.unlockButton = nil;
+        self.recordingIndicator = nil;
+        [locationManager release];
+        [goodSound release];
+        [badSound release];
+        [super dealloc];
+}
 
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
         [super viewDidLoad];
         
@@ -49,17 +85,17 @@
         if (USERPREF_ENABLE_PROXIMITY)
                 [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
         
-        positionLabel.text = @"-";
-        accuracyLabel.text = @"-";
-        elapsedTimeLabel.text = @"00:00:00";
+        self.positionLabel.text = @"-";
+        self.accuracyLabel.text = @"-";
+        self.elapsedTimeLabel.text = @"00:00:00";
         
-        totalDistanceLabel.text = @"-";
-        currentSpeedLabel.text = @"?";
-        averageSpeedLabel.text = @"?";
-        currentTimePerDistanceLabel.text = @"?";
+        self.totalDistanceLabel.text = @"-";
+        self.currentSpeedLabel.text = @"?";
+        self.averageSpeedLabel.text = @"?";
+        self.currentTimePerDistanceLabel.text = @"?";
         NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
         NSString* marketVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        statusLabel.text = [NSString stringWithFormat:@"Glint %@ build %@", marketVer, bundleVer];
+        self.statusLabel.text = [NSString stringWithFormat:@"Glint %@ build %@", marketVer, bundleVer];
         
         NSTimer* displayUpdater = [NSTimer timerWithTimeInterval:UPDATE_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:displayUpdater forMode:NSDefaultRunLoopMode];
@@ -82,19 +118,37 @@
         [super viewWillDisappear:animated];
 }
 
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation
+{
+        static CLLocation *last = nil;
+        
+        if ([self precisionAcceptable:newLocation]) {
+                if (last) {
+                        totalDistance += [last getDistanceFrom:newLocation];
+                        currentCourse = [self bearingFromLocation:last toLocation:newLocation];
+                        currentSpeed = [self speedFromLocation:last toLocation:newLocation];
+                }
+                [last release];
+                last = newLocation;
+                [last retain];
+        }
+}
+
 - (IBAction)unlock:(id)sender
 {
-        [playStopButton setEnabled:YES];
-        [unlockButton setEnabled:NO];
+        [self.playStopButton setEnabled:YES];
+        [self.unlockButton setEnabled:NO];
 }
 
 - (IBAction)startStopRecording:(id)sender
 {
         if (!recording) {
                 recording = YES;
-                [playStopButton setTitle:@"Stop Recording"];
-                [recordingIndicator setHidden:NO];
-                [recordingIndicator startAnimating];
+                [self.playStopButton setTitle:@"Stop Recording"];
+                [self.recordingIndicator setHidden:NO];
+                [self.recordingIndicator startAnimating];
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
                 NSString *documentsDirectory = [paths objectAtIndex:0];
                 NSString* filename = [NSString stringWithFormat:@"%@/track-%@.gpx", documentsDirectory, [[NSDate date] description]];
@@ -104,18 +158,22 @@
                 averagedMeasurements = 0;
         } else {
                 recording = NO;
-                [playStopButton setTitle:@"Start Recording"];
-                [recordingIndicator setHidden:YES];
-                [recordingIndicator stopAnimating];
+                [self.playStopButton setTitle:@"Start Recording"];
+                [self.recordingIndicator setHidden:YES];
+                [self.recordingIndicator stopAnimating];
                 if (gpxWriter.inTrackSegment)
                         [gpxWriter endTrackSegment];
                 [gpxWriter endFile];
                 [gpxWriter release];
                 gpxWriter = nil;
         }
-        [unlockButton setEnabled:YES];
-        [playStopButton setEnabled:NO];
+        [self.unlockButton setEnabled:YES];
+        [self.playStopButton setEnabled:NO];
 }
+
+//
+// Private methods
+//
 
 - (NSString*)formatTimestamp:(double)seconds maxTime:(double)max {
         if (seconds > max || seconds < 0)
@@ -180,6 +238,10 @@
         return b;
 }
 
+//
+// Background threads
+//
+
 - (void)takeAveragedMeasurement:(NSTimer*)timer
 {
         static bool hasWrittenPoint = NO;
@@ -198,24 +260,6 @@
         }
 }
 
-- (void)locationManager:(CLLocationManager *)manager
-    didUpdateToLocation:(CLLocation *)newLocation
-           fromLocation:(CLLocation *)oldLocation
-{
-        static CLLocation *last = nil;
-        
-        if ([self precisionAcceptable:newLocation]) {
-                if (last) {
-                        totalDistance += [last getDistanceFrom:newLocation];
-                        currentCourse = [self bearingFromLocation:last toLocation:newLocation];
-                        currentSpeed = [self speedFromLocation:last toLocation:newLocation];
-                }
-                [last release];
-                last = newLocation;
-                [last retain];
-        }
-}
-
 - (void)updateDisplay:(NSTimer*)timer
 {
         static BOOL prevStateGood = NO;
@@ -228,10 +272,10 @@
         if (stateGood != prevStateGood) {
                 if (stateGood) {
                         [goodSound play];
-                        statusIndicator.image = [UIImage imageNamed:@"green-sphere.png"];
+                        self.statusIndicator.image = [UIImage imageNamed:@"green-sphere.png"];
                 } else {
                         [badSound play];
-                        statusIndicator.image = [UIImage imageNamed:@"red-sphere.png"];
+                        self.statusIndicator.image = [UIImage imageNamed:@"red-sphere.png"];
                 }
                 prevStateGood = stateGood;
         }
@@ -249,14 +293,14 @@
         [current retain];
         
         if (current)
-                positionLabel.text = [NSString stringWithFormat:@"%@\n%@\nelev %.0f m", [self formatLat: current.coordinate.latitude], [self formatLon: current.coordinate.longitude], current.altitude];
+                self.positionLabel.text = [NSString stringWithFormat:@"%@\n%@\nelev %.0f m", [self formatLat: current.coordinate.latitude], [self formatLon: current.coordinate.longitude], current.altitude];
         if (current.verticalAccuracy < 0)
-                accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±inf v.", current.horizontalAccuracy];
+                self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±inf v.", current.horizontalAccuracy];
         else
-                accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±%.0f m v.", current.horizontalAccuracy, current.verticalAccuracy];
+                self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±%.0f m v.", current.horizontalAccuracy, current.verticalAccuracy];
         
         if (startedLogging != nil)
-                elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:startedLogging] maxTime:86400];
+                self.elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:startedLogging] maxTime:86400];
         
         if (stateGood) {
                 if (!startedLogging)
@@ -267,33 +311,26 @@
                         averageSpeed = 0.0;
                 else
                         averageSpeed  = totalDistance / -[startedLogging timeIntervalSinceNow];
-                averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, averageSpeed*speedFactor];
+                self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, averageSpeed*speedFactor];
                 
-                totalDistanceLabel.text = [NSString stringWithFormat:distFormat, totalDistance*distFactor];
+                self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, totalDistance*distFactor];
                 
                 if (currentSpeed >= 0.0)
-                        currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, currentSpeed*speedFactor];
+                        self.currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, currentSpeed*speedFactor];
                 else
-                        currentSpeedLabel.text = @"?";
+                        self.currentSpeedLabel.text = @"?";
                 
-                currentTimePerDistanceLabel.text = [self formatTimestamp:USERPREF_ESTIMATE_DISTANCE * 3600.0 / current.speed maxTime:86400];
-                currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"per %.2f km", USERPREF_ESTIMATE_DISTANCE];
+                self.currentTimePerDistanceLabel.text = [self formatTimestamp:USERPREF_ESTIMATE_DISTANCE * 3600.0 / current.speed maxTime:86400];
+                self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"per %.2f km", USERPREF_ESTIMATE_DISTANCE];
                 
-                statusLabel.text = [NSString stringWithFormat:@"%04d measurements", averagedMeasurements];
+                self.statusLabel.text = [NSString stringWithFormat:@"%04d measurements", averagedMeasurements];
                 
                 if (currentCourse >= 0.0)
-                        compass.course = currentCourse;
+                        self.compass.course = currentCourse;
                 else
-                        compass.course = 0.0;
+                        self.compass.course = 0.0;
         }
         [current release];
-}
-
-- (void)dealloc {
-        [locationManager release];
-        [goodSound release];
-        [badSound release];
-        [super dealloc];
 }
 
 @end

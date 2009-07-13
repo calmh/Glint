@@ -24,7 +24,8 @@
         bool recording;
         double currentCourse;
         double currentSpeed;
-        
+
+        // Properties
         UIImageView *statusIndicator;
         UILabel *positionLabel;
         UILabel *elapsedTimeLabel;
@@ -36,28 +37,27 @@
         UILabel *statusLabel;
         UILabel *bearingLabel;
         UILabel *accuracyLabel;
-        UIProgressView *averageProgress;
-        GlintCompassView *compass;
         UIBarButtonItem *playStopButton;
         UIBarButtonItem *unlockButton;
+        GlintCompassView *compass;
         UIActivityIndicatorView *recordingIndicator;
 }
 
-@property (retain) IBOutlet UIImageView *statusIndicator;
-@property (retain) IBOutlet UILabel *positionLabel;
-@property (retain) IBOutlet UILabel *elapsedTimeLabel;
-@property (retain) IBOutlet UILabel *currentSpeedLabel;
-@property (retain) IBOutlet UILabel *averageSpeedLabel;
-@property (retain) IBOutlet UILabel *currentTimePerDistanceLabel;
-@property (retain) IBOutlet UILabel *currentTimePerDistanceDescrLabel;
-@property (retain) IBOutlet UILabel *totalDistanceLabel;
-@property (retain) IBOutlet UILabel *statusLabel;
-@property (retain) IBOutlet UILabel *bearingLabel;
-@property (retain) IBOutlet UILabel *accuracyLabel;
-@property (retain) IBOutlet UIBarButtonItem *playStopButton;
-@property (retain) IBOutlet UIBarButtonItem *unlockButton;
-@property (retain) IBOutlet GlintCompassView *compass;
-@property (retain) IBOutlet UIActivityIndicatorView *recordingIndicator;
+@property (nonatomic, retain) IBOutlet UIImageView *statusIndicator;
+@property (nonatomic, retain) IBOutlet UILabel *positionLabel;
+@property (nonatomic, retain) IBOutlet UILabel *elapsedTimeLabel;
+@property (nonatomic, retain) IBOutlet UILabel *currentSpeedLabel;
+@property (nonatomic, retain) IBOutlet UILabel *averageSpeedLabel;
+@property (nonatomic, retain) IBOutlet UILabel *currentTimePerDistanceLabel;
+@property (nonatomic, retain) IBOutlet UILabel *currentTimePerDistanceDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *totalDistanceLabel;
+@property (nonatomic, retain) IBOutlet UILabel *statusLabel;
+@property (nonatomic, retain) IBOutlet UILabel *bearingLabel;
+@property (nonatomic, retain) IBOutlet UILabel *accuracyLabel;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *playStopButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *unlockButton;
+@property (nonatomic, retain) IBOutlet GlintCompassView *compass;
+@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *recordingIndicator;
 
 - (IBAction)startStopRecording:(id)sender;
 - (IBAction)unlock:(id)sender;

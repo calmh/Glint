@@ -10,6 +10,12 @@
 
 @implementation JBSoundEffect
 
+- (void)dealloc
+{
+        AudioServicesDisposeSystemSoundID(soundID);
+        [super dealloc];
+}
+
 - (id) initWithContentsOfFile:(NSString *)path
 {
 	self = [super init];
