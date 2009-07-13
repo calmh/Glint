@@ -26,11 +26,10 @@
         [super viewDidLoad];
         
         locationManager = [[CLLocationManager alloc] init];
-        locationManager.distanceFilter = 1.0;
+        locationManager.distanceFilter = 25.0;
         locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        //locationManager.delegate = self;
+        locationManager.delegate = self;
         [locationManager startUpdatingLocation];
-        [locationManager startUpdatingHeading];
         
         badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
         goodSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
@@ -75,7 +74,6 @@
         [gpxWriter endFile];
         
         [locationManager stopUpdatingLocation];
-        [locationManager stopUpdatingHeading];
         locationManager.delegate = nil;
         
         [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
@@ -158,6 +156,30 @@
         return currentPrec > 0.0 && currentPrec <= minPrec;
 }
 
+- (double) speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB {
+        double td = [locA.timestamp timeIntervalSinceDate:locB.timestamp] / 3600.0;
+        if (td < 0.0)
+                td = -td;
+        if (td == 0.0)
+                return 0.0;
+        double dist = [locA getDistanceFrom:locB];
+        return dist / td;
+}
+
+- (double) bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2 {
+        double y1 = -loc1.coordinate.latitude / 180.0 * M_PI;
+        double x1 = loc1.coordinate.longitude / 180.0 * M_PI;
+        double y2 = -loc2.coordinate.latitude / 180.0 * M_PI;
+        double x2 = loc2.coordinate.longitude / 180.0 * M_PI;
+        double y = cos(x1) * sin(x2) - sin(x1) * cos(x2) * cos(y2-y1);
+        double x = sin(y2-y1) * cos(x2);
+        double t = atan2(y, x);
+        double b = t / M_PI * 180.0 + 360.0;
+        if (b >= 360.0)
+                b -= 360.0;
+        return b;
+}
+
 - (void)takeAveragedMeasurement:(NSTimer*)timer
 {
         static bool hasWrittenPoint = NO;
@@ -183,13 +205,11 @@
         static CLLocation *last = nil;
         
         if ([self precisionAcceptable:newLocation]) {
-                if (last)
+                if (last) {
                         totalDistance += [last getDistanceFrom:newLocation];
-                if (newLocation.course >= 0.0)
-                        currentCourse = newLocation.course;
-                if (newLocation.speed >= 0.0)
-                        currentSpeed = newLocation.speed;
-                
+                        currentCourse = [self bearingFromLocation:last toLocation:newLocation];
+                        currentSpeed = [self speedFromLocation:last toLocation:newLocation];
+                }
                 [last release];
                 last = newLocation;
                 [last retain];
