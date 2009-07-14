@@ -16,7 +16,8 @@
         CLLocationManager *locationManager;
         NSArray *unitSets;
         GlintGPXWriter *gpxWriter;
-        NSDate *startedLogging;
+        NSDate *firstMeasurement;
+        NSDate *lastMeasurement;
         double totalDistance;
         JBSoundEffect *goodSound;
         JBSoundEffect *badSound;

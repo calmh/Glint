@@ -30,7 +30,6 @@
 - (void)takeAveragedMeasurement:(NSTimer*)timer;
 @end
 
-
 @implementation GlintViewController
 @synthesize statusIndicator, positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerDistanceLabel, currentTimePerDistanceDescrLabel;
 @synthesize totalDistanceLabel, statusLabel, averageSpeedLabel, bearingLabel, accuracyLabel;
@@ -70,7 +69,8 @@
         badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
         goodSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
         averagedMeasurements = 0;
-        startedLogging  = nil;
+        firstMeasurement  = nil;
+        lastMeasurement = nil;
         totalDistance = 0.0;
         currentSpeed = -1.0;
         currentCourse = -1.0;
@@ -125,6 +125,8 @@
         static CLLocation *last = nil;
         
         if ([self precisionAcceptable:newLocation]) {
+                if (!firstMeasurement)
+                        firstMeasurement = [[NSDate date] retain];
                 if (last) {
                         totalDistance += [last getDistanceFrom:newLocation];
                         currentCourse = [self bearingFromLocation:last toLocation:newLocation];
@@ -134,6 +136,9 @@
                 last = newLocation;
                 [last retain];
         }
+        
+        [lastMeasurement release];
+        lastMeasurement = [[NSDate date] retain];
 }
 
 - (IBAction)unlock:(id)sender
@@ -215,7 +220,7 @@
 }
 
 - (double) speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB {
-        double td = [locA.timestamp timeIntervalSinceDate:locB.timestamp] / 3600.0;
+        double td = [locA.timestamp timeIntervalSinceDate:locB.timestamp];
         if (td < 0.0)
                 td = -td;
         if (td == 0.0)
@@ -299,18 +304,13 @@
         else
                 self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±%.0f m v.", current.horizontalAccuracy, current.verticalAccuracy];
         
-        if (startedLogging != nil)
-                self.elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:startedLogging] maxTime:86400];
+        if (firstMeasurement)
+                self.elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:firstMeasurement] maxTime:86400];
         
-        if (stateGood) {
-                if (!startedLogging)
-                        startedLogging = [[NSDate date] retain];
-                
-                double averageSpeed;
-                if (!startedLogging)
-                        averageSpeed = 0.0;
-                else
-                        averageSpeed  = totalDistance / -[startedLogging timeIntervalSinceNow];
+        if (stateGood) {                
+                double averageSpeed = 0.0;
+                if (firstMeasurement && lastMeasurement)
+                        averageSpeed  = totalDistance / [lastMeasurement timeIntervalSinceDate:firstMeasurement];
                 self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, averageSpeed*speedFactor];
                 
                 self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, totalDistance*distFactor];
@@ -320,7 +320,8 @@
                 else
                         self.currentSpeedLabel.text = @"?";
                 
-                self.currentTimePerDistanceLabel.text = [self formatTimestamp:USERPREF_ESTIMATE_DISTANCE * 3600.0 / current.speed maxTime:86400];
+                double secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / currentSpeed;
+                self.currentTimePerDistanceLabel.text = [self formatTimestamp:secsPerEstDist maxTime:86400];
                 self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"per %.2f km", USERPREF_ESTIMATE_DISTANCE];
                 
                 self.statusLabel.text = [NSString stringWithFormat:@"%04d measurements", averagedMeasurements];

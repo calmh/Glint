@@ -18,6 +18,4 @@
 #define USERPREF_UNITSET [[NSUserDefaults standardUserDefaults] integerForKey:@"units"]
 #define USERPREF_ENABLE_PROXIMITY [[NSUserDefaults standardUserDefaults] boolForKey:@"enable_proximity"]
 #define USERPREF_DISABLE_IDLE [[NSUserDefaults standardUserDefaults] boolForKey:@"disable_idle"]
-#define USERPREF_AVERAGE_SECONDS [[NSUserDefaults standardUserDefaults] integerForKey:@"average_seconds"]
-#define USERPREF_CURRENT_SECONDS [[NSUserDefaults standardUserDefaults] integerForKey:@"current_seconds"]
 #define USERPREF_ESTIMATE_DISTANCE [[NSUserDefaults standardUserDefaults] doubleForKey:@"estimate_distance"]
