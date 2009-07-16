@@ -10,7 +10,15 @@
 
 
 @interface SendFilesViewController : UIViewController {
-
+        NSArray *files;
+        NSString *documentsDirectory;
+        UITableView *tableView;
 }
+
+@property (retain, nonatomic) IBOutlet UITableView *tableView;
+
+- (IBAction) switchToGPSView:(id)sender;
+- (IBAction) deleteFile:(id)sender;
+- (IBAction) sendFile:(id)sender;
 
 @end

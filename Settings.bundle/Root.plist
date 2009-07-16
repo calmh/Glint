@@ -146,6 +146,22 @@
 			<key>DefaultValue</key>
 			<true/>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Email Settings</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Email Address</string>
+			<key>Key</key>
+			<string>email_address</string>
+			<key>DefaultValue</key>
+			<string>jakob@nym.se</string>
+		</dict>
 	</array>
 </dict>
 </plist>

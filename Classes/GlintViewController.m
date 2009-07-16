@@ -82,10 +82,10 @@
         //[sendButton setStyle:UIBarButtonItemStyleBordered];
         //[playButton setStyle:UIBarButtonItemStyleBordered];
         //[stopButton setStyle:UIBarButtonItemStyleBordered];
-        UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
-        UIBarButtonItem *disabledSendButton = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
-        UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithTitle:@"REC" style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
-        UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithTitle:@"End REC" style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
+        UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Files" style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
+        UIBarButtonItem *disabledSendButton = [[UIBarButtonItem alloc] initWithTitle:@"Files" style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
+        UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithTitle:@"Record" style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
+        UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithTitle:@"Stop Recording" style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
         [disabledUnlockButton setEnabled:NO];
         [disabledSendButton setEnabled:NO];
         lockedToolbarItems = [[NSArray arrayWithObject:unlockButton] retain];
@@ -187,6 +187,7 @@
 }
 
 - (IBAction)sendFiles:(id)sender {
+        [(GlintAppDelegate *)[[UIApplication sharedApplication] delegate] switchToSendFilesView:sender];
 }
 
 - (IBAction)startStopRecording:(id)sender

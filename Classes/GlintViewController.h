@@ -11,6 +11,7 @@
 #import "JBSoundEffect.h"
 #import "GlintCompassView.h"
 #import "GlintGPXWriter.h"
+#import "GlintAppDelegate.h"
 
 @interface GlintViewController : UIViewController  <CLLocationManagerDelegate> {
         CLLocationManager *locationManager;
@@ -68,5 +69,3 @@
 - (IBAction)unlock:(id)sender;
 
 @end
-
-

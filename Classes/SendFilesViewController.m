@@ -7,51 +7,92 @@
 //
 
 #import "SendFilesViewController.h"
-
+#import "GlintAppDelegate.h"
+#import "SKPSMTPMessage.h"
 
 @implementation SendFilesViewController
 
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
-
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-*/
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
+@synthesize tableView;
 
 - (void)dealloc {
-    [super dealloc];
+        [files release];
+        [documentsDirectory release];
+        self.tableView = nil;
+        [super dealloc];
 }
 
+- (IBAction) switchToGPSView:(id)sender {
+        [(GlintAppDelegate *)[[UIApplication sharedApplication] delegate] switchToGPSView:sender];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
+        documentsDirectory = [paths objectAtIndex:0];
+        [documentsDirectory retain];
+        files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
+        [files retain];
+        [super viewWillAppear:animated];
+}
+
+- (IBAction) deleteFile:(id)sender {
+        if ([tableView indexPathForSelectedRow]) {
+                NSString *file = [files objectAtIndex:[tableView indexPathForSelectedRow].row];
+                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, file] error:nil];
+                [files release];
+                files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
+                [files retain];
+                [tableView reloadData];
+        }
+}
+
+- (IBAction) sendFile:(id)sender {
+        if ([tableView indexPathForSelectedRow]) {
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+                NSString *file = [files objectAtIndex:[tableView indexPathForSelectedRow].row];
+                
+                NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
+                
+                SKPSMTPMessage *message = [[SKPSMTPMessage alloc] init];
+                message.fromEmail = USERPREF_EMAIL_ADDRESS;
+                message.toEmail = USERPREF_EMAIL_ADDRESS;
+                message.relayHost = @"acro.nym.se";
+                message.requiresAuth = NO;
+                message.subject = @"Recorded track from Glint";
+                
+                NSDictionary *plainPart = [NSDictionary dictionaryWithObjectsAndKeys:
+                                           @"text/plain", kSKPSMTPPartContentTypeKey,
+                                           @"This message contains an attached GPX file that was recorded in Glint.", kSKPSMTPPartMessageKey,
+                                           @"8bit", kSKPSMTPPartContentTransferEncodingKey,
+                                           nil];
+                
+                NSData *gpxData = [NSData dataWithContentsOfFile:fullPath];
+                NSDictionary *gpxPart = [NSDictionary dictionaryWithObjectsAndKeys:
+                                         @"text/xml", kSKPSMTPPartContentTypeKey,
+                                         [NSString stringWithFormat:@"attachment;\r\n\tfilename=\"%@\"", file], kSKPSMTPPartContentDispositionKey,
+                                         [gpxData encodeBase64ForData], kSKPSMTPPartMessageKey,
+                                         @"base64", kSKPSMTPPartContentTransferEncodingKey,
+                                         nil];
+                
+                message.parts = [NSArray arrayWithObjects:plainPart, gpxPart, nil];
+                [message send];
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MyIdentifier"];
+        if (cell == nil) {
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"MyIdentifier"] autorelease];
+        }
+        cell.textLabel.text = [files objectAtIndex:indexPath.row];
+        cell.detailTextLabel.text = @"A GPX file";
+        return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView
+ numberOfRowsInSection:(NSInteger)section {
+        return [files count];
+}
 
 @end

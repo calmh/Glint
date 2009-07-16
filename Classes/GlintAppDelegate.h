@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GlintViewController.h"
-#import "SendFilesViewController.h"
+@class GlintViewController;
+@class SendFilesViewController;
 
 @interface GlintAppDelegate : NSObject <UIApplicationDelegate> {
         UIWindow *window;
@@ -19,6 +19,9 @@
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet GlintViewController *viewController;
 @property (nonatomic, retain) IBOutlet SendFilesViewController *sendFilesViewController;
+
+- (IBAction) switchToSendFilesView:(id)sender;
+- (IBAction) switchToGPSView:(id)sender;
 
 @end
 
