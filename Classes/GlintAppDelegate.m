@@ -13,7 +13,7 @@
 
 @synthesize window;
 @synthesize viewController;
-
+@synthesize sendFilesViewController;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
     
