@@ -33,7 +33,7 @@
 @implementation GlintViewController
 @synthesize statusIndicator, positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerDistanceLabel, currentTimePerDistanceDescrLabel;
 @synthesize totalDistanceLabel, statusLabel, averageSpeedLabel, bearingLabel, accuracyLabel;
-@synthesize compass, playStopButton, unlockButton, recordingIndicator;
+@synthesize toolbar, compass, recordingIndicator, signalIndicator;
 
 - (void)dealloc {
         self.statusIndicator = nil;
@@ -48,8 +48,6 @@
         self.bearingLabel = nil;
         self.accuracyLabel = nil;
         self.compass = nil;
-        self.playStopButton = nil;
-        self.unlockButton = nil;
         self.recordingIndicator = nil;
         [locationManager release];
         [goodSound release];
@@ -75,7 +73,26 @@
         currentSpeed = -1.0;
         currentCourse = -1.0;
         gpxWriter = nil;
-        
+        lockTimer = nil;
+        UIBarButtonItem *unlockButton = [[UIBarButtonItem alloc] initWithTitle:@"Unlock" style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
+        UIBarButtonItem *disabledUnlockButton = [[UIBarButtonItem alloc] initWithTitle:@"Unlock" style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
+        //UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(sendFiles:)];
+        //UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(startStopRecording:)];
+        //UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(startStopRecording:)];
+        //[sendButton setStyle:UIBarButtonItemStyleBordered];
+        //[playButton setStyle:UIBarButtonItemStyleBordered];
+        //[stopButton setStyle:UIBarButtonItemStyleBordered];
+        UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
+        UIBarButtonItem *disabledSendButton = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
+        UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithTitle:@"REC" style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
+        UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithTitle:@"End REC" style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
+        [disabledUnlockButton setEnabled:NO];
+        [disabledSendButton setEnabled:NO];
+        lockedToolbarItems = [[NSArray arrayWithObject:unlockButton] retain];
+        recordingToolbarItems = [[NSArray arrayWithObjects:disabledUnlockButton, disabledSendButton, stopButton, nil] retain];
+        pausedToolbarItems = [[NSArray arrayWithObjects:disabledUnlockButton, sendButton, playButton, nil] retain];
+        [toolbar setItems:lockedToolbarItems animated:YES];
+
         NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
         unitSets = [NSArray arrayWithContentsOfFile:path];
         [unitSets retain];
@@ -143,17 +160,39 @@
 
 - (IBAction)unlock:(id)sender
 {
-        [self.playStopButton setEnabled:YES];
-        [self.unlockButton setEnabled:NO];
+        if (recording)
+                [toolbar setItems:recordingToolbarItems animated:YES];
+        else
+                [toolbar setItems:pausedToolbarItems animated:YES];
+        
+        if (lockTimer) {
+                [lockTimer invalidate];
+                [lockTimer release];
+                lockTimer = nil;
+        }
+        lockTimer = [NSTimer timerWithTimeInterval:5.0 target:self selector:@selector(lock:) userInfo:nil repeats:NO];
+        [lockTimer retain];
+        [[NSRunLoop currentRunLoop] addTimer:lockTimer forMode:NSDefaultRunLoopMode];
+}
+
+- (IBAction)lock:(id)sender
+{
+        [toolbar setItems:lockedToolbarItems animated:YES];
+        if (lockTimer) {
+                [lockTimer invalidate];
+                [lockTimer release];
+                lockTimer = nil;
+        }
+}
+
+- (IBAction)sendFiles:(id)sender {
 }
 
 - (IBAction)startStopRecording:(id)sender
 {
         if (!recording) {
                 recording = YES;
-                [self.playStopButton setTitle:@"Stop Recording"];
-                [self.recordingIndicator setHidden:NO];
-                [self.recordingIndicator startAnimating];
+                [self.recordingIndicator setColor:[UIColor greenColor]];
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
                 NSString *documentsDirectory = [paths objectAtIndex:0];
                 NSString* filename = [NSString stringWithFormat:@"%@/track-%@.gpx", documentsDirectory, [[NSDate date] description]];
@@ -163,17 +202,14 @@
                 averagedMeasurements = 0;
         } else {
                 recording = NO;
-                [self.playStopButton setTitle:@"Start Recording"];
-                [self.recordingIndicator setHidden:YES];
-                [self.recordingIndicator stopAnimating];
+                [self.recordingIndicator setColor:[UIColor grayColor]];
                 if (gpxWriter.inTrackSegment)
                         [gpxWriter endTrackSegment];
                 [gpxWriter endFile];
                 [gpxWriter release];
                 gpxWriter = nil;
         }
-        [self.unlockButton setEnabled:YES];
-        [self.playStopButton setEnabled:NO];
+        [toolbar setItems:lockedToolbarItems animated:YES];
 }
 
 //
@@ -277,9 +313,11 @@
         if (stateGood != prevStateGood) {
                 if (stateGood) {
                         [goodSound play];
+                        [self.signalIndicator setColor:[UIColor greenColor]];
                         self.statusIndicator.image = [UIImage imageNamed:@"green-sphere.png"];
                 } else {
                         [badSound play];
+                        [self.signalIndicator setColor:[UIColor redColor]];
                         self.statusIndicator.image = [UIImage imageNamed:@"red-sphere.png"];
                 }
                 prevStateGood = stateGood;

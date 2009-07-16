@@ -25,6 +25,10 @@
         bool recording;
         double currentCourse;
         double currentSpeed;
+        NSArray *lockedToolbarItems;
+        NSArray *recordingToolbarItems;
+        NSArray *pausedToolbarItems;
+        NSTimer *lockTimer;
 
         // Properties
         UIImageView *statusIndicator;
@@ -38,10 +42,10 @@
         UILabel *statusLabel;
         UILabel *bearingLabel;
         UILabel *accuracyLabel;
-        UIBarButtonItem *playStopButton;
-        UIBarButtonItem *unlockButton;
+        UILabel *recordingIndicator;
+        UILabel *signalIndicator;
+        UIToolbar *toolbar;
         GlintCompassView *compass;
-        UIActivityIndicatorView *recordingIndicator;
 }
 
 @property (nonatomic, retain) IBOutlet UIImageView *statusIndicator;
@@ -55,10 +59,10 @@
 @property (nonatomic, retain) IBOutlet UILabel *statusLabel;
 @property (nonatomic, retain) IBOutlet UILabel *bearingLabel;
 @property (nonatomic, retain) IBOutlet UILabel *accuracyLabel;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *playStopButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *unlockButton;
+@property (nonatomic, retain) IBOutlet UILabel *recordingIndicator;
+@property (nonatomic, retain) IBOutlet UILabel *signalIndicator;
+@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet GlintCompassView *compass;
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *recordingIndicator;
 
 - (IBAction)startStopRecording:(id)sender;
 - (IBAction)unlock:(id)sender;
