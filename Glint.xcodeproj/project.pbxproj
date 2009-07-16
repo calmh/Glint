@@ -18,6 +18,12 @@
 		291C24D510011B7B0086EE86 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 291C24D410011B7B0086EE86 /* unitsets.plist */; };
 		29874F9A0FF776EB0080E20D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
 		29C7910510027A8E00EA28CC /* GlintCompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* GlintCompassView.m */; };
+		29CD7102100FB704001150A1 /* NSStream+SKPSMTPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD70FF100FB704001150A1 /* NSStream+SKPSMTPExtensions.m */; };
+		29CD7103100FB704001150A1 /* SKPSMTPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD7101100FB704001150A1 /* SKPSMTPMessage.m */; };
+		29CD7107100FB733001150A1 /* NSData+Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD7106100FB733001150A1 /* NSData+Base64Additions.m */; };
+		29CD710A100FB74A001150A1 /* HSK_CFUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD7109100FB74A001150A1 /* HSK_CFUtilities.m */; };
+		29CD710E100FB766001150A1 /* Base64Transcoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD710D100FB766001150A1 /* Base64Transcoder.m */; };
+		29CD7111100FB8B4001150A1 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CD7110100FB8B4001150A1 /* CFNetwork.framework */; };
 		29CE3C9510079BAD00AEC5A4 /* GlintGPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CE3C9410079BAD00AEC5A4 /* GlintGPXWriter.m */; };
 		29FE31E30FF4359D00E9FE05 /* Basso.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DD0FF4359D00E9FE05 /* Basso.aiff */; };
 		29FE31E50FF4359D00E9FE05 /* green-sphere.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DF0FF4359D00E9FE05 /* green-sphere.png */; };
@@ -46,6 +52,17 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29C7910310027A8E00EA28CC /* GlintCompassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlintCompassView.h; sourceTree = "<group>"; };
 		29C7910410027A8E00EA28CC /* GlintCompassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlintCompassView.m; sourceTree = "<group>"; };
+		29CD70FE100FB704001150A1 /* NSStream+SKPSMTPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSStream+SKPSMTPExtensions.h"; path = "SMTPClient/NSStream+SKPSMTPExtensions.h"; sourceTree = "<group>"; };
+		29CD70FF100FB704001150A1 /* NSStream+SKPSMTPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSStream+SKPSMTPExtensions.m"; path = "SMTPClient/NSStream+SKPSMTPExtensions.m"; sourceTree = "<group>"; };
+		29CD7100100FB704001150A1 /* SKPSMTPMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKPSMTPMessage.h; path = SMTPClient/SKPSMTPMessage.h; sourceTree = "<group>"; };
+		29CD7101100FB704001150A1 /* SKPSMTPMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKPSMTPMessage.m; path = SMTPClient/SKPSMTPMessage.m; sourceTree = "<group>"; };
+		29CD7105100FB733001150A1 /* NSData+Base64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64Additions.h"; path = "SMTPClient/NSData+Base64Additions.h"; sourceTree = "<group>"; };
+		29CD7106100FB733001150A1 /* NSData+Base64Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64Additions.m"; path = "SMTPClient/NSData+Base64Additions.m"; sourceTree = "<group>"; };
+		29CD7108100FB74A001150A1 /* HSK_CFUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HSK_CFUtilities.h; path = SMTPClient/HSK_CFUtilities.h; sourceTree = "<group>"; };
+		29CD7109100FB74A001150A1 /* HSK_CFUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HSK_CFUtilities.m; path = SMTPClient/HSK_CFUtilities.m; sourceTree = "<group>"; };
+		29CD710C100FB766001150A1 /* Base64Transcoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Base64Transcoder.h; path = SMTPClient/Base64Transcoder.h; sourceTree = "<group>"; };
+		29CD710D100FB766001150A1 /* Base64Transcoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Base64Transcoder.m; path = SMTPClient/Base64Transcoder.m; sourceTree = "<group>"; };
+		29CD7110100FB8B4001150A1 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		29CE3C9310079BAD00AEC5A4 /* GlintGPXWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlintGPXWriter.h; sourceTree = "<group>"; };
 		29CE3C9410079BAD00AEC5A4 /* GlintGPXWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlintGPXWriter.m; sourceTree = "<group>"; };
 		29FE31DD0FF4359D00E9FE05 /* Basso.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Basso.aiff; path = Resources/Basso.aiff; sourceTree = "<group>"; };
@@ -72,6 +89,7 @@
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
 				29FE32180FF436EF00E9FE05 /* AudioToolbox.framework in Frameworks */,
 				29FE32280FF4370200E9FE05 /* CoreLocation.framework in Frameworks */,
+				29CD7111100FB8B4001150A1 /* CFNetwork.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +124,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				29CD70FB100FB16B001150A1 /* SMTP Client */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -145,6 +164,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				29CD7110100FB8B4001150A1 /* CFNetwork.framework */,
 				29FE32170FF436EF00E9FE05 /* AudioToolbox.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
@@ -152,6 +172,23 @@
 				29FE32270FF4370200E9FE05 /* CoreLocation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		29CD70FB100FB16B001150A1 /* SMTP Client */ = {
+			isa = PBXGroup;
+			children = (
+				29CD710C100FB766001150A1 /* Base64Transcoder.h */,
+				29CD710D100FB766001150A1 /* Base64Transcoder.m */,
+				29CD7108100FB74A001150A1 /* HSK_CFUtilities.h */,
+				29CD7109100FB74A001150A1 /* HSK_CFUtilities.m */,
+				29CD7105100FB733001150A1 /* NSData+Base64Additions.h */,
+				29CD7106100FB733001150A1 /* NSData+Base64Additions.m */,
+				29CD70FE100FB704001150A1 /* NSStream+SKPSMTPExtensions.h */,
+				29CD70FF100FB704001150A1 /* NSStream+SKPSMTPExtensions.m */,
+				29CD7100100FB704001150A1 /* SKPSMTPMessage.h */,
+				29CD7101100FB704001150A1 /* SKPSMTPMessage.m */,
+			);
+			name = "SMTP Client";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,6 +259,11 @@
 				29FE31EB0FF435DB00E9FE05 /* JBSoundEffect.m in Sources */,
 				29C7910510027A8E00EA28CC /* GlintCompassView.m in Sources */,
 				29CE3C9510079BAD00AEC5A4 /* GlintGPXWriter.m in Sources */,
+				29CD7102100FB704001150A1 /* NSStream+SKPSMTPExtensions.m in Sources */,
+				29CD7103100FB704001150A1 /* SKPSMTPMessage.m in Sources */,
+				29CD7107100FB733001150A1 /* NSData+Base64Additions.m in Sources */,
+				29CD710A100FB74A001150A1 /* HSK_CFUtilities.m in Sources */,
+				29CD710E100FB766001150A1 /* Base64Transcoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

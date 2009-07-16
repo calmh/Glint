@@ -7,7 +7,6 @@
 //
 
 #import "GlintViewController.h"
-#define DEBUG
 
 //
 // Private methods
@@ -74,6 +73,7 @@
         currentCourse = -1.0;
         gpxWriter = nil;
         lockTimer = nil;
+
         UIBarButtonItem *unlockButton = [[UIBarButtonItem alloc] initWithTitle:@"Unlock" style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
         UIBarButtonItem *disabledUnlockButton = [[UIBarButtonItem alloc] initWithTitle:@"Unlock" style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
         //UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(sendFiles:)];
@@ -92,7 +92,7 @@
         recordingToolbarItems = [[NSArray arrayWithObjects:disabledUnlockButton, disabledSendButton, stopButton, nil] retain];
         pausedToolbarItems = [[NSArray arrayWithObjects:disabledUnlockButton, sendButton, playButton, nil] retain];
         [toolbar setItems:lockedToolbarItems animated:YES];
-
+        
         NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
         unitSets = [NSArray arrayWithContentsOfFile:path];
         [unitSets retain];
@@ -152,6 +152,7 @@
                 [last release];
                 last = newLocation;
                 [last retain];
+                [locationManager setDistanceFilter:2*last.horizontalAccuracy];
         }
         
         [lastMeasurement release];
@@ -266,12 +267,12 @@
 }
 
 - (double) bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2 {
-        double y1 = -loc1.coordinate.latitude / 180.0 * M_PI;
-        double x1 = loc1.coordinate.longitude / 180.0 * M_PI;
-        double y2 = -loc2.coordinate.latitude / 180.0 * M_PI;
-        double x2 = loc2.coordinate.longitude / 180.0 * M_PI;
-        double y = cos(x1) * sin(x2) - sin(x1) * cos(x2) * cos(y2-y1);
-        double x = sin(y2-y1) * cos(x2);
+        double lat1 = loc1.coordinate.latitude / 180.0 * M_PI;
+        double lon1 = -loc1.coordinate.longitude / 180.0 * M_PI;
+        double lat2 = loc2.coordinate.latitude / 180.0 * M_PI;
+        double lon2 = -loc2.coordinate.longitude / 180.0 * M_PI;
+        double y = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(lon2-lon1);
+        double x = sin(lon2-lon1) * cos(lat2);
         double t = atan2(y, x);
         double b = t / M_PI * 180.0 + 360.0;
         if (b >= 360.0)
