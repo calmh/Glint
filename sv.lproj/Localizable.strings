@@ -2,7 +2,6 @@
 ** Send mail
 */
 
-"Configuration Error" = "Konfigurationsfel";
 "Message failed" = "Kund inte skicka";
 "Message sent" = "Skickade meddelande";
 "Recorded track from Glint" = "Inspelad fil från Glint";

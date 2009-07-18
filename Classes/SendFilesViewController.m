@@ -50,9 +50,10 @@
 
 - (IBAction) sendFile:(id)sender {
         if ([tableView indexPathForSelectedRow]) {
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
                 NSString *to = USERPREF_EMAIL_ADDRESS;
                 if (!to || [to length] < 4) {
-                        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Configuration Error", @"Error dialog title") message:NSLocalizedString(@"You need to enter a valid email address in Settings.", @"Lacking email address") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil] autorelease];
+                        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Message failed",nil) message:NSLocalizedString(@"You need to enter a valid email address in Settings.", @"Lacking email address") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil] autorelease];
                         [alert show];
                         return;
                 }
@@ -64,7 +65,7 @@
                 SKPSMTPMessage *message = [[SKPSMTPMessage alloc] init];
                 message.fromEmail = @"glint@nym.se";
                 message.toEmail = to;
-                message.relayHost = @"acro.nym.se";
+                message.relayHost = @"mail1.perspektivbredband.se";
                 message.requiresAuth = NO;
                 message.subject = NSLocalizedString(@"Recorded track from Glint", @"Email subject");
                 message.delegate = self;
@@ -86,7 +87,6 @@
                 
                 message.parts = [NSArray arrayWithObjects:plainPart, gpxPart, nil];
                 [message send];
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         }
 }
 
@@ -108,6 +108,7 @@
 
 - (void)messageSent:(SKPSMTPMessage *)message
 {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         [message release];
         UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Message sent", @"Success dialog title") message:NSLocalizedString(@"The message was sent successfully.", @"Email success") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil] autorelease];
         [alert show];
@@ -115,6 +116,7 @@
 
 - (void)messageFailed:(SKPSMTPMessage *)message error:(NSError *)error
 {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         [message release];
         UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Message failed", @"Error dialog title") message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil] autorelease];
         [alert show];
