@@ -30,18 +30,15 @@
 @end
 
 @implementation GlintViewController
-@synthesize statusIndicator, positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerDistanceLabel;
-@synthesize totalDistanceLabel, statusLabel, averageSpeedLabel, bearingLabel, accuracyLabel;
-@synthesize toolbar, compass, recordingIndicator, signalIndicator;
+@synthesize positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerDistanceLabel, totalDistanceLabel, statusLabel, averageSpeedLabel, bearingLabel, accuracyLabel;
 @synthesize elapsedTimeDescrLabel, totalDistanceDescrLabel, currentTimePerDistanceDescrLabel, currentSpeedDescrLabel, averageSpeedDescrLabel;
+@synthesize toolbar, compass, recordingIndicator, signalIndicator;
 
 - (void)dealloc {
-        self.statusIndicator = nil;
         self.positionLabel = nil;
         self.elapsedTimeLabel = nil;
         self.currentSpeedLabel = nil;
         self.currentTimePerDistanceLabel = nil;
-        self.currentTimePerDistanceDescrLabel = nil;
         self.totalDistanceLabel = nil;
         self.statusLabel = nil;
         self.averageSpeedLabel = nil;
@@ -49,9 +46,18 @@
         self.accuracyLabel = nil;
         self.compass = nil;
         self.recordingIndicator = nil;
+        self.elapsedTimeDescrLabel = nil;
+        self.totalDistanceDescrLabel = nil;
+        self.currentTimePerDistanceDescrLabel = nil;
+        self.currentSpeedDescrLabel = nil;
+        self.averageSpeedDescrLabel = nil;
+
         [locationManager release];
         [goodSound release];
         [badSound release];
+        [firstMeasurementDate release];
+        [lastMeasurementDate release];
+        [previousMeasurement release];
         [super dealloc];
 }
 
@@ -152,15 +158,16 @@
                                 firstMeasurementDate = [[NSDate date] retain];
                         if (previousMeasurement) {
                                 double dist = [previousMeasurement getDistanceFrom:newLocation];
-                                totalDistance += dist;
                                 if (dist > 0.0) {
+                                        totalDistance += dist;
                                         currentCourse = [self bearingFromLocation:previousMeasurement toLocation:newLocation];
+                                        currentSpeed = [self speedFromLocation:previousMeasurement toLocation:newLocation];
                                 }
-                                currentSpeed = [self speedFromLocation:previousMeasurement toLocation:newLocation];
                         }
                         [previousMeasurement release];
                         previousMeasurement = newLocation;
                         [previousMeasurement retain];
+                        currentDataSource = kGlintDataSourceMovement;
                         //[locationManager setDistanceFilter:2*previousMeasurement.horizontalAccuracy];
                 }
         }
@@ -205,17 +212,17 @@
 {
         if (!isRecording) {
                 isRecording = YES;
-                [self.recordingIndicator setColor:[UIColor greenColor]];
+                self.recordingIndicator.textColor = [UIColor greenColor];
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
                 NSString *documentsDirectory = [paths objectAtIndex:0];
-                NSString* filename = [NSString stringWithFormat:@"%@/track-%@.gpx", documentsDirectory, [[NSDate date] description]];
+                NSString* filename = [NSString stringWithFormat:@"%@/track-%@.gpx", documentsDirectory, [[NSDate date] descriptionWithCalendarFormat:@"%Y%m%d-%H%M%S" timeZone:nil locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]]];
                 gpxWriter = [[GlintGPXWriter alloc] initWithFilename:filename];
                 [gpxWriter beginFile];
                 [gpxWriter beginTrackSegment];
                 numRecordedMeasurements = 0;
         } else {
                 isRecording = NO;
-                [self.recordingIndicator setColor:[UIColor grayColor]];
+                self.recordingIndicator.textColor = [UIColor grayColor];
                 if (gpxWriter.inTrackSegment)
                         [gpxWriter endTrackSegment];
                 [gpxWriter endFile];
@@ -319,16 +326,13 @@
                 }
         }
         
-        if (previousMeasurement && [previousMeasurement.timestamp timeIntervalSinceNow] < -15.0 && [self precisionAcceptable:current]) {
+        if (previousMeasurement && [previousMeasurement.timestamp timeIntervalSinceNow] < -FORCE_POSITION_UPDATE_INTERVAL && [self precisionAcceptable:current]) {
                 @synchronized (self) {
-                        double dist = [previousMeasurement getDistanceFrom:current];
-                        totalDistance += dist;
-                        if (dist > 0.0) {
-                                currentCourse = [self bearingFromLocation:previousMeasurement toLocation:current];
-                        }
-                        currentSpeed = [self speedFromLocation:previousMeasurement toLocation:current];
-                        [previousMeasurement release];
-                        previousMeasurement = [current retain];
+                                totalDistance += [previousMeasurement getDistanceFrom:current];
+                                currentSpeed = [self speedFromLocation:previousMeasurement toLocation:current];
+                                [previousMeasurement release];
+                                previousMeasurement = [current retain];
+                                currentDataSource = kGlintDataSourceTimer;
                 }
         }
         
@@ -346,12 +350,10 @@
         if (stateGood != prevStateGood) {
                 if (stateGood) {
                         [goodSound play];
-                        [self.signalIndicator setColor:[UIColor greenColor]];
-                        self.statusIndicator.image = [UIImage imageNamed:@"green-sphere.png"];
+                        self.signalIndicator.textColor = [UIColor greenColor];
                 } else {
                         [badSound play];
-                        [self.signalIndicator setColor:[UIColor redColor]];
-                        self.statusIndicator.image = [UIImage imageNamed:@"red-sphere.png"];
+                        self.signalIndicator.textColor = [UIColor redColor];
                 }
                 prevStateGood = stateGood;
         }
@@ -390,6 +392,11 @@
                         self.currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, currentSpeed*speedFactor];
                 else
                         self.currentSpeedLabel.text = @"?";
+                
+                if (currentDataSource == kGlintDataSourceMovement)
+                        self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
+                else if (currentDataSource == kGlintDataSourceTimer)
+                         self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
                 
                 double secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / currentSpeed;
                 self.currentTimePerDistanceLabel.text = [self formatTimestamp:secsPerEstDist maxTime:86400];

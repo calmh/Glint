@@ -31,11 +31,57 @@
         [tableView reloadData];
 
 }
+
 - (void)viewWillAppear:(BOOL)animated {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
         documentsDirectory = [paths objectAtIndex:0];
         [documentsDirectory retain];
         [super viewWillAppear:animated];
+}
+
+- (NSString*)formatDistance:(double)distance {
+        static double distFactor = 0.0;
+        static NSString *distFormat = nil;
+        if (!distFormat) {
+                NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
+                NSArray *unitSets = [NSArray arrayWithContentsOfFile:path];
+                int unitsetIndex = USERPREF_UNITSET;
+                NSDictionary* units = [unitSets objectAtIndex:unitsetIndex];
+                distFactor = [[units objectForKey:@"distFactor"] floatValue];
+                distFormat = [units objectForKey:@"distFormat"];
+        }
+        return [NSString stringWithFormat:distFormat, distance*distFactor];
+}
+
+- (NSString*)descriptionForFile:(NSString*)file {
+        return file;
+}
+
+- (NSString*)commentForFile:(NSString*)file {
+        NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
+        NSString *fileContents = [NSString stringWithContentsOfFile:fullPath];
+        double distance = 0.0;
+        int numPoints = 0;
+        
+        NSRange rangeBegin = [fileContents rangeOfString:@"totalDistance:"];
+        if (rangeBegin.length > 0)
+        {
+                rangeBegin.location += rangeBegin.length;
+                rangeBegin.length = [fileContents length] - rangeBegin.location;
+                NSRange range = [fileContents rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890."] options:kNilOptions range:rangeBegin];
+                distance = [[fileContents substringWithRange:range] doubleValue];
+        }
+
+        rangeBegin = [fileContents rangeOfString:@"numPoints:"];
+        if (rangeBegin.length > 0)
+        {
+                rangeBegin.location += rangeBegin.length;
+                rangeBegin.length = [fileContents length] - rangeBegin.location;
+                NSRange range = [fileContents rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890"] options:kNilOptions range:rangeBegin];
+                numPoints = [[fileContents substringWithRange:range] intValue];
+        }
+        
+        return [NSString stringWithFormat:@"%@, %d points", [self formatDistance:distance], numPoints];
 }
 
 - (IBAction) deleteFile:(id)sender {
@@ -96,8 +142,8 @@
         if (cell == nil) {
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"MyIdentifier"] autorelease];
         }
-        cell.textLabel.text = [files objectAtIndex:indexPath.row];
-        cell.detailTextLabel.text = @"A GPX file";
+        cell.textLabel.text = [self descriptionForFile:[files objectAtIndex:indexPath.row]];
+        cell.detailTextLabel.text = [self commentForFile:[files objectAtIndex:indexPath.row]];
         return cell;
 }
 

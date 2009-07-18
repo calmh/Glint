@@ -22,6 +22,8 @@
 {
         if (self = [self init]) {
                 inTrackSegment = NO;
+                totalDistance = 0.0;
+                numPoints = 0;
                 filename = [NSString stringWithString:newFilename];
                 [filename retain];
         }
@@ -43,7 +45,7 @@
 }
 
 - (void)endFile {
-        NSString* end = @"  </trk>\n</gpx>\n";
+        NSString* end = [NSString stringWithFormat: @"  </trk>\n</gpx>\n<!-- totalDistance:%f numPoints:%d -->\n", totalDistance, numPoints];
         [self appendToGPX: end];
         inFile = NO;
 }
@@ -61,12 +63,18 @@
 }
 
 - (void)addPoint:(CLLocation*)loc {
+        static CLLocation *last = nil;
+        
         NSString* ts = [loc.timestamp descriptionWithCalendarFormat:@"%Y-%m-%dT%H:%M:%SZ" timeZone:nil locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
         
         NSString* data = [NSString stringWithFormat:@"      <trkpt lat=\"%f\" lon=\"%f\">\n        <ele>%f</ele>\n        <time>%@</time>\n      </trkpt>\n",
                           loc.coordinate.latitude, loc.coordinate.longitude, loc.altitude, ts];
         
         [self appendToGPX: data];
+        numPoints ++;
+        totalDistance += [last getDistanceFrom:loc];
+        [last release];
+        last = [loc retain];
 }
 
 

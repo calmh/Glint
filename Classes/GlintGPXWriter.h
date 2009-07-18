@@ -13,6 +13,8 @@
         NSString *filename;
         bool inTrackSegment;
         bool inFile;
+        double totalDistance;
+        int numPoints;
 }
 
 - (id)initWithFilename:(NSString*)newFilename;

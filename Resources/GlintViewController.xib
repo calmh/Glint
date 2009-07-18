@@ -147,9 +147,9 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="IBUIText">00.0 km/h</string>
 						<reference key="IBUIFont" ref="125184238"/>
-						<object class="NSColor" key="IBUITextColor" id="1030436810">
+						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC44MDAwMDAwMSAxIDAuNDAwMDAwMDEAA</bytes>
+							<bytes key="NSRGB">MC42Mjc0NTEgMC43MDk4MDM5NCAwLjQwMDAwMDAxAA</bytes>
 						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
@@ -186,7 +186,10 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="IBUIText">00.0 km/h</string>
 						<reference key="IBUIFont" ref="125184238"/>
-						<reference key="IBUITextColor" ref="1030436810"/>
+						<object class="NSColor" key="IBUITextColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC44MDAwMDAwMSAxIDAuNDAwMDAwMDEAA</bytes>
+						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">1.000000e+01</float>
@@ -356,19 +359,6 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="794382144">
-						<reference key="NSNextResponder" ref="774585933"/>
-						<int key="NSvFlags">-2147483356</int>
-						<string key="NSFrame">{{160, 378}, {32, 32}}</string>
-						<reference key="NSSuperview" ref="774585933"/>
-						<bool key="IBUIOpaque">NO</bool>
-						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<object class="NSCustomResource" key="IBUIImage">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">red-sphere.png</string>
-						</object>
-					</object>
 					<object class="IBUILabel" id="247060114">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
@@ -474,14 +464,6 @@
 						<reference key="destination" ref="61838021"/>
 					</object>
 					<int key="connectionID">31</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">statusIndicator</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="794382144"/>
-					</object>
-					<int key="connectionID">33</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -631,16 +613,10 @@
 							<reference ref="610177916"/>
 							<reference ref="1005176400"/>
 							<reference ref="194075208"/>
-							<reference ref="794382144"/>
 							<reference ref="696924804"/>
 							<reference ref="247060114"/>
 						</object>
 						<reference key="parent" ref="296293708"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">8</int>
-						<reference key="object" ref="794382144"/>
-						<reference key="parent" ref="774585933"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">9</int>
@@ -764,7 +740,6 @@
 					<string>6.IBEditorWindowLastContentRect</string>
 					<string>6.IBPluginDependency</string>
 					<string>61.IBPluginDependency</string>
-					<string>8.IBPluginDependency</string>
 					<string>9.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
@@ -789,7 +764,6 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{398, 309}, {320, 480}}</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -862,7 +836,6 @@
 							<string>positionLabel</string>
 							<string>recordingIndicator</string>
 							<string>signalIndicator</string>
-							<string>statusIndicator</string>
 							<string>statusLabel</string>
 							<string>toolbar</string>
 							<string>totalDistanceDescrLabel</string>
@@ -884,7 +857,6 @@
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
-							<string>UIImageView</string>
 							<string>UILabel</string>
 							<string>UIToolbar</string>
 							<string>UILabel</string>

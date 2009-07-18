@@ -13,6 +13,11 @@
 #import "GlintGPXWriter.h"
 #import "GlintAppDelegate.h"
 
+typedef enum enumGlintDataSource {
+        kGlintDataSourceMovement,
+        kGlintDataSourceTimer
+} GlintDataSource;
+
 @interface GlintViewController : UIViewController  <CLLocationManagerDelegate> {
         CLLocationManager *locationManager;
         NSArray *unitSets;
@@ -20,6 +25,7 @@
         NSDate *firstMeasurementDate;
         NSDate *lastMeasurementDate;
         CLLocation *previousMeasurement;
+        GlintDataSource currentDataSource;
         double totalDistance;
         JBSoundEffect *goodSound;
         JBSoundEffect *badSound;
@@ -32,8 +38,6 @@
         NSArray *pausedToolbarItems;
         NSTimer *lockTimer;
 
-        // Properties
-        UIImageView *statusIndicator;
         UILabel *positionLabel;
         UILabel *elapsedTimeLabel;
         UILabel *currentSpeedLabel;
@@ -51,11 +55,11 @@
         UILabel *currentTimePerDistanceDescrLabel;
         UILabel *currentSpeedDescrLabel;
         UILabel *averageSpeedDescrLabel;
+
         UIToolbar *toolbar;
         GlintCompassView *compass;
 }
 
-@property (nonatomic, retain) IBOutlet UIImageView *statusIndicator;
 @property (nonatomic, retain) IBOutlet UILabel *positionLabel;
 @property (nonatomic, retain) IBOutlet UILabel *elapsedTimeLabel;
 @property (nonatomic, retain) IBOutlet UILabel *currentSpeedLabel;
