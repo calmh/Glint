@@ -71,7 +71,7 @@
 		29CD711E100FB9F2001150A1 /* SendFilesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SendFilesViewController.xib; path = Resources/SendFilesViewController.xib; sourceTree = "<group>"; };
 		29CE3C9310079BAD00AEC5A4 /* GlintGPXWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlintGPXWriter.h; sourceTree = "<group>"; };
 		29CE3C9410079BAD00AEC5A4 /* GlintGPXWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlintGPXWriter.m; sourceTree = "<group>"; };
-		29D191941011E2DA00B9E8CF /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		29D191941011E2DA00B9E8CF /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		29D191981011E31600B9E8CF /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		29FE31DD0FF4359D00E9FE05 /* Basso.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Basso.aiff; path = Resources/Basso.aiff; sourceTree = "<group>"; };
 		29FE31DF0FF4359D00E9FE05 /* green-sphere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "green-sphere.png"; path = "Resources/green-sphere.png"; sourceTree = "<group>"; };
