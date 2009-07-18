@@ -195,7 +195,7 @@
 					<object class="IBUILabel" id="729603568">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{214, 94}, {77, 16}}</string>
+						<string key="NSFrame">{{214, 94}, {98, 16}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -204,7 +204,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">total distance</string>
+						<string key="IBUIText">tillryggalagd dist.</string>
 						<reference key="IBUIFont" ref="96194369"/>
 						<object class="NSColor" key="IBUITextColor" id="537793649">
 							<int key="NSColorSpace">1</int>
@@ -226,7 +226,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">speed (cur)</string>
+						<string key="IBUIText">hastighet</string>
 						<reference key="IBUIFont" ref="96194369"/>
 						<reference key="IBUITextColor" ref="537793649"/>
 						<nil key="IBUIHighlightedColor"/>
@@ -245,7 +245,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">per 10 km (cur)</string>
+						<string key="IBUIText">per 10.00 km</string>
 						<reference key="IBUIFont" ref="96194369"/>
 						<reference key="IBUITextColor" ref="537793649"/>
 						<nil key="IBUIHighlightedColor"/>
@@ -255,7 +255,7 @@
 					<object class="IBUILabel" id="609724461">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{214, 268}, {69, 16}}</string>
+						<string key="NSFrame">{{214, 268}, {91, 16}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -264,7 +264,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">speed (avg)</string>
+						<string key="IBUIText">genomsn. hast.</string>
 						<reference key="IBUIFont" ref="96194369"/>
 						<reference key="IBUITextColor" ref="537793649"/>
 						<nil key="IBUIHighlightedColor"/>
@@ -274,7 +274,7 @@
 					<object class="IBUILabel" id="784080033">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{214, 36}, {46, 16}}</string>
+						<string key="NSFrame">{{214, 36}, {51, 16}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -283,7 +283,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">elapsed</string>
+						<string key="IBUIText">sen start</string>
 						<reference key="IBUIFont" ref="96194369"/>
 						<reference key="IBUITextColor" ref="537793649"/>
 						<nil key="IBUIHighlightedColor"/>
@@ -859,7 +859,7 @@
 			</object>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
-		<string key="IBDocument.LastKnownRelativeProjectPath">Glint.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../Glint.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<string key="IBCocoaTouchPluginVersion">3.0</string>
 	</data>

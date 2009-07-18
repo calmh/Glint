@@ -1,0 +1,90 @@
+﻿/* Error dialog title */
+"Configuration Error" = "Konfigurationsfel";
+
+/* E */
+"E" = "O";
+
+/* ENE */
+"ENE" = "ONO";
+
+/* ESE */
+"ESE" = "OSO";
+
+/* Files */
+"Files" = "Filer";
+
+/* measurements */
+"measurements" = "mätningar";
+
+/* Error dialog title */
+"Message failed" = "Kund inte skicka";
+
+/* Success dialog title */
+"Message sent" = "Skickade meddelande";
+
+/* N */
+"N" = "N";
+
+/* NE */
+"NE" = "NO";
+
+/* NNE */
+"NNE" = "NNO";
+
+/* NNW */
+"NNW" = "NNV";
+
+/* NW */
+"NW" = "NV";
+
+/* OK */
+"OK" = "OK";
+
+/* ... per (distance) */
+"per" = "per";
+
+/* Record */
+"Record" = "Spela in";
+
+/* Email subject */
+"Recorded track from Glint" = "Inspelad fil från Glint";
+
+/* S */
+"S" = "S";
+
+/* SE */
+"SE" = "SO";
+
+/* SSE */
+"SSE" = "SSO";
+
+/* SSW */
+"SSW" = "SSV";
+
+/* Stop Recording */
+"Stop Recording" = "Stanna inspelning";
+
+/* SW */
+"SW" = "SV";
+
+/* Email success */
+"The message was sent successfully." = "Meddelandet gick iväg som det skulle.";
+
+/* Email body */
+"This message contains an attached GPX file that was recorded in Glint." = "Det här meddelandet innehåller en bifogad GPX-fil som spelades in i Glint.";
+
+/* Unlock */
+"Unlock" = "Lås upp";
+
+/* W */
+"W" = "V";
+
+/* WNW */
+"WNW" = "VNV";
+
+/* WSW */
+"WSW" = "VSV";
+
+/* Lacking email address */
+"You need to enter a valid email address in Settings." = "Du måste ställa in en giltig epostadress i Inställningar.";
+
