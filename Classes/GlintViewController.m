@@ -30,9 +30,10 @@
 @end
 
 @implementation GlintViewController
-@synthesize statusIndicator, positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerDistanceLabel, currentTimePerDistanceDescrLabel;
+@synthesize statusIndicator, positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerDistanceLabel;
 @synthesize totalDistanceLabel, statusLabel, averageSpeedLabel, bearingLabel, accuracyLabel;
 @synthesize toolbar, compass, recordingIndicator, signalIndicator;
+@synthesize elapsedTimeDescrLabel, totalDistanceDescrLabel, currentTimePerDistanceDescrLabel, currentSpeedDescrLabel, averageSpeedDescrLabel;
 
 - (void)dealloc {
         self.statusIndicator = nil;
@@ -102,6 +103,11 @@
                 [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
         if (USERPREF_ENABLE_PROXIMITY)
                 [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+        
+        self.elapsedTimeDescrLabel.text = NSLocalizedString(@"elapsed", nil);
+        self.totalDistanceDescrLabel.text = NSLocalizedString(@"total distance", nil);
+        self.currentSpeedDescrLabel.text = NSLocalizedString(@"cur speed", nil);
+        self.averageSpeedDescrLabel.text = NSLocalizedString(@"avg speed", nil);
         
         self.positionLabel.text = @"-";
         self.accuracyLabel.text = @"-";

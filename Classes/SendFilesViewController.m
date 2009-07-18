@@ -68,6 +68,7 @@
                 message.requiresAuth = NO;
                 message.subject = NSLocalizedString(@"Recorded track from Glint", @"Email subject");
                 message.delegate = self;
+                message.relayPorts = [NSArray arrayWithObject:[NSNumber numberWithInt:587]];
                 
                 NSDictionary *plainPart = [NSDictionary dictionaryWithObjectsAndKeys:
                                            @"text/plain", kSKPSMTPPartContentTypeKey,

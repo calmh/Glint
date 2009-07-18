@@ -39,13 +39,18 @@
         UILabel *currentSpeedLabel;
         UILabel *averageSpeedLabel;
         UILabel *currentTimePerDistanceLabel;
-        UILabel *currentTimePerDistanceDescrLabel;
         UILabel *totalDistanceLabel;
         UILabel *statusLabel;
         UILabel *bearingLabel;
         UILabel *accuracyLabel;
         UILabel *recordingIndicator;
         UILabel *signalIndicator;
+        
+        UILabel *elapsedTimeDescrLabel;
+        UILabel *totalDistanceDescrLabel;
+        UILabel *currentTimePerDistanceDescrLabel;
+        UILabel *currentSpeedDescrLabel;
+        UILabel *averageSpeedDescrLabel;
         UIToolbar *toolbar;
         GlintCompassView *compass;
 }
@@ -56,7 +61,6 @@
 @property (nonatomic, retain) IBOutlet UILabel *currentSpeedLabel;
 @property (nonatomic, retain) IBOutlet UILabel *averageSpeedLabel;
 @property (nonatomic, retain) IBOutlet UILabel *currentTimePerDistanceLabel;
-@property (nonatomic, retain) IBOutlet UILabel *currentTimePerDistanceDescrLabel;
 @property (nonatomic, retain) IBOutlet UILabel *totalDistanceLabel;
 @property (nonatomic, retain) IBOutlet UILabel *statusLabel;
 @property (nonatomic, retain) IBOutlet UILabel *bearingLabel;
@@ -65,6 +69,12 @@
 @property (nonatomic, retain) IBOutlet UILabel *signalIndicator;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet GlintCompassView *compass;
+
+@property (nonatomic, retain) IBOutlet UILabel *elapsedTimeDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *totalDistanceDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *currentTimePerDistanceDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *currentSpeedDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *averageSpeedDescrLabel;
 
 - (IBAction)startStopRecording:(id)sender;
 - (IBAction)unlock:(id)sender;

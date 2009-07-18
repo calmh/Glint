@@ -68,6 +68,10 @@
 								<reference key="IBUIToolbar" ref="815808078"/>
 								<int key="IBUISystemItemIdentifier">9</int>
 							</object>
+							<object class="IBUIBarButtonItem" id="749465509">
+								<reference key="IBUIToolbar" ref="815808078"/>
+								<int key="IBUISystemItemIdentifier">5</int>
+							</object>
 							<object class="IBUIBarButtonItem" id="507206872">
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="815808078"/>
@@ -190,6 +194,7 @@
 							<reference ref="507206872"/>
 							<reference ref="823197193"/>
 							<reference ref="259107372"/>
+							<reference ref="749465509"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 					</object>
@@ -218,6 +223,11 @@
 						<reference key="object" ref="259107372"/>
 						<reference key="parent" ref="815808078"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">16</int>
+						<reference key="object" ref="749465509"/>
+						<reference key="parent" ref="815808078"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -230,6 +240,7 @@
 					<string>1.IBPluginDependency</string>
 					<string>11.IBPluginDependency</string>
 					<string>12.IBPluginDependency</string>
+					<string>16.IBPluginDependency</string>
 					<string>4.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
 					<string>6.IBPluginDependency</string>
@@ -239,7 +250,8 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>SendFilesViewController</string>
 					<string>UIResponder</string>
-					<string>{{180, 267}, {320, 480}}</string>
+					<string>{{244, 271}, {320, 480}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -269,7 +281,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">15</int>
+			<int key="maxID">16</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

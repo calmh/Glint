@@ -17,6 +17,7 @@
 		291C24D510011B7B0086EE86 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 291C24D410011B7B0086EE86 /* unitsets.plist */; };
 		29874F9A0FF776EB0080E20D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
 		29C7910510027A8E00EA28CC /* GlintCompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* GlintCompassView.m */; };
+		29C9A4F51011E9CA004CCBDD /* GlintViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29C9A4F41011E9CA004CCBDD /* GlintViewController.xib */; };
 		29CD7102100FB704001150A1 /* NSStream+SKPSMTPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD70FF100FB704001150A1 /* NSStream+SKPSMTPExtensions.m */; };
 		29CD7103100FB704001150A1 /* SKPSMTPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD7101100FB704001150A1 /* SKPSMTPMessage.m */; };
 		29CD7107100FB733001150A1 /* NSData+Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD7106100FB733001150A1 /* NSData+Base64Additions.m */; };
@@ -27,7 +28,6 @@
 		29CD7120100FB9F2001150A1 /* SendFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29CD711E100FB9F2001150A1 /* SendFilesViewController.xib */; };
 		29CE3C9510079BAD00AEC5A4 /* GlintGPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CE3C9410079BAD00AEC5A4 /* GlintGPXWriter.m */; };
 		29D191951011E2DA00B9E8CF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 29D191931011E2DA00B9E8CF /* Localizable.strings */; };
-		29D191A31011E4E000B9E8CF /* GlintViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29D191A11011E4E000B9E8CF /* GlintViewController.xib */; };
 		29FE31E30FF4359D00E9FE05 /* Basso.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DD0FF4359D00E9FE05 /* Basso.aiff */; };
 		29FE31E50FF4359D00E9FE05 /* green-sphere.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DF0FF4359D00E9FE05 /* green-sphere.png */; };
 		29FE31E60FF4359D00E9FE05 /* Purr.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31E00FF4359D00E9FE05 /* Purr.aiff */; };
@@ -54,6 +54,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29C7910310027A8E00EA28CC /* GlintCompassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlintCompassView.h; sourceTree = "<group>"; };
 		29C7910410027A8E00EA28CC /* GlintCompassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlintCompassView.m; sourceTree = "<group>"; };
+		29C9A4F41011E9CA004CCBDD /* GlintViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GlintViewController.xib; path = Resources/GlintViewController.xib; sourceTree = "<group>"; };
 		29CD70FE100FB704001150A1 /* NSStream+SKPSMTPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSStream+SKPSMTPExtensions.h"; path = "SMTPClient/NSStream+SKPSMTPExtensions.h"; sourceTree = "<group>"; };
 		29CD70FF100FB704001150A1 /* NSStream+SKPSMTPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSStream+SKPSMTPExtensions.m"; path = "SMTPClient/NSStream+SKPSMTPExtensions.m"; sourceTree = "<group>"; };
 		29CD7100100FB704001150A1 /* SKPSMTPMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKPSMTPMessage.h; path = SMTPClient/SKPSMTPMessage.h; sourceTree = "<group>"; };
@@ -72,8 +73,6 @@
 		29CE3C9410079BAD00AEC5A4 /* GlintGPXWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlintGPXWriter.m; sourceTree = "<group>"; };
 		29D191941011E2DA00B9E8CF /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		29D191981011E31600B9E8CF /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
-		29D191A21011E4E000B9E8CF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/GlintViewController.xib; sourceTree = "<group>"; };
-		29D191A41011E4ED00B9E8CF /* sv */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = sv; path = sv.lproj/GlintViewController.xib; sourceTree = "<group>"; };
 		29FE31DD0FF4359D00E9FE05 /* Basso.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Basso.aiff; path = Resources/Basso.aiff; sourceTree = "<group>"; };
 		29FE31DF0FF4359D00E9FE05 /* green-sphere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "green-sphere.png"; path = "Resources/green-sphere.png"; sourceTree = "<group>"; };
 		29FE31E00FF4359D00E9FE05 /* Purr.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Purr.aiff; path = Resources/Purr.aiff; sourceTree = "<group>"; };
@@ -159,7 +158,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				29D191A11011E4E000B9E8CF /* GlintViewController.xib */,
+				29C9A4F41011E9CA004CCBDD /* GlintViewController.xib */,
 				29874F990FF776EB0080E20D /* Icon.png */,
 				29FE32100FF436AC00E9FE05 /* Settings.bundle */,
 				29FE31DD0FF4359D00E9FE05 /* Basso.aiff */,
@@ -266,7 +265,7 @@
 				291C24D510011B7B0086EE86 /* unitsets.plist in Resources */,
 				29CD7120100FB9F2001150A1 /* SendFilesViewController.xib in Resources */,
 				29D191951011E2DA00B9E8CF /* Localizable.strings in Resources */,
-				29D191A31011E4E000B9E8CF /* GlintViewController.xib in Resources */,
+				29C9A4F51011E9CA004CCBDD /* GlintViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,15 +303,6 @@
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		29D191A11011E4E000B9E8CF /* GlintViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				29D191A21011E4E000B9E8CF /* en */,
-				29D191A41011E4ED00B9E8CF /* sv */,
-			);
-			name = GlintViewController.xib;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -347,7 +337,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 12;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -362,7 +352,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 12;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;

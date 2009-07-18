@@ -195,7 +195,7 @@
 					<object class="IBUILabel" id="729603568">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{214, 94}, {98, 16}}</string>
+						<string key="NSFrame">{{214, 94}, {86, 16}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -204,7 +204,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">tillryggalagd dist.</string>
+						<string key="IBUIText">total distance</string>
 						<reference key="IBUIFont" ref="96194369"/>
 						<object class="NSColor" key="IBUITextColor" id="537793649">
 							<int key="NSColorSpace">1</int>
@@ -217,7 +217,7 @@
 					<object class="IBUILabel" id="179550389">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{214, 210}, {66, 16}}</string>
+						<string key="NSFrame">{{214, 210}, {86, 16}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -226,7 +226,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">hastighet</string>
+						<string key="IBUIText">speed (cur)</string>
 						<reference key="IBUIFont" ref="96194369"/>
 						<reference key="IBUITextColor" ref="537793649"/>
 						<nil key="IBUIHighlightedColor"/>
@@ -255,7 +255,7 @@
 					<object class="IBUILabel" id="609724461">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{214, 268}, {91, 16}}</string>
+						<string key="NSFrame">{{214, 268}, {86, 16}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -264,7 +264,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">genomsn. hast.</string>
+						<string key="IBUIText">speed (avg)</string>
 						<reference key="IBUIFont" ref="96194369"/>
 						<reference key="IBUITextColor" ref="537793649"/>
 						<nil key="IBUIHighlightedColor"/>
@@ -274,7 +274,7 @@
 					<object class="IBUILabel" id="784080033">
 						<reference key="NSNextResponder" ref="774585933"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{214, 36}, {51, 16}}</string>
+						<string key="NSFrame">{{214, 36}, {89, 16}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -283,7 +283,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="IBUIText">sen start</string>
+						<string key="IBUIText">elapsed</string>
 						<reference key="IBUIFont" ref="96194369"/>
 						<reference key="IBUITextColor" ref="537793649"/>
 						<nil key="IBUIHighlightedColor"/>
@@ -555,6 +555,38 @@
 					</object>
 					<int key="connectionID">62</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">elapsedTimeDescrLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="784080033"/>
+					</object>
+					<int key="connectionID">63</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">totalDistanceDescrLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="729603568"/>
+					</object>
+					<int key="connectionID">64</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">currentSpeedDescrLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="179550389"/>
+					</object>
+					<int key="connectionID">65</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">averageSpeedDescrLabel</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="609724461"/>
+					</object>
+					<int key="connectionID">66</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -783,7 +815,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">62</int>
+			<int key="maxID">66</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -817,12 +849,15 @@
 						<object class="NSMutableArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>accuracyLabel</string>
+							<string>averageSpeedDescrLabel</string>
 							<string>averageSpeedLabel</string>
 							<string>bearingLabel</string>
 							<string>compass</string>
+							<string>currentSpeedDescrLabel</string>
 							<string>currentSpeedLabel</string>
 							<string>currentTimePerDistanceDescrLabel</string>
 							<string>currentTimePerDistanceLabel</string>
+							<string>elapsedTimeDescrLabel</string>
 							<string>elapsedTimeLabel</string>
 							<string>positionLabel</string>
 							<string>recordingIndicator</string>
@@ -830,10 +865,12 @@
 							<string>statusIndicator</string>
 							<string>statusLabel</string>
 							<string>toolbar</string>
+							<string>totalDistanceDescrLabel</string>
 							<string>totalDistanceLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
@@ -845,9 +882,12 @@
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
+							<string>UILabel</string>
+							<string>UILabel</string>
 							<string>UIImageView</string>
 							<string>UILabel</string>
 							<string>UIToolbar</string>
+							<string>UILabel</string>
 							<string>UILabel</string>
 						</object>
 					</object>

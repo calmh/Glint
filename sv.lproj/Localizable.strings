@@ -1,90 +1,54 @@
-﻿/* Error dialog title */
+﻿/*
+** Send mail
+*/
+
 "Configuration Error" = "Konfigurationsfel";
-
-/* E */
-"E" = "O";
-
-/* ENE */
-"ENE" = "ONO";
-
-/* ESE */
-"ESE" = "OSO";
-
-/* Files */
-"Files" = "Filer";
-
-/* measurements */
-"measurements" = "mätningar";
-
-/* Error dialog title */
 "Message failed" = "Kund inte skicka";
-
-/* Success dialog title */
 "Message sent" = "Skickade meddelande";
-
-/* N */
-"N" = "N";
-
-/* NE */
-"NE" = "NO";
-
-/* NNE */
-"NNE" = "NNO";
-
-/* NNW */
-"NNW" = "NNV";
-
-/* NW */
-"NW" = "NV";
-
-/* OK */
-"OK" = "OK";
-
-/* ... per (distance) */
-"per" = "per";
-
-/* Record */
-"Record" = "Spela in";
-
-/* Email subject */
 "Recorded track from Glint" = "Inspelad fil från Glint";
-
-/* S */
-"S" = "S";
-
-/* SE */
-"SE" = "SO";
-
-/* SSE */
-"SSE" = "SSO";
-
-/* SSW */
-"SSW" = "SSV";
-
-/* Stop Recording */
-"Stop Recording" = "Stanna inspelning";
-
-/* SW */
-"SW" = "SV";
-
-/* Email success */
 "The message was sent successfully." = "Meddelandet gick iväg som det skulle.";
-
-/* Email body */
 "This message contains an attached GPX file that was recorded in Glint." = "Det här meddelandet innehåller en bifogad GPX-fil som spelades in i Glint.";
-
-/* Unlock */
-"Unlock" = "Lås upp";
-
-/* W */
-"W" = "V";
-
-/* WNW */
-"WNW" = "VNV";
-
-/* WSW */
-"WSW" = "VSV";
-
-/* Lacking email address */
 "You need to enter a valid email address in Settings." = "Du måste ställa in en giltig epostadress i Inställningar.";
 
+/*
+** Compass
+*/
+
+"E" = "O";
+"ENE" = "ONO";
+"ESE" = "OSO";
+"N" = "N";
+"NE" = "NO";
+"NNE" = "NNO";
+"NNW" = "NNV";
+"NW" = "NV";
+"S" = "S";
+"SE" = "SO";
+"SSE" = "SSO";
+"SSW" = "SSV";
+"SW" = "SV";
+"W" = "V";
+"WNW" = "VNV";
+"WSW" = "VSV";
+
+/*
+** Home screen
+*/
+
+"elapsed" = "tid";
+"total distance" = "avstånd";
+"cur speed" = "nuv. hastighet";
+"avg speed" = "genomsn. hast.";
+"measurements" = "mätningar";
+"per" = "per";
+
+"Files" = "Filer";
+"Record" = "Spela in";
+"Stop Recording" = "Stanna inspelning";
+"Unlock" = "Lås upp";
+
+/*
+** Misc
+*/
+
+"OK" = "OK";
