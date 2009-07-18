@@ -17,13 +17,14 @@
         CLLocationManager *locationManager;
         NSArray *unitSets;
         GlintGPXWriter *gpxWriter;
-        NSDate *firstMeasurement;
-        NSDate *lastMeasurement;
+        NSDate *firstMeasurementDate;
+        NSDate *lastMeasurementDate;
+        CLLocation *previousMeasurement;
         double totalDistance;
         JBSoundEffect *goodSound;
         JBSoundEffect *badSound;
-        int averagedMeasurements;
-        bool recording;
+        int numRecordedMeasurements;
+        bool isRecording;
         double currentCourse;
         double currentSpeed;
         NSArray *lockedToolbarItems;

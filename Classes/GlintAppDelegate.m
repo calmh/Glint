@@ -53,6 +53,7 @@
 }
 
 - (IBAction) switchToSendFilesView:(id)sender {
+        [sendFilesViewController refresh];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         [UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:1.2];

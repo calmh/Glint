@@ -28,22 +28,22 @@
         
         course = 0.0;
         markers = [NSDictionary dictionaryWithObjectsAndKeys:
-                   @"N", [NSNumber numberWithDouble:0.0],
-                   @"NNE", [NSNumber numberWithDouble:22.5],
-                   @"NE", [NSNumber numberWithDouble:2*22.5],
-                   @"ENE", [NSNumber numberWithDouble:3*22.5],
-                   @"E", [NSNumber numberWithDouble:4*22.5],
-                   @"ESE", [NSNumber numberWithDouble:5*22.5],
-                   @"SE", [NSNumber numberWithDouble:6*22.5],
-                   @"SSE", [NSNumber numberWithDouble:7*22.5],
-                   @"S", [NSNumber numberWithDouble:8*22.5],
-                   @"SSW", [NSNumber numberWithDouble:9*22.5],
-                   @"SW", [NSNumber numberWithDouble:10*22.5],
-                   @"WSW", [NSNumber numberWithDouble:11*22.5],
-                   @"W", [NSNumber numberWithDouble:12*22.5],
-                   @"WNW", [NSNumber numberWithDouble:13*22.5],
-                   @"NW", [NSNumber numberWithDouble:14*22.5],
-                   @"NNW", [NSNumber numberWithDouble:15*22.5],
+                   NSLocalizedString(@"N", @"N"), [NSNumber numberWithDouble:0.0],
+                   NSLocalizedString(@"NNE", @"NNE"), [NSNumber numberWithDouble:22.5],
+                   NSLocalizedString(@"NE", @"NE"), [NSNumber numberWithDouble:2*22.5],
+                   NSLocalizedString(@"ENE", @"ENE"), [NSNumber numberWithDouble:3*22.5],
+                   NSLocalizedString(@"E", @"E"), [NSNumber numberWithDouble:4*22.5],
+                   NSLocalizedString(@"ESE", @"ESE"), [NSNumber numberWithDouble:5*22.5],
+                   NSLocalizedString(@"SE", @"SE"), [NSNumber numberWithDouble:6*22.5],
+                   NSLocalizedString(@"SSE", @"SSE"), [NSNumber numberWithDouble:7*22.5],
+                   NSLocalizedString(@"S", @"S"), [NSNumber numberWithDouble:8*22.5],
+                   NSLocalizedString(@"SSW", @"SSW"), [NSNumber numberWithDouble:9*22.5],
+                   NSLocalizedString(@"SW", @"SW"), [NSNumber numberWithDouble:10*22.5],
+                   NSLocalizedString(@"WSW", @"WSW"), [NSNumber numberWithDouble:11*22.5],
+                   NSLocalizedString(@"W", @"W"), [NSNumber numberWithDouble:12*22.5],
+                   NSLocalizedString(@"WNW", @"WNW"), [NSNumber numberWithDouble:13*22.5],
+                   NSLocalizedString(@"NW", @"NW"), [NSNumber numberWithDouble:14*22.5],
+                   NSLocalizedString(@"NNW", @"NNW"), [NSNumber numberWithDouble:15*22.5],
                    nil];
         [markers retain];
 }

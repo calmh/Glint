@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SKPSMTPMessage.h"
 
-
-@interface SendFilesViewController : UIViewController {
+@interface SendFilesViewController : UIViewController <SKPSMTPMessageDelegate> {
         NSArray *files;
         NSString *documentsDirectory;
         UITableView *tableView;
@@ -20,5 +20,6 @@
 - (IBAction) switchToGPSView:(id)sender;
 - (IBAction) deleteFile:(id)sender;
 - (IBAction) sendFile:(id)sender;
+- (void) refresh;
 
 @end

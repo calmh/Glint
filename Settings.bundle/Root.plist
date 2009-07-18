@@ -160,7 +160,7 @@
 			<key>Key</key>
 			<string>email_address</string>
 			<key>DefaultValue</key>
-			<string>jakob@nym.se</string>
+			<string></string>
 		</dict>
 	</array>
 </dict>

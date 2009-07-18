@@ -7,10 +7,10 @@
     #import <UIKit/UIKit.h>
 #endif
 
-#define FILTER_DISTANCE 5
-#define MINIMUM_MULTIPLIER 1
-#define DESIRED_MULTIPLIER 10
-#define UPDATE_INTERVAL 0.5
+#define FILTER_DISTANCE 50.0 // Update speed, course etc when we have moved this far from the previous position
+#define FORCE_POSITION_UPDATE_INTERVAL 60.0 // ... or if it's been this long since last update. 50 m / 60 s = slow walking pace.
+#define DISPLAY_THREAD_INTERVAL 0.5 // Update the display this often.
+#define MEASUREMENT_THREAD_INTERVAL 5.0
 #define COMPASS_WIDTH 70.0
 
 #define USERPREF_MEASUREMENT_INTERVAL [[NSUserDefaults standardUserDefaults] integerForKey:@"average_interval"]

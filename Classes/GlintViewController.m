@@ -58,34 +58,35 @@
         [super viewDidLoad];
         
         locationManager = [[CLLocationManager alloc] init];
-        locationManager.distanceFilter = 25.0;
+        locationManager.distanceFilter = FILTER_DISTANCE;
         locationManager.desiredAccuracy = kCLLocationAccuracyBest;
         locationManager.delegate = self;
         [locationManager startUpdatingLocation];
         
         badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
         goodSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
-        averagedMeasurements = 0;
-        firstMeasurement  = nil;
-        lastMeasurement = nil;
+        numRecordedMeasurements = 0;
+        firstMeasurementDate  = nil;
+        lastMeasurementDate = nil;
         totalDistance = 0.0;
         currentSpeed = -1.0;
         currentCourse = -1.0;
         gpxWriter = nil;
         lockTimer = nil;
-
-        UIBarButtonItem *unlockButton = [[UIBarButtonItem alloc] initWithTitle:@"Unlock" style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
-        UIBarButtonItem *disabledUnlockButton = [[UIBarButtonItem alloc] initWithTitle:@"Unlock" style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
+        previousMeasurement = nil;
+        
+        UIBarButtonItem *unlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock", @"Unlock") style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
+        UIBarButtonItem *disabledUnlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock", @"Unlock") style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
         //UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(sendFiles:)];
         //UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(startStopRecording:)];
         //UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(startStopRecording:)];
         //[sendButton setStyle:UIBarButtonItemStyleBordered];
         //[playButton setStyle:UIBarButtonItemStyleBordered];
         //[stopButton setStyle:UIBarButtonItemStyleBordered];
-        UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:@"Files" style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
-        UIBarButtonItem *disabledSendButton = [[UIBarButtonItem alloc] initWithTitle:@"Files" style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
-        UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithTitle:@"Record" style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
-        UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithTitle:@"Stop Recording" style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
+        UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files", @"Files") style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
+        UIBarButtonItem *disabledSendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files", @"Files") style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
+        UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Record", @"Record") style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
+        UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Stop Recording", @"Stop Recording") style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
         [disabledUnlockButton setEnabled:NO];
         [disabledSendButton setEnabled:NO];
         lockedToolbarItems = [[NSArray arrayWithObject:unlockButton] retain];
@@ -112,11 +113,11 @@
         self.currentTimePerDistanceLabel.text = @"?";
         NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
         NSString* marketVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        self.statusLabel.text = [NSString stringWithFormat:@"Glint %@ build %@", marketVer, bundleVer];
+        self.statusLabel.text = [NSString stringWithFormat:@"Glint %@-%@", marketVer, bundleVer];
         
-        NSTimer* displayUpdater = [NSTimer timerWithTimeInterval:UPDATE_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
+        NSTimer* displayUpdater = [NSTimer timerWithTimeInterval:DISPLAY_THREAD_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:displayUpdater forMode:NSDefaultRunLoopMode];
-        NSTimer* averagedMeasurementTaker = [NSTimer timerWithTimeInterval:USERPREF_MEASUREMENT_INTERVAL target:self selector:@selector(takeAveragedMeasurement:) userInfo:nil repeats:YES];
+        NSTimer* averagedMeasurementTaker = [NSTimer timerWithTimeInterval:MEASUREMENT_THREAD_INTERVAL target:self selector:@selector(takeAveragedMeasurement:) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:averagedMeasurementTaker forMode:NSDefaultRunLoopMode];
 }
 
@@ -139,29 +140,32 @@
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
-        static CLLocation *last = nil;
-        
         if ([self precisionAcceptable:newLocation]) {
-                if (!firstMeasurement)
-                        firstMeasurement = [[NSDate date] retain];
-                if (last) {
-                        totalDistance += [last getDistanceFrom:newLocation];
-                        currentCourse = [self bearingFromLocation:last toLocation:newLocation];
-                        currentSpeed = [self speedFromLocation:last toLocation:newLocation];
+                @synchronized (self) {
+                        if (!firstMeasurementDate)
+                                firstMeasurementDate = [[NSDate date] retain];
+                        if (previousMeasurement) {
+                                double dist = [previousMeasurement getDistanceFrom:newLocation];
+                                totalDistance += dist;
+                                if (dist > 0.0) {
+                                        currentCourse = [self bearingFromLocation:previousMeasurement toLocation:newLocation];
+                                }
+                                currentSpeed = [self speedFromLocation:previousMeasurement toLocation:newLocation];
+                        }
+                        [previousMeasurement release];
+                        previousMeasurement = newLocation;
+                        [previousMeasurement retain];
+                        //[locationManager setDistanceFilter:2*previousMeasurement.horizontalAccuracy];
                 }
-                [last release];
-                last = newLocation;
-                [last retain];
-                [locationManager setDistanceFilter:2*last.horizontalAccuracy];
         }
         
-        [lastMeasurement release];
-        lastMeasurement = [[NSDate date] retain];
+        [lastMeasurementDate release];
+        lastMeasurementDate = [[NSDate date] retain];
 }
 
 - (IBAction)unlock:(id)sender
 {
-        if (recording)
+        if (isRecording)
                 [toolbar setItems:recordingToolbarItems animated:YES];
         else
                 [toolbar setItems:pausedToolbarItems animated:YES];
@@ -187,13 +191,14 @@
 }
 
 - (IBAction)sendFiles:(id)sender {
+        [self lock:sender];
         [(GlintAppDelegate *)[[UIApplication sharedApplication] delegate] switchToSendFilesView:sender];
 }
 
 - (IBAction)startStopRecording:(id)sender
 {
-        if (!recording) {
-                recording = YES;
+        if (!isRecording) {
+                isRecording = YES;
                 [self.recordingIndicator setColor:[UIColor greenColor]];
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
                 NSString *documentsDirectory = [paths objectAtIndex:0];
@@ -201,9 +206,9 @@
                 gpxWriter = [[GlintGPXWriter alloc] initWithFilename:filename];
                 [gpxWriter beginFile];
                 [gpxWriter beginTrackSegment];
-                averagedMeasurements = 0;
+                numRecordedMeasurements = 0;
         } else {
-                recording = NO;
+                isRecording = NO;
                 [self.recordingIndicator setColor:[UIColor grayColor]];
                 if (gpxWriter.inTrackSegment)
                         [gpxWriter endTrackSegment];
@@ -288,10 +293,16 @@
 - (void)takeAveragedMeasurement:(NSTimer*)timer
 {
         static bool hasWrittenPoint = NO;
+        static NSDate *lastWrittenDate = nil;
+        NSDate *now = [NSDate date];
+        
         CLLocation *current = locationManager.location;
-        if (recording) {
+        if (isRecording && (!lastWrittenDate || [lastWrittenDate timeIntervalSinceDate:now] <= -(USERPREF_MEASUREMENT_INTERVAL - MEASUREMENT_THREAD_INTERVAL/2.0) )) {
+                [lastWrittenDate release];
+                lastWrittenDate = [now retain];
+                
                 if ([self precisionAcceptable:current]) {
-                        averagedMeasurements++;
+                        numRecordedMeasurements++;
                         if (!gpxWriter.inTrackSegment)
                                 [gpxWriter beginTrackSegment];
                         [gpxWriter addPoint:current];
@@ -301,6 +312,20 @@
                         hasWrittenPoint = NO;
                 }
         }
+        
+        if (previousMeasurement && [previousMeasurement.timestamp timeIntervalSinceNow] < -15.0 && [self precisionAcceptable:current]) {
+                @synchronized (self) {
+                        double dist = [previousMeasurement getDistanceFrom:current];
+                        totalDistance += dist;
+                        if (dist > 0.0) {
+                                currentCourse = [self bearingFromLocation:previousMeasurement toLocation:current];
+                        }
+                        currentSpeed = [self speedFromLocation:previousMeasurement toLocation:current];
+                        [previousMeasurement release];
+                        previousMeasurement = [current retain];
+                }
+        }
+        
 }
 
 - (void)updateDisplay:(NSTimer*)timer
@@ -344,13 +369,13 @@
         else
                 self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±%.0f m v.", current.horizontalAccuracy, current.verticalAccuracy];
         
-        if (firstMeasurement)
-                self.elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:firstMeasurement] maxTime:86400];
+        if (firstMeasurementDate)
+                self.elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] maxTime:86400];
         
         if (stateGood) {                
                 double averageSpeed = 0.0;
-                if (firstMeasurement && lastMeasurement)
-                        averageSpeed  = totalDistance / [lastMeasurement timeIntervalSinceDate:firstMeasurement];
+                if (firstMeasurementDate && lastMeasurementDate)
+                        averageSpeed  = totalDistance / [lastMeasurementDate timeIntervalSinceDate:firstMeasurementDate];
                 self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, averageSpeed*speedFactor];
                 
                 self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, totalDistance*distFactor];
@@ -362,9 +387,9 @@
                 
                 double secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / currentSpeed;
                 self.currentTimePerDistanceLabel.text = [self formatTimestamp:secsPerEstDist maxTime:86400];
-                self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"per %.2f km", USERPREF_ESTIMATE_DISTANCE];
+                self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %.2f km",NSLocalizedString(@"per", @"... per (distance)"), USERPREF_ESTIMATE_DISTANCE];
                 
-                self.statusLabel.text = [NSString stringWithFormat:@"%04d measurements", averagedMeasurements];
+                self.statusLabel.text = [NSString stringWithFormat:@"%04d %@", numRecordedMeasurements, NSLocalizedString(@"measurements", @"measurements")];
                 
                 if (currentCourse >= 0.0)
                         self.compass.course = currentCourse;
