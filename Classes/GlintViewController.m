@@ -7,6 +7,7 @@
 //
 
 #import "GlintViewController.h"
+/// #define SCREENSHOT
 
 //
 // Private methods
@@ -152,6 +153,16 @@
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
+#ifdef SCREENSHOT
+                        totalDistance = 5632.0;
+                        currentCourse = 275.0;
+                        currentSpeed = 3.2;
+                        currentDataSource = kGlintDataSourceMovement;
+        NSDateComponents *comps = [[NSDateComponents alloc] init];
+        [comps setMinute:-29];
+        firstMeasurementDate = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:[NSDate date] options:0];
+        [firstMeasurementDate retain];
+#else
         if ([self precisionAcceptable:newLocation]) {
                 @synchronized (self) {
                         if (!firstMeasurementDate)
@@ -171,6 +182,7 @@
                         //[locationManager setDistanceFilter:2*previousMeasurement.horizontalAccuracy];
                 }
         }
+#endif
         
         [lastMeasurementDate release];
         lastMeasurementDate = [[NSDate date] retain];
@@ -305,6 +317,9 @@
 
 - (void)takeAveragedMeasurement:(NSTimer*)timer
 {
+#ifdef SCREENSHOT
+        numRecordedMeasurements = 23;
+#else
         static bool hasWrittenPoint = NO;
         static NSDate *lastWrittenDate = nil;
         NSDate *now = [NSDate date];
@@ -335,7 +350,7 @@
                                 currentDataSource = kGlintDataSourceTimer;
                 }
         }
-        
+#endif
 }
 
 - (void)updateDisplay:(NSTimer*)timer
@@ -346,7 +361,11 @@
         static NSString *distFormat = nil;
         static NSString *speedFormat = nil;
         
+#ifdef SCREENSHOT
+        bool stateGood = YES;
+#else
         bool stateGood = [self precisionAcceptable:locationManager.location];
+#endif
         if (stateGood != prevStateGood) {
                 if (stateGood) {
                         [goodSound play];
@@ -372,11 +391,14 @@
         
         if (current)
                 self.positionLabel.text = [NSString stringWithFormat:@"%@\n%@\nelev %.0f m", [self formatLat: current.coordinate.latitude], [self formatLon: current.coordinate.longitude], current.altitude];
+#ifdef SCREENSHOT
+        self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±%.0f m v.", 17.0, 23.0];
+#else
         if (current.verticalAccuracy < 0)
                 self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±inf v.", current.horizontalAccuracy];
         else
                 self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±%.0f m v.", current.horizontalAccuracy, current.verticalAccuracy];
-        
+#endif   
         if (firstMeasurementDate)
                 self.elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] maxTime:86400];
         
@@ -400,7 +422,8 @@
                 
                 double secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / currentSpeed;
                 self.currentTimePerDistanceLabel.text = [self formatTimestamp:secsPerEstDist maxTime:86400];
-                self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %.2f km",NSLocalizedString(@"per", @"... per (distance)"), USERPREF_ESTIMATE_DISTANCE];
+                NSString *distStr = [NSString stringWithFormat:distFormat, USERPREF_ESTIMATE_DISTANCE*distFactor*1000.0];
+                self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
                 
                 self.statusLabel.text = [NSString stringWithFormat:@"%04d %@", numRecordedMeasurements, NSLocalizedString(@"measurements", @"measurements")];
                 
