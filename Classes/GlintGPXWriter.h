@@ -11,20 +11,19 @@
 
 @interface GlintGPXWriter : NSObject {
         NSString *filename;
-        bool inTrackSegment;
-        bool inFile;
+        NSMutableArray *tracks;
+        double minLon, minLat, maxLon, maxLat;
+        int numSegs, numPoints;
         double totalDistance;
-        int numPoints;
+        CLLocation *last;
 }
 
 - (id)initWithFilename:(NSString*)newFilename;
-- (void)beginFile;
-- (void)endFile;
-- (void)beginTrackSegment;
-- (void)endTrackSegment;
-- (void)addPoint:(CLLocation*)loc;
+- (void)addTrackPoint:(CLLocation*)loc;
+- (void)addTrackSegment;
+- (void)commit;
+- (BOOL)isInTrackSegment;
 
-@property (readonly) bool inTrackSegment;
-@property (readonly) bool inFile;
+@property (readonly, getter=numberOfTrackPoints) int numPoints;
 
 @end

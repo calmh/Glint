@@ -7,7 +7,6 @@
 //
 
 #import "GlintViewController.h"
-/// #define SCREENSHOT
 
 //
 // Private methods
@@ -52,7 +51,7 @@
         self.currentTimePerDistanceDescrLabel = nil;
         self.currentSpeedDescrLabel = nil;
         self.averageSpeedDescrLabel = nil;
-
+        
         [locationManager release];
         [goodSound release];
         [badSound release];
@@ -73,7 +72,6 @@
         
         badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
         goodSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
-        numRecordedMeasurements = 0;
         firstMeasurementDate  = nil;
         lastMeasurementDate = nil;
         totalDistance = 0.0;
@@ -82,6 +80,7 @@
         gpxWriter = nil;
         lockTimer = nil;
         previousMeasurement = nil;
+        gpsEnabled = YES;
         
         UIBarButtonItem *unlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock", @"Unlock") style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
         UIBarButtonItem *disabledUnlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock", @"Unlock") style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
@@ -136,10 +135,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-        if (gpxWriter.inTrackSegment)
-                [gpxWriter endTrackSegment];
-        [gpxWriter endFile];
-        
+        [gpxWriter commit];
         [locationManager stopUpdatingLocation];
         locationManager.delegate = nil;
         
@@ -154,10 +150,10 @@
            fromLocation:(CLLocation *)oldLocation
 {
 #ifdef SCREENSHOT
-                        totalDistance = 5632.0;
-                        currentCourse = 275.0;
-                        currentSpeed = 3.2;
-                        currentDataSource = kGlintDataSourceMovement;
+        totalDistance = 5632.0;
+        currentCourse = 275.0;
+        currentSpeed = 3.2;
+        currentDataSource = kGlintDataSourceMovement;
         NSDateComponents *comps = [[NSDateComponents alloc] init];
         [comps setMinute:-29];
         firstMeasurementDate = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:[NSDate date] options:0];
@@ -169,28 +165,27 @@
                                 firstMeasurementDate = [[NSDate date] retain];
                         if (previousMeasurement) {
                                 double dist = [previousMeasurement getDistanceFrom:newLocation];
-                                if (dist > 0.0) {
+                                if (dist > 25.0) {
                                         totalDistance += dist;
                                         currentCourse = [self bearingFromLocation:previousMeasurement toLocation:newLocation];
                                         currentSpeed = [self speedFromLocation:previousMeasurement toLocation:newLocation];
+                                        [previousMeasurement release];
+                                        previousMeasurement = newLocation;
+                                        [previousMeasurement retain];
+                                        currentDataSource = kGlintDataSourceMovement;
+                                        //[locationManager setDistanceFilter:2*previousMeasurement.horizontalAccuracy];
                                 }
                         }
-                        [previousMeasurement release];
-                        previousMeasurement = newLocation;
-                        [previousMeasurement retain];
-                        currentDataSource = kGlintDataSourceMovement;
-                        //[locationManager setDistanceFilter:2*previousMeasurement.horizontalAccuracy];
                 }
         }
 #endif
-        
         [lastMeasurementDate release];
         lastMeasurementDate = [[NSDate date] retain];
 }
 
 - (IBAction)unlock:(id)sender
 {
-        if (isRecording)
+        if (gpxWriter)
                 [toolbar setItems:recordingToolbarItems animated:YES];
         else
                 [toolbar setItems:pausedToolbarItems animated:YES];
@@ -222,23 +217,16 @@
 
 - (IBAction)startStopRecording:(id)sender
 {
-        if (!isRecording) {
-                isRecording = YES;
+        if (!gpxWriter) {
                 self.recordingIndicator.textColor = [UIColor greenColor];
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
                 NSString *documentsDirectory = [paths objectAtIndex:0];
                 NSString* filename = [NSString stringWithFormat:@"%@/track-%@.gpx", documentsDirectory, [[NSDate date] descriptionWithCalendarFormat:@"%Y%m%d-%H%M%S" timeZone:nil locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]]];
                 gpxWriter = [[GlintGPXWriter alloc] initWithFilename:filename];
-                [gpxWriter beginFile];
-                [gpxWriter beginTrackSegment];
-                numRecordedMeasurements = 0;
+                [gpxWriter addTrackSegment];
         } else {
-                isRecording = NO;
                 self.recordingIndicator.textColor = [UIColor grayColor];
-                if (gpxWriter.inTrackSegment)
-                        [gpxWriter endTrackSegment];
-                [gpxWriter endFile];
-                [gpxWriter release];
+                [gpxWriter commit];
                 gpxWriter = nil;
         }
         [toolbar setItems:lockedToolbarItems animated:YES];
@@ -317,40 +305,57 @@
 
 - (void)takeAveragedMeasurement:(NSTimer*)timer
 {
-#ifdef SCREENSHOT
-        numRecordedMeasurements = 23;
-#else
-        static bool hasWrittenPoint = NO;
         static NSDate *lastWrittenDate = nil;
+        static double averageInterval = 0.0;
+        static BOOL powersave = NO;
         NSDate *now = [NSDate date];
         
+        if (averageInterval == 0.0) {
+                averageInterval = USERPREF_MEASUREMENT_INTERVAL;
+                powersave = USERPREF_POWERSAVE;
+        }
+        
+        if (powersave) {
+                if ((averageInterval >= 30 && lastWrittenDate && !gpsEnabled && [now timeIntervalSinceDate:lastWrittenDate] > (averageInterval - 5)) ||
+                    !gpxWriter && !gpsEnabled) {
+                        NSLog(@"Starting GPS");
+                        [locationManager startUpdatingHeading];
+                        gpsEnabled = YES;
+                        return; // Give it time to get a fix.
+                }
+        }
+        
+        if (!gpsEnabled)
+                return;
+        
         CLLocation *current = locationManager.location;
-        if (isRecording && (!lastWrittenDate || [lastWrittenDate timeIntervalSinceDate:now] <= -(USERPREF_MEASUREMENT_INTERVAL - MEASUREMENT_THREAD_INTERVAL/2.0) )) {
+        if (gpxWriter && (!lastWrittenDate || [lastWrittenDate timeIntervalSinceDate:now] <= -(averageInterval - MEASUREMENT_THREAD_INTERVAL/2.0) )) {
                 [lastWrittenDate release];
                 lastWrittenDate = [now retain];
                 
                 if ([self precisionAcceptable:current]) {
-                        numRecordedMeasurements++;
-                        if (!gpxWriter.inTrackSegment)
-                                [gpxWriter beginTrackSegment];
-                        [gpxWriter addPoint:current];
-                        hasWrittenPoint = YES;
-                } else if (hasWrittenPoint && gpxWriter.inTrackSegment) {
-                        [gpxWriter endTrackSegment];
-                        hasWrittenPoint = NO;
+                        [gpxWriter addTrackPoint:current];
+                } else if ([gpxWriter isInTrackSegment]) {
+                        [gpxWriter addTrackSegment];
                 }
+                NSLog(@"Saved waypoint");
         }
         
         if (previousMeasurement && [previousMeasurement.timestamp timeIntervalSinceNow] < -FORCE_POSITION_UPDATE_INTERVAL && [self precisionAcceptable:current]) {
                 @synchronized (self) {
-                                totalDistance += [previousMeasurement getDistanceFrom:current];
-                                currentSpeed = [self speedFromLocation:previousMeasurement toLocation:current];
-                                [previousMeasurement release];
-                                previousMeasurement = [current retain];
-                                currentDataSource = kGlintDataSourceTimer;
+                        totalDistance += [previousMeasurement getDistanceFrom:current];
+                        currentSpeed = [self speedFromLocation:previousMeasurement toLocation:current];
+                        [previousMeasurement release];
+                        previousMeasurement = [current retain];
+                        currentDataSource = kGlintDataSourceTimer;
                 }
         }
-#endif
+        
+        if (powersave && gpxWriter && averageInterval >= 30 && lastWrittenDate && gpsEnabled && [now timeIntervalSinceDate:lastWrittenDate] < (averageInterval - 5)) {
+                NSLog(@"Stopping GPS");
+                [locationManager stopUpdatingLocation];
+                gpsEnabled = NO;
+        }
 }
 
 - (void)updateDisplay:(NSTimer*)timer
@@ -361,18 +366,27 @@
         static NSString *distFormat = nil;
         static NSString *speedFormat = nil;
         
+        if ([[UIDevice currentDevice] proximityState])
+                return;
+        
 #ifdef SCREENSHOT
         bool stateGood = YES;
 #else
         bool stateGood = [self precisionAcceptable:locationManager.location];
 #endif
-        if (stateGood != prevStateGood) {
-                if (stateGood) {
-                        [goodSound play];
+        if (!gpsEnabled)
+                self.signalIndicator.textColor = [UIColor grayColor];
+        else {
+                if (stateGood)
                         self.signalIndicator.textColor = [UIColor greenColor];
-                } else {
-                        [badSound play];
+                else
                         self.signalIndicator.textColor = [UIColor redColor];
+                
+                if (prevStateGood != stateGood) {
+                        if (stateGood)
+                                [goodSound play];
+                        else
+                                [badSound play];
                 }
                 prevStateGood = stateGood;
         }
@@ -418,14 +432,14 @@
                 if (currentDataSource == kGlintDataSourceMovement)
                         self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
                 else if (currentDataSource == kGlintDataSourceTimer)
-                         self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
+                        self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
                 
                 double secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / currentSpeed;
                 self.currentTimePerDistanceLabel.text = [self formatTimestamp:secsPerEstDist maxTime:86400];
                 NSString *distStr = [NSString stringWithFormat:distFormat, USERPREF_ESTIMATE_DISTANCE*distFactor*1000.0];
                 self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
                 
-                self.statusLabel.text = [NSString stringWithFormat:@"%04d %@", numRecordedMeasurements, NSLocalizedString(@"measurements", @"measurements")];
+                self.statusLabel.text = [NSString stringWithFormat:@"%04d %@", [gpxWriter numberOfTrackPoints], NSLocalizedString(@"measurements", @"measurements")];
                 
                 if (currentCourse >= 0.0)
                         self.compass.course = currentCourse;

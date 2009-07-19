@@ -29,6 +29,7 @@
 				<string>75 meters</string>
 				<string>100 meters</string>
 				<string>200 meters</string>
+				<string>1000 meters</string>
 				<string>It&apos;s all good</string>
 			</array>
 			<key>Values</key>
@@ -39,7 +40,8 @@
 				<string>75</string>
 				<string>100</string>
 				<string>200</string>
-				<string>5000</string>
+				<string>1000</string>
+				<string>10000</string>
 			</array>
 		</dict>
 		<dict>
@@ -69,6 +71,16 @@
 				<string>60</string>
 				<string>300</string>
 			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Power Save</string>
+			<key>Key</key>
+			<string>gps_powersave</string>
+			<key>DefaultValue</key>
+			<true/>
 		</dict>
 		<dict>
 			<key>Type</key>

@@ -29,10 +29,9 @@ typedef enum enumGlintDataSource {
         double totalDistance;
         JBSoundEffect *goodSound;
         JBSoundEffect *badSound;
-        int numRecordedMeasurements;
-        bool isRecording;
         double currentCourse;
         double currentSpeed;
+        BOOL gpsEnabled;
         NSArray *lockedToolbarItems;
         NSArray *recordingToolbarItems;
         NSArray *pausedToolbarItems;

@@ -7,9 +7,9 @@
     #import <UIKit/UIKit.h>
 #endif
 
-#define FILTER_DISTANCE 50.0 // Update speed, course etc when we have moved this far from the previous position
-#define FORCE_POSITION_UPDATE_INTERVAL 60.0 // ... or if it's been this long since last update. 50 m / 60 s = slow walking pace.
-#define DISPLAY_THREAD_INTERVAL 0.5 // Update the display this often.
+#define FILTER_DISTANCE 5.0
+#define FORCE_POSITION_UPDATE_INTERVAL 60.0
+#define DISPLAY_THREAD_INTERVAL 0.5
 #define MEASUREMENT_THREAD_INTERVAL 5.0
 #define COMPASS_WIDTH 70.0
 
@@ -20,3 +20,6 @@
 #define USERPREF_DISABLE_IDLE [[NSUserDefaults standardUserDefaults] boolForKey:@"disable_idle"]
 #define USERPREF_ESTIMATE_DISTANCE [[NSUserDefaults standardUserDefaults] doubleForKey:@"estimate_distance"]
 #define USERPREF_EMAIL_ADDRESS [[NSUserDefaults standardUserDefaults] stringForKey:@"email_address"]
+#define USERPREF_POWERSAVE [[NSUserDefaults standardUserDefaults] boolForKey:@"gps_powersave"]
+
+// #define SCREENSHOT

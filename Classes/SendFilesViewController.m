@@ -49,6 +49,7 @@
                 NSDictionary* units = [unitSets objectAtIndex:unitsetIndex];
                 distFactor = [[units objectForKey:@"distFactor"] floatValue];
                 distFormat = [units objectForKey:@"distFormat"];
+                [distFormat retain];
         }
         return [NSString stringWithFormat:distFormat, distance*distFactor];
 }
@@ -63,23 +64,34 @@
         double distance = 0.0;
         int numPoints = 0;
         
-        NSRange rangeBegin = [fileContents rangeOfString:@"totalDistance:"];
+#ifdef SCREENSHOT
+        double r1 =  (double) rand() / RAND_MAX;
+        double r2 =  (double) rand() / RAND_MAX;
+        distance = 2000 + 12000 * r1;
+        numPoints = distance / (40.0 + r2 * 20.0);
+#else
+        NSRange rangeBegin = [fileContents rangeOfString:@"[totalDistance]"];
+        NSRange rangeEnd = [fileContents rangeOfString:@"[/totalDistance]"];
         if (rangeBegin.length > 0)
         {
-                rangeBegin.location += rangeBegin.length;
-                rangeBegin.length = [fileContents length] - rangeBegin.location;
-                NSRange range = [fileContents rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890."] options:kNilOptions range:rangeBegin];
-                distance = [[fileContents substringWithRange:range] doubleValue];
+                NSRange matchRange;
+                matchRange.location = rangeBegin.location + rangeBegin.length;
+                matchRange.length = rangeEnd.location - rangeBegin.location;
+                NSString *matched = [fileContents substringWithRange:matchRange];
+                distance = [matched doubleValue];
         }
 
-        rangeBegin = [fileContents rangeOfString:@"numPoints:"];
+        rangeBegin = [fileContents rangeOfString:@"[numPoints]"];
+        rangeEnd = [fileContents rangeOfString:@"[/numPoints]"];
         if (rangeBegin.length > 0)
         {
-                rangeBegin.location += rangeBegin.length;
-                rangeBegin.length = [fileContents length] - rangeBegin.location;
-                NSRange range = [fileContents rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890"] options:kNilOptions range:rangeBegin];
-                numPoints = [[fileContents substringWithRange:range] intValue];
+                NSRange matchRange;
+                matchRange.location = rangeBegin.location + rangeBegin.length;
+                matchRange.length = rangeEnd.location - rangeBegin.location;
+                NSString *matched = [fileContents substringWithRange:matchRange];
+                numPoints = [matched intValue];
         }
+#endif
         
         return [NSString stringWithFormat:@"%@, %d points", [self formatDistance:distance], numPoints];
 }
