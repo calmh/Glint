@@ -58,7 +58,7 @@
         [UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:1.2];
 	[UIView setAnimationRepeatAutoreverses:NO];
-        [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:window cache:YES];
+        [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:window cache:YES];
         [window bringSubviewToFront:sendFilesViewController.view];
 	[UIView commitAnimations];
 }
@@ -67,7 +67,7 @@
         [UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:1.2];
 	[UIView setAnimationRepeatAutoreverses:NO];
-        [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:window cache:YES];
+        [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:window cache:YES];
         [window bringSubviewToFront:viewController.view];
 	[UIView commitAnimations];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];

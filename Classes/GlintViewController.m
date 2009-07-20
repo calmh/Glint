@@ -123,9 +123,10 @@
         self.currentSpeedLabel.text = @"?";
         self.averageSpeedLabel.text = @"?";
         self.currentTimePerDistanceLabel.text = @"?";
-        NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+        //NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
         NSString* marketVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        self.statusLabel.text = [NSString stringWithFormat:@"Glint %@-%@", marketVer, bundleVer];
+        //self.statusLabel.text = [NSString stringWithFormat:@"Glint %@-%@", marketVer, bundleVer];
+        self.statusLabel.text = [NSString stringWithFormat:@"Glint %@", marketVer];
         
         NSTimer* displayUpdater = [NSTimer timerWithTimeInterval:DISPLAY_THREAD_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:displayUpdater forMode:NSDefaultRunLoopMode];
