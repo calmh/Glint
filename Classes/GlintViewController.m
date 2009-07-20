@@ -164,15 +164,16 @@
                 @synchronized (self) {
                         if (!firstMeasurementDate)
                                 firstMeasurementDate = [[NSDate date] retain];
-                        if (previousMeasurement) {
+                        if (!previousMeasurement) {
+                                previousMeasurement = [newLocation retain];
+                        } else {
                                 double dist = [previousMeasurement getDistanceFrom:newLocation];
                                 if (dist > 25.0) {
                                         totalDistance += dist;
                                         currentCourse = [self bearingFromLocation:previousMeasurement toLocation:newLocation];
                                         currentSpeed = [self speedFromLocation:previousMeasurement toLocation:newLocation];
                                         [previousMeasurement release];
-                                        previousMeasurement = newLocation;
-                                        [previousMeasurement retain];
+                                        previousMeasurement = [newLocation retain];
                                         currentDataSource = kGlintDataSourceMovement;
                                         //[locationManager setDistanceFilter:2*previousMeasurement.horizontalAccuracy];
                                 }
