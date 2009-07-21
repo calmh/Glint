@@ -55,21 +55,25 @@
 			<string>10</string>
 			<key>Titles</key>
 			<array>
-				<string>1 second</string>
 				<string>5 seconds</string>
 				<string>10 seconds</string>
 				<string>30 seconds</string>
 				<string>1 minute</string>
 				<string>5 minutes</string>
+				<string>10 minutes</string>
+				<string>15 minutes</string>
+				<string>30 minutes</string>
 			</array>
 			<key>Values</key>
 			<array>
-				<string>1</string>
 				<string>5</string>
 				<string>10</string>
 				<string>30</string>
 				<string>60</string>
 				<string>300</string>
+				<string>600</string>
+				<string>900</string>
+				<string>1800</string>
 			</array>
 		</dict>
 		<dict>
@@ -155,6 +159,16 @@
 			<string>Disable Idle Timer</string>
 			<key>Key</key>
 			<string>disable_idle</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Sounds</string>
+			<key>Key</key>
+			<string>sounds_enabled</string>
 			<key>DefaultValue</key>
 			<true/>
 		</dict>

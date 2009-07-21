@@ -17,13 +17,6 @@
 @synthesize sendFilesViewController;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
-    
-    // Override point for customization after app launch    
-    [window addSubview:viewController.view];
-        [window addSubview:sendFilesViewController.view];
-        [window bringSubviewToFront:viewController.view];
-    [window makeKeyAndVisible];
-        
         double testValue = [[NSUserDefaults standardUserDefaults] doubleForKey:@"gps_minprec"];
         if (testValue == 0.0)
         {
@@ -40,8 +33,10 @@
                 {
                         NSString *keyValueStr = [prefItem objectForKey:@"Key"];
                         id defaultValue = [prefItem objectForKey:@"DefaultValue"];
-                        if (keyValueStr && defaultValue)
+                        if (keyValueStr && defaultValue) {
                                 [defaults setObject:defaultValue forKey:keyValueStr];
+                                NSLog(@"Setting preference: %@=%@", keyValueStr, [defaultValue description]);
+                        }
                 }
                 
                 // since no default values have been set (i.e. no preferences file created), create it here        
@@ -50,6 +45,11 @@
                 [defaults release];
         }
         
+        // Override point for customization after app launch    
+        [window addSubview:viewController.view];
+        [window addSubview:sendFilesViewController.view];
+        [window bringSubviewToFront:viewController.view];
+        [window makeKeyAndVisible];
 }
 
 - (IBAction) switchToSendFilesView:(id)sender {
@@ -74,9 +74,9 @@
 }
 
 - (void)dealloc {
-    [viewController release];
-    [window release];
-    [super dealloc];
+        [viewController release];
+        [window release];
+        [super dealloc];
 }
 
 

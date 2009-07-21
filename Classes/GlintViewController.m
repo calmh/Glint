@@ -19,6 +19,9 @@
 - (bool)precisionAcceptable:(CLLocation*)location;
 - (double) speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
 - (double) bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2;
+- (void)enableGPS;
+- (void)disableGPS;
+- (void)tests;
 @end
 
 //
@@ -63,12 +66,6 @@
 
 - (void)viewDidLoad {
         [super viewDidLoad];
-        
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.distanceFilter = FILTER_DISTANCE;
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        locationManager.delegate = self;
-        [locationManager startUpdatingLocation];
         
         badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
         goodSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
@@ -123,15 +120,61 @@
         self.currentSpeedLabel.text = @"?";
         self.averageSpeedLabel.text = @"?";
         self.currentTimePerDistanceLabel.text = @"?";
-        //NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+        NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
         NSString* marketVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
         //self.statusLabel.text = [NSString stringWithFormat:@"Glint %@-%@", marketVer, bundleVer];
-        self.statusLabel.text = [NSString stringWithFormat:@"Glint %@", marketVer];
+        self.statusLabel.text = [NSString stringWithFormat:@"Glint %@ (%@)", marketVer, bundleVer];
         
         NSTimer* displayUpdater = [NSTimer timerWithTimeInterval:DISPLAY_THREAD_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:displayUpdater forMode:NSDefaultRunLoopMode];
         NSTimer* averagedMeasurementTaker = [NSTimer timerWithTimeInterval:MEASUREMENT_THREAD_INTERVAL target:self selector:@selector(takeAveragedMeasurement:) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:averagedMeasurementTaker forMode:NSDefaultRunLoopMode];
+        
+        [self enableGPS];
+        
+        [self tests];
+}
+
+- (void)tests {
+        CLLocation *locN = [[CLLocation alloc] initWithLatitude:10.0 longitude:0.0]; // 10.0 N
+        CLLocation *locS = [[CLLocation alloc] initWithLatitude:-10.0 longitude:0.0]; // 10.0 S
+        CLLocation *locE = [[CLLocation alloc] initWithLatitude:0.0 longitude:10.0]; // 10.0 E
+        CLLocation *locW = [[CLLocation alloc] initWithLatitude:0.0 longitude:-10.0]; // 10.0 W
+        CLLocation *locNE = [[CLLocation alloc] initWithLatitude:10.0 longitude:10.0]; // 10.0 N, 10.0 E
+        CLLocation *locSW = [[CLLocation alloc] initWithLatitude:-10.0 longitude:-10.0]; // 10.0 S, 10.0 W
+        double bearing;
+        bearing = [self bearingFromLocation:locN toLocation:locS];
+        NSAssert(bearing == 180.0, @"Bearing N-S incorrect");
+        bearing = [self bearingFromLocation:locS toLocation:locN];
+        NSAssert(bearing == 0.0, @"Bearing S-N incorrect");
+        bearing = [self bearingFromLocation:locE toLocation:locW];
+        NSAssert(bearing == 270.0, @"Bearing E-W incorrect");
+        bearing = [self bearingFromLocation:locW toLocation:locE];
+        NSAssert(bearing == 90.0, @"Bearing W-E incorrect");
+        bearing = [self bearingFromLocation:locSW toLocation:locNE];
+        NSAssert(bearing > 44.0 && bearing < 46.0, @"Bearing SW-NE incorrect");
+        bearing = [self bearingFromLocation:locNE toLocation:locSW];
+        NSAssert(bearing > 224.0 && bearing < 226.0, @"Bearing SW-NE incorrect");
+}
+
+
+- (void)enableGPS {
+        NSLog(@"Starting GPS");
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.distanceFilter = FILTER_DISTANCE;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        locationManager.delegate = self;
+        [locationManager startUpdatingLocation];
+        gpsEnabled = YES;
+}
+
+- (void)disableGPS {
+        NSLog(@"Stopping GPS");
+        locationManager.delegate = nil;
+        [locationManager stopUpdatingHeading];
+        [locationManager release];
+        locationManager = nil;
+        gpsEnabled = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -187,6 +230,8 @@
 
 - (IBAction)unlock:(id)sender
 {
+        currentCourse = 360.0 * (rand() / (float) RAND_MAX);
+        
         if (gpxWriter)
                 [toolbar setItems:recordingToolbarItems animated:YES];
         else
@@ -288,12 +333,12 @@
 }
 
 - (double) bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2 {
-        double lat1 = loc1.coordinate.latitude / 180.0 * M_PI;
-        double lon1 = -loc1.coordinate.longitude / 180.0 * M_PI;
-        double lat2 = loc2.coordinate.latitude / 180.0 * M_PI;
-        double lon2 = -loc2.coordinate.longitude / 180.0 * M_PI;
-        double y = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(lon2-lon1);
-        double x = sin(lon2-lon1) * cos(lat2);
+        double y1 = loc1.coordinate.latitude / 180.0 * M_PI;
+        double x1 = loc1.coordinate.longitude / 180.0 * M_PI;
+        double y2 = loc2.coordinate.latitude / 180.0 * M_PI;
+        double x2 = loc2.coordinate.longitude / 180.0 * M_PI;
+        double y = cos(x1) * sin(x2) - sin(x1) * cos(x2) * cos(y2-y1);
+        double x = sin(y2-y1) * cos(x2);
         double t = atan2(y, x);
         double b = t / M_PI * 180.0 + 360.0;
         if (b >= 360.0)
@@ -317,30 +362,27 @@
                 powersave = USERPREF_POWERSAVE;
         }
         
-        if (powersave) {
-                if ((averageInterval >= 30 && lastWrittenDate && !gpsEnabled && [now timeIntervalSinceDate:lastWrittenDate] > (averageInterval - 5)) ||
-                    !gpxWriter && !gpsEnabled) {
-                        NSLog(@"Starting GPS");
-                        [locationManager startUpdatingHeading];
-                        gpsEnabled = YES;
-                        return; // Give it time to get a fix.
-                }
+        if (!gpsEnabled) {
+                if ([now timeIntervalSinceDate:lastWrittenDate] > averageInterval-10 // It is soon time for a new measurement
+                    || !gpxWriter) // Or, we are not recording
+                        [self enableGPS];
+                return;
         }
         
-        if (!gpsEnabled)
-                return;
-        
         CLLocation *current = locationManager.location;
-        if (gpxWriter && (!lastWrittenDate || [lastWrittenDate timeIntervalSinceDate:now] <= -(averageInterval - MEASUREMENT_THREAD_INTERVAL/2.0) )) {
-                [lastWrittenDate release];
-                lastWrittenDate = [now retain];
-                
+        NSLog([locationManager.location description]);
+        if (gpxWriter && (!lastWrittenDate || [now timeIntervalSinceDate:lastWrittenDate] >= averageInterval - MEASUREMENT_THREAD_INTERVAL/2.0 )) {
                 if ([self precisionAcceptable:current]) {
+                        NSLog(@"Good precision, saving waypoint");
+                        [lastWrittenDate release];
+                        lastWrittenDate = [now retain];
                         [gpxWriter addTrackPoint:current];
                 } else if ([gpxWriter isInTrackSegment]) {
+                        NSLog(@"Bad precision, breaking track segment");
                         [gpxWriter addTrackSegment];
+                } else {
+                        NSLog(@"Bad precision, waiting for waypoint");                        
                 }
-                NSLog(@"Saved waypoint");
         }
         
         if (previousMeasurement && [previousMeasurement.timestamp timeIntervalSinceNow] < -FORCE_POSITION_UPDATE_INTERVAL && [self precisionAcceptable:current]) {
@@ -353,11 +395,13 @@
                 }
         }
         
-        if (powersave && gpxWriter && averageInterval >= 30 && lastWrittenDate && gpsEnabled && [now timeIntervalSinceDate:lastWrittenDate] < (averageInterval - 5)) {
-                NSLog(@"Stopping GPS");
-                [locationManager stopUpdatingLocation];
-                gpsEnabled = NO;
-        }
+        if (powersave // Power saving is enabled
+            && gpsEnabled // The GPS is enabled
+            && gpxWriter // We are recording
+            && averageInterval >= 30 // Recording interval is at least 30 seconds
+            && lastWrittenDate // We have written at least one position
+            && [now timeIntervalSinceDate:lastWrittenDate] < averageInterval-10) // It is less than averageInterval-10 seconds since the last measurement
+                [self disableGPS];
 }
 
 - (void)updateDisplay:(NSTimer*)timer
@@ -367,9 +411,20 @@
         static double speedFactor = 0.0;
         static NSString *distFormat = nil;
         static NSString *speedFormat = nil;
+        static BOOL sounds;
         
         if ([[UIDevice currentDevice] proximityState])
                 return;
+        
+        if (distFactor == 0) {
+                int unitsetIndex = USERPREF_UNITSET;
+                NSDictionary* units = [unitSets objectAtIndex:unitsetIndex];
+                distFactor = [[units objectForKey:@"distFactor"] floatValue];
+                speedFactor = [[units objectForKey:@"speedFactor"] floatValue];
+                distFormat = [units objectForKey:@"distFormat"];
+                speedFormat = [units objectForKey:@"speedFormat"];
+                sounds = USERPREF_SOUNDS;
+        }
         
 #ifdef SCREENSHOT
         bool stateGood = YES;
@@ -384,7 +439,7 @@
                 else
                         self.signalIndicator.textColor = [UIColor redColor];
                 
-                if (prevStateGood != stateGood) {
+                if (sounds && prevStateGood != stateGood) {
                         if (stateGood)
                                 [goodSound play];
                         else
@@ -393,61 +448,55 @@
                 prevStateGood = stateGood;
         }
         
-        if (distFactor == 0) {
-                int unitsetIndex = USERPREF_UNITSET;
-                NSDictionary* units = [unitSets objectAtIndex:unitsetIndex];
-                distFactor = [[units objectForKey:@"distFactor"] floatValue];
-                speedFactor = [[units objectForKey:@"speedFactor"] floatValue];
-                distFormat = [units objectForKey:@"distFormat"];
-                speedFormat = [units objectForKey:@"speedFormat"];
-        }
-        
         CLLocation *current = locationManager.location;
         [current retain];
         
-        if (current)
+        if (current) {
                 self.positionLabel.text = [NSString stringWithFormat:@"%@\n%@\nelev %.0f m", [self formatLat: current.coordinate.latitude], [self formatLon: current.coordinate.longitude], current.altitude];
-#ifdef SCREENSHOT
-        self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±%.0f m v.", 17.0, 23.0];
-#else
-        if (current.verticalAccuracy < 0)
-                self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±inf v.", current.horizontalAccuracy];
-        else
-                self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±%.0f m v.", current.horizontalAccuracy, current.verticalAccuracy];
-#endif   
+                self.positionLabel.textColor = [UIColor whiteColor];
+                if (current.verticalAccuracy < 0)
+                        self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±inf v.", current.horizontalAccuracy];
+                else
+                        self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±%.0f m v.", current.horizontalAccuracy, current.verticalAccuracy];
+                self.accuracyLabel.textColor = [UIColor whiteColor];
+        } else {
+                self.positionLabel.textColor = [UIColor grayColor];
+                self.accuracyLabel.textColor = [UIColor grayColor];
+        }
+        
         if (firstMeasurementDate)
                 self.elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] maxTime:86400];
         
-        if (stateGood) {                
-                double averageSpeed = 0.0;
-                if (firstMeasurementDate && lastMeasurementDate)
-                        averageSpeed  = totalDistance / [lastMeasurementDate timeIntervalSinceDate:firstMeasurementDate];
-                self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, averageSpeed*speedFactor];
-                
-                self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, totalDistance*distFactor];
-                
-                if (currentSpeed >= 0.0)
-                        self.currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, currentSpeed*speedFactor];
-                else
-                        self.currentSpeedLabel.text = @"?";
-                
-                if (currentDataSource == kGlintDataSourceMovement)
-                        self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
-                else if (currentDataSource == kGlintDataSourceTimer)
-                        self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
-                
-                double secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / currentSpeed;
-                self.currentTimePerDistanceLabel.text = [self formatTimestamp:secsPerEstDist maxTime:86400];
-                NSString *distStr = [NSString stringWithFormat:distFormat, USERPREF_ESTIMATE_DISTANCE*distFactor*1000.0];
-                self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
-                
+        double averageSpeed = 0.0;
+        if (firstMeasurementDate && lastMeasurementDate)
+                averageSpeed  = totalDistance / [lastMeasurementDate timeIntervalSinceDate:firstMeasurementDate];
+        self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, averageSpeed*speedFactor];
+        
+        self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, totalDistance*distFactor];
+        
+        if (currentSpeed >= 0.0)
+                self.currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, currentSpeed*speedFactor];
+        else
+                self.currentSpeedLabel.text = @"?";
+        
+        if (currentDataSource == kGlintDataSourceMovement)
+                self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
+        else if (currentDataSource == kGlintDataSourceTimer)
+                self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
+        
+        double secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / currentSpeed;
+        self.currentTimePerDistanceLabel.text = [self formatTimestamp:secsPerEstDist maxTime:86400];
+        NSString *distStr = [NSString stringWithFormat:distFormat, USERPREF_ESTIMATE_DISTANCE*distFactor*1000.0];
+        self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
+        
+        if (gpxWriter)
                 self.statusLabel.text = [NSString stringWithFormat:@"%04d %@", [gpxWriter numberOfTrackPoints], NSLocalizedString(@"measurements", @"measurements")];
-                
-                if (currentCourse >= 0.0)
-                        self.compass.course = currentCourse;
-                else
-                        self.compass.course = 0.0;
-        }
+        
+        if (currentCourse >= 0.0)
+                self.compass.course = currentCourse;
+        else
+                self.compass.course = 0.0;
+        
         [current release];
 }
 

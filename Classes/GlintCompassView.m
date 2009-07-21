@@ -8,6 +8,12 @@
 
 #import "GlintCompassView.h"
 
+@interface GlintCompassView ()
+-(void)startTimer;
+-(void)endTimer;
+-(void)updateCourse:(NSTimer*)timer;
+@end
+
 @implementation GlintCompassView
 
 @synthesize course;
@@ -18,8 +24,51 @@
 }
 
 -(void)setCourse:(double)newCourse {
-        course = newCourse;
-        [self setNeedsDisplay];
+                if (newCourse < 0)
+                        newCourse += 360.0;
+                else if (newCourse > 360.0)
+                        newCourse -= 360.0;
+        if (newCourse != course) {
+                course = newCourse;
+                [self startTimer];
+        }
+}
+
+-(void)startTimer {
+        @synchronized (self) {
+                if (animationTimer)
+                        return;
+        animationTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(updateCourse:) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:animationTimer forMode:NSDefaultRunLoopMode];
+        }
+}
+
+-(void)stopTimer {
+        @synchronized (self) {
+                if (!animationTimer)
+                        return;
+                [animationTimer invalidate];
+                [animationTimer release];
+                animationTimer = nil;
+        }
+}
+
+-(void)updateCourse:(NSTimer*)timer {
+        if (course == showingCourse) {
+                [timer invalidate];
+                animationTimer = nil;
+        } else {
+                double diff = course - showingCourse;
+                if (diff > 180.0)
+                        diff -= 360;
+                else if (diff < -180.0)
+                        diff += 360;
+                if (fabs(diff) < 0.1)
+                        showingCourse = course;
+                else
+                        showingCourse += diff / 20.0;                        
+                [self setNeedsDisplay];
+        }
 }
 
 -(void)awakeFromNib 
@@ -27,6 +76,8 @@
 	[super awakeFromNib];        
         
         course = 0.0;
+        showingCourse = 0.0;
+        animationTimer = nil;
         markers = [NSDictionary dictionaryWithObjectsAndKeys:
                    NSLocalizedString(@"N", @"N"), [NSNumber numberWithDouble:0.0],
                    NSLocalizedString(@"NNE", @"NNE"), [NSNumber numberWithDouble:22.5],
@@ -78,7 +129,7 @@
         for (NSNumber* nsposition in [markers allKeys]) {
                 NSString* label = [markers objectForKey:nsposition];
                 double position = [nsposition doubleValue];
-                position -= course;
+                position -= showingCourse;
                 if (position >= 180.0)
                         position -= 360.0;
                 else if (position <= -180.0)
@@ -94,7 +145,7 @@
         CGContextSelectFont (ctx, "Helvetica-Bold", 12, kCGEncodingMacRoman);
         for (int i = 0; i < 360; i++) {
                 double position = i;
-                position -= course;
+                position -= showingCourse;
                 if (position >= 180.0)
                         position -= 360.0;
                 else if (position <= -180.0)

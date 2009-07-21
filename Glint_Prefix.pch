@@ -21,5 +21,6 @@
 #define USERPREF_ESTIMATE_DISTANCE [[NSUserDefaults standardUserDefaults] doubleForKey:@"estimate_distance"]
 #define USERPREF_EMAIL_ADDRESS [[NSUserDefaults standardUserDefaults] stringForKey:@"email_address"]
 #define USERPREF_POWERSAVE [[NSUserDefaults standardUserDefaults] boolForKey:@"gps_powersave"]
+#define USERPREF_SOUNDS [[NSUserDefaults standardUserDefaults] boolForKey:@"sounds_enabled"]
 
 // #define SCREENSHOT

@@ -11,6 +11,8 @@
 
 @interface GlintCompassView : UIView {
         double course;
+        double showingCourse;
+        NSTimer *animationTimer;
         NSDictionary *markers;
 }
 

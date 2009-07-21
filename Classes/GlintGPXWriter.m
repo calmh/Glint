@@ -41,8 +41,10 @@
 }
 
 - (void)addTrackPoint:(CLLocation*)point {
-        if (last && [point getDistanceFrom:last] == 0.0)
+        if (last && [point getDistanceFrom:last] == 0.0) {
+                NSLog(@"addTrackPoint: Ignored identical waypoint");
                 return;
+        }
         
         [[tracks lastObject] addObject:point];
         numPoints++;
@@ -56,6 +58,7 @@
                 totalDistance += [point getDistanceFrom:last];
         [last release];
         last = [point retain];
+        NSLog(@"addTrackPoint: Saved new waypoint");
 }
 
 - (void)commit {
