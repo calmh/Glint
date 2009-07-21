@@ -12,13 +12,13 @@
 // Private methods
 //
 @interface GlintViewController ()
-- (NSString*)formatTimestamp:(double)seconds maxTime:(double)max;
-- (NSString*) formatDMS:(double)latLong;
-- (NSString*)formatLat:(double)lat;
-- (NSString*)formatLon:(double)lon;
+- (NSString*)formatTimestamp:(float)seconds maxTime:(float)max;
+- (NSString*) formatDMS:(float)latLong;
+- (NSString*)formatLat:(float)lat;
+- (NSString*)formatLon:(float)lon;
 - (bool)precisionAcceptable:(CLLocation*)location;
-- (double) speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
-- (double) bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2;
+- (float) speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
+- (float) bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2;
 - (void)enableGPS;
 - (void)disableGPS;
 - (void)tests;
@@ -142,7 +142,7 @@
         CLLocation *locW = [[CLLocation alloc] initWithLatitude:0.0 longitude:-10.0]; // 10.0 W
         CLLocation *locNE = [[CLLocation alloc] initWithLatitude:10.0 longitude:10.0]; // 10.0 N, 10.0 E
         CLLocation *locSW = [[CLLocation alloc] initWithLatitude:-10.0 longitude:-10.0]; // 10.0 S, 10.0 W
-        double bearing;
+        float bearing;
         bearing = [self bearingFromLocation:locN toLocation:locS];
         NSAssert(bearing == 180.0, @"Bearing N-S incorrect");
         bearing = [self bearingFromLocation:locS toLocation:locN];
@@ -210,7 +210,7 @@
                         if (!previousMeasurement) {
                                 previousMeasurement = [newLocation retain];
                         } else {
-                                double dist = [previousMeasurement getDistanceFrom:newLocation];
+                                float dist = [previousMeasurement getDistanceFrom:newLocation];
                                 if (dist > 25.0) {
                                         totalDistance += dist;
                                         currentCourse = [self bearingFromLocation:previousMeasurement toLocation:newLocation];
@@ -283,7 +283,7 @@
 // Private methods
 //
 
-- (NSString*)formatTimestamp:(double)seconds maxTime:(double)max {
+- (NSString*)formatTimestamp:(float)seconds maxTime:(float)max {
         if (seconds > max || seconds < 0)
                 return [NSString stringWithFormat:@"?"];
         else {
@@ -295,52 +295,52 @@
         }
 }
 
-- (NSString*) formatDMS:(double)latLong {
+- (NSString*) formatDMS:(float)latLong {
         int deg = (int) latLong;
         int min = (int) ((latLong - deg) * 60);
-        double sec = (double) ((latLong - deg - min / 60.0) * 3600.0);
+        float sec = (float) ((latLong - deg - min / 60.0) * 3600.0);
         return [NSString stringWithFormat:@"%02d° %02d' %02.02f\"", deg, min, sec];
 }
 
-- (NSString*)formatLat:(double)lat {
+- (NSString*)formatLat:(float)lat {
         NSString* sign = lat >= 0 ? @"N" : @"S";
         lat = fabs(lat);
         return [NSString stringWithFormat:@"%@ %@", [self formatDMS:lat], sign]; 
 }
 
-- (NSString*)formatLon:(double)lon {
+- (NSString*)formatLon:(float)lon {
         NSString* sign = lon >= 0 ? @"E" : @"W";
         lon = fabs(lon);
         return [NSString stringWithFormat:@"%@ %@", [self formatDMS:lon], sign]; 
 }
 
 - (bool)precisionAcceptable:(CLLocation*)location {
-        static double minPrec = 0.0;
+        static float minPrec = 0.0;
         if (minPrec == 0.0)
                 minPrec = USERPREF_MINIMUM_PRECISION;
-        double currentPrec = location.horizontalAccuracy;
+        float currentPrec = location.horizontalAccuracy;
         return currentPrec > 0.0 && currentPrec <= minPrec;
 }
 
-- (double) speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB {
-        double td = [locA.timestamp timeIntervalSinceDate:locB.timestamp];
+- (float) speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB {
+        float td = [locA.timestamp timeIntervalSinceDate:locB.timestamp];
         if (td < 0.0)
                 td = -td;
         if (td == 0.0)
                 return 0.0;
-        double dist = [locA getDistanceFrom:locB];
+        float dist = [locA getDistanceFrom:locB];
         return dist / td;
 }
 
-- (double) bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2 {
-        double y1 = loc1.coordinate.latitude / 180.0 * M_PI;
-        double x1 = loc1.coordinate.longitude / 180.0 * M_PI;
-        double y2 = loc2.coordinate.latitude / 180.0 * M_PI;
-        double x2 = loc2.coordinate.longitude / 180.0 * M_PI;
-        double y = cos(x1) * sin(x2) - sin(x1) * cos(x2) * cos(y2-y1);
-        double x = sin(y2-y1) * cos(x2);
-        double t = atan2(y, x);
-        double b = t / M_PI * 180.0 + 360.0;
+- (float) bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2 {
+        float y1 = loc1.coordinate.latitude / 180.0 * M_PI;
+        float x1 = loc1.coordinate.longitude / 180.0 * M_PI;
+        float y2 = loc2.coordinate.latitude / 180.0 * M_PI;
+        float x2 = loc2.coordinate.longitude / 180.0 * M_PI;
+        float y = cos(x1) * sin(x2) - sin(x1) * cos(x2) * cos(y2-y1);
+        float x = sin(y2-y1) * cos(x2);
+        float t = atan2(y, x);
+        float b = t / M_PI * 180.0 + 360.0;
         if (b >= 360.0)
                 b -= 360.0;
         return b;
@@ -353,7 +353,7 @@
 - (void)takeAveragedMeasurement:(NSTimer*)timer
 {
         static NSDate *lastWrittenDate = nil;
-        static double averageInterval = 0.0;
+        static float averageInterval = 0.0;
         static BOOL powersave = NO;
         NSDate *now = [NSDate date];
         
@@ -407,8 +407,8 @@
 - (void)updateDisplay:(NSTimer*)timer
 {
         static BOOL prevStateGood = NO;
-        static double distFactor = 0.0;
-        static double speedFactor = 0.0;
+        static float distFactor = 0.0;
+        static float speedFactor = 0.0;
         static NSString *distFormat = nil;
         static NSString *speedFormat = nil;
         static BOOL sounds;
@@ -467,7 +467,7 @@
         if (firstMeasurementDate)
                 self.elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] maxTime:86400];
         
-        double averageSpeed = 0.0;
+        float averageSpeed = 0.0;
         if (firstMeasurementDate && lastMeasurementDate)
                 averageSpeed  = totalDistance / [lastMeasurementDate timeIntervalSinceDate:firstMeasurementDate];
         self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, averageSpeed*speedFactor];
@@ -484,7 +484,7 @@
         else if (currentDataSource == kGlintDataSourceTimer)
                 self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
         
-        double secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / currentSpeed;
+        float secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / currentSpeed;
         self.currentTimePerDistanceLabel.text = [self formatTimestamp:secsPerEstDist maxTime:86400];
         NSString *distStr = [NSString stringWithFormat:distFormat, USERPREF_ESTIMATE_DISTANCE*distFactor*1000.0];
         self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];

@@ -26,11 +26,11 @@ typedef enum enumGlintDataSource {
         NSDate *lastMeasurementDate;
         CLLocation *previousMeasurement;
         GlintDataSource currentDataSource;
-        double totalDistance;
+        float totalDistance;
         JBSoundEffect *goodSound;
         JBSoundEffect *badSound;
-        double currentCourse;
-        double currentSpeed;
+        float currentCourse;
+        float currentSpeed;
         BOOL gpsEnabled;
         NSArray *lockedToolbarItems;
         NSArray *recordingToolbarItems;

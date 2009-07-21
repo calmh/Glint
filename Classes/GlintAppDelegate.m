@@ -17,7 +17,7 @@
 @synthesize sendFilesViewController;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {    
-        double testValue = [[NSUserDefaults standardUserDefaults] doubleForKey:@"gps_minprec"];
+        float testValue = [[NSUserDefaults standardUserDefaults] doubleForKey:@"gps_minprec"];
         if (testValue == 0.0)
         {
                 // no default values have been set, create them here based on what's in our Settings bundle info

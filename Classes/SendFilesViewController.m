@@ -39,8 +39,8 @@
         [super viewWillAppear:animated];
 }
 
-- (NSString*)formatDistance:(double)distance {
-        static double distFactor = 0.0;
+- (NSString*)formatDistance:(float)distance {
+        static float distFactor = 0.0;
         static NSString *distFormat = nil;
         if (!distFormat) {
                 NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
@@ -61,12 +61,12 @@
 - (NSString*)commentForFile:(NSString*)file {
         NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
         NSString *fileContents = [NSString stringWithContentsOfFile:fullPath];
-        double distance = 0.0;
+        float distance = 0.0;
         int numPoints = 0;
         
 #ifdef SCREENSHOT
-        double r1 =  (double) rand() / RAND_MAX;
-        double r2 =  (double) rand() / RAND_MAX;
+        float r1 =  (float) rand() / RAND_MAX;
+        float r2 =  (float) rand() / RAND_MAX;
         distance = 2000 + 12000 * r1;
         numPoints = distance / (40.0 + r2 * 20.0);
 #else

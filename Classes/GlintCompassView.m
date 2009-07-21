@@ -23,7 +23,7 @@
         [super dealloc];
 }
 
--(void)setCourse:(double)newCourse {
+-(void)setCourse:(float)newCourse {
                 if (newCourse < 0)
                         newCourse += 360.0;
                 else if (newCourse > 360.0)
@@ -58,12 +58,12 @@
                 [timer invalidate];
                 animationTimer = nil;
         } else {
-                double diff = course - showingCourse;
+                float diff = course - showingCourse;
                 if (diff > 180.0)
                         diff -= 360;
                 else if (diff < -180.0)
                         diff += 360;
-                if (fabs(diff) < 0.1)
+                if (fabs(diff) < 0.25)
                         showingCourse = course;
                 else
                         showingCourse += diff / 20.0;                        
@@ -104,7 +104,7 @@
         CGContextSetTextDrawingMode(ctx, kCGTextInvisible);
         CGContextShowText(ctx, [label cStringUsingEncoding:NSUTF8StringEncoding], [label length]);
         CGPoint after = CGContextGetTextPosition(ctx);
-        double width = after.x - before.x;
+        float width = after.x - before.x;
         CGContextSetTextDrawingMode (ctx, kCGTextFill);
         CGContextShowTextAtPoint(ctx, point.x - width / 2.0, point.y, [label cStringUsingEncoding:NSUTF8StringEncoding], [label length]);
 }
@@ -128,7 +128,7 @@
         CGContextSelectFont (ctx, "Helvetica-Bold", 15, kCGEncodingMacRoman);
         for (NSNumber* nsposition in [markers allKeys]) {
                 NSString* label = [markers objectForKey:nsposition];
-                double position = [nsposition doubleValue];
+                float position = [nsposition doubleValue];
                 position -= showingCourse;
                 if (position >= 180.0)
                         position -= 360.0;
@@ -144,7 +144,7 @@
         
         CGContextSelectFont (ctx, "Helvetica-Bold", 12, kCGEncodingMacRoman);
         for (int i = 0; i < 360; i++) {
-                double position = i;
+                float position = i;
                 position -= showingCourse;
                 if (position >= 180.0)
                         position -= 360.0;
@@ -153,8 +153,8 @@
                 position /= -COMPASS_WIDTH;
                 position *= rect.size.width;
                 position += rect.size.width / 2.0;
-                double start = 20;
-                double stop = 30;
+                float start = 20;
+                float stop = 30;
                 if (i % 45 == 0) {
                         CGContextSetLineWidth(ctx, 3.0);
                         start = 18;

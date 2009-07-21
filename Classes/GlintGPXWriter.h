@@ -12,9 +12,9 @@
 @interface GlintGPXWriter : NSObject {
         NSString *filename;
         NSMutableArray *tracks;
-        double minLon, minLat, maxLon, maxLat;
+        float minLon, minLat, maxLon, maxLat;
         int numSegs, numPoints;
-        double totalDistance;
+        float totalDistance;
         CLLocation *last;
 }
 

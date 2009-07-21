@@ -10,12 +10,12 @@
 
 
 @interface GlintCompassView : UIView {
-        double course;
-        double showingCourse;
+        float course;
+        float showingCourse;
         NSTimer *animationTimer;
         NSDictionary *markers;
 }
 
-@property (assign) double course;
+@property (assign) float course;
 
 @end
