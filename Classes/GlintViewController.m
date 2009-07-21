@@ -230,8 +230,9 @@
 
 - (IBAction)unlock:(id)sender
 {
+#ifdef SCREENSHOT
         currentCourse = 360.0 * (rand() / (float) RAND_MAX);
-        
+#endif
         if (gpxWriter)
                 [toolbar setItems:recordingToolbarItems animated:YES];
         else
