@@ -10,12 +10,18 @@
 #import "GlintAppDelegate.h"
 #import "SKPSMTPMessage.h"
 
+@interface SendFilesViewController ()
+- (int)sectionForFile:(NSString*)fileName;
+- (NSString*)sectionDescriptionForFile:(NSString*)fileName;
+@end
+
 @implementation SendFilesViewController
 
 @synthesize tableView;
 
 - (void)dealloc {
         [files release];
+        [sections release];
         [documentsDirectory release];
         self.tableView = nil;
         [super dealloc];
@@ -26,10 +32,61 @@
 }
 
 - (void) refresh {
-        files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
-        [files retain];
-        [tableView reloadData];
+        files = [[NSMutableArray alloc] init];
+        sections = [[NSMutableArray alloc] init];
+        
+        NSArray* fileList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
+        fileList = [fileList sortedArrayUsingSelector:@selector(compare:)];
+        NSEnumerator *enumer = [fileList reverseObjectEnumerator];
 
+        NSString *fileName;
+        while (fileName = [enumer nextObject]) {
+                int section = [self sectionForFile:fileName];
+                [[files objectAtIndex:section] addObject:fileName];
+        }
+
+        [tableView reloadData];
+        //NSUInteger indexes[2] = { [sections count] - 1, [[files objectAtIndex:[sections count] - 1] count] - 1 };
+        //NSUInteger indexes[2] = { 0, 0 };
+        //[tableView selectRowAtIndexPath:[NSIndexPath indexPathWithIndexes:indexes length:2] animated:YES scrollPosition:UITableViewScrollPositionTop];
+}
+
+- (int)sectionForFile:(NSString*)fileName {
+        NSString *descr = [self sectionDescriptionForFile:fileName];
+        int i;
+        for (i = 0; i < [sections count]; i++)
+                if ([(NSString*) [sections objectAtIndex:i] compare:descr] == NSOrderedSame)
+                        break;
+        if (i < [sections count])
+                return i;
+        
+        [sections addObject:descr];
+        [files addObject:[NSMutableArray array]];
+        return [sections count] - 1;
+}
+
+- (NSString*)sectionDescriptionForFile:(NSString*)fileName {
+        NSDictionary *attrs = [[NSFileManager defaultManager] fileAttributesAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, fileName] traverseLink:NO];
+        NSDate *created = [attrs objectForKey:NSFileModificationDate];
+        NSDateComponents *createdComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:created];
+        NSDateComponents *nowComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]];
+        if (createdComps.year == nowComps.year && createdComps.month == nowComps.month) {
+                if (createdComps.week == nowComps.week) {
+                        if (createdComps.day == nowComps.day)
+                                return @"Today";
+                        else if (createdComps.day == nowComps.day - 1)
+                                return @"Yesterday";
+                        else
+                                return @"This Week";
+                } else if (createdComps.week == nowComps.week - 1)
+                        return @"Last Week";
+                else
+                        return @"This Month";
+        } else
+                return @"Earlier";
+        
+        NSString *descr = [created description];
+        return descr;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -99,7 +156,7 @@
 - (IBAction) deleteFile:(id)sender {
         if ([tableView indexPathForSelectedRow]) {
                 NSIndexPath *p = [tableView indexPathForSelectedRow];
-                NSString *file = [files objectAtIndex:[tableView indexPathForSelectedRow].row];
+                NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];
                 [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, file] error:nil];
                 [self refresh];
                 [tableView selectRowAtIndexPath:p animated:YES scrollPosition:UITableViewScrollPositionNone];
@@ -116,8 +173,8 @@
                         return;
                 }
                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-                NSString *file = [files objectAtIndex:[tableView indexPathForSelectedRow].row];
-                
+                NSIndexPath *p = [tableView indexPathForSelectedRow];
+                NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];                
                 NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
                 
                 SKPSMTPMessage *message = [[SKPSMTPMessage alloc] init];
@@ -154,14 +211,23 @@
         if (cell == nil) {
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"MyIdentifier"] autorelease];
         }
-        cell.textLabel.text = [self descriptionForFile:[files objectAtIndex:indexPath.row]];
-        cell.detailTextLabel.text = [self commentForFile:[files objectAtIndex:indexPath.row]];
+        NSString *fileName = [[files objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+        cell.textLabel.text = [self descriptionForFile:fileName];
+        cell.detailTextLabel.text = [self commentForFile:fileName];
         return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section {
-        return [files count];
+        return [[files objectAtIndex:section] count];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+        return [sections count];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+        return [sections objectAtIndex:section];
 }
 
 - (void)messageSent:(SKPSMTPMessage *)message

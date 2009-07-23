@@ -136,12 +136,13 @@
 }
 
 - (void)tests {
-        CLLocation *locN = [[CLLocation alloc] initWithLatitude:10.0 longitude:0.0]; // 10.0 N
-        CLLocation *locS = [[CLLocation alloc] initWithLatitude:-10.0 longitude:0.0]; // 10.0 S
-        CLLocation *locE = [[CLLocation alloc] initWithLatitude:0.0 longitude:10.0]; // 10.0 E
-        CLLocation *locW = [[CLLocation alloc] initWithLatitude:0.0 longitude:-10.0]; // 10.0 W
-        CLLocation *locNE = [[CLLocation alloc] initWithLatitude:10.0 longitude:10.0]; // 10.0 N, 10.0 E
-        CLLocation *locSW = [[CLLocation alloc] initWithLatitude:-10.0 longitude:-10.0]; // 10.0 S, 10.0 W
+        CLLocation *locN = [[[CLLocation alloc] initWithLatitude:10.0 longitude:0.0] autorelease]; // 10.0 N
+        CLLocation *locS = [[[CLLocation alloc] initWithLatitude:-10.0 longitude:0.0] autorelease]; // 10.0 S
+        CLLocation *locE = [[[CLLocation alloc] initWithLatitude:0.0 longitude:10.0] autorelease]; // 10.0 E
+        CLLocation *locW = [[[CLLocation alloc] initWithLatitude:0.0 longitude:-10.0] autorelease]; // 10.0 W
+        CLLocation *locNE = [[[CLLocation alloc] initWithLatitude:10.0 longitude:10.0] autorelease]; // 10.0 N, 10.0 E
+        CLLocation *locSW = [[[CLLocation alloc] initWithLatitude:-10.0 longitude:-10.0] autorelease]; // 10.0 S, 10.0 W
+
         float bearing;
         bearing = [self bearingFromLocation:locN toLocation:locS];
         NSAssert(bearing == 180.0, @"Bearing N-S incorrect");
@@ -275,6 +276,7 @@
         } else {
                 self.recordingIndicator.textColor = [UIColor grayColor];
                 [gpxWriter commit];
+                [gpxWriter release];
                 gpxWriter = nil;
         }
         [toolbar setItems:lockedToolbarItems animated:YES];

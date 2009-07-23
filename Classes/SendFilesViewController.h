@@ -10,7 +10,8 @@
 #import "SKPSMTPMessage.h"
 
 @interface SendFilesViewController : UIViewController <SKPSMTPMessageDelegate> {
-        NSArray *files;
+        NSMutableArray *files;
+        NSMutableArray *sections;
         NSString *documentsDirectory;
         UITableView *tableView;
 }
