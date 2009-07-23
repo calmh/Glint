@@ -63,10 +63,10 @@
                         diff -= 360;
                 else if (diff < -180.0)
                         diff += 360;
-                if (fabs(diff) < 0.25)
+                if (fabs(diff) < 0.15)
                         showingCourse = course;
                 else
-                        showingCourse += diff / 20.0;                        
+                        showingCourse += diff / 15.0;                        
                 [self setNeedsDisplay];
         }
 }
@@ -75,26 +75,26 @@
 {
 	[super awakeFromNib];        
         
-        course = 0.0;
-        showingCourse = 0.0;
+        course = 15.0;
+        showingCourse = 15.0;
         animationTimer = nil;
         markers = [NSDictionary dictionaryWithObjectsAndKeys:
-                   NSLocalizedString(@"N", @"N"), [NSNumber numberWithDouble:0.0],
-                   NSLocalizedString(@"NNE", @"NNE"), [NSNumber numberWithDouble:22.5],
-                   NSLocalizedString(@"NE", @"NE"), [NSNumber numberWithDouble:2*22.5],
-                   NSLocalizedString(@"ENE", @"ENE"), [NSNumber numberWithDouble:3*22.5],
-                   NSLocalizedString(@"E", @"E"), [NSNumber numberWithDouble:4*22.5],
-                   NSLocalizedString(@"ESE", @"ESE"), [NSNumber numberWithDouble:5*22.5],
-                   NSLocalizedString(@"SE", @"SE"), [NSNumber numberWithDouble:6*22.5],
-                   NSLocalizedString(@"SSE", @"SSE"), [NSNumber numberWithDouble:7*22.5],
-                   NSLocalizedString(@"S", @"S"), [NSNumber numberWithDouble:8*22.5],
-                   NSLocalizedString(@"SSW", @"SSW"), [NSNumber numberWithDouble:9*22.5],
-                   NSLocalizedString(@"SW", @"SW"), [NSNumber numberWithDouble:10*22.5],
-                   NSLocalizedString(@"WSW", @"WSW"), [NSNumber numberWithDouble:11*22.5],
-                   NSLocalizedString(@"W", @"W"), [NSNumber numberWithDouble:12*22.5],
-                   NSLocalizedString(@"WNW", @"WNW"), [NSNumber numberWithDouble:13*22.5],
-                   NSLocalizedString(@"NW", @"NW"), [NSNumber numberWithDouble:14*22.5],
-                   NSLocalizedString(@"NNW", @"NNW"), [NSNumber numberWithDouble:15*22.5],
+                   NSLocalizedString(@"N", @"N"), [NSNumber numberWithFloat:0.0],
+                   NSLocalizedString(@"NNE", @"NNE"), [NSNumber numberWithFloat:22.5],
+                   NSLocalizedString(@"NE", @"NE"), [NSNumber numberWithFloat:2*22.5],
+                   NSLocalizedString(@"ENE", @"ENE"), [NSNumber numberWithFloat:3*22.5],
+                   NSLocalizedString(@"E", @"E"), [NSNumber numberWithFloat:4*22.5],
+                   NSLocalizedString(@"ESE", @"ESE"), [NSNumber numberWithFloat:5*22.5],
+                   NSLocalizedString(@"SE", @"SE"), [NSNumber numberWithFloat:6*22.5],
+                   NSLocalizedString(@"SSE", @"SSE"), [NSNumber numberWithFloat:7*22.5],
+                   NSLocalizedString(@"S", @"S"), [NSNumber numberWithFloat:8*22.5],
+                   NSLocalizedString(@"SSW", @"SSW"), [NSNumber numberWithFloat:9*22.5],
+                   NSLocalizedString(@"SW", @"SW"), [NSNumber numberWithFloat:10*22.5],
+                   NSLocalizedString(@"WSW", @"WSW"), [NSNumber numberWithFloat:11*22.5],
+                   NSLocalizedString(@"W", @"W"), [NSNumber numberWithFloat:12*22.5],
+                   NSLocalizedString(@"WNW", @"WNW"), [NSNumber numberWithFloat:13*22.5],
+                   NSLocalizedString(@"NW", @"NW"), [NSNumber numberWithFloat:14*22.5],
+                   NSLocalizedString(@"NNW", @"NNW"), [NSNumber numberWithFloat:15*22.5],
                    nil];
         [markers retain];
 }
@@ -111,70 +111,9 @@
 
 - (void)drawRect:(CGRect)rect
 {        
-        CGContextRef ctx = UIGraphicsGetCurrentContext();
-        CGContextSetTextMatrix (ctx, CGAffineTransformMake(1,0,0,-1,0,rect.size.height)); 
-        
+        CGContextRef ctx = UIGraphicsGetCurrentContext();        
         CGContextSetGrayFillColor(ctx, 0.1, 1.0);
         CGContextFillRect(ctx, rect);
-        
-        CGContextBeginPath(ctx);
-        CGContextSetRGBStrokeColor(ctx, 0.9, 0.9, 0.9, 1.0);
-        CGContextSetLineWidth(ctx, 2.5);
-        CGContextMoveToPoint(ctx, 0.0, rect.size.height / 2.0);
-        CGContextAddLineToPoint(ctx, rect.size.width, rect.size.height / 2.0);
-        CGContextStrokePath(ctx);
-        
-        CGContextSetGrayFillColor(ctx, 0.9, 1.0);
-        CGContextSelectFont (ctx, "Helvetica-Bold", 15, kCGEncodingMacRoman);
-        for (NSNumber* nsposition in [markers allKeys]) {
-                NSString* label = [markers objectForKey:nsposition];
-                float position = [nsposition doubleValue];
-                position -= showingCourse;
-                if (position >= 180.0)
-                        position -= 360.0;
-                else if (position <= -180.0)
-                        position += 360.0;
-                position /= -COMPASS_WIDTH;
-                position *= rect.size.width;
-                position += rect.size.width / 2.0;
-                
-                [self drawCenteredText:label inContext:ctx atPosition:CGPointMake(position, 15.0)];
-        }
-        
-        
-        CGContextSelectFont (ctx, "Helvetica-Bold", 12, kCGEncodingMacRoman);
-        for (int i = 0; i < 360; i++) {
-                float position = i;
-                position -= showingCourse;
-                if (position >= 180.0)
-                        position -= 360.0;
-                else if (position <= -180.0)
-                        position += 360.0;
-                position /= -COMPASS_WIDTH;
-                position *= rect.size.width;
-                position += rect.size.width / 2.0;
-                float start = 20;
-                float stop = 30;
-                if (i % 45 == 0) {
-                        CGContextSetLineWidth(ctx, 3.0);
-                        start = 18;
-                        stop = 35;
-                }
-                else if (i % 5 == 0) {
-                        CGContextSetLineWidth(ctx, 1.0);
-                        stop = 33;
-                }
-                else
-                        CGContextSetLineWidth(ctx, 1.0);
-                
-                if (i % 10 == 0)
-                        [self drawCenteredText:[NSString stringWithFormat:@"%d", i] inContext:ctx atPosition:CGPointMake(position, 45.0)];
-                
-                CGContextBeginPath(ctx);
-                CGContextMoveToPoint(ctx, position, start);
-                CGContextAddLineToPoint(ctx, position, stop);
-                CGContextStrokePath(ctx);
-        }
         
         // Border
         CGContextBeginPath(ctx);
@@ -189,6 +128,49 @@
         CGContextSetRGBStrokeColor(ctx, 1.0, 0.2, 0.2, 0.8);
         CGContextAddRect(ctx, CGRectMake(rect.size.width / 2 - 3, 2, 6, rect.size.height - 4));
         CGContextStrokePath(ctx);
+
+        CGContextSetRGBStrokeColor(ctx, 0.9, 0.9, 0.9, 1.0);
+        CGContextSetGrayFillColor(ctx, 0.9, 1.0);
+        CGContextSelectFont (ctx, "Helvetica-Bold", 12, kCGEncodingMacRoman);
+        CGContextSetTextMatrix (ctx, CGAffineTransformMake(1,0,0,-1,0,rect.size.height)); 
+        CGContextSetShouldSmoothFonts(ctx, YES);
+        CGContextSetShouldAntialias(ctx, YES);
+        CGContextTranslateCTM(ctx, rect.size.width / 2.0, COMPASS_RADIUS + rect.size.height / 2.0);
+        CGContextRotateCTM(ctx, -showingCourse / 180.0 * M_PI);
+        float len;
+        NSString *marker;
+        for (int i = 0; i < 720; i++) {
+                if (i % 90 == 0) {
+                        CGContextSetLineWidth(ctx, 3.0);
+                        len = 8;
+                }
+                else if (i % 10 == 0) {
+                        CGContextSetLineWidth(ctx, 1.0);
+                        len = 6;
+                }
+                else {
+                        CGContextSetLineWidth(ctx, 1.0);
+                        len = 4;
+                }
+                
+                float startY = -COMPASS_RADIUS;
+                float stopY = -(COMPASS_RADIUS + len);
+                
+                if (i % 20 == 0)
+                        [self drawCenteredText:[NSString stringWithFormat:@"%d", i/2] inContext:ctx atPosition:CGPointMake(0, startY + 10)];
+
+                if (i % 5 == 0 && (marker = [markers objectForKey:[NSNumber numberWithFloat:(float)i/2.0]]))
+                        [self drawCenteredText:marker inContext:ctx atPosition:CGPointMake(0, startY - 10)];
+
+                if (i % 2 == 0) {
+                        CGContextBeginPath(ctx);
+                        CGContextMoveToPoint(ctx, 0, startY);
+                        CGContextAddLineToPoint(ctx, 0, stopY);
+                        CGContextStrokePath(ctx);
+                }
+                
+                CGContextRotateCTM(ctx, 0.5 / 180.0 * M_PI);
+        }        
 } 
 
 @end

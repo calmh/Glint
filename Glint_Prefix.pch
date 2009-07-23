@@ -11,7 +11,7 @@
 #define FORCE_POSITION_UPDATE_INTERVAL 60.0
 #define DISPLAY_THREAD_INTERVAL 0.5
 #define MEASUREMENT_THREAD_INTERVAL 5.0
-#define COMPASS_WIDTH 70.0
+#define COMPASS_RADIUS 250.0
 
 #define USERPREF_MEASUREMENT_INTERVAL [[NSUserDefaults standardUserDefaults] integerForKey:@"average_interval"]
 #define USERPREF_MINIMUM_PRECISION [[NSUserDefaults standardUserDefaults] integerForKey:@"gps_minprec"]
