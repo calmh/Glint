@@ -51,3 +51,14 @@
 */
 
 "OK" = "OK";
+
+/*
+** Send files screen
+*/
+
+"Today" = "Idag";
+"Yesterday" = "Igår";
+"This Week" = "Denna vecka";
+"Last Week" = "Förra veckan";
+"This Month" = "Denna månad";
+"Earlier" = "Tidigare";

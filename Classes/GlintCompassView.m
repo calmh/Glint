@@ -74,9 +74,11 @@
 -(void)awakeFromNib 
 {
 	[super awakeFromNib];        
-        
-        course = 15.0;
-        showingCourse = 15.0;
+        float randOrig = -10.0 + 20.0 * (random() / (float) RAND_MAX);
+        if (randOrig < 0.0)
+                randOrig += 360.0;
+        course = randOrig;
+        showingCourse = randOrig;
         animationTimer = nil;
         markers = [NSDictionary dictionaryWithObjectsAndKeys:
                    NSLocalizedString(@"N", @"N"), [NSNumber numberWithFloat:0.0],
@@ -97,6 +99,7 @@
                    NSLocalizedString(@"NNW", @"NNW"), [NSNumber numberWithFloat:15*22.5],
                    nil];
         [markers retain];
+        //[self setCourse:0];
 }
 
 - (void) drawCenteredText:(NSString *)label inContext:(CGContextRef)ctx atPosition:(CGPoint)point  {

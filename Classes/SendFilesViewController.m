@@ -73,17 +73,17 @@
         if (createdComps.year == nowComps.year && createdComps.month == nowComps.month) {
                 if (createdComps.week == nowComps.week) {
                         if (createdComps.day == nowComps.day)
-                                return @"Today";
+                                return NSLocalizedString(@"Today",nil);
                         else if (createdComps.day == nowComps.day - 1)
-                                return @"Yesterday";
+                                return NSLocalizedString(@"Yesterday",nil);
                         else
-                                return @"This Week";
+                                return NSLocalizedString(@"This Week",nil);
                 } else if (createdComps.week == nowComps.week - 1)
-                        return @"Last Week";
+                        return NSLocalizedString(@"Last Week",nil);
                 else
-                        return @"This Month";
+                        return NSLocalizedString(@"This Month",nil);
         } else
-                return @"Earlier";
+                                                 return NSLocalizedString(@"Earlier",nil);
         
         NSString *descr = [created description];
         return descr;
