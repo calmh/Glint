@@ -24,10 +24,10 @@
 }
 
 -(void)setCourse:(float)newCourse {
-                if (newCourse < 0)
-                        newCourse += 360.0;
-                else if (newCourse > 360.0)
-                        newCourse -= 360.0;
+        if (newCourse < 0)
+                newCourse += 360.0;
+        else if (newCourse > 360.0)
+                newCourse -= 360.0;
         if (newCourse != course) {
                 course = newCourse;
                 [self startTimer];
@@ -38,8 +38,8 @@
         @synchronized (self) {
                 if (animationTimer)
                         return;
-        animationTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(updateCourse:) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:animationTimer forMode:NSDefaultRunLoopMode];
+                animationTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(updateCourse:) userInfo:nil repeats:YES];
+                [[NSRunLoop currentRunLoop] addTimer:animationTimer forMode:NSDefaultRunLoopMode];
         }
 }
 
@@ -114,6 +114,8 @@
 
 - (void)drawRect:(CGRect)rect
 {        
+        int drawDegrees = 40;
+        
         CGContextRef ctx = UIGraphicsGetCurrentContext();        
         CGContextSetGrayFillColor(ctx, 0.1, 1.0);
         CGContextFillRect(ctx, rect);
@@ -131,7 +133,7 @@
         CGContextSetRGBStrokeColor(ctx, 1.0, 0.2, 0.2, 0.8);
         CGContextAddRect(ctx, CGRectMake(rect.size.width / 2 - 3, 2, 6, rect.size.height - 4));
         CGContextStrokePath(ctx);
-
+        
         CGContextSetRGBStrokeColor(ctx, 0.9, 0.9, 0.9, 1.0);
         CGContextSetGrayFillColor(ctx, 0.9, 1.0);
         CGContextSelectFont (ctx, "Helvetica-Bold", 12, kCGEncodingMacRoman);
@@ -140,38 +142,54 @@
         CGContextSetShouldAntialias(ctx, YES);
         CGContextTranslateCTM(ctx, rect.size.width / 2.0, COMPASS_RADIUS + rect.size.height / 2.0);
         CGContextRotateCTM(ctx, -showingCourse / 180.0 * M_PI);
+        
+        // Find the boundaries of the visible
+        int imin = (showingCourse - drawDegrees) * 2;
+        if (imin < 0)
+                imin += 720;
+        else if (imin >= 720)
+                imin -= 720;
+        int imax = (showingCourse + drawDegrees) * 2;
+        if (imax < 0)
+                imax += 720;
+        else if (imax >= 720)
+                imax -= 720;
+        
         float len;
         NSString *marker;
         for (int i = 0; i < 720; i++) {
-                if (i % 90 == 0) {
-                        CGContextSetLineWidth(ctx, 3.0);
-                        len = 8;
+                if (imin < imax && i >= imin && i <= imax ||
+                    (imin > imax && (i >= imin || i <= imax))) { 
+                        // This is the visible part of the rose
+                        if (i % 90 == 0) {
+                                CGContextSetLineWidth(ctx, 3.0);
+                                len = 8;
+                        }
+                        else if (i % 10 == 0) {
+                                CGContextSetLineWidth(ctx, 1.0);
+                                len = 6;
+                        }
+                        else {
+                                CGContextSetLineWidth(ctx, 1.0);
+                                len = 4;
+                        }
+                        
+                        float startY = -COMPASS_RADIUS;
+                        float stopY = -(COMPASS_RADIUS + len);
+                        
+                        if (i % 20 == 0)
+                                [self drawCenteredText:[NSString stringWithFormat:@"%d", i/2] inContext:ctx atPosition:CGPointMake(0, startY + 10)];
+                        
+                        if (i % 5 == 0 && (marker = [markers objectForKey:[NSNumber numberWithFloat:(float)i/2.0]]))
+                                [self drawCenteredText:marker inContext:ctx atPosition:CGPointMake(0, startY - 10)];
+                        
+                        if (i % 2 == 0) {
+                                CGContextBeginPath(ctx);
+                                CGContextMoveToPoint(ctx, 0, startY);
+                                CGContextAddLineToPoint(ctx, 0, stopY);
+                                CGContextStrokePath(ctx);
+                        }
                 }
-                else if (i % 10 == 0) {
-                        CGContextSetLineWidth(ctx, 1.0);
-                        len = 6;
-                }
-                else {
-                        CGContextSetLineWidth(ctx, 1.0);
-                        len = 4;
-                }
-                
-                float startY = -COMPASS_RADIUS;
-                float stopY = -(COMPASS_RADIUS + len);
-                
-                if (i % 20 == 0)
-                        [self drawCenteredText:[NSString stringWithFormat:@"%d", i/2] inContext:ctx atPosition:CGPointMake(0, startY + 10)];
-
-                if (i % 5 == 0 && (marker = [markers objectForKey:[NSNumber numberWithFloat:(float)i/2.0]]))
-                        [self drawCenteredText:marker inContext:ctx atPosition:CGPointMake(0, startY - 10)];
-
-                if (i % 2 == 0) {
-                        CGContextBeginPath(ctx);
-                        CGContextMoveToPoint(ctx, 0, startY);
-                        CGContextAddLineToPoint(ctx, 0, stopY);
-                        CGContextStrokePath(ctx);
-                }
-                
                 CGContextRotateCTM(ctx, 0.5 / 180.0 * M_PI);
         }        
 } 
