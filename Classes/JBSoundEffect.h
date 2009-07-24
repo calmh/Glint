@@ -1,6 +1,6 @@
 //
 //  JBSoundEffect.h
-//  GPS Logger
+//  Glint
 //
 //  Created by Jakob Borg on 5/24/09.
 //  Copyright 2009 Jakob Borg. All rights reserved.

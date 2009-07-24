@@ -220,10 +220,12 @@
 - (IBAction)startStopRecording:(id)sender
 {
         if (!gpxWriter) {
+                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                [formatter setDateFormat:@"yyyyMMdd-HHmmss"];
                 self.recordingIndicator.textColor = [UIColor greenColor];
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
                 NSString *documentsDirectory = [paths objectAtIndex:0];
-                NSString* filename = [NSString stringWithFormat:@"%@/track-%@.gpx", documentsDirectory, [[NSDate date] descriptionWithCalendarFormat:@"%Y%m%d-%H%M%S" timeZone:nil locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]]];
+                NSString* filename = [NSString stringWithFormat:@"%@/track-%@.gpx", documentsDirectory, [formatter stringFromDate:[NSDate date]]];
                 gpxWriter = [[GPXWriter alloc] initWithFilename:filename];
                 [gpxWriter addTrackSegment];
         } else {

@@ -9,6 +9,7 @@
 #import "SendFilesViewController.h"
 #import "GlintAppDelegate.h"
 #import "SKPSMTPMessage.h"
+#import "NSData+Base64Additions.h"
 
 @interface SendFilesViewController ()
 - (int)sectionForFile:(NSString*)fileName;
@@ -118,7 +119,7 @@
  * UITableView delegate stuff
  */
 
-- (UITableViewCell *)tableView:(UITableView *)tableView
+- (UITableViewCell *)tableView:(UITableView *)tView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MyIdentifier"];
         if (cell == nil) {
