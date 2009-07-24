@@ -7,20 +7,46 @@
     #import <UIKit/UIKit.h>
 #endif
 
-#define FILTER_DISTANCE 5.0
-#define FORCE_POSITION_UPDATE_INTERVAL 60.0
-#define DISPLAY_THREAD_INTERVAL 0.5
-#define MEASUREMENT_THREAD_INTERVAL 5.0
-#define COMPASS_RADIUS 250.0
+// Distance filter for CLLocationManager
+#define FILTER_DISTANCE 5.0 
 
+// If no updates from CLLocationManager for this long, force an update anyway.
+#define FORCE_POSITION_UPDATE_INTERVAL 60.0 
+
+// How often to refresh the main screen display.
+#define DISPLAY_THREAD_INTERVAL 0.5 
+
+// How often to check if it's time to record a new trackpoint
+#define MEASUREMENT_THREAD_INTERVAL 5.0 
+
+// Radius, in pixels, of the compass rose.
+#define COMPASS_RADIUS 250.0 
+
+// How often to save a new trackpoint, when recording
 #define USERPREF_MEASUREMENT_INTERVAL [[NSUserDefaults standardUserDefaults] integerForKey:@"average_interval"]
+
+// Minimum (maximum?) horizontal accuracy to accept GPS data
 #define USERPREF_MINIMUM_PRECISION [[NSUserDefaults standardUserDefaults] integerForKey:@"gps_minprec"]
+
+// Which unit set to use. See unitsets.plist.
 #define USERPREF_UNITSET [[NSUserDefaults standardUserDefaults] integerForKey:@"units"]
+
+// Whether to turn on the proximity sensor or not.
 #define USERPREF_ENABLE_PROXIMITY [[NSUserDefaults standardUserDefaults] boolForKey:@"enable_proximity"]
+
+// Whether to disable the idle timer or not. Strongly recommended.
 #define USERPREF_DISABLE_IDLE [[NSUserDefaults standardUserDefaults] boolForKey:@"disable_idle"]
+
+// Estimate time over what distance (in km), for the main screen.
 #define USERPREF_ESTIMATE_DISTANCE [[NSUserDefaults standardUserDefaults] doubleForKey:@"estimate_distance"]
+
+// Email address to send recorded tracks to.
 #define USERPREF_EMAIL_ADDRESS [[NSUserDefaults standardUserDefaults] stringForKey:@"email_address"]
+
+// Whether to shut down the GPS between trackpoints when the recording interval allows.
 #define USERPREF_POWERSAVE [[NSUserDefaults standardUserDefaults] boolForKey:@"gps_powersave"]
+
+// Whether to play sounds or not.
 #define USERPREF_SOUNDS [[NSUserDefaults standardUserDefaults] boolForKey:@"sounds_enabled"]
 
 // #define SCREENSHOT
