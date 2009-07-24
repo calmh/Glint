@@ -106,12 +106,14 @@
 				<string>Metric</string>
 				<string>Nautical</string>
 				<string>Statute</string>
+				<string>ISO</string>
 			</array>
 			<key>Values</key>
 			<array>
 				<string>0</string>
 				<string>1</string>
 				<string>2</string>
+				<string>3</string>
 			</array>
 		</dict>
 		<dict>

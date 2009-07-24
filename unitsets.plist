@@ -38,5 +38,17 @@
 		<key>speedFactor</key>
 		<real>2.23693629</real>
 	</dict>
+	<dict>
+		<key>description</key>
+		<string>ISO</string>
+		<key>speedFormat</key>
+		<string>%.01f m/s</string>
+		<key>speedFactor</key>
+		<real>1</real>
+		<key>distFormat</key>
+		<string>%.02f km</string>
+		<key>distFactor</key>
+		<real>0.001</real>
+	</dict>
 </array>
 </plist>
