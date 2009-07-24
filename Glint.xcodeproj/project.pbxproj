@@ -17,7 +17,7 @@
 		291C24D510011B7B0086EE86 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 291C24D410011B7B0086EE86 /* unitsets.plist */; };
 		29874F9A0FF776EB0080E20D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
 		29C7910510027A8E00EA28CC /* CompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* CompassView.m */; };
-		29C9A4F51011E9CA004CCBDD /* GlintViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29C9A4F41011E9CA004CCBDD /* GlintViewController.xib */; };
+		29C9A4F51011E9CA004CCBDD /* MainScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */; };
 		29CD7102100FB704001150A1 /* NSStream+SKPSMTPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD70FF100FB704001150A1 /* NSStream+SKPSMTPExtensions.m */; };
 		29CD7103100FB704001150A1 /* SKPSMTPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD7101100FB704001150A1 /* SKPSMTPMessage.m */; };
 		29CD7107100FB733001150A1 /* NSData+Base64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD7106100FB733001150A1 /* NSData+Base64Additions.m */; };
@@ -54,7 +54,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29C7910310027A8E00EA28CC /* CompassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompassView.h; sourceTree = "<group>"; };
 		29C7910410027A8E00EA28CC /* CompassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompassView.m; sourceTree = "<group>"; };
-		29C9A4F41011E9CA004CCBDD /* GlintViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GlintViewController.xib; path = Resources/GlintViewController.xib; sourceTree = "<group>"; };
+		29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainScreenViewController.xib; path = Resources/MainScreenViewController.xib; sourceTree = "<group>"; };
 		29CD70FE100FB704001150A1 /* NSStream+SKPSMTPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSStream+SKPSMTPExtensions.h"; path = "SMTPClient/NSStream+SKPSMTPExtensions.h"; sourceTree = "<group>"; };
 		29CD70FF100FB704001150A1 /* NSStream+SKPSMTPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSStream+SKPSMTPExtensions.m"; path = "SMTPClient/NSStream+SKPSMTPExtensions.m"; sourceTree = "<group>"; };
 		29CD7100100FB704001150A1 /* SKPSMTPMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKPSMTPMessage.h; path = SMTPClient/SKPSMTPMessage.h; sourceTree = "<group>"; };
@@ -165,7 +165,7 @@
 				29FE31E00FF4359D00E9FE05 /* Purr.aiff */,
 				29FE31E10FF4359D00E9FE05 /* red-sphere.png */,
 				29FE31E20FF4359D00E9FE05 /* yellow-sphere.png */,
-				29C9A4F41011E9CA004CCBDD /* GlintViewController.xib */,
+				29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */,
 				29CD711E100FB9F2001150A1 /* SendFilesViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* Glint-Info.plist */,
@@ -265,7 +265,7 @@
 				291C24D510011B7B0086EE86 /* unitsets.plist in Resources */,
 				29CD7120100FB9F2001150A1 /* SendFilesViewController.xib in Resources */,
 				29D191951011E2DA00B9E8CF /* Localizable.strings in Resources */,
-				29C9A4F51011E9CA004CCBDD /* GlintViewController.xib in Resources */,
+				29C9A4F51011E9CA004CCBDD /* MainScreenViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
