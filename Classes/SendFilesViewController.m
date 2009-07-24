@@ -13,6 +13,9 @@
 @interface SendFilesViewController ()
 - (int)sectionForFile:(NSString*)fileName;
 - (NSString*)sectionDescriptionForFile:(NSString*)fileName;
+- (NSString*)formatDistance:(float)distance;
+- (NSString*)descriptionForFile:(NSString*)file;
+- (NSString*)commentForFile:(NSString*)file;
 @end
 
 @implementation SendFilesViewController
@@ -27,8 +30,11 @@
         [super dealloc];
 }
 
-- (IBAction) switchToGPSView:(id)sender {
-        [(GlintAppDelegate *)[[UIApplication sharedApplication] delegate] switchToGPSView:sender];
+- (void)viewWillAppear:(BOOL)animated {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
+        documentsDirectory = [paths objectAtIndex:0];
+        [documentsDirectory retain];
+        [super viewWillAppear:animated];
 }
 
 - (void) refresh {
@@ -46,111 +52,14 @@
         }
 
         [tableView reloadData];
-        //NSUInteger indexes[2] = { [sections count] - 1, [[files objectAtIndex:[sections count] - 1] count] - 1 };
-        //NSUInteger indexes[2] = { 0, 0 };
-        //[tableView selectRowAtIndexPath:[NSIndexPath indexPathWithIndexes:indexes length:2] animated:YES scrollPosition:UITableViewScrollPositionTop];
 }
 
-- (int)sectionForFile:(NSString*)fileName {
-        NSString *descr = [self sectionDescriptionForFile:fileName];
-        int i;
-        for (i = 0; i < [sections count]; i++)
-                if ([(NSString*) [sections objectAtIndex:i] compare:descr] == NSOrderedSame)
-                        break;
-        if (i < [sections count])
-                return i;
-        
-        [sections addObject:descr];
-        [files addObject:[NSMutableArray array]];
-        return [sections count] - 1;
-}
+/*
+ * IBActions
+ */
 
-- (NSString*)sectionDescriptionForFile:(NSString*)fileName {
-        NSDictionary *attrs = [[NSFileManager defaultManager] fileAttributesAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, fileName] traverseLink:NO];
-        NSDate *created = [attrs objectForKey:NSFileModificationDate];
-        NSDateComponents *createdComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:created];
-        NSDateComponents *nowComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]];
-        if (createdComps.year == nowComps.year && createdComps.month == nowComps.month) {
-                if (createdComps.week == nowComps.week) {
-                        if (createdComps.day == nowComps.day)
-                                return NSLocalizedString(@"Today",nil);
-                        else if (createdComps.day == nowComps.day - 1)
-                                return NSLocalizedString(@"Yesterday",nil);
-                        else
-                                return NSLocalizedString(@"This Week",nil);
-                } else if (createdComps.week == nowComps.week - 1)
-                        return NSLocalizedString(@"Last Week",nil);
-                else
-                        return NSLocalizedString(@"This Month",nil);
-        } else
-                                                 return NSLocalizedString(@"Earlier",nil);
-        
-        NSString *descr = [created description];
-        return descr;
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
-        documentsDirectory = [paths objectAtIndex:0];
-        [documentsDirectory retain];
-        [super viewWillAppear:animated];
-}
-
-- (NSString*)formatDistance:(float)distance {
-        static float distFactor = 0.0;
-        static NSString *distFormat = nil;
-        if (!distFormat) {
-                NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
-                NSArray *unitSets = [NSArray arrayWithContentsOfFile:path];
-                int unitsetIndex = USERPREF_UNITSET;
-                NSDictionary* units = [unitSets objectAtIndex:unitsetIndex];
-                distFactor = [[units objectForKey:@"distFactor"] floatValue];
-                distFormat = [units objectForKey:@"distFormat"];
-                [distFormat retain];
-        }
-        return [NSString stringWithFormat:distFormat, distance*distFactor];
-}
-
-- (NSString*)descriptionForFile:(NSString*)file {
-        return file;
-}
-
-- (NSString*)commentForFile:(NSString*)file {
-        NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
-        NSString *fileContents = [NSString stringWithContentsOfFile:fullPath];
-        float distance = 0.0;
-        int numPoints = 0;
-        
-#ifdef SCREENSHOT
-        float r1 =  (float) rand() / RAND_MAX;
-        float r2 =  (float) rand() / RAND_MAX;
-        distance = 2000 + 12000 * r1;
-        numPoints = distance / (40.0 + r2 * 20.0);
-#else
-        NSRange rangeBegin = [fileContents rangeOfString:@"[totalDistance]"];
-        NSRange rangeEnd = [fileContents rangeOfString:@"[/totalDistance]"];
-        if (rangeBegin.length > 0)
-        {
-                NSRange matchRange;
-                matchRange.location = rangeBegin.location + rangeBegin.length;
-                matchRange.length = rangeEnd.location - rangeBegin.location;
-                NSString *matched = [fileContents substringWithRange:matchRange];
-                distance = [matched doubleValue];
-        }
-
-        rangeBegin = [fileContents rangeOfString:@"[numPoints]"];
-        rangeEnd = [fileContents rangeOfString:@"[/numPoints]"];
-        if (rangeBegin.length > 0)
-        {
-                NSRange matchRange;
-                matchRange.location = rangeBegin.location + rangeBegin.length;
-                matchRange.length = rangeEnd.location - rangeBegin.location;
-                NSString *matched = [fileContents substringWithRange:matchRange];
-                numPoints = [matched intValue];
-        }
-#endif
-        
-        return [NSString stringWithFormat:@"%@, %d points", [self formatDistance:distance], numPoints];
+- (IBAction) switchToGPSView:(id)sender {
+        [(GlintAppDelegate *)[[UIApplication sharedApplication] delegate] switchToGPSView:sender];
 }
 
 - (IBAction) deleteFile:(id)sender {
@@ -205,6 +114,10 @@
         }
 }
 
+/*
+ * UITableView delegate stuff
+ */
+
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MyIdentifier"];
@@ -230,6 +143,10 @@
         return [sections objectAtIndex:section];
 }
 
+/*
+ * SKSMTPMessage delegate stuff
+ */
+
 - (void)messageSent:(SKPSMTPMessage *)message
 {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -246,4 +163,104 @@
         [alert show];
 }
 
+/*
+ * Private stuff
+ */
+
+- (int)sectionForFile:(NSString*)fileName {
+        NSString *descr = [self sectionDescriptionForFile:fileName];
+        int i;
+        for (i = 0; i < [sections count]; i++)
+                if ([(NSString*) [sections objectAtIndex:i] compare:descr] == NSOrderedSame)
+                        break;
+        if (i < [sections count])
+                return i;
+        
+        [sections addObject:descr];
+        [files addObject:[NSMutableArray array]];
+        return [sections count] - 1;
+}
+
+- (NSString*)sectionDescriptionForFile:(NSString*)fileName {
+        NSDictionary *attrs = [[NSFileManager defaultManager] fileAttributesAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, fileName] traverseLink:NO];
+        NSDate *created = [attrs objectForKey:NSFileModificationDate];
+        NSDateComponents *createdComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:created];
+        NSDateComponents *nowComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]];
+        if (createdComps.year == nowComps.year && createdComps.month == nowComps.month) {
+                if (createdComps.week == nowComps.week) {
+                        if (createdComps.day == nowComps.day)
+                                return NSLocalizedString(@"Today",nil);
+                        else if (createdComps.day == nowComps.day - 1)
+                                return NSLocalizedString(@"Yesterday",nil);
+                        else
+                                return NSLocalizedString(@"This Week",nil);
+                } else if (createdComps.week == nowComps.week - 1)
+                        return NSLocalizedString(@"Last Week",nil);
+                else
+                        return NSLocalizedString(@"This Month",nil);
+        } else
+                return NSLocalizedString(@"Earlier",nil);
+        
+        NSString *descr = [created description];
+        return descr;
+}
+
+- (NSString*)formatDistance:(float)distance {
+        static float distFactor = 0.0;
+        static NSString *distFormat = nil;
+        if (!distFormat) {
+                NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
+                NSArray *unitSets = [NSArray arrayWithContentsOfFile:path];
+                int unitsetIndex = USERPREF_UNITSET;
+                NSDictionary* units = [unitSets objectAtIndex:unitsetIndex];
+                distFactor = [[units objectForKey:@"distFactor"] floatValue];
+                distFormat = [units objectForKey:@"distFormat"];
+                [distFormat retain];
+        }
+        return [NSString stringWithFormat:distFormat, distance*distFactor];
+}
+
+- (NSString*)descriptionForFile:(NSString*)file {
+        return file;
+}
+
+- (NSString*)commentForFile:(NSString*)file {
+        NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
+        NSString *fileContents = [NSString stringWithContentsOfFile:fullPath];
+        float distance = 0.0;
+        int numPoints = 0;
+        
+#ifdef SCREENSHOT
+        float r1 =  (float) rand() / RAND_MAX;
+        float r2 =  (float) rand() / RAND_MAX;
+        distance = 2000 + 12000 * r1;
+        numPoints = distance / (40.0 + r2 * 20.0);
+#else
+        NSRange rangeBegin = [fileContents rangeOfString:@"[totalDistance]"];
+        NSRange rangeEnd = [fileContents rangeOfString:@"[/totalDistance]"];
+        if (rangeBegin.length > 0)
+        {
+                NSRange matchRange;
+                matchRange.location = rangeBegin.location + rangeBegin.length;
+                matchRange.length = rangeEnd.location - rangeBegin.location;
+                NSString *matched = [fileContents substringWithRange:matchRange];
+                distance = [matched doubleValue];
+        }
+        
+        rangeBegin = [fileContents rangeOfString:@"[numPoints]"];
+        rangeEnd = [fileContents rangeOfString:@"[/numPoints]"];
+        if (rangeBegin.length > 0)
+        {
+                NSRange matchRange;
+                matchRange.location = rangeBegin.location + rangeBegin.length;
+                matchRange.length = rangeEnd.location - rangeBegin.location;
+                NSString *matched = [fileContents substringWithRange:matchRange];
+                numPoints = [matched intValue];
+        }
+#endif
+        
+        return [NSString stringWithFormat:@"%@, %d points", [self formatDistance:distance], numPoints];
+}
+
 @end
+

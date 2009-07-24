@@ -17,10 +17,10 @@
 @synthesize sendFilesViewController;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
+        // Check if there are any preferences set, and if not, load the defaults.
         float testValue = [[NSUserDefaults standardUserDefaults] doubleForKey:@"gps_minprec"];
         if (testValue == 0.0)
         {
-                // no default values have been set, create them here based on what's in our Settings bundle info
                 NSString *pathStr = [[NSBundle mainBundle] bundlePath];
                 NSString *settingsBundlePath = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
                 NSString *finalPath = [settingsBundlePath stringByAppendingPathComponent:@"Root.plist"];
@@ -39,13 +39,11 @@
                         }
                 }
                 
-                // since no default values have been set (i.e. no preferences file created), create it here        
                 [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 [defaults release];
         }
         
-        // Override point for customization after app launch    
         [window addSubview:viewController.view];
         [window addSubview:sendFilesViewController.view];
         [window bringSubviewToFront:viewController.view];

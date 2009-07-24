@@ -10,8 +10,9 @@
 
 @interface GlintCompassView ()
 -(void)startTimer;
--(void)endTimer;
+-(void)stopTimer;
 -(void)updateCourse:(NSTimer*)timer;
+- (void) drawCenteredText:(NSString *)label inContext:(CGContextRef)ctx atPosition:(CGPoint)point;
 @end
 
 @implementation GlintCompassView
@@ -28,46 +29,10 @@
                 newCourse += 360.0;
         else if (newCourse > 360.0)
                 newCourse -= 360.0;
+        
         if (newCourse != course) {
                 course = newCourse;
                 [self startTimer];
-        }
-}
-
--(void)startTimer {
-        @synchronized (self) {
-                if (animationTimer)
-                        return;
-                animationTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(updateCourse:) userInfo:nil repeats:YES];
-                [[NSRunLoop currentRunLoop] addTimer:animationTimer forMode:NSDefaultRunLoopMode];
-        }
-}
-
--(void)stopTimer {
-        @synchronized (self) {
-                if (!animationTimer)
-                        return;
-                [animationTimer invalidate];
-                [animationTimer release];
-                animationTimer = nil;
-        }
-}
-
--(void)updateCourse:(NSTimer*)timer {
-        if (course == showingCourse) {
-                [timer invalidate];
-                animationTimer = nil;
-        } else {
-                float diff = course - showingCourse;
-                if (diff > 180.0)
-                        diff -= 360;
-                else if (diff < -180.0)
-                        diff += 360;
-                if (fabs(diff) < 0.15)
-                        showingCourse = course;
-                else
-                        showingCourse += diff / 15.0;                        
-                [self setNeedsDisplay];
         }
 }
 
@@ -100,16 +65,6 @@
                    nil];
         [markers retain];
         //[self setCourse:0];
-}
-
-- (void) drawCenteredText:(NSString *)label inContext:(CGContextRef)ctx atPosition:(CGPoint)point  {
-        CGPoint before = CGContextGetTextPosition(ctx);
-        CGContextSetTextDrawingMode(ctx, kCGTextInvisible);
-        CGContextShowText(ctx, [label cStringUsingEncoding:NSUTF8StringEncoding], [label length]);
-        CGPoint after = CGContextGetTextPosition(ctx);
-        float width = after.x - before.x;
-        CGContextSetTextDrawingMode (ctx, kCGTextFill);
-        CGContextShowTextAtPoint(ctx, point.x - width / 2.0, point.y, [label cStringUsingEncoding:NSUTF8StringEncoding], [label length]);
 }
 
 - (void)drawRect:(CGRect)rect
@@ -193,5 +148,56 @@
                 CGContextRotateCTM(ctx, 0.5 / 180.0 * M_PI);
         }        
 } 
+
+/*
+ * Private methods
+ */
+
+-(void)startTimer {
+        @synchronized (self) {
+                if (animationTimer)
+                        return;
+                animationTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(updateCourse:) userInfo:nil repeats:YES];
+                [[NSRunLoop currentRunLoop] addTimer:animationTimer forMode:NSDefaultRunLoopMode];
+        }
+}
+
+-(void)stopTimer {
+        @synchronized (self) {
+                if (!animationTimer)
+                        return;
+                [animationTimer invalidate];
+                [animationTimer release];
+                animationTimer = nil;
+        }
+}
+
+-(void)updateCourse:(NSTimer*)timer {
+        if (course == showingCourse) {
+                [timer invalidate];
+                animationTimer = nil;
+        } else {
+                float diff = course - showingCourse;
+                if (diff > 180.0)
+                        diff -= 360;
+                else if (diff < -180.0)
+                        diff += 360;
+                if (fabs(diff) < 0.15)
+                        showingCourse = course;
+                else
+                        showingCourse += diff / 15.0;                        
+                [self setNeedsDisplay];
+        }
+}
+
+- (void) drawCenteredText:(NSString *)label inContext:(CGContextRef)ctx atPosition:(CGPoint)point  {
+        CGPoint before = CGContextGetTextPosition(ctx);
+        CGContextSetTextDrawingMode(ctx, kCGTextInvisible);
+        CGContextShowText(ctx, [label cStringUsingEncoding:NSUTF8StringEncoding], [label length]);
+        CGPoint after = CGContextGetTextPosition(ctx);
+        float width = after.x - before.x;
+        CGContextSetTextDrawingMode (ctx, kCGTextFill);
+        CGContextShowTextAtPoint(ctx, point.x - width / 2.0, point.y, [label cStringUsingEncoding:NSUTF8StringEncoding], [label length]);
+}
 
 @end

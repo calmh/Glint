@@ -126,49 +126,6 @@
         [self tests];
 }
 
-- (void)tests {
-        CLLocation *locN = [[[CLLocation alloc] initWithLatitude:10.0 longitude:0.0] autorelease]; // 10.0 N
-        CLLocation *locS = [[[CLLocation alloc] initWithLatitude:-10.0 longitude:0.0] autorelease]; // 10.0 S
-        CLLocation *locE = [[[CLLocation alloc] initWithLatitude:0.0 longitude:10.0] autorelease]; // 10.0 E
-        CLLocation *locW = [[[CLLocation alloc] initWithLatitude:0.0 longitude:-10.0] autorelease]; // 10.0 W
-        CLLocation *locNE = [[[CLLocation alloc] initWithLatitude:10.0 longitude:10.0] autorelease]; // 10.0 N, 10.0 E
-        CLLocation *locSW = [[[CLLocation alloc] initWithLatitude:-10.0 longitude:-10.0] autorelease]; // 10.0 S, 10.0 W
-
-        float bearing;
-        bearing = [self bearingFromLocation:locN toLocation:locS];
-        NSAssert(bearing == 180.0, @"Bearing N-S incorrect");
-        bearing = [self bearingFromLocation:locS toLocation:locN];
-        NSAssert(bearing == 0.0, @"Bearing S-N incorrect");
-        bearing = [self bearingFromLocation:locE toLocation:locW];
-        NSAssert(bearing == 270.0, @"Bearing E-W incorrect");
-        bearing = [self bearingFromLocation:locW toLocation:locE];
-        NSAssert(bearing == 90.0, @"Bearing W-E incorrect");
-        bearing = [self bearingFromLocation:locSW toLocation:locNE];
-        NSAssert(bearing > 44.0 && bearing < 46.0, @"Bearing SW-NE incorrect");
-        bearing = [self bearingFromLocation:locNE toLocation:locSW];
-        NSAssert(bearing > 224.0 && bearing < 226.0, @"Bearing SW-NE incorrect");
-}
-
-
-- (void)enableGPS {
-        NSLog(@"Starting GPS");
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.distanceFilter = FILTER_DISTANCE;
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        locationManager.delegate = self;
-        [locationManager startUpdatingLocation];
-        gpsEnabled = YES;
-}
-
-- (void)disableGPS {
-        NSLog(@"Stopping GPS");
-        locationManager.delegate = nil;
-        [locationManager stopUpdatingHeading];
-        [locationManager release];
-        locationManager = nil;
-        gpsEnabled = NO;
-}
-
 - (void)viewWillDisappear:(BOOL)animated
 {
         [gpxWriter commit];
@@ -180,6 +137,10 @@
         
         [super viewWillDisappear:animated];
 }
+
+/*
+ * LocationManager Delegate
+ */
 
 - (void)locationManager:(CLLocationManager *)manager
     didUpdateToLocation:(CLLocation *)newLocation
@@ -219,6 +180,10 @@
         [lastMeasurementDate release];
         lastMeasurementDate = [[NSDate date] retain];
 }
+
+/*
+ * IBActions
+ */
 
 - (IBAction)unlock:(id)sender
 {
@@ -489,6 +454,53 @@
                 self.compass.course = 0.0;
         
         [current release];
+}
+
+/*
+ * Private methods
+ */
+
+- (void)tests {
+        CLLocation *locN = [[[CLLocation alloc] initWithLatitude:10.0 longitude:0.0] autorelease]; // 10.0 N
+        CLLocation *locS = [[[CLLocation alloc] initWithLatitude:-10.0 longitude:0.0] autorelease]; // 10.0 S
+        CLLocation *locE = [[[CLLocation alloc] initWithLatitude:0.0 longitude:10.0] autorelease]; // 10.0 E
+        CLLocation *locW = [[[CLLocation alloc] initWithLatitude:0.0 longitude:-10.0] autorelease]; // 10.0 W
+        CLLocation *locNE = [[[CLLocation alloc] initWithLatitude:10.0 longitude:10.0] autorelease]; // 10.0 N, 10.0 E
+        CLLocation *locSW = [[[CLLocation alloc] initWithLatitude:-10.0 longitude:-10.0] autorelease]; // 10.0 S, 10.0 W
+        
+        float bearing;
+        bearing = [self bearingFromLocation:locN toLocation:locS];
+        NSAssert(bearing == 180.0, @"Bearing N-S incorrect");
+        bearing = [self bearingFromLocation:locS toLocation:locN];
+        NSAssert(bearing == 0.0, @"Bearing S-N incorrect");
+        bearing = [self bearingFromLocation:locE toLocation:locW];
+        NSAssert(bearing == 270.0, @"Bearing E-W incorrect");
+        bearing = [self bearingFromLocation:locW toLocation:locE];
+        NSAssert(bearing == 90.0, @"Bearing W-E incorrect");
+        bearing = [self bearingFromLocation:locSW toLocation:locNE];
+        NSAssert(bearing > 44.0 && bearing < 46.0, @"Bearing SW-NE incorrect");
+        bearing = [self bearingFromLocation:locNE toLocation:locSW];
+        NSAssert(bearing > 224.0 && bearing < 226.0, @"Bearing SW-NE incorrect");
+}
+
+
+- (void)enableGPS {
+        NSLog(@"Starting GPS");
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.distanceFilter = FILTER_DISTANCE;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        locationManager.delegate = self;
+        [locationManager startUpdatingLocation];
+        gpsEnabled = YES;
+}
+
+- (void)disableGPS {
+        NSLog(@"Stopping GPS");
+        locationManager.delegate = nil;
+        [locationManager stopUpdatingHeading];
+        [locationManager release];
+        locationManager = nil;
+        gpsEnabled = NO;
 }
 
 @end
