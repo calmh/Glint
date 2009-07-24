@@ -81,20 +81,12 @@
         
         UIBarButtonItem *unlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock", @"Unlock") style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
         UIBarButtonItem *disabledUnlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock", @"Unlock") style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
-        //UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(sendFiles:)];
-        //UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(startStopRecording:)];
-        //UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(startStopRecording:)];
-        //[sendButton setStyle:UIBarButtonItemStyleBordered];
-        //[playButton setStyle:UIBarButtonItemStyleBordered];
-        //[stopButton setStyle:UIBarButtonItemStyleBordered];
         UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files", @"Files") style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
-        UIBarButtonItem *disabledSendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files", @"Files") style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
         UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Record", @"Record") style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
         UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Stop Recording", @"Stop Recording") style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
         [disabledUnlockButton setEnabled:NO];
-        [disabledSendButton setEnabled:NO];
         lockedToolbarItems = [[NSArray arrayWithObject:unlockButton] retain];
-        recordingToolbarItems = [[NSArray arrayWithObjects:disabledUnlockButton, disabledSendButton, stopButton, nil] retain];
+        recordingToolbarItems = [[NSArray arrayWithObjects:disabledUnlockButton, sendButton, stopButton, nil] retain];
         pausedToolbarItems = [[NSArray arrayWithObjects:disabledUnlockButton, sendButton, playButton, nil] retain];
         [toolbar setItems:lockedToolbarItems animated:YES];
         
@@ -122,7 +114,6 @@
         self.currentTimePerDistanceLabel.text = @"?";
         NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
         NSString* marketVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        //self.statusLabel.text = [NSString stringWithFormat:@"Glint %@-%@", marketVer, bundleVer];
         self.statusLabel.text = [NSString stringWithFormat:@"Glint %@ (%@)", marketVer, bundleVer];
         
         NSTimer* displayUpdater = [NSTimer timerWithTimeInterval:DISPLAY_THREAD_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
@@ -231,9 +222,6 @@
 
 - (IBAction)unlock:(id)sender
 {
-#ifdef SCREENSHOT
-        currentCourse = 360.0 * (rand() / (float) RAND_MAX);
-#endif
         if (gpxWriter)
                 [toolbar setItems:recordingToolbarItems animated:YES];
         else
