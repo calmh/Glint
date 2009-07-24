@@ -38,13 +38,10 @@
 
 -(void)awakeFromNib 
 {
-	[super awakeFromNib];        
-        float randOrig = -10.0 + 20.0 * (random() / (float) RAND_MAX);
-        if (randOrig < 0.0)
-                randOrig += 360.0;
-        course = randOrig;
-        showingCourse = randOrig;
+	[super awakeFromNib];
+        
         animationTimer = nil;
+        course = 0.0;
         markers = [NSDictionary dictionaryWithObjectsAndKeys:
                    NSLocalizedString(@"N", @"N"), [NSNumber numberWithFloat:0.0],
                    NSLocalizedString(@"NNE", @"NNE"), [NSNumber numberWithFloat:22.5],
@@ -64,13 +61,21 @@
                    NSLocalizedString(@"NNW", @"NNW"), [NSNumber numberWithFloat:15*22.5],
                    nil];
         [markers retain];
-        //[self setCourse:0];
+
+        // Set a slightly random start position to give the compass a nice "twitch" when the program starts.
+        float randOrig = -10.0 + 20.0 * (random() / (float) RAND_MAX);
+        if (randOrig < 0.0)
+                randOrig += 360.0;
+        showingCourse = randOrig;
+        [self startTimer];
 }
 
 - (void)drawRect:(CGRect)rect
 {        
+        // How many degrees (on both sides of the current course) do we actually need to draw the rose for?
         int drawDegrees = 40;
         
+        // Background
         CGContextRef ctx = UIGraphicsGetCurrentContext();        
         CGContextSetGrayFillColor(ctx, 0.1, 1.0);
         CGContextFillRect(ctx, rect);
@@ -89,41 +94,43 @@
         CGContextAddRect(ctx, CGRectMake(rect.size.width / 2 - 3, 2, 6, rect.size.height - 4));
         CGContextStrokePath(ctx);
         
+        // Colors and font for compass
         CGContextSetRGBStrokeColor(ctx, 0.9, 0.9, 0.9, 1.0);
         CGContextSetGrayFillColor(ctx, 0.9, 1.0);
         CGContextSelectFont (ctx, "Helvetica-Bold", 12, kCGEncodingMacRoman);
         CGContextSetTextMatrix (ctx, CGAffineTransformMake(1,0,0,-1,0,rect.size.height)); 
         CGContextSetShouldSmoothFonts(ctx, YES);
         CGContextSetShouldAntialias(ctx, YES);
+        
+        // Move to center of compass rose and rotate to current course
         CGContextTranslateCTM(ctx, rect.size.width / 2.0, COMPASS_RADIUS + rect.size.height / 2.0);
         CGContextRotateCTM(ctx, -showingCourse / 180.0 * M_PI);
         
-        // Find the boundaries of the visible
+        // Find the visibility boundaries of the compass rose
         int imin = (showingCourse - drawDegrees) * 2;
-        if (imin < 0)
-                imin += 720;
-        else if (imin >= 720)
-                imin -= 720;
+        if (imin < 0) imin += 720;
+        else if (imin >= 720) imin -= 720;
         int imax = (showingCourse + drawDegrees) * 2;
-        if (imax < 0)
-                imax += 720;
-        else if (imax >= 720)
-                imax -= 720;
+        if (imax < 0) imax += 720;
+        else if (imax >= 720) imax -= 720;
         
         float len;
         NSString *marker;
         for (int i = 0; i < 720; i++) {
-                if (imin < imax && i >= imin && i <= imax ||
-                    (imin > imax && (i >= imin || i <= imax))) { 
-                        // This is the visible part of the rose
+                if (imin < imax && i >= imin && i <= imax || (imin > imax && (i >= imin || i <= imax))) { 
+                        // This is the visible part of the rose, so draw it
+                        
+                        // Thicker line at cardinal points
                         if (i % 90 == 0) {
                                 CGContextSetLineWidth(ctx, 3.0);
                                 len = 8;
                         }
+                        // Slightly longer line at five-degree intervals
                         else if (i % 10 == 0) {
                                 CGContextSetLineWidth(ctx, 1.0);
                                 len = 6;
                         }
+                        // Normal lines everywhere else
                         else {
                                 CGContextSetLineWidth(ctx, 1.0);
                                 len = 4;
@@ -132,12 +139,15 @@
                         float startY = -COMPASS_RADIUS;
                         float stopY = -(COMPASS_RADIUS + len);
                         
+                        // Print number of degrees every ten degrees
                         if (i % 20 == 0)
                                 [self drawCenteredText:[NSString stringWithFormat:@"%d", i/2] inContext:ctx atPosition:CGPointMake(0, startY + 10)];
-                        
+
+                        // Every 2.5 degrees, check if there is a cardinal marker to print
                         if (i % 5 == 0 && (marker = [markers objectForKey:[NSNumber numberWithFloat:(float)i/2.0]]))
                                 [self drawCenteredText:marker inContext:ctx atPosition:CGPointMake(0, startY - 10)];
                         
+                        // Every degree, draw the marker line
                         if (i % 2 == 0) {
                                 CGContextBeginPath(ctx);
                                 CGContextMoveToPoint(ctx, 0, startY);
@@ -145,6 +155,8 @@
                                 CGContextStrokePath(ctx);
                         }
                 }
+
+                // Rotate the rose .5 degrees for next round.
                 CGContextRotateCTM(ctx, 0.5 / 180.0 * M_PI);
         }        
 } 

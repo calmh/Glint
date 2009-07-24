@@ -75,13 +75,13 @@
 
 - (IBAction) sendFile:(id)sender {
         if ([tableView indexPathForSelectedRow]) {
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
                 NSString *to = USERPREF_EMAIL_ADDRESS;
                 if (!to || [to length] < 4) {
                         UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Message failed",nil) message:NSLocalizedString(@"You need to enter a valid email address in Settings.", @"Lacking email address") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil] autorelease];
                         [alert show];
                         return;
                 }
+
                 [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
                 NSIndexPath *p = [tableView indexPathForSelectedRow];
                 NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];                

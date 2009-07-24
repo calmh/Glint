@@ -12,12 +12,12 @@
 
 @interface GlintAppDelegate : NSObject <UIApplicationDelegate> {
         UIWindow *window;
-        MainScreenViewController *viewController;
+        MainScreenViewController *mainScreenViewController;
         SendFilesViewController *sendFilesViewController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet MainScreenViewController *viewController;
+@property (nonatomic, retain) IBOutlet MainScreenViewController *mainScreenViewController;
 @property (nonatomic, retain) IBOutlet SendFilesViewController *sendFilesViewController;
 
 - (IBAction) switchToSendFilesView:(id)sender;

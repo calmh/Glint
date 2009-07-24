@@ -13,7 +13,7 @@
 @implementation GlintAppDelegate
 
 @synthesize window;
-@synthesize viewController;
+@synthesize mainScreenViewController;
 @synthesize sendFilesViewController;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
@@ -44,9 +44,9 @@
                 [defaults release];
         }
         
-        [window addSubview:viewController.view];
+        [window addSubview:mainScreenViewController.view];
         [window addSubview:sendFilesViewController.view];
-        [window bringSubviewToFront:viewController.view];
+        [window bringSubviewToFront:mainScreenViewController.view];
         [window makeKeyAndVisible];
 }
 
@@ -66,14 +66,15 @@
 	[UIView setAnimationDuration:1.2];
 	[UIView setAnimationRepeatAutoreverses:NO];
         [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:window cache:YES];
-        [window bringSubviewToFront:viewController.view];
+        [window bringSubviewToFront:mainScreenViewController.view];
 	[UIView commitAnimations];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
 }
 
 - (void)dealloc {
-        [viewController release];
         [window release];
+        [mainScreenViewController release];
+        [sendFilesViewController release];
         [super dealloc];
 }
 
