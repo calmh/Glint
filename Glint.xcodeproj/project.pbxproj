@@ -29,10 +29,7 @@
 		29CE3C9510079BAD00AEC5A4 /* GPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CE3C9410079BAD00AEC5A4 /* GPXWriter.m */; };
 		29D191951011E2DA00B9E8CF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 29D191931011E2DA00B9E8CF /* Localizable.strings */; };
 		29FE31E30FF4359D00E9FE05 /* Basso.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DD0FF4359D00E9FE05 /* Basso.aiff */; };
-		29FE31E50FF4359D00E9FE05 /* green-sphere.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DF0FF4359D00E9FE05 /* green-sphere.png */; };
 		29FE31E60FF4359D00E9FE05 /* Purr.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31E00FF4359D00E9FE05 /* Purr.aiff */; };
-		29FE31E70FF4359D00E9FE05 /* red-sphere.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31E10FF4359D00E9FE05 /* red-sphere.png */; };
-		29FE31E80FF4359D00E9FE05 /* yellow-sphere.png in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31E20FF4359D00E9FE05 /* yellow-sphere.png */; };
 		29FE31EB0FF435DB00E9FE05 /* JBSoundEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FE31EA0FF435DB00E9FE05 /* JBSoundEffect.m */; };
 		29FE32110FF436AC00E9FE05 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 29FE32100FF436AC00E9FE05 /* Settings.bundle */; };
 		29FE32180FF436EF00E9FE05 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FE32170FF436EF00E9FE05 /* AudioToolbox.framework */; };
@@ -74,10 +71,7 @@
 		29D191941011E2DA00B9E8CF /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		29D191981011E31600B9E8CF /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		29FE31DD0FF4359D00E9FE05 /* Basso.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Basso.aiff; path = Resources/Basso.aiff; sourceTree = "<group>"; };
-		29FE31DF0FF4359D00E9FE05 /* green-sphere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "green-sphere.png"; path = "Resources/green-sphere.png"; sourceTree = "<group>"; };
 		29FE31E00FF4359D00E9FE05 /* Purr.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Purr.aiff; path = Resources/Purr.aiff; sourceTree = "<group>"; };
-		29FE31E10FF4359D00E9FE05 /* red-sphere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "red-sphere.png"; path = "Resources/red-sphere.png"; sourceTree = "<group>"; };
-		29FE31E20FF4359D00E9FE05 /* yellow-sphere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "yellow-sphere.png"; path = "Resources/yellow-sphere.png"; sourceTree = "<group>"; };
 		29FE31E90FF435DB00E9FE05 /* JBSoundEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBSoundEffect.h; sourceTree = "<group>"; };
 		29FE31EA0FF435DB00E9FE05 /* JBSoundEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBSoundEffect.m; sourceTree = "<group>"; };
 		29FE32100FF436AC00E9FE05 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -158,17 +152,14 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				29874F990FF776EB0080E20D /* Icon.png */,
 				29FE32100FF436AC00E9FE05 /* Settings.bundle */,
-				29FE31DD0FF4359D00E9FE05 /* Basso.aiff */,
-				29FE31DF0FF4359D00E9FE05 /* green-sphere.png */,
-				29FE31E00FF4359D00E9FE05 /* Purr.aiff */,
-				29FE31E10FF4359D00E9FE05 /* red-sphere.png */,
-				29FE31E20FF4359D00E9FE05 /* yellow-sphere.png */,
+				8D1107310486CEB800E47090 /* Glint-Info.plist */,
+				29874F990FF776EB0080E20D /* Icon.png */,
 				29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */,
 				29CD711E100FB9F2001150A1 /* SendFilesViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
-				8D1107310486CEB800E47090 /* Glint-Info.plist */,
+				29FE31DD0FF4359D00E9FE05 /* Basso.aiff */,
+				29FE31E00FF4359D00E9FE05 /* Purr.aiff */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -256,10 +247,7 @@
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				29FE31E30FF4359D00E9FE05 /* Basso.aiff in Resources */,
-				29FE31E50FF4359D00E9FE05 /* green-sphere.png in Resources */,
 				29FE31E60FF4359D00E9FE05 /* Purr.aiff in Resources */,
-				29FE31E70FF4359D00E9FE05 /* red-sphere.png in Resources */,
-				29FE31E80FF4359D00E9FE05 /* yellow-sphere.png in Resources */,
 				29FE32110FF436AC00E9FE05 /* Settings.bundle in Resources */,
 				29874F9A0FF776EB0080E20D /* Icon.png in Resources */,
 				291C24D510011B7B0086EE86 /* unitsets.plist in Resources */,
