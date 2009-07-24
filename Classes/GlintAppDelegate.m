@@ -7,7 +7,7 @@
 //
 
 #import "GlintAppDelegate.h"
-#import "GlintViewController.h"
+#import "MainScreenViewController.h"
 #import "SendFilesViewController.h"
 
 @implementation GlintAppDelegate

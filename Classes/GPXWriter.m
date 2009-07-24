@@ -1,14 +1,14 @@
 //
-//  GlingGPXWriter.m
+//  GPXWriter.m
 //  Glint
 //
 //  Created by Jakob Borg on 7/10/09.
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import "GlintGPXWriter.h"
+#import "GPXWriter.h"
 
-@implementation GlintGPXWriter
+@implementation GPXWriter
 
 @synthesize numPoints;
 

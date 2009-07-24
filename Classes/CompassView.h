@@ -1,5 +1,5 @@
 //
-//  GlintCompassView.h
+//  CompassView.h
 //  Glint
 //
 //  Created by Jakob Borg on 7/6/09.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface GlintCompassView : UIView {
+@interface CompassView : UIView {
         float course;
         float showingCourse;
         NSTimer *animationTimer;

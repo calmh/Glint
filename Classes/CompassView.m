@@ -1,21 +1,21 @@
 //
-//  GlintCompassView.m
+//  CompassView.m
 //  Glint
 //
 //  Created by Jakob Borg on 7/6/09.
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import "GlintCompassView.h"
+#import "CompassView.h"
 
-@interface GlintCompassView ()
+@interface CompassView ()
 -(void)startTimer;
 -(void)stopTimer;
 -(void)updateCourse:(NSTimer*)timer;
 - (void) drawCenteredText:(NSString *)label inContext:(CGContextRef)ctx atPosition:(CGPoint)point;
 @end
 
-@implementation GlintCompassView
+@implementation CompassView
 
 @synthesize course;
 

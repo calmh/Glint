@@ -1,5 +1,5 @@
 //
-//  GlintViewController.h
+//  MainScreenViewController.h
 //  Glint
 //
 //  Created by Jakob Borg on 6/26/09.
@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "JBSoundEffect.h"
-#import "GlintCompassView.h"
-#import "GlintGPXWriter.h"
+#import "CompassView.h"
+#import "GPXWriter.h"
 #import "GlintAppDelegate.h"
 
 typedef enum enumGlintDataSource {
@@ -18,10 +18,10 @@ typedef enum enumGlintDataSource {
         kGlintDataSourceTimer
 } GlintDataSource;
 
-@interface GlintViewController : UIViewController  <CLLocationManagerDelegate> {
+@interface MainScreenViewController : UIViewController  <CLLocationManagerDelegate> {
         CLLocationManager *locationManager;
         NSArray *unitSets;
-        GlintGPXWriter *gpxWriter;
+        GPXWriter *gpxWriter;
         NSDate *firstMeasurementDate;
         NSDate *lastMeasurementDate;
         CLLocation *previousMeasurement;
@@ -56,7 +56,7 @@ typedef enum enumGlintDataSource {
         UILabel *averageSpeedDescrLabel;
 
         UIToolbar *toolbar;
-        GlintCompassView *compass;
+        CompassView *compass;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *positionLabel;
@@ -71,7 +71,7 @@ typedef enum enumGlintDataSource {
 @property (nonatomic, retain) IBOutlet UILabel *recordingIndicator;
 @property (nonatomic, retain) IBOutlet UILabel *signalIndicator;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, retain) IBOutlet GlintCompassView *compass;
+@property (nonatomic, retain) IBOutlet CompassView *compass;
 
 @property (nonatomic, retain) IBOutlet UILabel *elapsedTimeDescrLabel;
 @property (nonatomic, retain) IBOutlet UILabel *totalDistanceDescrLabel;

@@ -1,17 +1,17 @@
 //
-//  GlintViewController.m
+//  MainScreenViewController.m
 //  Glint
 //
 //  Created by Jakob Borg on 6/26/09.
 //  Copyright Jakob Borg 2009. All rights reserved.
 //
 
-#import "GlintViewController.h"
+#import "MainScreenViewController.h"
 
 //
 // Private methods
 //
-@interface GlintViewController ()
+@interface MainScreenViewController ()
 - (NSString*)formatTimestamp:(float)seconds maxTime:(float)max;
 - (NSString*) formatDMS:(float)latLong;
 - (NSString*)formatLat:(float)lat;
@@ -27,12 +27,12 @@
 //
 // Background threads
 //
-@interface GlintViewController (backgroundThreads)
+@interface MainScreenViewController (backgroundThreads)
 - (void)updateDisplay:(NSTimer*)timer;
 - (void)takeAveragedMeasurement:(NSTimer*)timer;
 @end
 
-@implementation GlintViewController
+@implementation MainScreenViewController
 @synthesize positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerDistanceLabel, totalDistanceLabel, statusLabel, averageSpeedLabel, bearingLabel, accuracyLabel;
 @synthesize elapsedTimeDescrLabel, totalDistanceDescrLabel, currentTimePerDistanceDescrLabel, currentSpeedDescrLabel, averageSpeedDescrLabel;
 @synthesize toolbar, compass, recordingIndicator, signalIndicator;
@@ -224,7 +224,7 @@
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
                 NSString *documentsDirectory = [paths objectAtIndex:0];
                 NSString* filename = [NSString stringWithFormat:@"%@/track-%@.gpx", documentsDirectory, [[NSDate date] descriptionWithCalendarFormat:@"%Y%m%d-%H%M%S" timeZone:nil locale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]]];
-                gpxWriter = [[GlintGPXWriter alloc] initWithFilename:filename];
+                gpxWriter = [[GPXWriter alloc] initWithFilename:filename];
                 [gpxWriter addTrackSegment];
         } else {
                 self.recordingIndicator.textColor = [UIColor grayColor];

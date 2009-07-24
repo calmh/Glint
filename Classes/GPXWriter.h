@@ -1,5 +1,5 @@
 //
-//  GlingGPXWriter.h
+//  GPXWriter.h
 //  Glint
 //
 //  Created by Jakob Borg on 7/10/09.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface GlintGPXWriter : NSObject {
+@interface GPXWriter : NSObject {
         NSString *filename;
         NSMutableArray *tracks;
         float minLon, minLat, maxLon, maxLat;
