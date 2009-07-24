@@ -55,7 +55,6 @@
 		29256CCD10137D4E00C96361 /* DarkBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DarkBackgroundView.m; sourceTree = "<group>"; };
 		29874F990FF776EB0080E20D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		29BE923A101628630066D5B6 /* Unit Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Unit Tests-Info.plist"; sourceTree = "<group>"; };
 		29C7910310027A8E00EA28CC /* GlintCompassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlintCompassView.h; sourceTree = "<group>"; };
 		29C7910410027A8E00EA28CC /* GlintCompassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlintCompassView.m; sourceTree = "<group>"; };
 		29C9A4F41011E9CA004CCBDD /* GlintViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GlintViewController.xib; path = Resources/GlintViewController.xib; sourceTree = "<group>"; };
@@ -147,7 +146,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				29BE923A101628630066D5B6 /* Unit Tests-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
