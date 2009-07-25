@@ -8,25 +8,27 @@
 
 #import "MainScreenViewController.h"
 
-//
-// Private methods
-//
+/*
+ * Private methods
+ */
 @interface MainScreenViewController ()
 - (NSString*)formatTimestamp:(float)seconds maxTime:(float)max allowNegatives:(bool)allowNegatives;
-- (NSString*) formatDMS:(float)latLong;
+- (NSString*)formatDMS:(float)latLong;
 - (NSString*)formatLat:(float)lat;
 - (NSString*)formatLon:(float)lon;
 - (bool)precisionAcceptable:(CLLocation*)location;
-- (float) speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
-- (float) bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2;
+- (float)speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
+- (float)bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2;
 - (void)enableGPS;
 - (void)disableGPS;
 - (void)tests;
+- (float)timeDifferenceInRace;
+- (float)distDifferenceInRace;
 @end
 
-//
-// Background threads
-//
+/*
+ * Background threads
+ */
 @interface MainScreenViewController (backgroundThreads)
 - (void)updateDisplay:(NSTimer*)timer;
 - (void)takeAveragedMeasurement:(NSTimer*)timer;
@@ -146,59 +148,6 @@
         }
 }
 
-- (float)timeDifferenceInRace {
-        CLLocation *pointOne = nil, *pointTwo = nil;
-        float distance = 0.0;
-        float time = 0.0;
-        for (CLLocation *point in raceAgainstLocations) {
-                if (pointOne)
-                        time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
-                distance += [pointOne getDistanceFrom:point];
-                if (distance <= totalDistance)
-                        pointOne = point;
-                else {
-                        pointTwo = point;
-                        break;
-                }
-        }
-        float distDiff = totalDistance - distance;
-        float fact = distDiff / [pointOne getDistanceFrom:pointTwo];
-        float timeDiff = [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
-        float d1 =  timeDiff * fact;
-        float d2 = time - [[NSDate date] timeIntervalSinceDate:firstMeasurementDate];
-        float d3 = d1 + d2;
-        if (isnan(d3))
-                return 0.0;
-        else
-                return d3;
-}
-
-- (float)distDifferenceInRace {
-        CLLocation *pointOne = nil, *pointTwo = nil;
-        float elapsed = [[NSDate date] timeIntervalSinceDate:firstMeasurementDate];
-        float time = 0.0;
-        float distance = 0.0;
-        for (CLLocation *point in raceAgainstLocations) {
-                if (pointOne)
-                        time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
-                distance += [pointOne getDistanceFrom:point];
-                if (time <= elapsed)
-                        pointOne = point;
-                else {
-                        pointTwo = point;
-                        break;
-                }
-        }
-        float timeDiff = time - elapsed;
-        float fact = timeDiff / [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
-        float distDiff = [pointOne getDistanceFrom:pointTwo];
-        float d1 = distDiff * fact + (totalDistance - distance);
-        if (isnan(d1))
-                return 0.0;
-        else
-                return d1;
-}
-
 /*
  * LocationManager Delegate
  */
@@ -298,9 +247,9 @@
         [toolbar setItems:lockedToolbarItems animated:YES];
 }
 
-//
-// Private methods
-//
+/*
+ * Private methods
+ */
 
 - (NSString*)formatTimestamp:(float)seconds maxTime:(float)max allowNegatives:(bool)allowNegatives {
         bool negative = NO;
@@ -375,9 +324,9 @@
         return b;
 }
 
-//
-// Background threads
-//
+/*
+ * Background threads
+ */
 
 - (void)takeAveragedMeasurement:(NSTimer*)timer
 {
@@ -509,6 +458,7 @@
                 self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
         
         if (!raceAgainstLocations) {
+                // Show average speed and time per configured distance
                 float averageSpeed = 0.0;
                 if (firstMeasurementDate && lastMeasurementDate)
                         averageSpeed  = totalDistance / [lastMeasurementDate timeIntervalSinceDate:firstMeasurementDate];
@@ -522,6 +472,7 @@
                 self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
                 self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0 green:0xFF/255.0 blue:0xCC/255.0 alpha:1.0];
         } else {
+                // Show difference in time and distance against raceAgainstLocations.
                 float distDiff = [self distDifferenceInRace];
                 NSString *distString = [NSString stringWithFormat:distFormat, distDiff*distFactor];
                 self.averageSpeedLabel.text = [distDiff < 0.0 ? @"" : @"+" stringByAppendingString:distString];
@@ -596,6 +547,59 @@
         [locationManager release];
         locationManager = nil;
         gpsEnabled = NO;
+}
+
+- (float)timeDifferenceInRace {
+        CLLocation *pointOne = nil, *pointTwo = nil;
+        float distance = 0.0;
+        float time = 0.0;
+        for (CLLocation *point in raceAgainstLocations) {
+                if (pointOne)
+                        time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
+                distance += [pointOne getDistanceFrom:point];
+                if (distance <= totalDistance)
+                        pointOne = point;
+                else {
+                        pointTwo = point;
+                        break;
+                }
+        }
+        float distDiff = totalDistance - distance;
+        float fact = distDiff / [pointOne getDistanceFrom:pointTwo];
+        float timeDiff = [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
+        float d1 =  timeDiff * fact;
+        float d2 = time - [[NSDate date] timeIntervalSinceDate:firstMeasurementDate];
+        float d3 = d1 + d2;
+        if (isnan(d3))
+                return 0.0;
+        else
+                return d3;
+}
+
+- (float)distDifferenceInRace {
+        CLLocation *pointOne = nil, *pointTwo = nil;
+        float elapsed = [[NSDate date] timeIntervalSinceDate:firstMeasurementDate];
+        float time = 0.0;
+        float distance = 0.0;
+        for (CLLocation *point in raceAgainstLocations) {
+                if (pointOne)
+                        time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
+                distance += [pointOne getDistanceFrom:point];
+                if (time <= elapsed)
+                        pointOne = point;
+                else {
+                        pointTwo = point;
+                        break;
+                }
+        }
+        float timeDiff = time - elapsed;
+        float fact = timeDiff / [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
+        float distDiff = [pointOne getDistanceFrom:pointTwo];
+        float d1 = distDiff * fact + (totalDistance - distance);
+        if (isnan(d1))
+                return 0.0;
+        else
+                return d1;
 }
 
 @end
