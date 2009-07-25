@@ -8,19 +8,25 @@
 
 #import <UIKit/UIKit.h>
 #import "SKPSMTPMessage.h"
+#import "GPXReader.h"
 
 @interface SendFilesViewController : UIViewController <SKPSMTPMessageDelegate> {
         NSMutableArray *files;
         NSMutableArray *sections;
         NSString *documentsDirectory;
         UITableView *tableView;
+        UIBarButtonItem *emailButton, *raceButton, *trashButton;
 }
 
 @property (retain, nonatomic) IBOutlet UITableView *tableView;
+@property (retain, nonatomic) IBOutlet UIBarButtonItem *emailButton;
+@property (retain, nonatomic) IBOutlet UIBarButtonItem *raceButton;
+@property (retain, nonatomic) IBOutlet UIBarButtonItem *trashButton;
 
 - (IBAction) switchToGPSView:(id)sender;
 - (IBAction) deleteFile:(id)sender;
 - (IBAction) sendFile:(id)sender;
+- (IBAction) raceAgainstFile:(id)sender;
 - (void) refresh;
 
 @end

@@ -67,7 +67,7 @@
         [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
         [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
         NSMutableString *gpxData = [NSMutableString string];
-        [gpxData appendString:@"<?xml version='1.0' encoding='ASCII' standalone='yes'?>\n"];
+        [gpxData appendString:@"<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\n"];
         [gpxData appendString:@"<gpx version='1.1' creator='Glint http://glint.nym.se/' xmlns='http://www.topografix.com/GPX/1/1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd'>\n"];
         [gpxData appendFormat:@"  <!-- [numPoints]%d[/numPoints] -->\n", numPoints];
         [gpxData appendFormat:@"  <!-- [totalDistance]%f[/totalDistance] -->\n", totalDistance];

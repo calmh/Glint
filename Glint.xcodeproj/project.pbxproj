@@ -14,6 +14,7 @@
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* MainScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MainScreenViewController.m */; };
+		29001EE8101B7E2400B22F74 /* GPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29001EE7101B7E2400B22F74 /* GPXReader.m */; };
 		291C24D510011B7B0086EE86 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 291C24D410011B7B0086EE86 /* unitsets.plist */; };
 		29874F9A0FF776EB0080E20D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
 		29C7910510027A8E00EA28CC /* CompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* CompassView.m */; };
@@ -46,6 +47,8 @@
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = Resources/MainWindow.xib; sourceTree = "<group>"; };
 		28D7ACF60DDB3853001CB0EB /* MainScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScreenViewController.h; sourceTree = "<group>"; };
 		28D7ACF70DDB3853001CB0EB /* MainScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScreenViewController.m; sourceTree = "<group>"; };
+		29001EE6101B7E2300B22F74 /* GPXReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPXReader.h; sourceTree = "<group>"; };
+		29001EE7101B7E2400B22F74 /* GPXReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPXReader.m; sourceTree = "<group>"; };
 		291C24D410011B7B0086EE86 /* unitsets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = unitsets.plist; sourceTree = "<group>"; };
 		29874F990FF776EB0080E20D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -103,16 +106,18 @@
 			children = (
 				29FE31E90FF435DB00E9FE05 /* JBSoundEffect.h */,
 				29FE31EA0FF435DB00E9FE05 /* JBSoundEffect.m */,
+				29001EE6101B7E2300B22F74 /* GPXReader.h */,
+				29001EE7101B7E2400B22F74 /* GPXReader.m */,
+				29CE3C9310079BAD00AEC5A4 /* GPXWriter.h */,
+				29CE3C9410079BAD00AEC5A4 /* GPXWriter.m */,
 				1D3623240D0F684500981E51 /* GlintAppDelegate.h */,
 				1D3623250D0F684500981E51 /* GlintAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* MainScreenViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* MainScreenViewController.m */,
-				29C7910310027A8E00EA28CC /* CompassView.h */,
-				29C7910410027A8E00EA28CC /* CompassView.m */,
-				29CE3C9310079BAD00AEC5A4 /* GPXWriter.h */,
-				29CE3C9410079BAD00AEC5A4 /* GPXWriter.m */,
 				29CD711C100FB9F2001150A1 /* SendFilesViewController.h */,
 				29CD711D100FB9F2001150A1 /* SendFilesViewController.m */,
+				29C7910310027A8E00EA28CC /* CompassView.h */,
+				29C7910410027A8E00EA28CC /* CompassView.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -276,6 +281,7 @@
 				29CD710A100FB74A001150A1 /* HSK_CFUtilities.m in Sources */,
 				29CD710E100FB766001150A1 /* Base64Transcoder.m in Sources */,
 				29CD711F100FB9F2001150A1 /* SendFilesViewController.m in Sources */,
+				29001EE8101B7E2400B22F74 /* GPXReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

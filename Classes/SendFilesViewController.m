@@ -21,7 +21,7 @@
 
 @implementation SendFilesViewController
 
-@synthesize tableView;
+@synthesize tableView, emailButton, raceButton, trashButton;
 
 - (void)dealloc {
         [files release];
@@ -32,6 +32,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+        emailButton.title = NSLocalizedString(@"Email",nil);
+        raceButton.title = NSLocalizedString(@"Race against",nil);
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
         documentsDirectory = [paths objectAtIndex:0];
         [documentsDirectory retain];
@@ -53,6 +55,9 @@
         }
 
         [tableView reloadData];
+        emailButton.enabled = NO;
+        raceButton.enabled = NO;
+        trashButton.enabled = NO;
 }
 
 /*
@@ -69,7 +74,10 @@
                 NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];
                 [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, file] error:nil];
                 [self refresh];
-                [tableView selectRowAtIndexPath:p animated:YES scrollPosition:UITableViewScrollPositionNone];
+                emailButton.enabled = NO;
+                raceButton.enabled = NO;
+                trashButton.enabled = NO;
+                //[tableView selectRowAtIndexPath:p animated:YES scrollPosition:UITableViewScrollPositionNone];
         }
 }
 
@@ -115,15 +123,25 @@
         }
 }
 
+- (IBAction) raceAgainstFile:(id)sender {
+        if ([tableView indexPathForSelectedRow]) {
+                NSIndexPath *p = [tableView indexPathForSelectedRow];
+                NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];
+                GPXReader *reader = [[GPXReader alloc] initWithFilename:[NSString stringWithFormat:@"%@/%@", documentsDirectory, file]];
+                [(GlintAppDelegate*) [[UIApplication sharedApplication] delegate] setRaceAgainstLocations:[reader locations]];
+                [self switchToGPSView:sender];
+        }
+}
+
 /*
- * UITableView delegate stuff
+ * UITableViewDatasource stuff
  */
 
 - (UITableViewCell *)tableView:(UITableView *)tView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MyIdentifier"];
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GPXFileItem"];
         if (cell == nil) {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"MyIdentifier"] autorelease];
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"GPXFileItem"] autorelease];
         }
         NSString *fileName = [[files objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         cell.textLabel.text = [self descriptionForFile:fileName];
@@ -261,6 +279,22 @@
 #endif
         
         return [NSString stringWithFormat:@"%@, %d points", [self formatDistance:distance], numPoints];
+}
+
+/*
+ * UITableViewDelegate stuff
+ */
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+        emailButton.enabled = YES;
+        raceButton.enabled = YES;
+        trashButton.enabled = YES;
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+        emailButton.enabled = NO;
+        raceButton.enabled = NO;
+        trashButton.enabled = NO;
 }
 
 @end

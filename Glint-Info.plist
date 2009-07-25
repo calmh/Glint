@@ -29,7 +29,7 @@
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackOpaque</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.1</string>
+	<string>1.2.0</string>
 	<key>UIPrerenderedIcon</key>
 	<false/>
 </dict>

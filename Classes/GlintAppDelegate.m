@@ -71,6 +71,10 @@
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
 }
 
+- (void)setRaceAgainstLocations:(NSArray*)locations {
+        [[self mainScreenViewController] setRaceAgainstLocations:locations];
+}
+
 - (void)dealloc {
         [window release];
         [mainScreenViewController release];

@@ -12,7 +12,7 @@
 // Private methods
 //
 @interface MainScreenViewController ()
-- (NSString*)formatTimestamp:(float)seconds maxTime:(float)max;
+- (NSString*)formatTimestamp:(float)seconds maxTime:(float)max allowNegatives:(bool)allowNegatives;
 - (NSString*) formatDMS:(float)latLong;
 - (NSString*)formatLat:(float)lat;
 - (NSString*)formatLon:(float)lon;
@@ -61,6 +61,7 @@
         [firstMeasurementDate release];
         [lastMeasurementDate release];
         [previousMeasurement release];
+        [raceAgainstLocations release];
         [super dealloc];
 }
 
@@ -78,6 +79,7 @@
         lockTimer = nil;
         previousMeasurement = nil;
         gpsEnabled = YES;
+        raceAgainstLocations = nil;
         
         UIBarButtonItem *unlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock", @"Unlock") style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
         UIBarButtonItem *disabledUnlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock", @"Unlock") style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
@@ -102,7 +104,6 @@
         self.elapsedTimeDescrLabel.text = NSLocalizedString(@"elapsed", nil);
         self.totalDistanceDescrLabel.text = NSLocalizedString(@"total distance", nil);
         self.currentSpeedDescrLabel.text = NSLocalizedString(@"cur speed", nil);
-        self.averageSpeedDescrLabel.text = NSLocalizedString(@"avg speed", nil);
         
         self.positionLabel.text = @"-";
         self.accuracyLabel.text = @"-";
@@ -136,6 +137,63 @@
         [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
         
         [super viewWillDisappear:animated];
+}
+
+- (void)setRaceAgainstLocations:(NSArray*)locations {
+        raceAgainstLocations = [locations retain];
+}
+
+- (float)timeDifferenceInRace {
+        CLLocation *pointOne = nil, *pointTwo = nil;
+        float distance = 0.0;
+        float time = 0.0;
+        for (CLLocation *point in raceAgainstLocations) {
+                if (pointOne)
+                        time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
+                distance += [pointOne getDistanceFrom:point];
+                if (distance <= totalDistance)
+                        pointOne = point;
+                else {
+                        pointTwo = point;
+                        break;
+                }
+        }
+        float distDiff = totalDistance - distance;
+        float fact = distDiff / [pointOne getDistanceFrom:pointTwo];
+        float timeDiff = [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
+        float d1 =  timeDiff * fact;
+        float d2 = time - [[NSDate date] timeIntervalSinceDate:firstMeasurementDate];
+        float d3 = d1 + d2;
+        if (isnan(d3))
+                return 0.0;
+        else
+                return d3;
+}
+
+- (float)distDifferenceInRace {
+        CLLocation *pointOne = nil, *pointTwo = nil;
+        float elapsed = [[NSDate date] timeIntervalSinceDate:firstMeasurementDate];
+        float time = 0.0;
+        float distance = 0.0;
+        for (CLLocation *point in raceAgainstLocations) {
+                if (pointOne)
+                        time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
+                distance += [pointOne getDistanceFrom:point];
+                if (time <= elapsed)
+                        pointOne = point;
+                else {
+                        pointTwo = point;
+                        break;
+                }
+        }
+        float timeDiff = time - elapsed;
+        float fact = timeDiff / [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
+        float distDiff = [pointOne getDistanceFrom:pointTwo];
+        float d1 = distDiff * fact + (totalDistance - distance);
+        if (isnan(d1))
+                return 0.0;
+        else
+                return d1;
 }
 
 /*
@@ -241,15 +299,25 @@
 // Private methods
 //
 
-- (NSString*)formatTimestamp:(float)seconds maxTime:(float)max {
-        if (seconds > max || seconds < 0)
+- (NSString*)formatTimestamp:(float)seconds maxTime:(float)max allowNegatives:(bool)allowNegatives {
+        bool negative = NO;
+        if (seconds > max || !allowNegatives && seconds < 0)
                 return [NSString stringWithFormat:@"?"];
         else {
+                if (seconds < 0) {
+                        seconds = -seconds;
+                        negative = YES;
+                }
                 int isec = (int) seconds;
                 int hour = (int) (isec / 3600);
                 int min = (int) ((isec % 3600) / 60);
                 int sec = (int) (isec % 60);
-                return [NSString stringWithFormat:@"%02d:%02d:%02d", hour, min, sec];
+                if (allowNegatives && !negative)
+                        return [NSString stringWithFormat:@"+%02d:%02d:%02d", hour, min, sec];
+                else if (negative)
+                        return [NSString stringWithFormat:@"-%02d:%02d:%02d", hour, min, sec];
+                else
+                        return [NSString stringWithFormat:@"%02d:%02d:%02d", hour, min, sec];
         }
 }
 
@@ -423,12 +491,7 @@
         }
         
         if (firstMeasurementDate)
-                self.elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] maxTime:86400];
-        
-        float averageSpeed = 0.0;
-        if (firstMeasurementDate && lastMeasurementDate)
-                averageSpeed  = totalDistance / [lastMeasurementDate timeIntervalSinceDate:firstMeasurementDate];
-        self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, averageSpeed*speedFactor];
+                self.elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] maxTime:86400 allowNegatives:NO];
         
         self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, totalDistance*distFactor];
         
@@ -442,10 +505,37 @@
         else if (currentDataSource == kGlintDataSourceTimer)
                 self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
         
-        float secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / currentSpeed;
-        self.currentTimePerDistanceLabel.text = [self formatTimestamp:secsPerEstDist maxTime:86400];
-        NSString *distStr = [NSString stringWithFormat:distFormat, USERPREF_ESTIMATE_DISTANCE*distFactor*1000.0];
-        self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
+        if (!raceAgainstLocations) {
+                float averageSpeed = 0.0;
+                if (firstMeasurementDate && lastMeasurementDate)
+                        averageSpeed  = totalDistance / [lastMeasurementDate timeIntervalSinceDate:firstMeasurementDate];
+                self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, averageSpeed*speedFactor];
+                self.averageSpeedDescrLabel.text = NSLocalizedString(@"avg speed", nil);
+                self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
+
+                float secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / currentSpeed;
+                self.currentTimePerDistanceLabel.text = [self formatTimestamp:secsPerEstDist maxTime:86400 allowNegatives:NO];
+                NSString *distStr = [NSString stringWithFormat:distFormat, USERPREF_ESTIMATE_DISTANCE*distFactor*1000.0];
+                self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
+                self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0 green:0xFF/255.0 blue:0xCC/255.0 alpha:1.0];
+        } else {
+                float distDiff = [self distDifferenceInRace];
+                NSString *distString = [NSString stringWithFormat:distFormat, distDiff*distFactor];
+                self.averageSpeedLabel.text = [distDiff < 0.0 ? @"" : @"+" stringByAppendingString:distString];
+                self.averageSpeedDescrLabel.text = NSLocalizedString(@"dist diff", nil);
+                if (distDiff < 0.0)
+                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0xCC/255.0 blue:0xCC/255.0 alpha:1.0];
+                else
+                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0xCC/255.0 alpha:1.0];
+                
+                float timeDiff = [self timeDifferenceInRace];
+                self.currentTimePerDistanceLabel.text = [self formatTimestamp:timeDiff maxTime:86400 allowNegatives:YES];
+                self.currentTimePerDistanceDescrLabel.text = NSLocalizedString(@"time diff", nil);
+                if (timeDiff < 0.0)
+                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0xCC/255.0 blue:0xCC/255.0 alpha:1.0];
+                else
+                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0xCC/255.0 alpha:1.0];
+        }
         
         if (gpxWriter)
                 self.statusLabel.text = [NSString stringWithFormat:@"%04d %@", [gpxWriter numberOfTrackPoints], NSLocalizedString(@"measurements", @"measurements")];

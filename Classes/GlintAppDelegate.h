@@ -22,6 +22,7 @@
 
 - (IBAction) switchToSendFilesView:(id)sender;
 - (IBAction) switchToGPSView:(id)sender;
+- (void)setRaceAgainstLocations:(NSArray*)locations;
 
 @end
 

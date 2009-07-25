@@ -40,6 +40,8 @@
 "avg speed" = "genomsn. hast.";
 "measurements" = "mätningar";
 "per" = "per";
+"dist diff" = "distansskillnad";
+"time diff" = "tidsskillnad";
 
 "Files" = "Filer";
 "Record" = "Spela in";
@@ -62,3 +64,5 @@
 "Last Week" = "Förra veckan";
 "This Month" = "Denna månad";
 "Earlier" = "Tidigare";
+"Email" = "Eposta";
+"Race against" = "Tävla mot";
