@@ -140,7 +140,10 @@
 }
 
 - (void)setRaceAgainstLocations:(NSArray*)locations {
-        raceAgainstLocations = [locations retain];
+        if (raceAgainstLocations != locations) {
+                [raceAgainstLocations release];
+                raceAgainstLocations = [locations retain];
+        }
 }
 
 - (float)timeDifferenceInRace {

@@ -129,6 +129,7 @@
                 NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];
                 GPXReader *reader = [[GPXReader alloc] initWithFilename:[NSString stringWithFormat:@"%@/%@", documentsDirectory, file]];
                 [(GlintAppDelegate*) [[UIApplication sharedApplication] delegate] setRaceAgainstLocations:[reader locations]];
+                [reader release];
                 [self switchToGPSView:sender];
         }
 }
