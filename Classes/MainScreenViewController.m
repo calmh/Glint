@@ -325,10 +325,14 @@
         static BOOL powersave = NO;
         NSDate *now = [NSDate date];
         
+        // Load user preferences the first time we need them.
+        
         if (averageInterval == 0.0) {
                 averageInterval = USERPREF_MEASUREMENT_INTERVAL;
                 powersave = USERPREF_POWERSAVE;
         }
+        
+        // Check if the GPS is disabled, and if so if we should enable it to do a measurement.
         
         if (!gpsEnabled) {
                 if ([now timeIntervalSinceDate:lastWrittenDate] > averageInterval-10 // It is soon time for a new measurement
@@ -336,6 +340,10 @@
                         [self enableGPS];
                 return;
         }
+        
+        // Check if it's time to save a trackpoint, and if we have enough precision.
+        // If so, save it. If we dont have enough precision, create a break in the
+        // track segment so this is reflected in the saved file.
         
         CLLocation *current = locationManager.location;
         NSLog([locationManager.location description]);
@@ -352,6 +360,8 @@
                         NSLog(@"Bad precision, waiting for waypoint");                        
                 }
         }
+        
+        // If the main screen statistics haven't been updated for a long time, do so now.
         
         if (previousMeasurement && [previousMeasurement.timestamp timeIntervalSinceNow] < -FORCE_POSITION_UPDATE_INTERVAL && [self precisionAcceptable:current]) {
                 @synchronized (self) {
@@ -381,8 +391,13 @@
         static NSString *speedFormat = nil;
         static BOOL sounds;
         
+        // Don't update the display if it's turned off by the proximity sensor.
+        // Saves CPU cycles and battery time, I hope.
+        
         if ([[UIDevice currentDevice] proximityState])
                 return;
+        
+        // Load units the first time we need them
         
         if (distFactor == 0) {
                 int unitsetIndex = USERPREF_UNITSET;
@@ -399,6 +414,9 @@
 #else
         bool stateGood = [self precisionAcceptable:locationManager.location];
 #endif
+        
+        // Update color of signal indicator, play sound on change
+        
         if (!gpsEnabled)
                 self.signalIndicator.textColor = [UIColor grayColor];
         else {
@@ -419,6 +437,8 @@
         CLLocation *current = locationManager.location;
         [current retain];
         
+        // Position and accuracy
+        
         if (current) {
                 self.positionLabel.text = [NSString stringWithFormat:@"%@\n%@\nelev %.0f m", [self formatLat: current.coordinate.latitude], [self formatLon: current.coordinate.longitude], current.altitude];
                 self.positionLabel.textColor = [UIColor whiteColor];
@@ -432,10 +452,16 @@
                 self.accuracyLabel.textColor = [UIColor grayColor];
         }
         
+        // Timer
+        
         if (firstMeasurementDate)
                 self.elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] maxTime:86400 allowNegatives:NO];
         
+        // Total distance
+        
         self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, totalDistance*distFactor];
+        
+        // Current speed
         
         if (currentSpeed >= 0.0)
                 self.currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, currentSpeed*speedFactor];
@@ -448,7 +474,9 @@
                 self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
         
         if (!raceAgainstLocations) {
-                // Show average speed and time per configured distance
+                
+                // Average speed and time per configured distance
+                
                 float averageSpeed = 0.0;
                 if (firstMeasurementDate && lastMeasurementDate)
                         averageSpeed  = totalDistance / [lastMeasurementDate timeIntervalSinceDate:firstMeasurementDate];
@@ -462,7 +490,9 @@
                 self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
                 self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0 green:0xFF/255.0 blue:0xCC/255.0 alpha:1.0];
         } else {
-                // Show difference in time and distance against raceAgainstLocations.
+                
+                // Difference in time and distance against raceAgainstLocations.
+                
                 float distDiff = [self distDifferenceInRace];
                 if (!isnan(distDiff)) {
                         NSString *distString = [NSString stringWithFormat:distFormat, distDiff*distFactor];
@@ -485,8 +515,12 @@
                         self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x88/255.0 green:0xFF/255.0 blue:0x88/255.0 alpha:1.0];
         }
         
+        // Number of saved measurements
+        
         if (gpxWriter)
                 self.statusLabel.text = [NSString stringWithFormat:@"%04d %@", [gpxWriter numberOfTrackPoints], NSLocalizedString(@"measurements", @"measurements")];
+        
+        // Current course
         
         if (currentCourse >= 0.0)
                 self.compass.course = currentCourse;

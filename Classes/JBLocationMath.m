@@ -28,8 +28,9 @@
         CLLocation *locW = [[[CLLocation alloc] initWithLatitude:0.0 longitude:-10.0] autorelease]; // 10.0 W
         CLLocation *locNE = [[[CLLocation alloc] initWithLatitude:10.0 longitude:10.0] autorelease]; // 10.0 N, 10.0 E
         CLLocation *locSW = [[[CLLocation alloc] initWithLatitude:-10.0 longitude:-10.0] autorelease]; // 10.0 S, 10.0 W
-        
         float result;
+        
+        // Check basic bearings
         result = [self bearingFromLocation:locN toLocation:locS];
         NSAssert(result == 180.0, @"Bearing N-S incorrect");
         result = [self bearingFromLocation:locS toLocation:locN];
@@ -43,6 +44,7 @@
         result = [self bearingFromLocation:locNE toLocation:locSW];
         NSAssert(result > 224.0 && result < 226.0, @"Bearing SW-NE incorrect");
         
+        // Check random bearings from actual data
         GPXReader *reader = [[GPXReader alloc] initWithFilename:[[NSBundle mainBundle] pathForResource:@"reference" ofType:@"gpx"]];
         NSArray *locations = [reader locations];
         NSAssert([locations count] == 47, @"Wrong number of trackpoints in reference.gpx");
@@ -51,6 +53,7 @@
         result = [self bearingFromLocation:[locations objectAtIndex:1] toLocation:[locations objectAtIndex:46]];
         NSAssert(result > 110.0 && result < 112.0, @"Bearing [1]-[46] incorrect");
         
+        // Check distance->time interpolation
         result  = [self timeAtLocationByDistance:200.0 inLocations:locations];
         NSAssert(result > 173.0 && result < 175.0, @"Time to 200 m incorrect");
         result  = [self timeAtLocationByDistance:400.0 inLocations:locations];
@@ -60,6 +63,7 @@
         result  = [self timeAtLocationByDistance:600.0 inLocations:locations];
         NSAssert(isnan(result), @"Time to 600 m incorrect");
         
+        // Check time->distance interpolation
         result  = [self distanceAtPointInTime:174 inLocations:locations];
         NSAssert(result > 199.0 && result < 201.0, @"Distance at 174 sek incorrect");
         result  = [self distanceAtPointInTime:521 inLocations:locations];
@@ -88,18 +92,20 @@
         float y = cos(x1) * sin(x2) - sin(x1) * cos(x2) * cos(y2-y1);
         float x = sin(y2-y1) * cos(x2);
         float t = atan2(y, x);
-        float b = t / M_PI * 180.0 + 360.0;
-        if (b >= 360.0)
-                b -= 360.0;
-        return b;
+        float bearing = t / M_PI * 180.0 + 360.0;
+        if (bearing >= 360.0)
+                bearing -= 360.0;
+        return bearing;
 }
 
 - (float)distanceAtPointInTime:(float)targetTime inLocations:(NSArray*)locations {
         if (isnan(targetTime) || targetTime < 0.0)
                 return NAN;
+        
         CLLocation *pointOne = nil, *pointTwo = nil;
         float distance = 0.0;
         float time = 0.0;
+        
         for (CLLocation *point in locations) {
                 if (pointOne) {
                         time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
@@ -123,9 +129,11 @@
 - (float)timeAtLocationByDistance:(float)targetDistance inLocations:(NSArray*)locations {
         if (isnan(targetDistance) || targetDistance < 0.0)
                 return NAN;
+        
         CLLocation *pointOne = nil, *pointTwo = nil;
         float time = 0.0;
         float distance = 0.0;
+        
         for (CLLocation *point in locations) {
                 if (pointOne) {
                         time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];

@@ -37,12 +37,17 @@
                         NSLog([[parser parserError] description]);
                 }
                 [parser release];
+                // Release any left over stuff from parsing a strange file
+                [lastReadDate release];
         }
         return self;
 }
 
 - (NSArray*)locations {
-        return [NSArray arrayWithArray:locations];
+        if ([locations count] > 0)
+                return [NSArray arrayWithArray:locations];
+        else
+                return nil;
 }
 
 /*
