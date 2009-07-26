@@ -18,6 +18,7 @@
 		291C24D510011B7B0086EE86 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 291C24D410011B7B0086EE86 /* unitsets.plist */; };
 		2974372C101C617F00DDBB6A /* reference.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2974372B101C617F00DDBB6A /* reference.gpx */; };
 		2974373F101C61A700DDBB6A /* JBLocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2974373E101C61A700DDBB6A /* JBLocationMath.m */; };
+		2974387E101C727800DDBB6A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2974387D101C727800DDBB6A /* Default.png */; };
 		29874F9A0FF776EB0080E20D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
 		29C7910510027A8E00EA28CC /* CompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* CompassView.m */; };
 		29C9A4F51011E9CA004CCBDD /* MainScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */; };
@@ -55,6 +56,7 @@
 		2974372B101C617F00DDBB6A /* reference.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference.gpx; path = Resources/reference.gpx; sourceTree = "<group>"; };
 		2974373D101C61A700DDBB6A /* JBLocationMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBLocationMath.h; sourceTree = "<group>"; };
 		2974373E101C61A700DDBB6A /* JBLocationMath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBLocationMath.m; sourceTree = "<group>"; };
+		2974387D101C727800DDBB6A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		29874F990FF776EB0080E20D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29C7910310027A8E00EA28CC /* CompassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompassView.h; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				29FE31DD0FF4359D00E9FE05 /* Basso.aiff */,
 				29FE31E00FF4359D00E9FE05 /* Purr.aiff */,
 				2974372B101C617F00DDBB6A /* reference.gpx */,
+				2974387D101C727800DDBB6A /* Default.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				29D191951011E2DA00B9E8CF /* Localizable.strings in Resources */,
 				29C9A4F51011E9CA004CCBDD /* MainScreenViewController.xib in Resources */,
 				2974372C101C617F00DDBB6A /* reference.gpx in Resources */,
+				2974387E101C727800DDBB6A /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,7 +345,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -369,7 +373,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
@@ -385,7 +389,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;

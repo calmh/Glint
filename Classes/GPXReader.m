@@ -21,8 +21,14 @@
                 locations = [[NSMutableArray alloc] init];
                 lastReadLat = lastReadLon = 0.0;
                 lastReadDate = nil;
-                currentlyReadingTime = NO;    
-                NSData *data = [[NSData alloc] initWithContentsOfFile:filename];
+                currentlyReadingTime = NO;
+                
+                // NSXMLParser can't handle encoding='ASCII' that I used when writing GPX files.
+                // So we change it to encoding='UTF-8'. The files are anyway guaranteed not to contain other characters.
+                NSString *fileContents = [NSString stringWithContentsOfFile:filename encoding:NSUTF8StringEncoding error:nil];
+                NSString *verifiedContents = [fileContents stringByReplacingOccurrencesOfString:@"encoding='ASCII'" withString:@"encoding='UTF-8'"];
+                
+                NSData *data = [verifiedContents dataUsingEncoding:NSUTF8StringEncoding];
                 NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
                 [parser setShouldProcessNamespaces:NO];
                 [parser setShouldResolveExternalEntities:NO];
@@ -31,7 +37,6 @@
                         NSLog([[parser parserError] description]);
                 }
                 [parser release];
-                [data release];
         }
         return self;
 }

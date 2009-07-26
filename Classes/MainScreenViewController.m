@@ -156,7 +156,7 @@
            fromLocation:(CLLocation *)oldLocation
 {
 #ifdef SCREENSHOT
-        totalDistance = 1632.0;
+        totalDistance = 2132.0;
         currentCourse = 275.0;
         currentSpeed = 3.2;
         currentDataSource = kGlintDataSourceMovement;
@@ -472,17 +472,17 @@
                 }
                 self.averageSpeedDescrLabel.text = NSLocalizedString(@"dist diff", nil);
                 if (distDiff < 0.0)
-                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0xCC/255.0 blue:0xCC/255.0 alpha:1.0];
+                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x88/255.0 blue:0x88/255.0 alpha:1.0];
                 else
-                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0xCC/255.0 alpha:1.0];
+                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0x88/255.0 green:0xFF/255.0 blue:0x88/255.0 alpha:1.0];
                 
                 float timeDiff = [self timeDifferenceInRace];
                 self.currentTimePerDistanceLabel.text = [self formatTimestamp:timeDiff maxTime:86400 allowNegatives:YES];
                 self.currentTimePerDistanceDescrLabel.text = NSLocalizedString(@"time diff", nil);
                 if (timeDiff > 0.0)
-                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0xCC/255.0 blue:0xCC/255.0 alpha:1.0];
+                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x88/255.0 blue:0x88/255.0 alpha:1.0];
                 else
-                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0xCC/255.0 alpha:1.0];
+                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x88/255.0 green:0xFF/255.0 blue:0x88/255.0 alpha:1.0];
         }
         
         if (gpxWriter)
