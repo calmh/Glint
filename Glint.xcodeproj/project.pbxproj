@@ -16,6 +16,8 @@
 		28D7ACF80DDB3853001CB0EB /* MainScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MainScreenViewController.m */; };
 		29001EE8101B7E2400B22F74 /* GPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29001EE7101B7E2400B22F74 /* GPXReader.m */; };
 		291C24D510011B7B0086EE86 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 291C24D410011B7B0086EE86 /* unitsets.plist */; };
+		2974372C101C617F00DDBB6A /* reference.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2974372B101C617F00DDBB6A /* reference.gpx */; };
+		2974373F101C61A700DDBB6A /* JBLocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2974373E101C61A700DDBB6A /* JBLocationMath.m */; };
 		29874F9A0FF776EB0080E20D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
 		29C7910510027A8E00EA28CC /* CompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* CompassView.m */; };
 		29C9A4F51011E9CA004CCBDD /* MainScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */; };
@@ -50,6 +52,9 @@
 		29001EE6101B7E2300B22F74 /* GPXReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPXReader.h; sourceTree = "<group>"; };
 		29001EE7101B7E2400B22F74 /* GPXReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPXReader.m; sourceTree = "<group>"; };
 		291C24D410011B7B0086EE86 /* unitsets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = unitsets.plist; sourceTree = "<group>"; };
+		2974372B101C617F00DDBB6A /* reference.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference.gpx; path = Resources/reference.gpx; sourceTree = "<group>"; };
+		2974373D101C61A700DDBB6A /* JBLocationMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBLocationMath.h; sourceTree = "<group>"; };
+		2974373E101C61A700DDBB6A /* JBLocationMath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBLocationMath.m; sourceTree = "<group>"; };
 		29874F990FF776EB0080E20D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29C7910310027A8E00EA28CC /* CompassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompassView.h; sourceTree = "<group>"; };
@@ -106,6 +111,8 @@
 			children = (
 				29FE31E90FF435DB00E9FE05 /* JBSoundEffect.h */,
 				29FE31EA0FF435DB00E9FE05 /* JBSoundEffect.m */,
+				2974373D101C61A700DDBB6A /* JBLocationMath.h */,
+				2974373E101C61A700DDBB6A /* JBLocationMath.m */,
 				29001EE6101B7E2300B22F74 /* GPXReader.h */,
 				29001EE7101B7E2400B22F74 /* GPXReader.m */,
 				29CE3C9310079BAD00AEC5A4 /* GPXWriter.h */,
@@ -165,6 +172,7 @@
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				29FE31DD0FF4359D00E9FE05 /* Basso.aiff */,
 				29FE31E00FF4359D00E9FE05 /* Purr.aiff */,
+				2974372B101C617F00DDBB6A /* reference.gpx */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -259,6 +267,7 @@
 				29CD7120100FB9F2001150A1 /* SendFilesViewController.xib in Resources */,
 				29D191951011E2DA00B9E8CF /* Localizable.strings in Resources */,
 				29C9A4F51011E9CA004CCBDD /* MainScreenViewController.xib in Resources */,
+				2974372C101C617F00DDBB6A /* reference.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +291,7 @@
 				29CD710E100FB766001150A1 /* Base64Transcoder.m in Sources */,
 				29CD711F100FB9F2001150A1 /* SendFilesViewController.m in Sources */,
 				29001EE8101B7E2400B22F74 /* GPXReader.m in Sources */,
+				2974373F101C61A700DDBB6A /* JBLocationMath.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

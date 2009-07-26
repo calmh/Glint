@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "JBSoundEffect.h"
+#import "JBLocationMath.h"
 #import "CompassView.h"
 #import "GPXWriter.h"
 #import "GlintAppDelegate.h"
@@ -20,6 +21,7 @@ typedef enum enumGlintDataSource {
 
 @interface MainScreenViewController : UIViewController  <CLLocationManagerDelegate> {
         CLLocationManager *locationManager;
+        JBLocationMath *locationMath;
         NSArray *unitSets;
         GPXWriter *gpxWriter;
         NSDate *firstMeasurementDate;

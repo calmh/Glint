@@ -17,11 +17,8 @@
 - (NSString*)formatLat:(float)lat;
 - (NSString*)formatLon:(float)lon;
 - (bool)precisionAcceptable:(CLLocation*)location;
-- (float)speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
-- (float)bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2;
 - (void)enableGPS;
 - (void)disableGPS;
-- (void)tests;
 - (float)timeDifferenceInRace;
 - (float)distDifferenceInRace;
 @end
@@ -58,6 +55,7 @@
         self.averageSpeedDescrLabel = nil;
         
         [locationManager release];
+        [locationMath release];
         [goodSound release];
         [badSound release];
         [firstMeasurementDate release];
@@ -70,6 +68,7 @@
 - (void)viewDidLoad {
         [super viewDidLoad];
         
+        locationMath = [[JBLocationMath alloc] init];
         badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
         goodSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
         firstMeasurementDate  = nil;
@@ -125,8 +124,6 @@
         [[NSRunLoop currentRunLoop] addTimer:averagedMeasurementTaker forMode:NSDefaultRunLoopMode];
         
         [self enableGPS];
-        
-        [self tests];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -176,8 +173,8 @@
                                 float dist = [previousMeasurement getDistanceFrom:newLocation];
                                 if (dist > 25.0) {
                                         totalDistance += dist;
-                                        currentCourse = [self bearingFromLocation:previousMeasurement toLocation:newLocation];
-                                        currentSpeed = [self speedFromLocation:previousMeasurement toLocation:newLocation];
+                                        currentCourse = [locationMath bearingFromLocation:previousMeasurement toLocation:newLocation];
+                                        currentSpeed = [locationMath speedFromLocation:previousMeasurement toLocation:newLocation];
                                         [previousMeasurement release];
                                         previousMeasurement = [newLocation retain];
                                         currentDataSource = kGlintDataSourceMovement;
@@ -300,30 +297,6 @@
         return currentPrec > 0.0 && currentPrec <= minPrec;
 }
 
-- (float) speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB {
-        float td = [locA.timestamp timeIntervalSinceDate:locB.timestamp];
-        if (td < 0.0)
-                td = -td;
-        if (td == 0.0)
-                return 0.0;
-        float dist = [locA getDistanceFrom:locB];
-        return dist / td;
-}
-
-- (float) bearingFromLocation:(CLLocation*)loc1 toLocation:(CLLocation*)loc2 {
-        float y1 = loc1.coordinate.latitude / 180.0 * M_PI;
-        float x1 = loc1.coordinate.longitude / 180.0 * M_PI;
-        float y2 = loc2.coordinate.latitude / 180.0 * M_PI;
-        float x2 = loc2.coordinate.longitude / 180.0 * M_PI;
-        float y = cos(x1) * sin(x2) - sin(x1) * cos(x2) * cos(y2-y1);
-        float x = sin(y2-y1) * cos(x2);
-        float t = atan2(y, x);
-        float b = t / M_PI * 180.0 + 360.0;
-        if (b >= 360.0)
-                b -= 360.0;
-        return b;
-}
-
 /*
  * Background threads
  */
@@ -366,7 +339,7 @@
         if (previousMeasurement && [previousMeasurement.timestamp timeIntervalSinceNow] < -FORCE_POSITION_UPDATE_INTERVAL && [self precisionAcceptable:current]) {
                 @synchronized (self) {
                         totalDistance += [previousMeasurement getDistanceFrom:current];
-                        currentSpeed = [self speedFromLocation:previousMeasurement toLocation:current];
+                        currentSpeed = [locationMath speedFromLocation:previousMeasurement toLocation:current];
                         [previousMeasurement release];
                         previousMeasurement = [current retain];
                         currentDataSource = kGlintDataSourceTimer;
@@ -506,30 +479,6 @@
  * Private methods
  */
 
-- (void)tests {
-        CLLocation *locN = [[[CLLocation alloc] initWithLatitude:10.0 longitude:0.0] autorelease]; // 10.0 N
-        CLLocation *locS = [[[CLLocation alloc] initWithLatitude:-10.0 longitude:0.0] autorelease]; // 10.0 S
-        CLLocation *locE = [[[CLLocation alloc] initWithLatitude:0.0 longitude:10.0] autorelease]; // 10.0 E
-        CLLocation *locW = [[[CLLocation alloc] initWithLatitude:0.0 longitude:-10.0] autorelease]; // 10.0 W
-        CLLocation *locNE = [[[CLLocation alloc] initWithLatitude:10.0 longitude:10.0] autorelease]; // 10.0 N, 10.0 E
-        CLLocation *locSW = [[[CLLocation alloc] initWithLatitude:-10.0 longitude:-10.0] autorelease]; // 10.0 S, 10.0 W
-        
-        float bearing;
-        bearing = [self bearingFromLocation:locN toLocation:locS];
-        NSAssert(bearing == 180.0, @"Bearing N-S incorrect");
-        bearing = [self bearingFromLocation:locS toLocation:locN];
-        NSAssert(bearing == 0.0, @"Bearing S-N incorrect");
-        bearing = [self bearingFromLocation:locE toLocation:locW];
-        NSAssert(bearing == 270.0, @"Bearing E-W incorrect");
-        bearing = [self bearingFromLocation:locW toLocation:locE];
-        NSAssert(bearing == 90.0, @"Bearing W-E incorrect");
-        bearing = [self bearingFromLocation:locSW toLocation:locNE];
-        NSAssert(bearing > 44.0 && bearing < 46.0, @"Bearing SW-NE incorrect");
-        bearing = [self bearingFromLocation:locNE toLocation:locSW];
-        NSAssert(bearing > 224.0 && bearing < 226.0, @"Bearing SW-NE incorrect");
-}
-
-
 - (void)enableGPS {
         NSLog(@"Starting GPS");
         locationManager = [[CLLocationManager alloc] init];
@@ -550,56 +499,11 @@
 }
 
 - (float)timeDifferenceInRace {
-        CLLocation *pointOne = nil, *pointTwo = nil;
-        float distance = 0.0;
-        float time = 0.0;
-        for (CLLocation *point in raceAgainstLocations) {
-                if (pointOne)
-                        time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
-                distance += [pointOne getDistanceFrom:point];
-                if (distance <= totalDistance)
-                        pointOne = point;
-                else {
-                        pointTwo = point;
-                        break;
-                }
-        }
-        float distDiff = totalDistance - distance;
-        float fact = distDiff / [pointOne getDistanceFrom:pointTwo];
-        float timeDiff = [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
-        float d1 =  timeDiff * fact;
-        float d2 = time - [[NSDate date] timeIntervalSinceDate:firstMeasurementDate];
-        float d3 = d1 + d2;
-        if (isnan(d3))
-                return 0.0;
-        else
-                return d3;
+        return 0.0;
 }
 
 - (float)distDifferenceInRace {
-        CLLocation *pointOne = nil, *pointTwo = nil;
-        float elapsed = [[NSDate date] timeIntervalSinceDate:firstMeasurementDate];
-        float time = 0.0;
-        float distance = 0.0;
-        for (CLLocation *point in raceAgainstLocations) {
-                if (pointOne)
-                        time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
-                distance += [pointOne getDistanceFrom:point];
-                if (time <= elapsed)
-                        pointOne = point;
-                else {
-                        pointTwo = point;
-                        break;
-                }
-        }
-        float timeDiff = time - elapsed;
-        float fact = timeDiff / [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
-        float distDiff = [pointOne getDistanceFrom:pointTwo];
-        float d1 = distDiff * fact + (totalDistance - distance);
-        if (isnan(d1))
-                return 0.0;
-        else
-                return d1;
+        return 0.0;
 }
 
 @end
