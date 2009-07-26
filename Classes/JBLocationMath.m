@@ -45,7 +45,7 @@
         NSAssert(result > 224.0 && result < 226.0, @"Bearing SW-NE incorrect");
         
         // Check random bearings from actual data
-        GPXReader *reader = [[GPXReader alloc] initWithFilename:[[NSBundle mainBundle] pathForResource:@"reference" ofType:@"gpx"]];
+        JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:[[NSBundle mainBundle] pathForResource:@"reference" ofType:@"gpx"]];
         NSArray *locations = [reader locations];
         NSAssert([locations count] == 47, @"Wrong number of trackpoints in reference.gpx");
         result = [self bearingFromLocation:[locations objectAtIndex:0] toLocation:[locations objectAtIndex:1]];

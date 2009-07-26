@@ -244,7 +244,7 @@
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
                 NSString *documentsDirectory = [paths objectAtIndex:0];
                 NSString* filename = [NSString stringWithFormat:@"%@/track-%@.gpx", documentsDirectory, [formatter stringFromDate:[NSDate date]]];
-                gpxWriter = [[GPXWriter alloc] initWithFilename:filename];
+                gpxWriter = [[JBGPXWriter alloc] initWithFilename:filename];
                 [gpxWriter addTrackSegment];
         } else {
                 self.recordingIndicator.textColor = [UIColor grayColor];

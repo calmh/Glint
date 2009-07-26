@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface GPXWriter : NSObject {
+@interface JBGPXWriter : NSObject {
         NSString *filename;
         NSMutableArray *tracks;
         float minLon, minLat, maxLon, maxLat;

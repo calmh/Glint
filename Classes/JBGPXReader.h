@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-@interface GPXReader : NSObject {
+@interface JBGPXReader : NSObject {
         NSMutableArray *locations;
         
         NSDate *lastReadDate;

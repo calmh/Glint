@@ -11,7 +11,7 @@
 #import "JBSoundEffect.h"
 #import "JBLocationMath.h"
 #import "CompassView.h"
-#import "GPXWriter.h"
+#import "JBGPXWriter.h"
 #import "GlintAppDelegate.h"
 
 typedef enum enumGlintDataSource {
@@ -23,7 +23,7 @@ typedef enum enumGlintDataSource {
         CLLocationManager *locationManager;
         JBLocationMath *locationMath;
         NSArray *unitSets;
-        GPXWriter *gpxWriter;
+        JBGPXWriter *gpxWriter;
         NSDate *firstMeasurementDate;
         NSDate *lastMeasurementDate;
         CLLocation *previousMeasurement;

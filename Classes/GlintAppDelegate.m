@@ -54,7 +54,7 @@
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
                 NSString *documentsDirectory = [paths objectAtIndex:0];
                 NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, raceAgainstFile];
-                GPXReader *reader = [[GPXReader alloc] initWithFilename:fullPath];
+                JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:fullPath];
                 [mainScreenViewController setRaceAgainstLocations:[reader locations]];
                 [reader release];
         }

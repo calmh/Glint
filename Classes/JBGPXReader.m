@@ -6,9 +6,11 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import "GPXReader.h"
+#import "JBGPXReader.h"
 
-@implementation GPXReader
+@implementation JBGPXReader
+
+/* Tests on this implementation are run from JBLocationMath */
 
 - (void)dealloc {
         [locations release];

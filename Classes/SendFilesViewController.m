@@ -128,7 +128,7 @@
                 NSIndexPath *p = [tableView indexPathForSelectedRow];
                 NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];
                 NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
-                GPXReader *reader = [[GPXReader alloc] initWithFilename:fullPath];
+                JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:fullPath];
                 [(GlintAppDelegate*) [[UIApplication sharedApplication] delegate] setRaceAgainstLocations:[reader locations]];
                 [reader release];
                 [[NSUserDefaults standardUserDefaults] setValue:file forKey:@"raceAgainstFile"];

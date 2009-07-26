@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SKPSMTPMessage.h"
-#import "GPXReader.h"
+#import "JBGPXReader.h"
 
 @interface SendFilesViewController : UIViewController <SKPSMTPMessageDelegate> {
         NSMutableArray *files;
