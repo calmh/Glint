@@ -35,8 +35,7 @@ typedef enum enumGlintDataSource {
         float currentSpeed;
         BOOL gpsEnabled;
         NSArray *lockedToolbarItems;
-        NSArray *recordingToolbarItems;
-        NSArray *pausedToolbarItems;
+        NSArray *unlockedToolbarItems;
         NSTimer *lockTimer;
         NSArray *raceAgainstLocations;
 
@@ -85,5 +84,6 @@ typedef enum enumGlintDataSource {
 - (IBAction)startStopRecording:(id)sender;
 - (IBAction)unlock:(id)sender;
 - (void)setRaceAgainstLocations:(NSArray*)locations;
+- (IBAction)endRace:(id)sender;
 
 @end

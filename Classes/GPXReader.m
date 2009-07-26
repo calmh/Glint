@@ -49,7 +49,6 @@ didStartElement:(NSString *)elementName
   namespaceURI:(NSString *)namespaceURI
  qualifiedName:(NSString *)qualifiedName
     attributes:(NSDictionary *)attributeDict {
-        NSLog(@"XML: Start of element: %@", elementName);
         if([elementName isEqualToString:@"time"]) {
                 currentlyReadingTime = YES;
         }
@@ -63,7 +62,6 @@ didStartElement:(NSString *)elementName
  didEndElement:(NSString *)elementName
   namespaceURI:(NSString *)namespaceURI
  qualifiedName:(NSString *)qName {
-        NSLog(@"XML: End of element: %@", elementName);
         if([elementName isEqualToString:@"time"]) {
                 currentlyReadingTime = NO;
         }
@@ -81,7 +79,6 @@ didStartElement:(NSString *)elementName
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
-        NSLog(@"XML: Read characters: %@", string);
         if(currentlyReadingTime) {
                 NSDateFormatter *form = [[NSDateFormatter alloc] init];
                 [form setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];

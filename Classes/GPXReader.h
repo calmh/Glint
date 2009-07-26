@@ -17,8 +17,7 @@
         BOOL currentlyReadingTime;
 }
 
-@property (readonly) NSArray *locations;
-
 - (id)initWithFilename:(NSString*)newFilename;
+- (NSArray*)locations;
 
 @end

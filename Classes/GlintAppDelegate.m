@@ -48,6 +48,20 @@
         [window addSubview:sendFilesViewController.view];
         [window bringSubviewToFront:mainScreenViewController.view];
         [window makeKeyAndVisible];
+
+        NSString *raceAgainstFile;
+        if (raceAgainstFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"raceAgainstFile"]) {
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
+                NSString *documentsDirectory = [paths objectAtIndex:0];
+                NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, raceAgainstFile];
+                GPXReader *reader = [[GPXReader alloc] initWithFilename:fullPath];
+                [mainScreenViewController setRaceAgainstLocations:[reader locations]];
+                [reader release];
+        }
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+        [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction) switchToSendFilesView:(id)sender {

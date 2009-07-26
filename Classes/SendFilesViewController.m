@@ -127,9 +127,11 @@
         if ([tableView indexPathForSelectedRow]) {
                 NSIndexPath *p = [tableView indexPathForSelectedRow];
                 NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];
-                GPXReader *reader = [[GPXReader alloc] initWithFilename:[NSString stringWithFormat:@"%@/%@", documentsDirectory, file]];
+                NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
+                GPXReader *reader = [[GPXReader alloc] initWithFilename:fullPath];
                 [(GlintAppDelegate*) [[UIApplication sharedApplication] delegate] setRaceAgainstLocations:[reader locations]];
                 [reader release];
+                [[NSUserDefaults standardUserDefaults] setValue:file forKey:@"raceAgainstFile"];
                 [self switchToGPSView:sender];
         }
 }
@@ -250,12 +252,6 @@
         float distance = 0.0;
         int numPoints = 0;
         
-#ifdef SCREENSHOT
-        float r1 =  (float) rand() / RAND_MAX;
-        float r2 =  (float) rand() / RAND_MAX;
-        distance = 2000 + 12000 * r1;
-        numPoints = distance / (40.0 + r2 * 20.0);
-#else
         NSRange rangeBegin = [fileContents rangeOfString:@"[totalDistance]"];
         NSRange rangeEnd = [fileContents rangeOfString:@"[/totalDistance]"];
         if (rangeBegin.length > 0)
@@ -277,7 +273,6 @@
                 NSString *matched = [fileContents substringWithRange:matchRange];
                 numPoints = [matched intValue];
         }
-#endif
         
         return [NSString stringWithFormat:@"%@, %d points", [self formatDistance:distance], numPoints];
 }

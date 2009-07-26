@@ -86,11 +86,10 @@
         UIBarButtonItem *disabledUnlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock", @"Unlock") style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
         UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files", @"Files") style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
         UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Record", @"Record") style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
-        UIBarButtonItem *stopButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Stop Recording", @"Stop Recording") style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
+        UIBarButtonItem *stopRaceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race", @"End Race") style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)];
         [disabledUnlockButton setEnabled:NO];
         lockedToolbarItems = [[NSArray arrayWithObject:unlockButton] retain];
-        recordingToolbarItems = [[NSArray arrayWithObjects:disabledUnlockButton, sendButton, stopButton, nil] retain];
-        pausedToolbarItems = [[NSArray arrayWithObjects:disabledUnlockButton, sendButton, playButton, nil] retain];
+        unlockedToolbarItems = [[NSArray arrayWithObjects:sendButton, playButton, stopRaceButton, nil] retain];
         [toolbar setItems:lockedToolbarItems animated:YES];
         
         NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
@@ -141,7 +140,10 @@
 - (void)setRaceAgainstLocations:(NSArray*)locations {
         if (raceAgainstLocations != locations) {
                 [raceAgainstLocations release];
-                raceAgainstLocations = [locations retain];
+                if (locations && [locations count] > 1)
+                        raceAgainstLocations = [locations retain];
+                else
+                        raceAgainstLocations = nil;
         }
 }
 
@@ -154,14 +156,16 @@
            fromLocation:(CLLocation *)oldLocation
 {
 #ifdef SCREENSHOT
-        totalDistance = 5632.0;
+        totalDistance = 1632.0;
         currentCourse = 275.0;
         currentSpeed = 3.2;
         currentDataSource = kGlintDataSourceMovement;
         NSDateComponents *comps = [[NSDateComponents alloc] init];
-        [comps setMinute:-29];
+        [comps setMinute:-10];
+        if (!firstMeasurementDate) {
         firstMeasurementDate = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:[NSDate date] options:0];
         [firstMeasurementDate retain];
+        }
 #else
         if ([self precisionAcceptable:newLocation]) {
                 @synchronized (self) {
@@ -194,10 +198,16 @@
 
 - (IBAction)unlock:(id)sender
 {
+        [toolbar setItems:unlockedToolbarItems animated:YES];
         if (gpxWriter)
-                [toolbar setItems:recordingToolbarItems animated:YES];
+                [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"End Recording", nil)];
         else
-                [toolbar setItems:pausedToolbarItems animated:YES];
+                 [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"Record", nil)];
+        
+        if (raceAgainstLocations)
+                [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:2] setEnabled:YES];
+        else
+        [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:2] setEnabled:NO];
         
         if (lockTimer) {
                 [lockTimer invalidate];
@@ -244,13 +254,20 @@
         [toolbar setItems:lockedToolbarItems animated:YES];
 }
 
+- (IBAction)endRace:(id)sender {
+        [raceAgainstLocations release];
+        raceAgainstLocations = nil;
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"raceAgainstFile"];
+        [toolbar setItems:lockedToolbarItems animated:YES];
+}
+
 /*
  * Private methods
  */
 
 - (NSString*)formatTimestamp:(float)seconds maxTime:(float)max allowNegatives:(bool)allowNegatives {
         bool negative = NO;
-        if (seconds > max || !allowNegatives && seconds < 0)
+        if (isnan(seconds) || seconds > max || !allowNegatives && seconds < 0)
                 return [NSString stringWithFormat:@"?"];
         else {
                 if (seconds < 0) {
@@ -438,7 +455,7 @@
                 self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, averageSpeed*speedFactor];
                 self.averageSpeedDescrLabel.text = NSLocalizedString(@"avg speed", nil);
                 self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
-
+                
                 float secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / currentSpeed;
                 self.currentTimePerDistanceLabel.text = [self formatTimestamp:secsPerEstDist maxTime:86400 allowNegatives:NO];
                 NSString *distStr = [NSString stringWithFormat:distFormat, USERPREF_ESTIMATE_DISTANCE*distFactor*1000.0];
@@ -447,8 +464,12 @@
         } else {
                 // Show difference in time and distance against raceAgainstLocations.
                 float distDiff = [self distDifferenceInRace];
-                NSString *distString = [NSString stringWithFormat:distFormat, distDiff*distFactor];
-                self.averageSpeedLabel.text = [distDiff < 0.0 ? @"" : @"+" stringByAppendingString:distString];
+                if (!isnan(distDiff)) {
+                        NSString *distString = [NSString stringWithFormat:distFormat, distDiff*distFactor];
+                        self.averageSpeedLabel.text = [distDiff < 0.0 ? @"" : @"+" stringByAppendingString:distString];
+                } else {
+                        self.averageSpeedLabel.text = @"?";
+                }
                 self.averageSpeedDescrLabel.text = NSLocalizedString(@"dist diff", nil);
                 if (distDiff < 0.0)
                         self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0xCC/255.0 blue:0xCC/255.0 alpha:1.0];
@@ -458,7 +479,7 @@
                 float timeDiff = [self timeDifferenceInRace];
                 self.currentTimePerDistanceLabel.text = [self formatTimestamp:timeDiff maxTime:86400 allowNegatives:YES];
                 self.currentTimePerDistanceDescrLabel.text = NSLocalizedString(@"time diff", nil);
-                if (timeDiff < 0.0)
+                if (timeDiff > 0.0)
                         self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0xCC/255.0 blue:0xCC/255.0 alpha:1.0];
                 else
                         self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0xCC/255.0 alpha:1.0];
@@ -499,11 +520,13 @@
 }
 
 - (float)timeDifferenceInRace {
-        return 0.0;
+        float raceTime = [locationMath timeAtLocationByDistance:totalDistance inLocations:raceAgainstLocations];
+        return [[NSDate date] timeIntervalSinceDate:firstMeasurementDate] - raceTime;
 }
 
 - (float)distDifferenceInRace {
-        return 0.0;
+        float raceDist = [locationMath distanceAtPointInTime:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] inLocations:raceAgainstLocations];
+        return totalDistance - raceDist;
 }
 
 @end

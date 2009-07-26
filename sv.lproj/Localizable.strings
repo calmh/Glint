@@ -45,8 +45,9 @@
 
 "Files" = "Filer";
 "Record" = "Spela in";
-"Stop Recording" = "Stanna inspelning";
+"End Recording" = "Stanna inspelning";
 "Unlock" = "Lås upp";
+"End Race" = "Avsluta Tävling";
 
 /*
 ** Misc
