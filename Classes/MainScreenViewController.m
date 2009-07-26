@@ -21,6 +21,7 @@
 - (void)disableGPS;
 - (float)timeDifferenceInRace;
 - (float)distDifferenceInRace;
+- (float)estimatedTotalDistance;
 @end
 
 /*
@@ -553,14 +554,22 @@
         gpsEnabled = NO;
 }
 
+// How far ahead (-) or behind (+) in time we are.
 - (float)timeDifferenceInRace {
-        float raceTime = [locationMath timeAtLocationByDistance:totalDistance inLocations:raceAgainstLocations];
+        float raceTime = [locationMath timeAtLocationByDistance:[self estimatedTotalDistance] inLocations:raceAgainstLocations];
         return [[NSDate date] timeIntervalSinceDate:firstMeasurementDate] - raceTime;
 }
 
+// How far ahead (+) or behind (-) in position we are.
 - (float)distDifferenceInRace {
         float raceDist = [locationMath distanceAtPointInTime:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] inLocations:raceAgainstLocations];
-        return totalDistance - raceDist;
+        return [self estimatedTotalDistance] - raceDist;
+}
+
+// Estimated total distance, based on known totalDistance, currentSpeed, and interval since last measurement.
+- (float)estimatedTotalDistance {
+        float estimate = currentSpeed * [[NSDate date] timeIntervalSinceDate:lastMeasurementDate];
+        return totalDistance + estimate;
 }
 
 @end
