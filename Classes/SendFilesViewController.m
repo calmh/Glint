@@ -8,8 +8,6 @@
 
 #import "SendFilesViewController.h"
 #import "GlintAppDelegate.h"
-#import "SKPSMTPMessage.h"
-#import "NSData+Base64Additions.h"
 
 @interface SendFilesViewController ()
 - (int)sectionForFile:(NSString*)fileName;
@@ -47,13 +45,13 @@
         NSArray* fileList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
         fileList = [fileList sortedArrayUsingSelector:@selector(compare:)];
         NSEnumerator *enumer = [fileList reverseObjectEnumerator];
-
+        
         NSString *fileName;
         while (fileName = [enumer nextObject]) {
                 int section = [self sectionForFile:fileName];
                 [[files objectAtIndex:section] addObject:fileName];
         }
-
+        
         [tableView reloadData];
         emailButton.enabled = NO;
         raceButton.enabled = NO;
@@ -83,43 +81,25 @@
 
 - (IBAction) sendFile:(id)sender {
         if ([tableView indexPathForSelectedRow]) {
-                NSString *to = USERPREF_EMAIL_ADDRESS;
-                if (!to || [to length] < 4) {
-                        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Message failed",nil) message:NSLocalizedString(@"You need to enter a valid email address in Settings.", @"Lacking email address") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil] autorelease];
+                if (![MFMailComposeViewController canSendMail]) {
+                        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Message failed",nil) message:NSLocalizedString(@"You need to configure a valid email account to send email.", @"Lacking email address") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil] autorelease];
                         [alert show];
                         return;
                 }
-
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+                
                 NSIndexPath *p = [tableView indexPathForSelectedRow];
                 NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];                
                 NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
                 
-                SKPSMTPMessage *message = [[SKPSMTPMessage alloc] init];
-                message.fromEmail = @"glint@nym.se";
-                message.toEmail = to;
-                message.relayHost = @"mail1.perspektivbredband.se";
-                message.requiresAuth = NO;
-                message.subject = NSLocalizedString(@"Recorded track from Glint", @"Email subject");
-                message.delegate = self;
-                message.relayPorts = [NSArray arrayWithObject:[NSNumber numberWithInt:587]];
-                
-                NSDictionary *plainPart = [NSDictionary dictionaryWithObjectsAndKeys:
-                                           @"text/plain", kSKPSMTPPartContentTypeKey,
-                                           NSLocalizedString(@"This message contains an attached GPX file that was recorded in Glint.", @"Email body"), kSKPSMTPPartMessageKey,
-                                           @"8bit", kSKPSMTPPartContentTransferEncodingKey,
-                                           nil];
-                
                 NSData *gpxData = [NSData dataWithContentsOfFile:fullPath];
-                NSDictionary *gpxPart = [NSDictionary dictionaryWithObjectsAndKeys:
-                                         @"text/xml", kSKPSMTPPartContentTypeKey,
-                                         [NSString stringWithFormat:@"attachment;\r\n\tfilename=\"%@\"", file], kSKPSMTPPartContentDispositionKey,
-                                         [gpxData encodeBase64ForData], kSKPSMTPPartMessageKey,
-                                         @"base64", kSKPSMTPPartContentTransferEncodingKey,
-                                         nil];
-                
-                message.parts = [NSArray arrayWithObjects:plainPart, gpxPart, nil];
-                [message send];
+                MFMailComposeViewController *mfmail = [[MFMailComposeViewController alloc] init];
+                if (USERPREF_EMAIL_ADDRESS)
+                        [mfmail setToRecipients:[NSArray arrayWithObject:USERPREF_EMAIL_ADDRESS]];
+                [mfmail setSubject:NSLocalizedString(@"Recorded track from Glint", @"Email subject")];
+                [mfmail setMessageBody:NSLocalizedString(@"This message contains an attached GPX file that was recorded in Glint.", @"Email body") isHTML:NO];
+                [mfmail addAttachmentData:gpxData mimeType:@"text/xml" fileName:file];
+                [mfmail setMailComposeDelegate:self];
+                [self presentModalViewController:mfmail animated:YES];
         }
 }
 
@@ -166,23 +146,18 @@
 }
 
 /*
- * SKSMTPMessage delegate stuff
+ * MFMailComposerViewController delegate stuff
  */
 
-- (void)messageSent:(SKPSMTPMessage *)message
-{
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        [message release];
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Message sent", @"Success dialog title") message:NSLocalizedString(@"The message was sent successfully.", @"Email success") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil] autorelease];
-        [alert show];
-}
-
-- (void)messageFailed:(SKPSMTPMessage *)message error:(NSError *)error
-{
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        [message release];
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Message failed", @"Error dialog title") message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil] autorelease];
-        [alert show];
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+          didFinishWithResult:(MFMailComposeResult)result
+                        error:(NSError*)error {
+        [self dismissModalViewControllerAnimated:YES];
+        if (error) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Message failed",nil) message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",nil) otherButtonTitles:nil];
+                [alertView autorelease];
+                [alertView show];
+        }
 }
 
 /*

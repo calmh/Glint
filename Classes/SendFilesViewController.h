@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SKPSMTPMessage.h"
+#import <MessageUI/MessageUI.h>
 #import "JBGPXReader.h"
 
-@interface SendFilesViewController : UIViewController <SKPSMTPMessageDelegate> {
+@interface SendFilesViewController : UIViewController <MFMailComposeViewControllerDelegate> {
         NSMutableArray *files;
         NSMutableArray *sections;
         NSString *documentsDirectory;

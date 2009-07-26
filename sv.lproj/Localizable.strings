@@ -7,7 +7,7 @@
 "Recorded track from Glint" = "Inspelad fil från Glint";
 "The message was sent successfully." = "Meddelandet gick iväg som det skulle.";
 "This message contains an attached GPX file that was recorded in Glint." = "Det här meddelandet innehåller en bifogad GPX-fil som spelades in i Glint.";
-"You need to enter a valid email address in Settings." = "Du måste ställa in en giltig epostadress i Inställningar.";
+"You need to configure a valid email account to send email." = "Du måste konfigurera din telefon med ett giltigt epostkonto för att kunna skicka epost.";
 
 /*
 ** Compass
