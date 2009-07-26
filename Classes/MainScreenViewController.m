@@ -35,7 +35,7 @@
 @implementation MainScreenViewController
 @synthesize positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerDistanceLabel, totalDistanceLabel, statusLabel, averageSpeedLabel, bearingLabel, accuracyLabel;
 @synthesize elapsedTimeDescrLabel, totalDistanceDescrLabel, currentTimePerDistanceDescrLabel, currentSpeedDescrLabel, averageSpeedDescrLabel;
-@synthesize toolbar, compass, recordingIndicator, signalIndicator;
+@synthesize toolbar, compass, recordingIndicator, signalIndicator, racingIndicator, musicIndicator;
 
 - (void)dealloc {
         self.positionLabel = nil;
@@ -83,14 +83,15 @@
         gpsEnabled = YES;
         raceAgainstLocations = nil;
         
-        UIBarButtonItem *unlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock", @"Unlock") style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
-        UIBarButtonItem *disabledUnlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock", @"Unlock") style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
-        UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files", @"Files") style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
-        UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Record", @"Record") style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
-        UIBarButtonItem *stopRaceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race", @"End Race") style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)];
+        UIBarButtonItem *unlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
+        UIBarButtonItem *disabledUnlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
+        UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
+        UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Record",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
+        UIBarButtonItem *stopRaceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)];
+        UIBarButtonItem *musicButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Music",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(selectMusic:)];
         [disabledUnlockButton setEnabled:NO];
         lockedToolbarItems = [[NSArray arrayWithObject:unlockButton] retain];
-        unlockedToolbarItems = [[NSArray arrayWithObjects:sendButton, playButton, stopRaceButton, nil] retain];
+        unlockedToolbarItems = [[NSArray arrayWithObjects:sendButton, playButton, stopRaceButton, musicButton, nil] retain];
         [toolbar setItems:lockedToolbarItems animated:YES];
         
         NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
@@ -141,8 +142,10 @@
 - (void)setRaceAgainstLocations:(NSArray*)locations {
         if (raceAgainstLocations != locations) {
                 [raceAgainstLocations release];
-                if (locations && [locations count] > 1)
+                if (locations && [locations count] > 1) {
                         raceAgainstLocations = [locations retain];
+                        self.racingIndicator.textColor = [UIColor greenColor];
+                }
                 else
                         raceAgainstLocations = nil;
         }
@@ -259,7 +262,11 @@
         [raceAgainstLocations release];
         raceAgainstLocations = nil;
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"raceAgainstFile"];
+        self.racingIndicator.textColor = [UIColor grayColor];
         [toolbar setItems:lockedToolbarItems animated:YES];
+}
+
+- (IBAction)selectMusic:(id)sender {
 }
 
 /*

@@ -35,7 +35,7 @@
 */
 
 "elapsed" = "tid";
-"total distance" = "avstånd";
+"total distance" = "distans";
 "cur speed" = "nuv. hastighet";
 "avg speed" = "genomsn. hast.";
 "measurements" = "mätningar";
@@ -45,9 +45,10 @@
 
 "Files" = "Filer";
 "Record" = "Spela in";
-"End Recording" = "Bryt inspeln.";
+"End Recording" = "Bryt insp.";
 "Unlock" = "Lås upp";
 "End Race" = "Bryt tävl.";
+"Music" = "Musik";
 
 /*
 ** Misc
