@@ -182,20 +182,8 @@
         NSDictionary *attrs = [[NSFileManager defaultManager] fileAttributesAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, fileName] traverseLink:NO];
         NSDate *created = [attrs objectForKey:NSFileModificationDate];
 
-        /*// Create comparison date, today 23:59:59
-        NSDate *now = [NSDate date];
-        NSDateComponents *nowComps = [[NSCalendar currentCalendar] components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:now];
-        NSDateComponents *addComps = [[NSDateComponents alloc] init];
-        addComps.hour = 23 - nowComps.hour;
-        addComps.minute = 59 - nowComps.minute;
-        addComps.second = 59 - nowComps.second;
-        NSDate *compare = [[NSCalendar currentCalendar] dateByAddingComponents:addComps toDate:now options:0];*/
-        
-        // Compare create date to the comparison date
         NSDateComponents *comps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:created/* toDate:compare options:0*/];
         NSDateComponents *nowComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]/* toDate:compare options:0*/];
-        
-        //return [NSString stringWithFormat:@"year %d month %d week %d day %d", comps.year, comps.month, comps.week, comps.day];
         
         if (comps.year < nowComps.year)
                 return NSLocalizedString(@"Earlier",nil);
