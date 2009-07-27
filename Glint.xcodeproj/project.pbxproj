@@ -34,6 +34,7 @@
 		29CD711F100FB9F2001150A1 /* SendFilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD711D100FB9F2001150A1 /* SendFilesViewController.m */; };
 		29CD7120100FB9F2001150A1 /* SendFilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29CD711E100FB9F2001150A1 /* SendFilesViewController.xib */; };
 		29D191951011E2DA00B9E8CF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 29D191931011E2DA00B9E8CF /* Localizable.strings */; };
+		29D8BFD7101E51C1006C7865 /* reference.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2974372B101C617F00DDBB6A /* reference.gpx */; };
 		29FE31E30FF4359D00E9FE05 /* Basso.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DD0FF4359D00E9FE05 /* Basso.aiff */; };
 		29FE31E60FF4359D00E9FE05 /* Purr.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31E00FF4359D00E9FE05 /* Purr.aiff */; };
 		29FE32110FF436AC00E9FE05 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 29FE32100FF436AC00E9FE05 /* Settings.bundle */; };
@@ -317,6 +318,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29D8BFD7101E51C1006C7865 /* reference.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
