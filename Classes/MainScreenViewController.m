@@ -188,7 +188,10 @@
                                 if (dist > 25.0) {
                                         totalDistance += dist;
                                         currentCourse = [locationMath bearingFromLocation:previousMeasurement toLocation:newLocation];
-                                        currentSpeed = [locationMath speedFromLocation:previousMeasurement toLocation:newLocation];
+                                        if (currentSpeed < 0)
+                                                currentSpeed = [locationMath speedFromLocation:previousMeasurement toLocation:newLocation];
+                                        else
+                                                currentSpeed = (SOFTNESS_FACTOR * [locationMath speedFromLocation:previousMeasurement toLocation:newLocation] + currentSpeed) / (1 + SOFTNESS_FACTOR);
                                         [previousMeasurement release];
                                         previousMeasurement = [newLocation retain];
                                         currentDataSource = kGlintDataSourceMovement;
