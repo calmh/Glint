@@ -22,6 +22,9 @@
 - (float)timeDifferenceInRace;
 - (float)distDifferenceInRace;
 - (float)estimatedTotalDistance;
+- (void)positiveIndicator:(UILabel*)indicator;
+- (void)negativeIndicator:(UILabel*)indicator;
+- (void)disabledIndicator:(UILabel*)indicator;
 @end
 
 /*
@@ -35,7 +38,7 @@
 @implementation MainScreenViewController
 @synthesize positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerDistanceLabel, totalDistanceLabel, statusLabel, averageSpeedLabel, bearingLabel, accuracyLabel;
 @synthesize elapsedTimeDescrLabel, totalDistanceDescrLabel, currentTimePerDistanceDescrLabel, currentSpeedDescrLabel, averageSpeedDescrLabel;
-@synthesize toolbar, compass, recordingIndicator, signalIndicator, racingIndicator, musicIndicator;
+@synthesize toolbar, compass, recordingIndicator, signalIndicator, racingIndicator;
 
 - (void)dealloc {
         self.positionLabel = nil;
@@ -83,15 +86,18 @@
         gpsEnabled = YES;
         raceAgainstLocations = nil;
         
+        [self disabledIndicator:signalIndicator];
+        [self disabledIndicator:recordingIndicator];
+        [self disabledIndicator:racingIndicator];
+        
         UIBarButtonItem *unlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
         UIBarButtonItem *disabledUnlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
         UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
         UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Record",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
         UIBarButtonItem *stopRaceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)];
-        UIBarButtonItem *musicButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Music",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(selectMusic:)];
         [disabledUnlockButton setEnabled:NO];
         lockedToolbarItems = [[NSArray arrayWithObject:unlockButton] retain];
-        unlockedToolbarItems = [[NSArray arrayWithObjects:sendButton, playButton, stopRaceButton, musicButton, nil] retain];
+        unlockedToolbarItems = [[NSArray arrayWithObjects:sendButton, playButton, stopRaceButton, nil] retain];
         [toolbar setItems:lockedToolbarItems animated:YES];
         
         NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
@@ -144,7 +150,7 @@
                 [raceAgainstLocations release];
                 if (locations && [locations count] > 1) {
                         raceAgainstLocations = [locations retain];
-                        self.racingIndicator.textColor = [UIColor greenColor];
+                        [self positiveIndicator:racingIndicator];
                 }
                 else
                         raceAgainstLocations = nil;
@@ -243,14 +249,14 @@
         if (!gpxWriter) {
                 NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
                 [formatter setDateFormat:@"yyyyMMdd-HHmmss"];
-                self.recordingIndicator.textColor = [UIColor greenColor];
+                [self positiveIndicator:recordingIndicator];
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
                 NSString *documentsDirectory = [paths objectAtIndex:0];
                 NSString* filename = [NSString stringWithFormat:@"%@/track-%@.gpx", documentsDirectory, [formatter stringFromDate:[NSDate date]]];
                 gpxWriter = [[JBGPXWriter alloc] initWithFilename:filename];
                 [gpxWriter addTrackSegment];
         } else {
-                self.recordingIndicator.textColor = [UIColor grayColor];
+                [self disabledIndicator:recordingIndicator];
                 [gpxWriter commit];
                 [gpxWriter release];
                 gpxWriter = nil;
@@ -262,11 +268,8 @@
         [raceAgainstLocations release];
         raceAgainstLocations = nil;
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"raceAgainstFile"];
-        self.racingIndicator.textColor = [UIColor grayColor];
+        [self disabledIndicator:racingIndicator];
         [toolbar setItems:lockedToolbarItems animated:YES];
-}
-
-- (IBAction)selectMusic:(id)sender {
 }
 
 /*
@@ -426,12 +429,12 @@
         // Update color of signal indicator, play sound on change
         
         if (!gpsEnabled)
-                self.signalIndicator.textColor = [UIColor grayColor];
+                [self disabledIndicator:signalIndicator];
         else {
                 if (stateGood)
-                        self.signalIndicator.textColor = [UIColor greenColor];
+                        [self positiveIndicator:signalIndicator];
                 else
-                        self.signalIndicator.textColor = [UIColor redColor];
+                        [self negativeIndicator:signalIndicator];
                 
                 if (sounds && prevStateGood != stateGood) {
                         if (stateGood)
@@ -577,6 +580,24 @@
 - (float)estimatedTotalDistance {
         float estimate = currentSpeed * [[NSDate date] timeIntervalSinceDate:lastMeasurementDate];
         return totalDistance + estimate;
+}
+
+// Color the specified UILabel green
+- (void)positiveIndicator:(UILabel*)indicator {
+        indicator.backgroundColor = [UIColor colorWithRed:0.4 green:1.0 blue:0.4 alpha:1.0];
+        indicator.textColor = [UIColor colorWithRed:0.0 green:0.5 blue:0.0 alpha:1.0];
+}
+
+// Color the specified UILabel red
+- (void)negativeIndicator:(UILabel*)indicator {
+        indicator.backgroundColor = [UIColor colorWithRed:1.0 green:0.4 blue:0.4 alpha:1.0];
+        indicator.textColor = [UIColor colorWithRed:0.5 green:0.0 blue:0.0 alpha:1.0];
+}
+
+// Color the specified UILabel gray
+- (void)disabledIndicator:(UILabel*)indicator {
+        indicator.backgroundColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
+        indicator.textColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1.0];
 }
 
 @end

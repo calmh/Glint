@@ -181,25 +181,38 @@
 - (NSString*)sectionDescriptionForFile:(NSString*)fileName {
         NSDictionary *attrs = [[NSFileManager defaultManager] fileAttributesAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, fileName] traverseLink:NO];
         NSDate *created = [attrs objectForKey:NSFileModificationDate];
-        NSDateComponents *createdComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:created];
-        NSDateComponents *nowComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]];
-        if (createdComps.year == nowComps.year && createdComps.month == nowComps.month) {
-                if (createdComps.week == nowComps.week) {
-                        if (createdComps.day == nowComps.day)
-                                return NSLocalizedString(@"Today",nil);
-                        else if (createdComps.day == nowComps.day - 1)
-                                return NSLocalizedString(@"Yesterday",nil);
-                        else
-                                return NSLocalizedString(@"This Week",nil);
-                } else if (createdComps.week == nowComps.week - 1)
-                        return NSLocalizedString(@"Last Week",nil);
-                else
-                        return NSLocalizedString(@"This Month",nil);
-        } else
-                return NSLocalizedString(@"Earlier",nil);
+
+        /*// Create comparison date, today 23:59:59
+        NSDate *now = [NSDate date];
+        NSDateComponents *nowComps = [[NSCalendar currentCalendar] components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:now];
+        NSDateComponents *addComps = [[NSDateComponents alloc] init];
+        addComps.hour = 23 - nowComps.hour;
+        addComps.minute = 59 - nowComps.minute;
+        addComps.second = 59 - nowComps.second;
+        NSDate *compare = [[NSCalendar currentCalendar] dateByAddingComponents:addComps toDate:now options:0];*/
         
-        NSString *descr = [created description];
-        return descr;
+        // Compare create date to the comparison date
+        NSDateComponents *comps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:created/* toDate:compare options:0*/];
+        NSDateComponents *nowComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]/* toDate:compare options:0*/];
+        
+        //return [NSString stringWithFormat:@"year %d month %d week %d day %d", comps.year, comps.month, comps.week, comps.day];
+        
+        if (comps.year < nowComps.year)
+                return NSLocalizedString(@"Earlier",nil);
+        else if (comps.month < nowComps.month - 1)
+                return NSLocalizedString(@"Earlier",nil);
+        else if (comps.month < nowComps.month)
+                return NSLocalizedString(@"Last Month",nil);
+        else if (comps.day == nowComps.day)
+                return NSLocalizedString(@"Today",nil);
+        else if (comps.day == nowComps.day - 1)
+                return NSLocalizedString(@"Yesterday",nil);
+        else if (comps.week == nowComps.week - 1)
+                return NSLocalizedString(@"Last Week",nil);
+        else if (comps.week == nowComps.week - 2)
+                return NSLocalizedString(@"Two Weeks Ago",nil);
+        else
+                return NSLocalizedString(@"This Month",nil);
 }
 
 - (NSString*)formatDistance:(float)distance {

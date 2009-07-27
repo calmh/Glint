@@ -51,7 +51,6 @@ typedef enum enumGlintDataSource {
         UILabel *recordingIndicator;
         UILabel *signalIndicator;
         UILabel *racingIndicator;
-        UILabel *musicIndicator;
         
         UILabel *elapsedTimeDescrLabel;
         UILabel *totalDistanceDescrLabel;
@@ -75,7 +74,6 @@ typedef enum enumGlintDataSource {
 @property (nonatomic, retain) IBOutlet UILabel *recordingIndicator;
 @property (nonatomic, retain) IBOutlet UILabel *signalIndicator;
 @property (nonatomic, retain) IBOutlet UILabel *racingIndicator;
-@property (nonatomic, retain) IBOutlet UILabel *musicIndicator;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet CompassView *compass;
 
