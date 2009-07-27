@@ -164,15 +164,16 @@
                         if (!firstMeasurementDate) {
                                 firstMeasurementDate = [[NSDate date] retain];
                         } else {
-                                [math updateLocation:newLocation];
-                                currentDataSource = kGlintDataSourceMovement;
-                                //[locationManager setDistanceFilter:2*previousMeasurement.horizontalAccuracy];
+                                // Update the position if it's previously unknown or if we've travelled a distance
+                                // that exceeds the horizontal inaccuracy. This is to avoid too noisy movement.
+                                CLLocation *last = [math lastKnownPosition];
+                                if (!last || [last getDistanceFrom:newLocation] > (last.horizontalAccuracy + newLocation.horizontalAccuracy)/2.0f) {
+                                        [math updateLocation:newLocation];
+                                        currentDataSource = kGlintDataSourceMovement;
+                                }
                         }
                 }
         }
-        
-        [lastMeasurementDate release];
-        lastMeasurementDate = [[NSDate date] retain];
 }
 
 /*
@@ -387,6 +388,10 @@
                 sounds = USERPREF_SOUNDS;
         }
         
+#ifdef SCREENSHOT
+        stateGood = YES;
+#endif
+        
         // Update color of signal indicator, play sound on change
         
         if (!gpsEnabled)
@@ -418,6 +423,9 @@
                         self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±inf v.", current.horizontalAccuracy];
                 else
                         self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±%.0f m v.", current.horizontalAccuracy, current.verticalAccuracy];
+#ifdef SCREENSHOT
+                self.accuracyLabel.text = @"±17 m h, ±23 m v.";
+#endif
                 self.accuracyLabel.textColor = [UIColor whiteColor];
         } else {
                 self.positionLabel.textColor = [UIColor grayColor];
@@ -428,17 +436,24 @@
         
         if (firstMeasurementDate)
                 self.elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] maxTime:86400 allowNegatives:NO];
-        
+#ifdef SCREENSHOT
+        self.elapsedTimeLabel.text = [self formatTimestamp:945 maxTime:86400 allowNegatives:NO];
+#endif
         // Total distance
         
         self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, [math totalDistance]*distFactor];
-        
+#ifdef SCREENSHOT
+        self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, 3347*distFactor];
+#endif                
         // Current speed
         
         if ([math currentSpeed] >= 0.0)
                 self.currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, [math currentSpeed]*speedFactor];
         else
                 self.currentSpeedLabel.text = @"?";
+#ifdef SCREENSHOT
+        self.currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, 3425.0f/945.0f*speedFactor];
+#endif                
         
         if (currentDataSource == kGlintDataSourceMovement)
                 self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
@@ -449,10 +464,7 @@
                 
                 // Average speed and time per configured distance
                 
-                float averageSpeed = 0.0;
-                if (firstMeasurementDate && lastMeasurementDate)
-                        averageSpeed  = [math totalDistance] / [lastMeasurementDate timeIntervalSinceDate:firstMeasurementDate];
-                self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, averageSpeed*speedFactor];
+                self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, [math averageSpeed]*speedFactor];
                 self.averageSpeedDescrLabel.text = NSLocalizedString(@"avg speed", nil);
                 self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
                 
@@ -461,6 +473,10 @@
                 NSString *distStr = [NSString stringWithFormat:distFormat, USERPREF_ESTIMATE_DISTANCE*distFactor*1000.0];
                 self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
                 self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0 green:0xFF/255.0 blue:0xCC/255.0 alpha:1.0];
+#ifdef SCREENSHOT
+                self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, 3300.0f/945.0f*speedFactor];
+                self.currentTimePerDistanceLabel.text = [self formatTimestamp:USERPREF_ESTIMATE_DISTANCE * 1000.0 / (3425.0f/945.0f) maxTime:86400 allowNegatives:NO];
+#endif                
         } else {
                 
                 // Difference in time and distance against raceAgainstLocations.
@@ -491,10 +507,17 @@
         
         if (gpxWriter)
                 self.statusLabel.text = [NSString stringWithFormat:@"%04d %@", [gpxWriter numberOfTrackPoints], NSLocalizedString(@"measurements", @"measurements")];
+#ifdef SCREENSHOT
+        self.statusLabel.text = [NSString stringWithFormat:@"%04d %@", 92, NSLocalizedString(@"measurements", @"measurements")];
+#endif
         
         // Current course
+
+#ifdef SCREENSHOT
+        self.compass.course = 233.0f;
+#else
         self.compass.course = [math currentCourse];
-        
+#endif   
         [current release];
 }
 

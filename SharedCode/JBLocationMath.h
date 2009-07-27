@@ -14,10 +14,12 @@
         float currentSpeed;
         float currentCourse;
         float totalDistance;
+        NSDate *firstMeasurement;
         CLLocation *lastKnownPosition;
 }
 
 @property (readonly) float currentSpeed;
+@property (readonly) float averageSpeed;
 @property (readonly) float currentCourse;
 @property (readonly) float totalDistance;
 @property (retain) CLLocation *lastKnownPosition;

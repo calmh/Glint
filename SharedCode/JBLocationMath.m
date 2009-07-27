@@ -14,20 +14,24 @@
 
 @implementation JBLocationMath
 
-@synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition;
+@synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition, averageSpeed;
 
 - (id)init {
         if (self = [super init]) {
-                currentSpeed = -1.0f;
+                currentSpeed = 0.0f;
                 currentCourse = 0.0f;
                 totalDistance = 0.0f;
                 lastKnownPosition = nil;
+                firstMeasurement = nil;
         }
         return self;
 }
 
 - (void)updateLocation:(CLLocation*)location {
-        if (lastKnownPosition && [lastKnownPosition getDistanceFrom:location] > 0.0f) {
+        if (!firstMeasurement)
+                firstMeasurement = [location.timestamp retain];
+        
+        if (lastKnownPosition) {
                 float dist = [lastKnownPosition getDistanceFrom:location];
                 totalDistance += dist;
                 [self updateCurrentSpeed:dist / [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp]];
@@ -138,16 +142,19 @@
         return totalDistance + estimate;
 }
 
+- (float)averageSpeed {
+        if (!lastKnownPosition)
+                return 0.0;
+        return totalDistance / [lastKnownPosition.timestamp timeIntervalSinceDate:firstMeasurement];
+}
+
 /*
  * Private methods
  */
 
 - (void)updateCurrentSpeed:(float)newSpeed {
         float weightFactor = 0.5f;
-        if (currentSpeed == -1.0f)
-                currentSpeed = newSpeed;
-        else
-                currentSpeed = (weightFactor * newSpeed + currentSpeed) / (1 + weightFactor);
+        currentSpeed = (weightFactor * newSpeed + currentSpeed) / (1 + weightFactor);
 }
 
 @end

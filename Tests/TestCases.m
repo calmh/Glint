@@ -128,7 +128,10 @@
         STAssertEqualsWithAccuracy(result, 596.0f, 0.1f, @"totalDistance incorrect");
         result = [math currentCourse];
         STAssertEqualsWithAccuracy(result, 90.0f, 0.1f, @"currentCourse incorrect");
-        
+
+        result = [math averageSpeed];
+        STAssertEqualsWithAccuracy(result, 1.0f, 0.1f, @"averageSpeed incorrect");
+
         [reader release];
         [math release];
 }
