@@ -8,12 +8,32 @@
 
 #import "JBLocationMath.h"
 
+@interface JBLocationMath ()
+- (void)updateCurrentSpeed:(float)newSpeed;
+@end
+
 @implementation JBLocationMath
+
+@synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition;
 
 - (id)init {
         if (self = [super init]) {
+                currentSpeed = -1.0f;
+                currentCourse = 0.0f;
+                totalDistance = 0.0f;
+                lastKnownPosition = nil;
         }
         return self;
+}
+
+- (void)updateLocation:(CLLocation*)location {
+        if (lastKnownPosition && [lastKnownPosition getDistanceFrom:location] > 0.0f) {
+                float dist = [lastKnownPosition getDistanceFrom:location];
+                totalDistance += dist;
+                [self updateCurrentSpeed:dist / [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp]];
+                currentCourse = [self bearingFromLocation:lastKnownPosition toLocation:location];
+        }
+        self.lastKnownPosition = location;
 }
 
 - (float)speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB {
@@ -93,6 +113,41 @@
         float factor = remainingDistance / [pointTwo getDistanceFrom:pointOne];
         float targetTime = time + factor * [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
         return targetTime;
+}
+
+- (float)totalDistanceOverArray:(NSArray*)locations {
+        float distance = 0.0;
+        CLLocation *last = nil;
+        for (CLLocation *loc in locations) {
+                if (last)
+                        distance += [loc getDistanceFrom:last];
+                last = loc;
+        }
+        return distance;
+}
+
+- (NSArray*)startAndFinishTimesInArray:(NSArray*)locations {
+        NSDate *start = ((CLLocation*) [locations objectAtIndex:0]).timestamp;
+        NSDate *finish = ((CLLocation*) [locations objectAtIndex:[locations count]-1]).timestamp;
+        return [NSArray arrayWithObjects:start, finish, nil];
+}
+
+// Estimated total distance, based on known totalDistance, currentSpeed, and interval since last measurement.
+- (float)estimatedTotalDistance {
+        float estimate = totalDistance * [[NSDate date] timeIntervalSinceDate:lastKnownPosition.timestamp];
+        return totalDistance + estimate;
+}
+
+/*
+ * Private methods
+ */
+
+- (void)updateCurrentSpeed:(float)newSpeed {
+        float weightFactor = 0.5f;
+        if (currentSpeed == -1.0f)
+                currentSpeed = newSpeed;
+        else
+                currentSpeed = (weightFactor * newSpeed + currentSpeed) / (1 + weightFactor);
 }
 
 @end

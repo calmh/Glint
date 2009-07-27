@@ -8,6 +8,13 @@
 
 #import "TestCases.h"
 
+@interface TestCases ()
+
+- (void)privateTestGPXReader:(NSString*)filename;
+
+@end
+
+
 @implementation TestCases
 
 - (void)testLocationMath {
@@ -33,34 +40,37 @@
         STAssertEqualsWithAccuracy(result, 44.0f, 1.0f, @"Bearing SW-NE incorrect");
         result = [math bearingFromLocation:locNE toLocation:locSW];
         STAssertEqualsWithAccuracy(result, 225.0f, 1.0f, @"Bearing SW-NE incorrect");
+
+        [math release];
 }
 
 - (void)testGPXReader {
-        JBLocationMath *math = [[JBLocationMath alloc] init];
-        JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:@"/Users/jb/projekt/iPhone/Glint/trunk/Resources/reference.gpx"];
-        STAssertNotNil(reader, @"Reader cannot be nil");
-        
-        NSArray *locations = [reader locations];
-        STAssertNotNil(locations, @"Got no locations from reference.gpx");
-        int numLocations = [locations count];
-        STAssertEquals(numLocations, 47, @"Wrong number of trackpoints in reference.gpx");
+        [self privateTestGPXReader:@"/Users/jb/projekt/iPhone/Glint/trunk/Resources/reference.gpx"];
+}
 
-        float result;
-        result = [math bearingFromLocation:[locations objectAtIndex:0] toLocation:[locations objectAtIndex:1]];
-        STAssertEqualsWithAccuracy(result, 277.0f, 1.0f, @"Bearing [0]-[1] incorrect");
-        result = [math bearingFromLocation:[locations objectAtIndex:1] toLocation:[locations objectAtIndex:46]];
-        STAssertEqualsWithAccuracy(result, 111.0f, 1.0f, @"Bearing [1]-[46] incorrect");
+- (void)testGPXWriter {
+        JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:@"/Users/jb/projekt/iPhone/Glint/trunk/Resources/reference.gpx"];
+        JBGPXWriter *writer = [[JBGPXWriter alloc] initWithFilename:@"/tmp/unittest.gpx"];
+        [writer addTrackSegment];
+        for (CLLocation *loc in [reader locations])
+                [writer addTrackPoint:loc];
+        [writer commit];
+        [writer release];
+        [reader release];
+        
+        [self privateTestGPXReader:@"/tmp/unittest.gpx"];
 }
 
 - (void)testInterpolation {
+        NSString *filename = @"/Users/jb/projekt/iPhone/Glint/trunk/Resources/reference.gpx";
         JBLocationMath *math = [[JBLocationMath alloc] init];
-        JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:@"/Users/jb/projekt/iPhone/Glint/trunk/Resources/reference.gpx"];
+        JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:filename];
         STAssertNotNil(reader, @"Reader cannot be nil");
         
         NSArray *locations = [reader locations];
-        STAssertNotNil(locations, @"Got no locations from reference.gpx");
+        STAssertNotNil(locations, @"Got no locations from %@", filename);
         int numLocations = [locations count];
-        STAssertEquals(numLocations, 47, @"Wrong number of trackpoints in reference.gpx");
+        STAssertEquals(numLocations, 47, @"Wrong number of trackpoints in locations");
         
         float result;
         // Check distance->time interpolation
@@ -80,7 +90,47 @@
         STAssertTrue(result > 499.0f && result < 501.0f, @"Distance at 521 sek incorrect");
         result  = [math distanceAtPointInTime:900.0f inLocations:locations];
         STAssertTrue(isnan(result), @"Distance at 900 sek incorrect");
+        
+        [reader release];
+        [math release];
 }
 
+- (void)privateTestGPXReader:(NSString*)filename {
+        JBLocationMath *math = [[JBLocationMath alloc] init];
+        JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:filename];
+        STAssertNotNil(reader, @"Reader cannot be nil");
+        
+        NSArray *locations = [reader locations];
+        STAssertNotNil(locations, @"Got no locations from %@", filename);
+        int numLocations = [locations count];
+        STAssertEquals(numLocations, 47, @"Wrong number of trackpoints in locations");
+        
+        float result;
+        result = [math bearingFromLocation:[locations objectAtIndex:0] toLocation:[locations objectAtIndex:1]];
+        STAssertEqualsWithAccuracy(result, 277.0f, 1.0f, @"Bearing [0]-[1] incorrect");
+        result = [math bearingFromLocation:[locations objectAtIndex:1] toLocation:[locations objectAtIndex:46]];
+        STAssertEqualsWithAccuracy(result, 111.0f, 1.0f, @"Bearing [1]-[46] incorrect");
+        
+        result = [math totalDistanceOverArray:locations];
+        STAssertEqualsWithAccuracy(result, 596.0f, 1.0f, @"Total distance incorrect");
+        
+        NSArray *times = [math startAndFinishTimesInArray:locations];
+        STAssertNotNil(times, @"Start and finish times cannot be nil");
+        int num = [times count];
+        STAssertEquals(num, 2, @"startAndFinishTimesInArray: should return exactly two objects");
+
+        // Check speed & course calculations
+        for (CLLocation *loc in locations)
+                [math updateLocation:loc];
+        result = [math currentSpeed];
+        STAssertEqualsWithAccuracy(result, 1.29f, 0.1f, @"currentSpeed incorrect");
+        result = [math totalDistance];
+        STAssertEqualsWithAccuracy(result, 596.0f, 0.1f, @"totalDistance incorrect");
+        result = [math currentCourse];
+        STAssertEqualsWithAccuracy(result, 90.0f, 0.1f, @"currentCourse incorrect");
+        
+        [reader release];
+        [math release];
+}
 
 @end

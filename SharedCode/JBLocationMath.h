@@ -11,12 +11,24 @@
 #import "JBGPXReader.h"
 
 @interface JBLocationMath : NSObject {
-
+        float currentSpeed;
+        float currentCourse;
+        float totalDistance;
+        CLLocation *lastKnownPosition;
 }
 
+@property (readonly) float currentSpeed;
+@property (readonly) float currentCourse;
+@property (readonly) float totalDistance;
+@property (retain) CLLocation *lastKnownPosition;
+
+- (void)updateLocation:(CLLocation*)location;
 - (float)speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
 - (float)bearingFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
 - (float)distanceAtPointInTime:(float)targetTime inLocations:(NSArray*)locations;
 - (float)timeAtLocationByDistance:(float)targetDistance inLocations:(NSArray*)locations;
+- (float)totalDistanceOverArray:(NSArray*)locations;
+- (NSArray*)startAndFinishTimesInArray:(NSArray*)locations;
+- (float)estimatedTotalDistance;
 
 @end

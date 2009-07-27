@@ -11,6 +11,7 @@
 #import <UIKit/UIKit.h>
 #import "JBLocationMath.h"
 #import "JBGPXReader.h"
+#import "JBGPXWriter.h"
 
 @interface TestCases : SenTestCase {
 

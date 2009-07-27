@@ -21,23 +21,20 @@ typedef enum enumGlintDataSource {
 
 @interface MainScreenViewController : UIViewController  <CLLocationManagerDelegate> {
         CLLocationManager *locationManager;
-        JBLocationMath *locationMath;
+        JBLocationMath *math;
         NSArray *unitSets;
         JBGPXWriter *gpxWriter;
         NSDate *firstMeasurementDate;
         NSDate *lastMeasurementDate;
-        CLLocation *previousMeasurement;
         GlintDataSource currentDataSource;
-        float totalDistance;
         JBSoundEffect *goodSound;
         JBSoundEffect *badSound;
-        float currentCourse;
-        float currentSpeed;
         BOOL gpsEnabled;
         NSArray *lockedToolbarItems;
         NSArray *unlockedToolbarItems;
         NSTimer *lockTimer;
         NSArray *raceAgainstLocations;
+        BOOL stateGood;
 
         UILabel *positionLabel;
         UILabel *elapsedTimeLabel;

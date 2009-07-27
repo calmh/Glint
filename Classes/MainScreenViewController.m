@@ -21,7 +21,6 @@
 - (void)disableGPS;
 - (float)timeDifferenceInRace;
 - (float)distDifferenceInRace;
-- (float)estimatedTotalDistance;
 - (void)positiveIndicator:(UILabel*)indicator;
 - (void)negativeIndicator:(UILabel*)indicator;
 - (void)disabledIndicator:(UILabel*)indicator;
@@ -59,12 +58,11 @@
         self.averageSpeedDescrLabel = nil;
         
         [locationManager release];
-        [locationMath release];
+        [math release];
         [goodSound release];
         [badSound release];
         [firstMeasurementDate release];
         [lastMeasurementDate release];
-        [previousMeasurement release];
         [raceAgainstLocations release];
         [super dealloc];
 }
@@ -72,17 +70,13 @@
 - (void)viewDidLoad {
         [super viewDidLoad];
         
-        locationMath = [[JBLocationMath alloc] init];
+        math = [[JBLocationMath alloc] init];
         badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
         goodSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
         firstMeasurementDate  = nil;
         lastMeasurementDate = nil;
-        totalDistance = 0.0;
-        currentSpeed = -1.0;
-        currentCourse = -1.0;
         gpxWriter = nil;
         lockTimer = nil;
-        previousMeasurement = nil;
         gpsEnabled = YES;
         raceAgainstLocations = nil;
         
@@ -165,42 +159,18 @@
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
-#ifdef SCREENSHOT
-        totalDistance = 2132.0;
-        currentCourse = 275.0;
-        currentSpeed = 3.2;
-        currentDataSource = kGlintDataSourceMovement;
-        NSDateComponents *comps = [[NSDateComponents alloc] init];
-        [comps setMinute:-10];
-        if (!firstMeasurementDate) {
-        firstMeasurementDate = [[NSCalendar currentCalendar] dateByAddingComponents:comps toDate:[NSDate date] options:0];
-        [firstMeasurementDate retain];
-        }
-#else
         if ([self precisionAcceptable:newLocation]) {
                 @synchronized (self) {
-                        if (!firstMeasurementDate)
+                        if (!firstMeasurementDate) {
                                 firstMeasurementDate = [[NSDate date] retain];
-                        if (!previousMeasurement) {
-                                previousMeasurement = [newLocation retain];
                         } else {
-                                float dist = [previousMeasurement getDistanceFrom:newLocation];
-                                if (dist > 25.0) {
-                                        totalDistance += dist;
-                                        currentCourse = [locationMath bearingFromLocation:previousMeasurement toLocation:newLocation];
-                                        if (currentSpeed < 0)
-                                                currentSpeed = [locationMath speedFromLocation:previousMeasurement toLocation:newLocation];
-                                        else
-                                                currentSpeed = (SOFTNESS_FACTOR * [locationMath speedFromLocation:previousMeasurement toLocation:newLocation] + currentSpeed) / (1 + SOFTNESS_FACTOR);
-                                        [previousMeasurement release];
-                                        previousMeasurement = [newLocation retain];
-                                        currentDataSource = kGlintDataSourceMovement;
-                                        //[locationManager setDistanceFilter:2*previousMeasurement.horizontalAccuracy];
-                                }
+                                [math updateLocation:newLocation];
+                                currentDataSource = kGlintDataSourceMovement;
+                                //[locationManager setDistanceFilter:2*previousMeasurement.horizontalAccuracy];
                         }
                 }
         }
-#endif
+        
         [lastMeasurementDate release];
         lastMeasurementDate = [[NSDate date] retain];
 }
@@ -215,12 +185,12 @@
         if (gpxWriter)
                 [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"End Recording", nil)];
         else
-                 [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"Record", nil)];
+                [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"Record", nil)];
         
         if (raceAgainstLocations)
                 [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:2] setEnabled:YES];
         else
-        [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:2] setEnabled:NO];
+                [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:2] setEnabled:NO];
         
         if (lockTimer) {
                 [lockTimer invalidate];
@@ -377,14 +347,8 @@
         
         // If the main screen statistics haven't been updated for a long time, do so now.
         
-        if (previousMeasurement && [previousMeasurement.timestamp timeIntervalSinceNow] < -FORCE_POSITION_UPDATE_INTERVAL && [self precisionAcceptable:current]) {
-                @synchronized (self) {
-                        totalDistance += [previousMeasurement getDistanceFrom:current];
-                        currentSpeed = [locationMath speedFromLocation:previousMeasurement toLocation:current];
-                        [previousMeasurement release];
-                        previousMeasurement = [current retain];
-                        currentDataSource = kGlintDataSourceTimer;
-                }
+        if ([math lastKnownPosition] && [[math lastKnownPosition].timestamp timeIntervalSinceNow] < -FORCE_POSITION_UPDATE_INTERVAL && [self precisionAcceptable:current]) {
+                [math updateLocation:current];
         }
         
         if (powersave // Power saving is enabled
@@ -422,12 +386,6 @@
                 speedFormat = [units objectForKey:@"speedFormat"];
                 sounds = USERPREF_SOUNDS;
         }
-        
-#ifdef SCREENSHOT
-        bool stateGood = YES;
-#else
-        bool stateGood = [self precisionAcceptable:locationManager.location];
-#endif
         
         // Update color of signal indicator, play sound on change
         
@@ -473,12 +431,12 @@
         
         // Total distance
         
-        self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, totalDistance*distFactor];
+        self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, [math totalDistance]*distFactor];
         
         // Current speed
         
-        if (currentSpeed >= 0.0)
-                self.currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, currentSpeed*speedFactor];
+        if ([math currentSpeed] >= 0.0)
+                self.currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, [math currentSpeed]*speedFactor];
         else
                 self.currentSpeedLabel.text = @"?";
         
@@ -493,12 +451,12 @@
                 
                 float averageSpeed = 0.0;
                 if (firstMeasurementDate && lastMeasurementDate)
-                        averageSpeed  = totalDistance / [lastMeasurementDate timeIntervalSinceDate:firstMeasurementDate];
+                        averageSpeed  = [math totalDistance] / [lastMeasurementDate timeIntervalSinceDate:firstMeasurementDate];
                 self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, averageSpeed*speedFactor];
                 self.averageSpeedDescrLabel.text = NSLocalizedString(@"avg speed", nil);
                 self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
                 
-                float secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / currentSpeed;
+                float secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / [math currentSpeed];
                 self.currentTimePerDistanceLabel.text = [self formatTimestamp:secsPerEstDist maxTime:86400 allowNegatives:NO];
                 NSString *distStr = [NSString stringWithFormat:distFormat, USERPREF_ESTIMATE_DISTANCE*distFactor*1000.0];
                 self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
@@ -535,11 +493,7 @@
                 self.statusLabel.text = [NSString stringWithFormat:@"%04d %@", [gpxWriter numberOfTrackPoints], NSLocalizedString(@"measurements", @"measurements")];
         
         // Current course
-        
-        if (currentCourse >= 0.0)
-                self.compass.course = currentCourse;
-        else
-                self.compass.course = 0.0;
+        self.compass.course = [math currentCourse];
         
         [current release];
 }
@@ -569,20 +523,14 @@
 
 // How far ahead (-) or behind (+) in time we are.
 - (float)timeDifferenceInRace {
-        float raceTime = [locationMath timeAtLocationByDistance:[self estimatedTotalDistance] inLocations:raceAgainstLocations];
+        float raceTime = [math timeAtLocationByDistance:[math estimatedTotalDistance] inLocations:raceAgainstLocations];
         return [[NSDate date] timeIntervalSinceDate:firstMeasurementDate] - raceTime;
 }
 
 // How far ahead (+) or behind (-) in position we are.
 - (float)distDifferenceInRace {
-        float raceDist = [locationMath distanceAtPointInTime:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] inLocations:raceAgainstLocations];
-        return [self estimatedTotalDistance] - raceDist;
-}
-
-// Estimated total distance, based on known totalDistance, currentSpeed, and interval since last measurement.
-- (float)estimatedTotalDistance {
-        float estimate = currentSpeed * [[NSDate date] timeIntervalSinceDate:lastMeasurementDate];
-        return totalDistance + estimate;
+        float raceDist = [math distanceAtPointInTime:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] inLocations:raceAgainstLocations];
+        return [math estimatedTotalDistance] - raceDist;
 }
 
 // Color the specified UILabel green
