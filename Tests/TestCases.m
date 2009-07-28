@@ -12,6 +12,7 @@
 
 - (void)privateTestGPXReader:(JBGPXReader*)reader;
 - (JBGPXReader*)getDefaultGPXReader;
+- (NSString*) bundlePath;
 
 @end
 
@@ -63,7 +64,7 @@
 }
 
 - (void)testInterpolation {
-        NSString *filename = @"/Users/jb/projekt/iPhone/Glint/trunk/Resources/reference.gpx";
+        NSString *filename = [NSString stringWithFormat:@"%@/reference.gpx", [self bundlePath]];
         JBLocationMath *math = [[JBLocationMath alloc] init];
         JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:filename];
         NSArray *locations = [reader locations];
@@ -133,10 +134,7 @@
 }
 
 - (JBGPXReader*)getDefaultGPXReader {
-        // I have NO IDEA how to get the unit test to pick up the file when included as a resource.
-        // You'd think [[NSBundle mainBundle] bundlePath] or something would refer to the location
-        // of the compiled test bundle, but it doesn't.
-        NSString *filename = @"/Users/jb/projekt/iPhone/Glint/trunk/Resources/reference.gpx";
+        NSString *filename = [NSString stringWithFormat:@"%@/reference.gpx", [self bundlePath]];
         
         BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:filename];
         STAssertTrue(exists, @"Reference GPX file not found. See comment a few lines up in the source.");
@@ -150,6 +148,12 @@
                 STAssertEquals(numLocations, 47, @"Wrong number of trackpoints in locations");
         }
         return reader;
+}
+
+- (NSString*) bundlePath {
+        NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
+        NSString *bundlePath = [myBundle bundlePath];
+        return bundlePath;
 }
 
 @end
