@@ -157,7 +157,7 @@
  */
 
 - (void)updateCurrentSpeed:(float)newSpeed {
-        float weightFactor = 0.5f;
+        float weightFactor = 0.75f;
         currentSpeed = (weightFactor * newSpeed + currentSpeed) / (1 + weightFactor);
 }
 

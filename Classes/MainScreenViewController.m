@@ -161,17 +161,15 @@
 {
         stateGood = [self precisionAcceptable:newLocation];
         if (stateGood) {
-                @synchronized (self) {
-                        if (!firstMeasurementDate) {
-                                firstMeasurementDate = [[NSDate date] retain];
-                        } else {
-                                // Update the position if it's previously unknown or if we've travelled a distance
-                                // that exceeds the horizontal inaccuracy. This is to avoid too noisy movement.
-                                CLLocation *last = [math lastKnownPosition];
-                                if (!last || [last getDistanceFrom:newLocation] > (last.horizontalAccuracy + newLocation.horizontalAccuracy)/2.0f) {
-                                        [math updateLocation:newLocation];
-                                        currentDataSource = kGlintDataSourceMovement;
-                                }
+                if (!firstMeasurementDate) {
+                        firstMeasurementDate = [[NSDate date] retain];
+                } else {
+                        // Update the position if it's previously unknown or if we've travelled a distance
+                        // that exceeds half the average horizontal inaccuracy. This is to avoid too noisy movement.
+                        CLLocation *last = [math lastKnownPosition];
+                        if (!last || [last getDistanceFrom:newLocation] > (last.horizontalAccuracy + newLocation.horizontalAccuracy)/4.0f) {
+                                [math updateLocation:newLocation];
+                                currentDataSource = kGlintDataSourceMovement;
                         }
                 }
         }
@@ -513,7 +511,7 @@
 #endif
         
         // Current course
-
+        
 #ifdef SCREENSHOT
         self.compass.course = 233.0f;
 #else
