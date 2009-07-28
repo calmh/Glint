@@ -45,18 +45,16 @@
         [math release];
 }
 
-- (void)testGPXReader {
-        [self privateTestGPXReader:[self getDefaultGPXReader]];
-}
-
 - (void)testGPXWriter {
         JBGPXReader *reader = [self getDefaultGPXReader];
         JBGPXWriter *writer = [[JBGPXWriter alloc] initWithFilename:@"/tmp/unittest.gpx"];
+
         [writer addTrackSegment];
         for (CLLocation *loc in [reader locations])
                 [writer addTrackPoint:loc];
         [writer commit];
         [writer release];
+        
         [reader release];
         
         reader = [[JBGPXReader alloc] initWithFilename:@"/tmp/unittest.gpx"];
@@ -64,9 +62,8 @@
 }
 
 - (void)testInterpolation {
-        NSString *filename = [NSString stringWithFormat:@"%@/reference.gpx", [self bundlePath]];
         JBLocationMath *math = [[JBLocationMath alloc] init];
-        JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:filename];
+        JBGPXReader *reader = [self getDefaultGPXReader];
         NSArray *locations = [reader locations];
         
         float result;
@@ -99,18 +96,23 @@
         NSArray *locations = [reader locations];
         STAssertNotNil(locations, @"Got no locations");
         if (locations) {
+                // Reference file contains 47 measurements
                 int numLocations = [locations count];
                 STAssertEquals(numLocations, 47, @"Wrong number of trackpoints in locations");
                 
+                // Check known bearings within the file
                 float result;
                 result = [math bearingFromLocation:[locations objectAtIndex:0] toLocation:[locations objectAtIndex:1]];
                 STAssertEqualsWithAccuracy(result, 277.0f, 1.0f, @"Bearing [0]-[1] incorrect");
                 result = [math bearingFromLocation:[locations objectAtIndex:1] toLocation:[locations objectAtIndex:46]];
                 STAssertEqualsWithAccuracy(result, 111.0f, 1.0f, @"Bearing [1]-[46] incorrect");
                 
+                // Check that the total distance is correct
                 result = [math totalDistanceOverArray:locations];
                 STAssertEqualsWithAccuracy(result, 596.0f, 1.0f, @"Total distance incorrect");
                 
+                // Check that we get start and end times.
+                // TODO: Verify that they are correct.
                 NSArray *times = [math startAndFinishTimesInArray:locations];
                 STAssertNotNil(times, @"Start and finish times cannot be nil");
                 int num = [times count];
@@ -125,9 +127,11 @@
                 STAssertEqualsWithAccuracy(result, 596.0f, 0.1f, @"totalDistance incorrect");
                 result = [math currentCourse];
                 STAssertEqualsWithAccuracy(result, 90.0f, 0.1f, @"currentCourse incorrect");
-                
                 result = [math averageSpeed];
                 STAssertEqualsWithAccuracy(result, 1.0f, 0.1f, @"averageSpeed incorrect");
+                NSDate *futureDate = [[math lastKnownPosition].timestamp addTimeInterval:300];
+                result = [math estimatedTotalDistanceAtTime:futureDate];
+                STAssertEqualsWithAccuracy(result, 983.0f, 0.1f, @"estimatedTotalDistance incorrect");
         }
         [reader release];
         [math release];
@@ -137,16 +141,9 @@
         NSString *filename = [NSString stringWithFormat:@"%@/reference.gpx", [self bundlePath]];
         
         BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:filename];
-        STAssertTrue(exists, @"Reference GPX file not found. See comment a few lines up in the source.");
+        STAssertTrue(exists, @"Reference GPX file %@ not found", filename);
         
         JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:filename];
-        STAssertNotNil(reader, @"Reader cannot be nil");
-        NSArray *locations = [reader locations];
-        STAssertNotNil(locations, @"Got no locations from %@", filename);
-        if (locations) {
-                int numLocations = [locations count];
-                STAssertEquals(numLocations, 47, @"Wrong number of trackpoints in locations");
-        }
         return reader;
 }
 

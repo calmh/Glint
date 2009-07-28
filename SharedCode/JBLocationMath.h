@@ -31,6 +31,7 @@
 - (float)timeAtLocationByDistance:(float)targetDistance inLocations:(NSArray*)locations;
 - (float)totalDistanceOverArray:(NSArray*)locations;
 - (NSArray*)startAndFinishTimesInArray:(NSArray*)locations;
+- (float)estimatedTotalDistanceAtTime:(NSDate*)when;
 - (float)estimatedTotalDistance;
 
 @end

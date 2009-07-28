@@ -18,7 +18,6 @@
 }
 
 - (void)testLocationMath;
-- (void)testGPXReader;
 - (void)testInterpolation;
 
 @end

@@ -137,9 +137,13 @@
 }
 
 // Estimated total distance, based on known totalDistance, currentSpeed, and interval since last measurement.
-- (float)estimatedTotalDistance {
-        float estimate = currentSpeed * [[NSDate date] timeIntervalSinceDate:lastKnownPosition.timestamp];
+- (float)estimatedTotalDistanceAtTime:(NSDate*)when {
+        float estimate = currentSpeed * [when timeIntervalSinceDate:lastKnownPosition.timestamp];
         return totalDistance + estimate;
+}
+
+- (float)estimatedTotalDistance {
+        return [self estimatedTotalDistanceAtTime:[NSDate date]];
 }
 
 - (float)averageSpeed {
