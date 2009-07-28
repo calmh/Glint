@@ -159,7 +159,8 @@
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
-        if ([self precisionAcceptable:newLocation]) {
+        stateGood = [self precisionAcceptable:newLocation];
+        if (stateGood) {
                 @synchronized (self) {
                         if (!firstMeasurementDate) {
                                 firstMeasurementDate = [[NSDate date] retain];
