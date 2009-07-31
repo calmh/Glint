@@ -17,7 +17,12 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
 {
 	[super awakeFromNib];
         gradient = nil;
-        float colors[] = { 0.75f, 0.9f, 1.0f, 1.0f, 0.35f, 0.45f, 0.65f, 1.0f };
+        [self setTextColor:self.textColor];
+}
+
+- (void) setTextColor:(UIColor*)color {
+        const float *c1 = CGColorGetComponents([color CGColor]);
+        float colors[] = { c1[0], c1[1], c1[2], 1.0f, c1[0]/4.0f, c1[1]/4.0f, c1[2]/4.0f, 1.0f };
         float positions[] = { 0.2f, 1.0f };
         [self setGradientWithParts:2 andColors:colors atPositions:positions];
 }
@@ -55,7 +60,7 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
         // Calculate text drawing point.
         
         CGPoint alignment = CGPointMake(0, 0);
-        CGPoint anchor = CGPointMake(textEnd.x * (-0.5), [[self font] pointSize] * (-0.25));  
+        CGPoint anchor = CGPointMake(textEnd.x * (-0.5), [[self font] pointSize] * (-0.33));  
         CGPoint p = CGPointApplyAffineTransform(anchor, CGAffineTransformMake(1, 0, 0, -1, 0, 1));
         
         if ([self textAlignment] == UITextAlignmentCenter) {
@@ -77,13 +82,13 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
         // Draw shadow.
         
         /*
-        CGContextSaveGState(ctx);
-        CGContextSetTextDrawingMode(ctx, kCGTextFill);
-        CGContextSetFillColorWithColor(ctx, [[self shadowColor] CGColor]);
-        CGContextSetShadowWithColor(ctx, [self shadowOffset], 0, [[self shadowColor] CGColor]);
-        CGContextShowGlyphsAtPoint(ctx, alignment.x, alignment.y, glyphs, length);
-        CGContextRestoreGState(ctx);
-        */
+         CGContextSaveGState(ctx);
+         CGContextSetTextDrawingMode(ctx, kCGTextFill);
+         CGContextSetFillColorWithColor(ctx, [[self shadowColor] CGColor]);
+         CGContextSetShadowWithColor(ctx, [self shadowOffset], 0, [[self shadowColor] CGColor]);
+         CGContextShowGlyphsAtPoint(ctx, alignment.x, alignment.y, glyphs, length);
+         CGContextRestoreGState(ctx);
+         */
         
         // Draw text clipping path.
         
