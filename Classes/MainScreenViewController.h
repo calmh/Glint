@@ -13,6 +13,7 @@
 #import "CompassView.h"
 #import "JBGPXWriter.h"
 #import "GlintAppDelegate.h"
+#import "JBGradientLabel.h"
 
 typedef enum enumGlintDataSource {
         kGlintDataSourceMovement,
@@ -37,7 +38,7 @@ typedef enum enumGlintDataSource {
         BOOL stateGood;
 
         UILabel *positionLabel;
-        UILabel *elapsedTimeLabel;
+        JBGradientLabel *elapsedTimeLabel;
         UILabel *currentSpeedLabel;
         UILabel *averageSpeedLabel;
         UILabel *currentTimePerDistanceLabel;
@@ -60,7 +61,7 @@ typedef enum enumGlintDataSource {
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *positionLabel;
-@property (nonatomic, retain) IBOutlet UILabel *elapsedTimeLabel;
+@property (nonatomic, retain) IBOutlet JBGradientLabel *elapsedTimeLabel;
 @property (nonatomic, retain) IBOutlet UILabel *currentSpeedLabel;
 @property (nonatomic, retain) IBOutlet UILabel *averageSpeedLabel;
 @property (nonatomic, retain) IBOutlet UILabel *currentTimePerDistanceLabel;

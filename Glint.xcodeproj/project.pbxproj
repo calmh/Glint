@@ -28,6 +28,7 @@
 		2988667F101C96320051F368 /* JBLocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* JBLocationMath.m */; };
 		29886680101C96320051F368 /* JBSoundEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667C101C96320051F368 /* JBSoundEffect.m */; };
 		2988668C101C96880051F368 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2988668B101C96880051F368 /* unitsets.plist */; };
+		29BA74A3102328F500262650 /* JBGradientLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 297A05B0102328BE0031D57B /* JBGradientLabel.m */; };
 		29C7910510027A8E00EA28CC /* CompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* CompassView.m */; };
 		29C9A4F51011E9CA004CCBDD /* MainScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */; };
 		29CD7111100FB8B4001150A1 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CD7110100FB8B4001150A1 /* CFNetwork.framework */; };
@@ -69,6 +70,8 @@
 		296729CE101CC745001BBEDF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		2974372B101C617F00DDBB6A /* reference.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference.gpx; path = Resources/reference.gpx; sourceTree = "<group>"; };
 		2974387D101C727800DDBB6A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		297A05AF102328BE0031D57B /* JBGradientLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBGradientLabel.h; path = SharedCode/JBGradientLabel.h; sourceTree = "<group>"; };
+		297A05B0102328BE0031D57B /* JBGradientLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBGradientLabel.m; path = SharedCode/JBGradientLabel.m; sourceTree = "<group>"; };
 		29874F990FF776EB0080E20D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		29886675101C96320051F368 /* JBGPXReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBGPXReader.h; path = SharedCode/JBGPXReader.h; sourceTree = "<group>"; };
 		29886676101C96320051F368 /* JBGPXReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBGPXReader.m; path = SharedCode/JBGPXReader.m; sourceTree = "<group>"; };
@@ -160,6 +163,8 @@
 		29886672101C95ED0051F368 /* Shared Code */ = {
 			isa = PBXGroup;
 			children = (
+				297A05AF102328BE0031D57B /* JBGradientLabel.h */,
+				297A05B0102328BE0031D57B /* JBGradientLabel.m */,
 				29886675101C96320051F368 /* JBGPXReader.h */,
 				29886676101C96320051F368 /* JBGPXReader.m */,
 				29886677101C96320051F368 /* JBGPXWriter.h */,
@@ -345,6 +350,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29BA74A3102328F500262650 /* JBGradientLabel.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* GlintAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* MainScreenViewController.m in Sources */,
