@@ -195,6 +195,8 @@
                 return NSLocalizedString(@"Today",nil);
         else if (comps.day == nowComps.day - 1)
                 return NSLocalizedString(@"Yesterday",nil);
+        else if (comps.week == nowComps.week)
+                return NSLocalizedString(@"This Week",nil);
         else if (comps.week == nowComps.week - 1)
                 return NSLocalizedString(@"Last Week",nil);
         else if (comps.week == nowComps.week - 2)

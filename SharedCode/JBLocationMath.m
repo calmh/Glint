@@ -28,15 +28,19 @@
 }
 
 - (void)updateLocation:(CLLocation*)location {
+        if (!location)
+                return;
+        
         if (!firstMeasurement)
                 firstMeasurement = [location.timestamp retain];
         
-        if (lastKnownPosition) {
+        if (lastKnownPosition && [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp] > 0.0f) {
                 float dist = [lastKnownPosition getDistanceFrom:location];
                 totalDistance += dist;
                 [self updateCurrentSpeed:dist / [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp]];
                 currentCourse = [self bearingFromLocation:lastKnownPosition toLocation:location];
         }
+
         self.lastKnownPosition = location;
 }
 

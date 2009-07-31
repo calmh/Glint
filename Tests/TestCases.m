@@ -119,8 +119,15 @@
                 STAssertEquals(num, 2, @"startAndFinishTimesInArray: should return exactly two objects");
                 
                 // Check speed & course calculations
-                for (CLLocation *loc in locations)
+                CLLocation *loc = nil;
+                for (loc in locations)
                         [math updateLocation:loc];
+                // A few extra updates, in case we might have lost signal and got it back
+                // If it isn't checked for, this might cause a division by zero and crash the test rig
+                loc = [locations objectAtIndex:[locations count] - 1];
+                [math updateLocation:loc];
+                [math updateLocation:loc];
+                
                 result = [math currentSpeed];
                 STAssertEqualsWithAccuracy(result, 1.29f, 0.1f, @"currentSpeed incorrect");
                 result = [math totalDistance];
@@ -131,7 +138,7 @@
                 STAssertEqualsWithAccuracy(result, 1.0f, 0.1f, @"averageSpeed incorrect");
                 NSDate *futureDate = [[math lastKnownPosition].timestamp addTimeInterval:300];
                 result = [math estimatedTotalDistanceAtTime:futureDate];
-                STAssertEqualsWithAccuracy(result, 983.0f, 0.1f, @"estimatedTotalDistance incorrect");
+                STAssertEqualsWithAccuracy(result, 982.8f, 0.1f, @"estimatedTotalDistance incorrect");
         }
         [reader release];
         [math release];
