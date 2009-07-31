@@ -23,7 +23,7 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
 - (void) setTextColor:(UIColor*)color {
         const float *c1 = CGColorGetComponents([color CGColor]);
         float colors[] = { c1[0], c1[1], c1[2], 1.0f, c1[0]/4.0f, c1[1]/4.0f, c1[2]/4.0f, 1.0f };
-        float positions[] = { 0.2f, 1.0f };
+        float positions[] = { 0.4f, 1.0f };
         [self setGradientWithParts:2 andColors:colors atPositions:positions];
 }
 
