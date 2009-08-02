@@ -6,20 +6,19 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import "SendFilesViewController.h"
+#import "FilesViewController.h"
 #import "GlintAppDelegate.h"
 
-@interface SendFilesViewController ()
+@interface FilesViewController ()
 - (int)sectionForFile:(NSString*)fileName;
 - (NSString*)sectionDescriptionForFile:(NSString*)fileName;
-- (NSString*)formatDistance:(float)distance;
 - (NSString*)descriptionForFile:(NSString*)file;
 - (NSString*)commentForFile:(NSString*)file;
 @end
 
-@implementation SendFilesViewController
+@implementation FilesViewController
 
-@synthesize tableView, emailButton, raceButton, trashButton;
+@synthesize tableView, navigationController, detailViewController, doneButton;
 
 - (void)dealloc {
         [files release];
@@ -30,11 +29,14 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-        emailButton.title = NSLocalizedString(@"Email",nil);
-        raceButton.title = NSLocalizedString(@"Race against",nil);
+        delegate = [[UIApplication sharedApplication] delegate];
+        self.title = NSLocalizedString(@"Files",nil);
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
         documentsDirectory = [paths objectAtIndex:0];
         [documentsDirectory retain];
+        [navigationController setToolbarHidden:YES];
+        self.navigationItem.rightBarButtonItem = [self editButtonItem];
+        [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
         [super viewWillAppear:animated];
 }
 
@@ -53,9 +55,14 @@
         }
         
         [tableView reloadData];
-        emailButton.enabled = NO;
-        raceButton.enabled = NO;
-        trashButton.enabled = NO;
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+        if (![self isEditing])
+                [self.navigationItem setLeftBarButtonItem:nil animated:YES];
+        else
+                [self.navigationItem setLeftBarButtonItem:doneButton animated:YES];
+        [super setEditing:editing animated:animated];
 }
 
 /*
@@ -64,56 +71,6 @@
 
 - (IBAction) switchToGPSView:(id)sender {
         [(GlintAppDelegate *)[[UIApplication sharedApplication] delegate] switchToGPSView:sender];
-}
-
-- (IBAction) deleteFile:(id)sender {
-        if ([tableView indexPathForSelectedRow]) {
-                NSIndexPath *p = [tableView indexPathForSelectedRow];
-                NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];
-                [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, file] error:nil];
-                [self refresh];
-                emailButton.enabled = NO;
-                raceButton.enabled = NO;
-                trashButton.enabled = NO;
-                //[tableView selectRowAtIndexPath:p animated:YES scrollPosition:UITableViewScrollPositionNone];
-        }
-}
-
-- (IBAction) sendFile:(id)sender {
-        if ([tableView indexPathForSelectedRow]) {
-                if (![MFMailComposeViewController canSendMail]) {
-                        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Message failed",nil) message:NSLocalizedString(@"You need to configure a valid email account to send email.", @"Lacking email address") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil] autorelease];
-                        [alert show];
-                        return;
-                }
-                
-                NSIndexPath *p = [tableView indexPathForSelectedRow];
-                NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];                
-                NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
-                
-                NSData *gpxData = [NSData dataWithContentsOfFile:fullPath];
-                MFMailComposeViewController *mfmail = [[MFMailComposeViewController alloc] init];
-                if (USERPREF_EMAIL_ADDRESS)
-                        [mfmail setToRecipients:[NSArray arrayWithObject:USERPREF_EMAIL_ADDRESS]];
-                [mfmail setSubject:NSLocalizedString(@"Recorded track from Glint", @"Email subject")];
-                [mfmail setMessageBody:NSLocalizedString(@"This message contains an attached GPX file that was recorded in Glint.", @"Email body") isHTML:NO];
-                [mfmail addAttachmentData:gpxData mimeType:@"text/xml" fileName:file];
-                [mfmail setMailComposeDelegate:self];
-                [self presentModalViewController:mfmail animated:YES];
-        }
-}
-
-- (IBAction) raceAgainstFile:(id)sender {
-        if ([tableView indexPathForSelectedRow]) {
-                NSIndexPath *p = [tableView indexPathForSelectedRow];
-                NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];
-                NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
-                JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:fullPath];
-                [(GlintAppDelegate*) [[UIApplication sharedApplication] delegate] setRaceAgainstLocations:[reader locations]];
-                [reader release];
-                [[NSUserDefaults standardUserDefaults] setValue:file forKey:@"raceAgainstFile"];
-                [self switchToGPSView:sender];
-        }
 }
 
 /*
@@ -125,6 +82,7 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GPXFileItem"];
         if (cell == nil) {
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"GPXFileItem"] autorelease];
+                //cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         NSString *fileName = [[files objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         cell.textLabel.text = [self descriptionForFile:fileName];
@@ -143,21 +101,6 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
         return [sections objectAtIndex:section];
-}
-
-/*
- * MFMailComposerViewController delegate stuff
- */
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller
-          didFinishWithResult:(MFMailComposeResult)result
-                        error:(NSError*)error {
-        [self dismissModalViewControllerAnimated:YES];
-        if (error) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Message failed",nil) message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",nil) otherButtonTitles:nil];
-                [alertView autorelease];
-                [alertView show];
-        }
 }
 
 /*
@@ -181,7 +124,7 @@
 - (NSString*)sectionDescriptionForFile:(NSString*)fileName {
         NSDictionary *attrs = [[NSFileManager defaultManager] fileAttributesAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, fileName] traverseLink:NO];
         NSDate *created = [attrs objectForKey:NSFileModificationDate];
-
+        
         NSDateComponents *comps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:created/* toDate:compare options:0*/];
         NSDateComponents *nowComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]/* toDate:compare options:0*/];
         
@@ -205,23 +148,8 @@
                 return NSLocalizedString(@"This Month",nil);
 }
 
-- (NSString*)formatDistance:(float)distance {
-        static float distFactor = 0.0;
-        static NSString *distFormat = nil;
-        if (!distFormat) {
-                NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
-                NSArray *unitSets = [NSArray arrayWithContentsOfFile:path];
-                int unitsetIndex = USERPREF_UNITSET;
-                NSDictionary* units = [unitSets objectAtIndex:unitsetIndex];
-                distFactor = [[units objectForKey:@"distFactor"] floatValue];
-                distFormat = [units objectForKey:@"distFormat"];
-                [distFormat retain];
-        }
-        return [NSString stringWithFormat:distFormat, distance*distFactor];
-}
-
 - (NSString*)descriptionForFile:(NSString*)file {
-        return file;
+        return [file stringByDeletingPathExtension];
 }
 
 - (NSString*)commentForFile:(NSString*)file {
@@ -252,24 +180,28 @@
                 numPoints = [matched intValue];
         }
         
-        return [NSString stringWithFormat:@"%@, %d points", [self formatDistance:distance], numPoints];
+        return [NSString stringWithFormat:@"%d %@, %@", numPoints, NSLocalizedString(@"points",nil), [delegate formatDistance:distance]];
 }
 
 /*
  * UITableViewDelegate stuff
  */
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-        emailButton.enabled = YES;
-        raceButton.enabled = YES;
-        trashButton.enabled = YES;
+- (void)tableView:(UITableView *)etableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+        NSIndexPath *p = [tableView indexPathForSelectedRow];
+        NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];                
+        NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
+        [navigationController pushViewController:detailViewController animated:YES];
+        [detailViewController performSelectorInBackground:@selector(loadFile:) withObject:fullPath];
 }
 
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-        emailButton.enabled = NO;
-        raceButton.enabled = NO;
-        trashButton.enabled = NO;
+- (void)tableView:(UITableView *)etableView
+commitEditingStyle:(UITableViewCellEditingStyle)editingStyle 
+forRowAtIndexPath:(NSIndexPath *)indexPath {
+        NSString *file = [[files objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, file] error:nil];
+        [[files objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 @end
-

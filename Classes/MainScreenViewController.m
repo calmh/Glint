@@ -12,10 +12,6 @@
  * Private methods
  */
 @interface MainScreenViewController ()
-- (NSString*)formatTimestamp:(float)seconds maxTime:(float)max allowNegatives:(bool)allowNegatives;
-- (NSString*)formatDMS:(float)latLong;
-- (NSString*)formatLat:(float)lat;
-- (NSString*)formatLon:(float)lon;
 - (bool)precisionAcceptable:(CLLocation*)location;
 - (void)enableGPS;
 - (void)disableGPS;
@@ -70,6 +66,8 @@
 - (void)viewDidLoad {
         [super viewDidLoad];
         
+        delegate = [[UIApplication sharedApplication] delegate];
+        
         math = [[JBLocationMath alloc] init];
         badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
         goodSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
@@ -93,11 +91,7 @@
         lockedToolbarItems = [[NSArray arrayWithObject:unlockButton] retain];
         unlockedToolbarItems = [[NSArray arrayWithObjects:sendButton, playButton, stopRaceButton, nil] retain];
         [toolbar setItems:lockedToolbarItems animated:YES];
-        
-        NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
-        unitSets = [NSArray arrayWithContentsOfFile:path];
-        [unitSets retain];
-        
+                
         if (USERPREF_DISABLE_IDLE)
                 [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
         if (USERPREF_ENABLE_PROXIMITY)
@@ -245,51 +239,6 @@
         [toolbar setItems:lockedToolbarItems animated:YES];
 }
 
-/*
- * Private methods
- */
-
-- (NSString*)formatTimestamp:(float)seconds maxTime:(float)max allowNegatives:(bool)allowNegatives {
-        bool negative = NO;
-        if (isnan(seconds) || seconds > max || !allowNegatives && seconds < 0)
-                return [NSString stringWithFormat:@"?"];
-        else {
-                if (seconds < 0) {
-                        seconds = -seconds;
-                        negative = YES;
-                }
-                int isec = (int) seconds;
-                int hour = (int) (isec / 3600);
-                int min = (int) ((isec % 3600) / 60);
-                int sec = (int) (isec % 60);
-                if (allowNegatives && !negative)
-                        return [NSString stringWithFormat:@"+%02d:%02d:%02d", hour, min, sec];
-                else if (negative)
-                        return [NSString stringWithFormat:@"-%02d:%02d:%02d", hour, min, sec];
-                else
-                        return [NSString stringWithFormat:@"%02d:%02d:%02d", hour, min, sec];
-        }
-}
-
-- (NSString*) formatDMS:(float)latLong {
-        int deg = (int) latLong;
-        int min = (int) ((latLong - deg) * 60);
-        float sec = (float) ((latLong - deg - min / 60.0) * 3600.0);
-        return [NSString stringWithFormat:@"%02d° %02d' %02.02f\"", deg, min, sec];
-}
-
-- (NSString*)formatLat:(float)lat {
-        NSString* sign = lat >= 0 ? @"N" : @"S";
-        lat = fabs(lat);
-        return [NSString stringWithFormat:@"%@ %@", [self formatDMS:lat], sign]; 
-}
-
-- (NSString*)formatLon:(float)lon {
-        NSString* sign = lon >= 0 ? @"E" : @"W";
-        lon = fabs(lon);
-        return [NSString stringWithFormat:@"%@ %@", [self formatDMS:lon], sign]; 
-}
-
 - (bool)precisionAcceptable:(CLLocation*)location {
         static float minPrec = 0.0;
         if (minPrec == 0.0)
@@ -363,10 +312,6 @@
 - (void)updateDisplay:(NSTimer*)timer
 {
         static BOOL prevStateGood = NO;
-        static float distFactor = 0.0;
-        static float speedFactor = 0.0;
-        static NSString *distFormat = nil;
-        static NSString *speedFormat = nil;
         static BOOL sounds;
         
         // Don't update the display if it's turned off by the proximity sensor.
@@ -374,19 +319,7 @@
         
         if ([[UIDevice currentDevice] proximityState])
                 return;
-        
-        // Load units the first time we need them
-        
-        if (distFactor == 0) {
-                int unitsetIndex = USERPREF_UNITSET;
-                NSDictionary* units = [unitSets objectAtIndex:unitsetIndex];
-                distFactor = [[units objectForKey:@"distFactor"] floatValue];
-                speedFactor = [[units objectForKey:@"speedFactor"] floatValue];
-                distFormat = [units objectForKey:@"distFormat"];
-                speedFormat = [units objectForKey:@"speedFormat"];
-                sounds = USERPREF_SOUNDS;
-        }
-        
+                
 #ifdef SCREENSHOT
         stateGood = YES;
 #endif
@@ -416,7 +349,7 @@
         // Position and accuracy
         
         if (current) {
-                self.positionLabel.text = [NSString stringWithFormat:@"%@\n%@\nelev %.0f m", [self formatLat: current.coordinate.latitude], [self formatLon: current.coordinate.longitude], current.altitude];
+                self.positionLabel.text = [NSString stringWithFormat:@"%@\n%@\nelev %.0f m", [delegate formatLat: current.coordinate.latitude], [delegate formatLon: current.coordinate.longitude], current.altitude];
                 self.positionLabel.textColor = [UIColor whiteColor];
                 if (current.verticalAccuracy < 0)
                         self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±inf v.", current.horizontalAccuracy];
@@ -434,20 +367,20 @@
         // Timer
         
         if (firstMeasurementDate)
-                self.elapsedTimeLabel.text =  [self formatTimestamp:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] maxTime:86400 allowNegatives:NO];
+                self.elapsedTimeLabel.text =  [delegate formatTimestamp:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] maxTime:86400 allowNegatives:NO];
 #ifdef SCREENSHOT
         self.elapsedTimeLabel.text = [self formatTimestamp:945 maxTime:86400 allowNegatives:NO];
 #endif
         // Total distance
         
-        self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, [math totalDistance]*distFactor];
+        self.totalDistanceLabel.text = [delegate formatDistance:[math totalDistance]];
 #ifdef SCREENSHOT
         self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, 3347*distFactor];
 #endif                
         // Current speed
         
         if ([math currentSpeed] >= 0.0)
-                self.currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, [math currentSpeed]*speedFactor];
+                self.currentSpeedLabel.text = [delegate formatDistance:[math currentSpeed]];
         else
                 self.currentSpeedLabel.text = @"?";
 #ifdef SCREENSHOT
@@ -463,13 +396,13 @@
                 
                 // Average speed and time per configured distance
                 
-                self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, [math averageSpeed]*speedFactor];
+                self.averageSpeedLabel.text = [delegate formatSpeed:[math averageSpeed]];
                 self.averageSpeedDescrLabel.text = NSLocalizedString(@"avg speed", nil);
                 self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
                 
                 float secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / [math currentSpeed];
-                self.currentTimePerDistanceLabel.text = [self formatTimestamp:secsPerEstDist maxTime:86400 allowNegatives:NO];
-                NSString *distStr = [NSString stringWithFormat:distFormat, USERPREF_ESTIMATE_DISTANCE*distFactor*1000.0];
+                self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:secsPerEstDist maxTime:86400 allowNegatives:NO];
+                NSString *distStr = [delegate formatDistance:USERPREF_ESTIMATE_DISTANCE*1000.0];
                 self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
                 self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0 green:0xFF/255.0 blue:0xCC/255.0 alpha:1.0];
 #ifdef SCREENSHOT
@@ -482,7 +415,7 @@
                 
                 float distDiff = [self distDifferenceInRace];
                 if (!isnan(distDiff)) {
-                        NSString *distString = [NSString stringWithFormat:distFormat, distDiff*distFactor];
+                        NSString *distString = [delegate formatDistance:distDiff];
                         self.averageSpeedLabel.text = [distDiff < 0.0 ? @"" : @"+" stringByAppendingString:distString];
                 } else {
                         self.averageSpeedLabel.text = @"?";
@@ -494,7 +427,7 @@
                         self.averageSpeedLabel.textColor = [UIColor colorWithRed:0x88/255.0 green:0xFF/255.0 blue:0x88/255.0 alpha:1.0];
                 
                 float timeDiff = [self timeDifferenceInRace];
-                self.currentTimePerDistanceLabel.text = [self formatTimestamp:timeDiff maxTime:86400 allowNegatives:YES];
+                self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:timeDiff maxTime:86400 allowNegatives:YES];
                 self.currentTimePerDistanceDescrLabel.text = NSLocalizedString(@"time diff", nil);
                 if (timeDiff > 0.0)
                         self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x88/255.0 blue:0x88/255.0 alpha:1.0];

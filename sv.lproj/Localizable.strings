@@ -57,15 +57,28 @@
 "OK" = "OK";
 
 /*
-** Send files screen
+** Files screen
 */
 
 "Today" = "Idag";
 "Yesterday" = "Igår";
-"This Week" = "Denna vecka";
+"This Week" = "Den här veckan";
 "Last Week" = "Förra veckan";
 "Two Weeks Ago" = "Två veckor sedan";
-"This Month" = "Denna månad";
+"This Month" = "Den här månaden";
+"Last Month" = "Förra månaden";
 "Earlier" = "Tidigare";
 "Email" = "Eposta";
 "Race against" = "Tävla mot";
+"Files" = "Filer";
+"points" = "mätpunkter";
+
+/*
+** File Detail screen
+*/
+"File Details" = "Fildetaljer";
+"File Name" = "Filnamn";
+"Start Time" = "Starttid";
+"End Time" = "Måltid";
+"Total Distance" = "Total distans";
+"Average Speed" = "Genomsn. hastighet";

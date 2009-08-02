@@ -8,21 +8,29 @@
 
 #import <UIKit/UIKit.h>
 @class MainScreenViewController;
-@class SendFilesViewController;
+@class FilesViewController;
 
 @interface GlintAppDelegate : NSObject <UIApplicationDelegate> {
         UIWindow *window;
         MainScreenViewController *mainScreenViewController;
-        SendFilesViewController *sendFilesViewController;
+        FilesViewController *sendFilesViewController;
+        UINavigationController *navController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet MainScreenViewController *mainScreenViewController;
-@property (nonatomic, retain) IBOutlet SendFilesViewController *sendFilesViewController;
+@property (nonatomic, retain) IBOutlet FilesViewController *sendFilesViewController;
+@property (nonatomic, retain) IBOutlet UINavigationController *navController;
 
 - (IBAction) switchToSendFilesView:(id)sender;
 - (IBAction) switchToGPSView:(id)sender;
 - (void)setRaceAgainstLocations:(NSArray*)locations;
+- (NSString*)formatTimestamp:(float)seconds maxTime:(float)max allowNegatives:(bool)allowNegatives;
+- (NSString*) formatDMS:(float)latLong;
+- (NSString*)formatLat:(float)lat;
+- (NSString*)formatLon:(float)lon;
+- (NSString*)formatDistance:(float)distance;
+- (NSString*)formatSpeed:(float)speed;
 
 @end
 

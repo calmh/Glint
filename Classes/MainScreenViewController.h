@@ -21,6 +21,7 @@ typedef enum enumGlintDataSource {
 } GlintDataSource;
 
 @interface MainScreenViewController : UIViewController  <CLLocationManagerDelegate> {
+        GlintAppDelegate *delegate;
         CLLocationManager *locationManager;
         JBLocationMath *math;
         NSArray *unitSets;
