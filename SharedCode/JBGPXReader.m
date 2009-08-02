@@ -93,6 +93,7 @@ didStartElement:(NSString *)elementName
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
         if(currentlyReadingTime) {
                 NSDateFormatter *form = [[NSDateFormatter alloc] init];
+                [form setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
                 [form setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
                 lastReadDate = [[form dateFromString:string] retain];
         }
