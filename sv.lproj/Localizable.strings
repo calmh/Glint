@@ -34,8 +34,8 @@
 ** Home screen
 */
 
-"elapsed" = "tid";
-"total distance" = "avverkad distans";
+"elapsed" = "förfluten tid";
+"total distance" = "tillryggalagd distans";
 "cur speed" = "nuvarande hastighet";
 "avg speed" = "genomsnittlig hastighet";
 "measurements" = "mätningar";

@@ -44,24 +44,24 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
         unichar chars[length];
         CGGlyph glyphs[length];
         do {
-        // Get drawing font.
-        
-        CGFontRef font = CGFontCreateWithFontName((CFStringRef)[[self font] fontName]);
-        CGContextSetFont(ctx, font);
-        CGContextSetFontSize(ctx, pointSize);
-        
-        // Transform text characters to unicode glyphs.
-        
-        [[self text] getCharacters:chars range:NSMakeRange(0, length)];
-        CGFontGetGlyphsForUnichars(font, chars, glyphs, length);
-        
-        // Measure text dimensions.
-        
-        CGContextSetTextDrawingMode(ctx, kCGTextInvisible); 
-        CGContextSetTextPosition(ctx, 0, 0);
-        CGContextShowGlyphs(ctx, glyphs, length);
-        textEnd = CGContextGetTextPosition(ctx);
-        pointSize *= 0.9;
+                // Get drawing font.
+                
+                CGFontRef font = CGFontCreateWithFontName((CFStringRef)[[self font] fontName]);
+                CGContextSetFont(ctx, font);
+                CGContextSetFontSize(ctx, pointSize);
+                
+                // Transform text characters to unicode glyphs.
+                
+                [[self text] getCharacters:chars range:NSMakeRange(0, length)];
+                CGFontGetGlyphsForUnichars(font, chars, glyphs, length);
+                
+                // Measure text dimensions.
+                
+                CGContextSetTextDrawingMode(ctx, kCGTextInvisible); 
+                CGContextSetTextPosition(ctx, 0, 0);
+                CGContextShowGlyphs(ctx, glyphs, length);
+                textEnd = CGContextGetTextPosition(ctx);
+                pointSize *= 0.975;
         } while (textEnd.x > rect.size.width);
         
         // Calculate text drawing point.
