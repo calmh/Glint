@@ -401,8 +401,9 @@
                         self.horAccuracyLabel.text = [NSString stringWithFormat:@"±%.0f m", current.horizontalAccuracy];
                 else
                         self.horAccuracyLabel.text = @"±inf m";
+                
                 if (current.verticalAccuracy >= 0)
-                        self.horAccuracyLabel.text = [NSString stringWithFormat:@"±%.0f m", current.verticalAccuracy];
+                        self.verAccuracyLabel.text = [NSString stringWithFormat:@"±%.0f m", current.verticalAccuracy];
                 else
                         self.verAccuracyLabel.text = @"±inf m";
 #ifdef SCREENSHOT
