@@ -95,7 +95,7 @@
         lockedToolbarItems = [[NSArray arrayWithObject:unlockButton] retain];
         unlockedToolbarItems = [[NSArray arrayWithObjects:sendButton, playButton, stopRaceButton, nil] retain];
         [toolbar setItems:lockedToolbarItems animated:YES];
-                
+        
         if (USERPREF_DISABLE_IDLE)
                 [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
         if (USERPREF_ENABLE_PROXIMITY)
@@ -128,7 +128,7 @@
         self.horAccuracyDescrLabel.text = NSLocalizedString(@"h. accuracy", nil);
         self.verAccuracyDescrLabel.text = NSLocalizedString(@"v. accuracy", nil);
         self.courseDescrLabel.text = NSLocalizedString(@"course", nil);
-
+        
         NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
         NSString* marketVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
         self.measurementsLabel.text = [NSString stringWithFormat:@"Glint %@ (%@)", marketVer, bundleVer];
@@ -165,6 +165,14 @@
         }
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+        UITouch* touch = [touches anyObject];
+        if (touch.view == containerView && touch.tapCount == 1) {
+                pager.currentPage = (pager.currentPage + 1) % pager.numberOfPages;
+                [self pageChanged:nil];
+        }
+}
+
 /*
  * LocationManager Delegate
  */
@@ -195,40 +203,48 @@
 
 - (IBAction)unlock:(id)sender
 {
-        [toolbar setItems:unlockedToolbarItems animated:YES];
-        if (gpxWriter)
-                [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"End Recording", nil)];
-        else
-                [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"Record", nil)];
-        
-        if (raceAgainstLocations)
-                [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:2] setEnabled:YES];
-        else
-                [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:2] setEnabled:NO];
-        
-        if (lockTimer) {
-                [lockTimer invalidate];
-                [lockTimer release];
-                lockTimer = nil;
+        @synchronized (self) {
+                NSLog(@"unlock: start");
+                [toolbar setItems:unlockedToolbarItems animated:NO];
+                
+                if (gpxWriter)
+                        [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"End Recording", nil)];
+                else
+                        [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"Record", nil)];
+                
+                if (raceAgainstLocations)
+                        [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:2] setEnabled:YES];
+                else
+                        [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:2] setEnabled:NO];
+                
+                if (lockTimer) {
+                        [lockTimer invalidate];
+                        [lockTimer release];
+                }
+                lockTimer = [NSTimer timerWithTimeInterval:5.0 target:self selector:@selector(lock:) userInfo:nil repeats:NO];
+                [lockTimer retain];
+                [[NSRunLoop currentRunLoop] addTimer:lockTimer forMode:NSDefaultRunLoopMode];
+                NSLog(@"unlock: done");
         }
-        lockTimer = [NSTimer timerWithTimeInterval:5.0 target:self selector:@selector(lock:) userInfo:nil repeats:NO];
-        [lockTimer retain];
-        [[NSRunLoop currentRunLoop] addTimer:lockTimer forMode:NSDefaultRunLoopMode];
 }
 
 - (IBAction)lock:(id)sender
 {
-        [toolbar setItems:lockedToolbarItems animated:YES];
-        if (lockTimer) {
-                [lockTimer invalidate];
-                [lockTimer release];
-                lockTimer = nil;
+        @synchronized (self) {
+                NSLog(@"lock: start");
+                if (lockTimer) {
+                        [lockTimer invalidate];
+                        [lockTimer release];
+                        lockTimer = nil;
+                }
+                [toolbar setItems:lockedToolbarItems animated:NO];
+                NSLog(@"lock: done");
         }
 }
 
 - (IBAction)sendFiles:(id)sender {
-        [self lock:sender];
         [(GlintAppDelegate *)[[UIApplication sharedApplication] delegate] switchToSendFilesView:sender];
+        [self lock:sender];
 }
 
 - (IBAction)startStopRecording:(id)sender
@@ -248,7 +264,7 @@
                 [gpxWriter release];
                 gpxWriter = nil;
         }
-        [toolbar setItems:lockedToolbarItems animated:YES];
+        [self lock:sender];
 }
 
 - (IBAction)endRace:(id)sender {
@@ -261,8 +277,8 @@
 
 - (IBAction)pageChanged:(id)sender {
         [UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:1.2];
-	[UIView setAnimationRepeatAutoreverses:NO];
+        [UIView setAnimationDuration:1.2];
+        [UIView setAnimationRepeatAutoreverses:NO];
         if (pager.currentPage == 0) {
                 [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:containerView cache:YES];
                 [containerView bringSubviewToFront:primaryView];
@@ -270,7 +286,7 @@
                 [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:containerView cache:YES];
                 [containerView bringSubviewToFront:secondaryView];
         }
-	[UIView commitAnimations];
+        [UIView commitAnimations];
 }
 
 /*
@@ -345,7 +361,7 @@
         
         if ([[UIDevice currentDevice] proximityState])
                 return;
-                
+        
 #ifdef SCREENSHOT
         stateGood = YES;
 #endif
@@ -389,7 +405,8 @@
                 else
                         self.verAccuracyLabel.text = @"±inf m";
 #ifdef SCREENSHOT
-                self.accuracyLabel.text = @"±17 m h, ±23 m v.";
+                self.horAccuracyLabel.text = @"±17 m";
+                self.verAccuracyLabel.text = @"±inf m";
 #endif
         }
         
@@ -398,13 +415,13 @@
         if (firstMeasurementDate)
                 self.elapsedTimeLabel.text =  [delegate formatTimestamp:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] maxTime:86400 allowNegatives:NO];
 #ifdef SCREENSHOT
-        self.elapsedTimeLabel.text = [self formatTimestamp:945 maxTime:86400 allowNegatives:NO];
+        self.elapsedTimeLabel.text = [delegate formatTimestamp:945 maxTime:86400 allowNegatives:NO];
 #endif
         // Total distance
         
         self.totalDistanceLabel.text = [delegate formatDistance:[math totalDistance]];
 #ifdef SCREENSHOT
-        self.totalDistanceLabel.text = [NSString stringWithFormat:distFormat, 3347*distFactor];
+        self.totalDistanceLabel.text = [delegate formatDistance:3347];
 #endif                
         // Current speed
         
@@ -413,7 +430,7 @@
         else
                 self.currentSpeedLabel.text = @"?";
 #ifdef SCREENSHOT
-        self.currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, 3425.0f/945.0f*speedFactor];
+        self.currentSpeedLabel.text = [delegate formatSpeed:3425.0f/945.0f];
 #endif                
         
         //if (currentDataSource == kGlintDataSourceMovement)
@@ -424,7 +441,7 @@
         if (!raceAgainstLocations) {
                 self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x80/255.0f blue:0x00/255.0f alpha:1.0f];
                 self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0f green:0xFF/255.0f blue:0x66/255.0f alpha:1.0f];
-
+                
                 // Average speed and time per configured distance
                 
                 self.averageSpeedLabel.text = [delegate formatSpeed:[math averageSpeed]];
@@ -435,8 +452,8 @@
                 NSString *distStr = [delegate formatDistance:USERPREF_ESTIMATE_DISTANCE*1000.0];
                 self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
 #ifdef SCREENSHOT
-                self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, 3300.0f/945.0f*speedFactor];
-                self.currentTimePerDistanceLabel.text = [self formatTimestamp:USERPREF_ESTIMATE_DISTANCE * 1000.0 / (3425.0f/945.0f) maxTime:86400 allowNegatives:NO];
+                self.averageSpeedLabel.text = [delegate formatSpeed:3300.0f/945.0f];
+                self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:USERPREF_ESTIMATE_DISTANCE * 1000.0 / (3425.0f/945.0f) maxTime:86400 allowNegatives:NO];
 #endif                
         } else {
                 self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x40/255.0f blue:0x40/255.0f alpha:1.0f];
@@ -468,8 +485,12 @@
         
         // Number of saved measurements
         
+#ifdef SCREENSHOT
+        self.measurementsLabel.text = [NSString stringWithFormat:@"%d %@", 67, NSLocalizedString(@"measurements", nil)];
+#else
         if (gpxWriter)
                 self.measurementsLabel.text = [NSString stringWithFormat:@"%d %@", [gpxWriter numberOfTrackPoints], NSLocalizedString(@"measurements", nil)];
+#endif
         
         // Current course
         

@@ -46,8 +46,10 @@
 }
 
 - (void)loadFile:(NSString*)newFilename {
-        NSLog(@"Starting loadFile:");
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+        NSLog(@"Starting loadFile:");
+        [emailButton setEnabled:NO];
+        [raceButton setEnabled:NO];
         [filename release];
         filename = [newFilename retain];
         [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];        
@@ -78,8 +80,10 @@
         averageSpeed = [delegate formatSpeed:[math averageSpeed]];
         [averageSpeed retain];
         [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];        
-        [pool release];
+        [emailButton setEnabled:YES];
+        [raceButton setEnabled:YES];
         NSLog(@"Finished loadFile:");
+        [pool release];
 }
 
 - (IBAction) sendFile:(id)sender {
