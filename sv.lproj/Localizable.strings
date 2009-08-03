@@ -35,13 +35,21 @@
 */
 
 "elapsed" = "tid";
-"total distance" = "distans";
-"cur speed" = "nuv. hastighet";
-"avg speed" = "genomsn. hast.";
+"total distance" = "avverkad distans";
+"cur speed" = "nuvarande hastighet";
+"avg speed" = "genomsnittlig hastighet";
 "measurements" = "mätningar";
-"per" = "per";
+"per" = "tid per";
 "dist diff" = "distansskillnad";
 "time diff" = "tidsskillnad";
+
+// Secondary page
+"latitude" = "latitud";
+"longitude" = "longitud";
+"altitude" = "altitud";
+"h. accuracy" = "horisontell noggrannhet";
+"v. accuracy" = "vertikal noggrannhet";
+"course" = "kurs";
 
 "Files" = "Filer";
 "Record" = "Spela in";

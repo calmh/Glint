@@ -31,28 +31,28 @@
 @end
 
 @implementation MainScreenViewController
-@synthesize positionLabel, elapsedTimeLabel, currentSpeedLabel, currentTimePerDistanceLabel, totalDistanceLabel, statusLabel, averageSpeedLabel, bearingLabel, accuracyLabel;
-@synthesize elapsedTimeDescrLabel, totalDistanceDescrLabel, currentTimePerDistanceDescrLabel, currentSpeedDescrLabel, averageSpeedDescrLabel;
-@synthesize toolbar, compass, recordingIndicator, signalIndicator, racingIndicator;
+
+@synthesize containerView, primaryView, secondaryView;
+@synthesize pager;
+@synthesize signalIndicator, recordingIndicator, racingIndicator;
+@synthesize toolbar;
+@synthesize measurementsLabel;
+
+@synthesize elapsedTimeLabel, elapsedTimeDescrLabel;
+@synthesize totalDistanceLabel, totalDistanceDescrLabel;
+@synthesize currentSpeedLabel, currentSpeedDescrLabel;
+@synthesize averageSpeedLabel, averageSpeedDescrLabel;
+@synthesize currentTimePerDistanceLabel, currentTimePerDistanceDescrLabel;
+@synthesize compass;
+
+@synthesize latitudeLabel, latitudeDescrLabel;
+@synthesize longitudeLabel, longitudeDescrLabel;
+@synthesize elevationLabel, elevationDescrLabel;
+@synthesize horAccuracyLabel, horAccuracyDescrLabel;
+@synthesize verAccuracyLabel, verAccuracyDescrLabel;
+@synthesize courseLabel, courseDescrLabel;
 
 - (void)dealloc {
-        self.positionLabel = nil;
-        self.elapsedTimeLabel = nil;
-        self.currentSpeedLabel = nil;
-        self.currentTimePerDistanceLabel = nil;
-        self.totalDistanceLabel = nil;
-        self.statusLabel = nil;
-        self.averageSpeedLabel = nil;
-        self.bearingLabel = nil;
-        self.accuracyLabel = nil;
-        self.compass = nil;
-        self.recordingIndicator = nil;
-        self.elapsedTimeDescrLabel = nil;
-        self.totalDistanceDescrLabel = nil;
-        self.currentTimePerDistanceDescrLabel = nil;
-        self.currentSpeedDescrLabel = nil;
-        self.averageSpeedDescrLabel = nil;
-        
         [locationManager release];
         [math release];
         [goodSound release];
@@ -67,6 +67,10 @@
         [super viewDidLoad];
         
         delegate = [[UIApplication sharedApplication] delegate];
+        
+        [containerView addSubview:primaryView];
+        [containerView addSubview:secondaryView];
+        [containerView bringSubviewToFront:primaryView];
         
         math = [[JBLocationMath alloc] init];
         badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
@@ -97,21 +101,37 @@
         if (USERPREF_ENABLE_PROXIMITY)
                 [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
         
-        self.elapsedTimeDescrLabel.text = NSLocalizedString(@"elapsed", nil);
-        self.totalDistanceDescrLabel.text = NSLocalizedString(@"total distance", nil);
-        self.currentSpeedDescrLabel.text = NSLocalizedString(@"cur speed", nil);
+        //self.measurementsLabel.text = @"-";
         
-        self.positionLabel.text = @"-";
-        self.accuracyLabel.text = @"-";
+        // Primary page
+        
         self.elapsedTimeLabel.text = @"00:00:00";
-        
         self.totalDistanceLabel.text = @"-";
         self.currentSpeedLabel.text = @"?";
         self.averageSpeedLabel.text = @"?";
         self.currentTimePerDistanceLabel.text = @"?";
+        self.elapsedTimeDescrLabel.text = NSLocalizedString(@"elapsed", nil);
+        self.totalDistanceDescrLabel.text = NSLocalizedString(@"total distance", nil);
+        self.currentSpeedDescrLabel.text = NSLocalizedString(@"cur speed", nil);
+        
+        // Secondary page
+        
+        self.latitudeLabel.text = @"-";
+        self.longitudeLabel.text = @"-";
+        self.elevationLabel.text = @"-";
+        self.horAccuracyLabel.text = @"-";
+        self.verAccuracyLabel.text = @"-";
+        self.courseLabel.text = @"?";
+        self.latitudeDescrLabel.text = NSLocalizedString(@"latitude", nil);
+        self.longitudeDescrLabel.text = NSLocalizedString(@"longitude", nil);
+        self.elevationDescrLabel.text = NSLocalizedString(@"altitude", nil);
+        self.horAccuracyDescrLabel.text = NSLocalizedString(@"h. accuracy", nil);
+        self.verAccuracyDescrLabel.text = NSLocalizedString(@"v. accuracy", nil);
+        self.courseDescrLabel.text = NSLocalizedString(@"course", nil);
+
         NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
         NSString* marketVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-        self.statusLabel.text = [NSString stringWithFormat:@"Glint %@ (%@)", marketVer, bundleVer];
+        self.measurementsLabel.text = [NSString stringWithFormat:@"Glint %@ (%@)", marketVer, bundleVer];
         
         NSTimer* displayUpdater = [NSTimer timerWithTimeInterval:DISPLAY_THREAD_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:displayUpdater forMode:NSDefaultRunLoopMode];
@@ -239,12 +259,18 @@
         [toolbar setItems:lockedToolbarItems animated:YES];
 }
 
-- (bool)precisionAcceptable:(CLLocation*)location {
-        static float minPrec = 0.0;
-        if (minPrec == 0.0)
-                minPrec = USERPREF_MINIMUM_PRECISION;
-        float currentPrec = location.horizontalAccuracy;
-        return currentPrec > 0.0 && currentPrec <= minPrec;
+- (IBAction)pageChanged:(id)sender {
+        [UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:1.2];
+	[UIView setAnimationRepeatAutoreverses:NO];
+        if (pager.currentPage == 0) {
+                [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:containerView cache:YES];
+                [containerView bringSubviewToFront:primaryView];
+        } else if (pager.currentPage == 1) {
+                [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:containerView cache:YES];
+                [containerView bringSubviewToFront:secondaryView];
+        }
+	[UIView commitAnimations];
 }
 
 /*
@@ -349,19 +375,22 @@
         // Position and accuracy
         
         if (current) {
-                self.positionLabel.text = [NSString stringWithFormat:@"%@\n%@\nelev %.0f m", [delegate formatLat: current.coordinate.latitude], [delegate formatLon: current.coordinate.longitude], current.altitude];
-                self.positionLabel.textColor = [UIColor whiteColor];
-                if (current.verticalAccuracy < 0)
-                        self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±inf v.", current.horizontalAccuracy];
+                //self.positionLabel.text = [NSString stringWithFormat:@"%@\n%@\nelev %.0f m", [delegate formatLat: current.coordinate.latitude], [delegate formatLon: current.coordinate.longitude], current.altitude];
+                self.latitudeLabel.text = [delegate formatLat: current.coordinate.latitude];
+                self.longitudeLabel.text = [delegate formatLon: current.coordinate.longitude];
+                self.elevationLabel.text = [NSString stringWithFormat:@"%.0f m", current.altitude];
+                //self.positionLabel.textColor = [UIColor whiteColor];
+                if (current.horizontalAccuracy >= 0)
+                        self.horAccuracyLabel.text = [NSString stringWithFormat:@"±%.0f m", current.horizontalAccuracy];
                 else
-                        self.accuracyLabel.text = [NSString stringWithFormat:@"±%.0f m h, ±%.0f m v.", current.horizontalAccuracy, current.verticalAccuracy];
+                        self.horAccuracyLabel.text = @"±inf m";
+                if (current.verticalAccuracy >= 0)
+                        self.horAccuracyLabel.text = [NSString stringWithFormat:@"±%.0f m", current.verticalAccuracy];
+                else
+                        self.verAccuracyLabel.text = @"±inf m";
 #ifdef SCREENSHOT
                 self.accuracyLabel.text = @"±17 m h, ±23 m v.";
 #endif
-                self.accuracyLabel.textColor = [UIColor whiteColor];
-        } else {
-                self.positionLabel.textColor = [UIColor grayColor];
-                self.accuracyLabel.textColor = [UIColor grayColor];
         }
         
         // Timer
@@ -380,36 +409,38 @@
         // Current speed
         
         if ([math currentSpeed] >= 0.0)
-                self.currentSpeedLabel.text = [delegate formatDistance:[math currentSpeed]];
+                self.currentSpeedLabel.text = [delegate formatSpeed:[math currentSpeed]];
         else
                 self.currentSpeedLabel.text = @"?";
 #ifdef SCREENSHOT
         self.currentSpeedLabel.text = [NSString stringWithFormat:speedFormat, 3425.0f/945.0f*speedFactor];
 #endif                
         
-        if (currentDataSource == kGlintDataSourceMovement)
-                self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
-        else if (currentDataSource == kGlintDataSourceTimer)
-                self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
+        //if (currentDataSource == kGlintDataSourceMovement)
+        //        self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
+        //else if (currentDataSource == kGlintDataSourceTimer)
+        //        self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
         
         if (!raceAgainstLocations) {
-                
+                self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x80/255.0f blue:0x00/255.0f alpha:1.0f];
+                self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0f green:0xFF/255.0f blue:0x66/255.0f alpha:1.0f];
+
                 // Average speed and time per configured distance
                 
                 self.averageSpeedLabel.text = [delegate formatSpeed:[math averageSpeed]];
                 self.averageSpeedDescrLabel.text = NSLocalizedString(@"avg speed", nil);
-                self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
                 
                 float secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / [math currentSpeed];
                 self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:secsPerEstDist maxTime:86400 allowNegatives:NO];
                 NSString *distStr = [delegate formatDistance:USERPREF_ESTIMATE_DISTANCE*1000.0];
                 self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
-                self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0 green:0xFF/255.0 blue:0xCC/255.0 alpha:1.0];
 #ifdef SCREENSHOT
                 self.averageSpeedLabel.text = [NSString stringWithFormat:speedFormat, 3300.0f/945.0f*speedFactor];
                 self.currentTimePerDistanceLabel.text = [self formatTimestamp:USERPREF_ESTIMATE_DISTANCE * 1000.0 / (3425.0f/945.0f) maxTime:86400 allowNegatives:NO];
 #endif                
         } else {
+                self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x40/255.0f blue:0x40/255.0f alpha:1.0f];
+                self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x40/255.0f blue:0x40/255.0f alpha:1.0f];
                 
                 // Difference in time and distance against raceAgainstLocations.
                 
@@ -421,34 +452,33 @@
                         self.averageSpeedLabel.text = @"?";
                 }
                 self.averageSpeedDescrLabel.text = NSLocalizedString(@"dist diff", nil);
-                if (distDiff < 0.0)
-                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x88/255.0 blue:0x88/255.0 alpha:1.0];
-                else
-                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0x88/255.0 green:0xFF/255.0 blue:0x88/255.0 alpha:1.0];
+                //if (distDiff < 0.0)
+                //        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x88/255.0 blue:0x88/255.0 alpha:1.0];
+                //else
+                //        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0x88/255.0 green:0xFF/255.0 blue:0x88/255.0 alpha:1.0];
                 
                 float timeDiff = [self timeDifferenceInRace];
                 self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:timeDiff maxTime:86400 allowNegatives:YES];
                 self.currentTimePerDistanceDescrLabel.text = NSLocalizedString(@"time diff", nil);
-                if (timeDiff > 0.0)
-                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x88/255.0 blue:0x88/255.0 alpha:1.0];
-                else
-                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x88/255.0 green:0xFF/255.0 blue:0x88/255.0 alpha:1.0];
+                //if (timeDiff > 0.0)
+                //        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x88/255.0 blue:0x88/255.0 alpha:1.0];
+                //else
+                //        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x88/255.0 green:0xFF/255.0 blue:0x88/255.0 alpha:1.0];
         }
         
         // Number of saved measurements
         
         if (gpxWriter)
-                self.statusLabel.text = [NSString stringWithFormat:@"%04d %@", [gpxWriter numberOfTrackPoints], NSLocalizedString(@"measurements", @"measurements")];
-#ifdef SCREENSHOT
-        self.statusLabel.text = [NSString stringWithFormat:@"%04d %@", 92, NSLocalizedString(@"measurements", @"measurements")];
-#endif
+                self.measurementsLabel.text = [NSString stringWithFormat:@"%d %@", [gpxWriter numberOfTrackPoints], NSLocalizedString(@"measurements", nil)];
         
         // Current course
         
 #ifdef SCREENSHOT
         self.compass.course = 233.0f;
+        self.courseLabel.text = [NSString stringWithFormat:@"%.0f°", 233.0f];
 #else
         self.compass.course = [math currentCourse];
+        self.courseLabel.text = [NSString stringWithFormat:@"%.0f°", [math currentCourse]];
 #endif   
         [current release];
 }
@@ -504,6 +534,14 @@
 - (void)disabledIndicator:(UILabel*)indicator {
         indicator.backgroundColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
         indicator.textColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1.0];
+}
+
+- (bool)precisionAcceptable:(CLLocation*)location {
+        static float minPrec = 0.0;
+        if (minPrec == 0.0)
+                minPrec = USERPREF_MINIMUM_PRECISION;
+        float currentPrec = location.horizontalAccuracy;
+        return currentPrec > 0.0 && currentPrec <= minPrec;
 }
 
 @end

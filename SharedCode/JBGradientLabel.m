@@ -21,6 +21,7 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
 }
 
 - (void) setTextColor:(UIColor*)color {
+        [super setTextColor:color];
         const float *c1 = CGColorGetComponents([color CGColor]);
         float divisor = 3.0f;
         float colors[] = { c1[0], c1[1], c1[2], 1.0f, c1[0]/divisor, c1[1]/divisor, c1[2]/divisor, 1.0f };
@@ -37,17 +38,20 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
 - (void)drawRect:(CGRect)rect {
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
         
+        CGPoint textEnd;
+        float pointSize = [[self font] pointSize];
+        NSInteger length = [[self text] length];
+        unichar chars[length];
+        CGGlyph glyphs[length];
+        do {
         // Get drawing font.
         
         CGFontRef font = CGFontCreateWithFontName((CFStringRef)[[self font] fontName]);
         CGContextSetFont(ctx, font);
-        CGContextSetFontSize(ctx, [[self font] pointSize]);
+        CGContextSetFontSize(ctx, pointSize);
         
         // Transform text characters to unicode glyphs.
         
-        NSInteger length = [[self text] length];
-        unichar chars[length];
-        CGGlyph glyphs[length];
         [[self text] getCharacters:chars range:NSMakeRange(0, length)];
         CGFontGetGlyphsForUnichars(font, chars, glyphs, length);
         
@@ -56,7 +60,9 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
         CGContextSetTextDrawingMode(ctx, kCGTextInvisible); 
         CGContextSetTextPosition(ctx, 0, 0);
         CGContextShowGlyphs(ctx, glyphs, length);
-        CGPoint textEnd = CGContextGetTextPosition(ctx);
+        textEnd = CGContextGetTextPosition(ctx);
+        pointSize *= 0.9;
+        } while (textEnd.x > rect.size.width);
         
         // Calculate text drawing point.
         

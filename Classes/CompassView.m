@@ -103,7 +103,7 @@
         CGContextSetShouldAntialias(ctx, YES);
         
         // Move to center of compass rose and rotate to current course
-        CGContextTranslateCTM(ctx, rect.size.width / 2.0, COMPASS_RADIUS + rect.size.height / 2.0);
+        CGContextTranslateCTM(ctx, rect.size.width / 2.0, COMPASS_RADIUS + rect.size.height / 2.0 + 2);
         CGContextRotateCTM(ctx, -showingCourse / 180.0 * M_PI);
         
         // Find the visibility boundaries of the compass rose

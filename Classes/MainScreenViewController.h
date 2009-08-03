@@ -38,53 +38,58 @@ typedef enum enumGlintDataSource {
         NSArray *raceAgainstLocations;
         BOOL stateGood;
 
-        UILabel *positionLabel;
-        JBGradientLabel *elapsedTimeLabel;
-        UILabel *currentSpeedLabel;
-        UILabel *averageSpeedLabel;
-        UILabel *currentTimePerDistanceLabel;
-        UILabel *totalDistanceLabel;
-        UILabel *statusLabel;
-        UILabel *bearingLabel;
-        UILabel *accuracyLabel;
-        UILabel *recordingIndicator;
-        UILabel *signalIndicator;
-        UILabel *racingIndicator;
+        // Main screen
         
-        UILabel *elapsedTimeDescrLabel;
-        UILabel *totalDistanceDescrLabel;
-        UILabel *currentTimePerDistanceDescrLabel;
-        UILabel *currentSpeedDescrLabel;
-        UILabel *averageSpeedDescrLabel;
-
+        UIView *containerView, *primaryView, *secondaryView;
+        UIPageControl *pager;
+        UILabel *signalIndicator, *recordingIndicator, *racingIndicator;
         UIToolbar *toolbar;
+        UILabel *measurementsLabel;
+        
+        // Primary stats page
+        
+        UILabel *elapsedTimeLabel, *elapsedTimeDescrLabel;
+        UILabel *totalDistanceLabel, *totalDistanceDescrLabel;
+        UILabel *currentSpeedLabel, *currentSpeedDescrLabel;
+        UILabel *averageSpeedLabel, *averageSpeedDescrLabel;
+        UILabel *currentTimePerDistanceLabel, *currentTimePerDistanceDescrLabel;
         CompassView *compass;
+
+        // Secondary stats page
+        
+        UILabel *latitudeLabel, *latitudeDescrLabel;
+        UILabel *longitudeLabel, *longitudeDescrLabel;
+        UILabel *elevationLabel, *elevationDescrLabel;
+        UILabel *horAccuracyLabel, *horAccuracyDescrLabel;
+        UILabel *verAccuracyLabel, *verAccuracyDescrLabel;
+        UILabel *courseLabel, *courseDescrLabel;
 }
 
-@property (nonatomic, retain) IBOutlet UILabel *positionLabel;
-@property (nonatomic, retain) IBOutlet JBGradientLabel *elapsedTimeLabel;
-@property (nonatomic, retain) IBOutlet UILabel *currentSpeedLabel;
-@property (nonatomic, retain) IBOutlet UILabel *averageSpeedLabel;
-@property (nonatomic, retain) IBOutlet UILabel *currentTimePerDistanceLabel;
-@property (nonatomic, retain) IBOutlet UILabel *totalDistanceLabel;
-@property (nonatomic, retain) IBOutlet UILabel *statusLabel;
-@property (nonatomic, retain) IBOutlet UILabel *bearingLabel;
-@property (nonatomic, retain) IBOutlet UILabel *accuracyLabel;
-@property (nonatomic, retain) IBOutlet UILabel *recordingIndicator;
-@property (nonatomic, retain) IBOutlet UILabel *signalIndicator;
-@property (nonatomic, retain) IBOutlet UILabel *racingIndicator;
+@property (nonatomic, retain) IBOutlet UIView *containerView, *primaryView, *secondaryView;
+@property (nonatomic, retain) IBOutlet UIPageControl *pager;
+@property (nonatomic, retain) IBOutlet UILabel *signalIndicator, *recordingIndicator, *racingIndicator;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, retain) IBOutlet UILabel *measurementsLabel;
+
+@property (nonatomic, retain) IBOutlet UILabel *elapsedTimeLabel, *elapsedTimeDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *totalDistanceLabel, *totalDistanceDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *currentSpeedLabel, *currentSpeedDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *averageSpeedLabel, *averageSpeedDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *currentTimePerDistanceLabel, *currentTimePerDistanceDescrLabel;
 @property (nonatomic, retain) IBOutlet CompassView *compass;
 
-@property (nonatomic, retain) IBOutlet UILabel *elapsedTimeDescrLabel;
-@property (nonatomic, retain) IBOutlet UILabel *totalDistanceDescrLabel;
-@property (nonatomic, retain) IBOutlet UILabel *currentTimePerDistanceDescrLabel;
-@property (nonatomic, retain) IBOutlet UILabel *currentSpeedDescrLabel;
-@property (nonatomic, retain) IBOutlet UILabel *averageSpeedDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *latitudeLabel, *latitudeDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *longitudeLabel, *longitudeDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *elevationLabel, *elevationDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *horAccuracyLabel, *horAccuracyDescrLabel;        
+@property (nonatomic, retain) IBOutlet UILabel *verAccuracyLabel, *verAccuracyDescrLabel;        
+@property (nonatomic, retain) IBOutlet UILabel *courseLabel, *courseDescrLabel;
+
+- (void)setRaceAgainstLocations:(NSArray*)locations;
 
 - (IBAction)startStopRecording:(id)sender;
 - (IBAction)unlock:(id)sender;
-- (void)setRaceAgainstLocations:(NSArray*)locations;
 - (IBAction)endRace:(id)sender;
+- (IBAction)pageChanged:(id)sender;
 
 @end
