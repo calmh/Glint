@@ -45,11 +45,20 @@
         averageSpeed = NSLocalizedString(@"Loading...",nil);
 }
 
+- (void)enableButtons {
+        [emailButton setEnabled:YES];
+        [raceButton setEnabled:YES];
+}
+
+- (void)disableButtons {
+        [emailButton setEnabled:NO];
+        [raceButton setEnabled:NO];
+}
+
 - (void)loadFile:(NSString*)newFilename {
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
         NSLog(@"Starting loadFile:");
-        [emailButton setEnabled:NO];
-        [raceButton setEnabled:NO];
+        [self performSelectorOnMainThread:@selector(disableButtons) withObject:nil waitUntilDone:NO];
         [filename release];
         filename = [newFilename retain];
         [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];        
@@ -80,8 +89,7 @@
         averageSpeed = [delegate formatSpeed:[math averageSpeed]];
         [averageSpeed retain];
         [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];        
-        [emailButton setEnabled:YES];
-        [raceButton setEnabled:YES];
+        [self performSelectorOnMainThread:@selector(enableButtons) withObject:nil waitUntilDone:NO];
         NSLog(@"Finished loadFile:");
         [pool release];
 }

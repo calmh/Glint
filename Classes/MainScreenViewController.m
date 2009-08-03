@@ -160,8 +160,9 @@
                         raceAgainstLocations = [locations retain];
                         [self positiveIndicator:racingIndicator];
                 }
-                else
+                else {
                         raceAgainstLocations = nil;
+                }
         }
 }
 
@@ -354,7 +355,7 @@
 - (void)updateDisplay:(NSTimer*)timer
 {
         static BOOL prevStateGood = NO;
-        static BOOL sounds;
+        static BOOL raceMode = NO;
         
         // Don't update the display if it's turned off by the proximity sensor.
         // Saves CPU cycles and battery time, I hope.
@@ -376,7 +377,7 @@
                 else
                         [self negativeIndicator:signalIndicator];
                 
-                if (sounds && prevStateGood != stateGood) {
+                if (USERPREF_SOUNDS && prevStateGood != stateGood) {
                         if (stateGood)
                                 [goodSound play];
                         else
@@ -438,10 +439,18 @@
         //else if (currentDataSource == kGlintDataSourceTimer)
         //        self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
         
-        if (!raceAgainstLocations) {
-                self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x80/255.0f blue:0x00/255.0f alpha:1.0f];
-                self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0f green:0xFF/255.0f blue:0x66/255.0f alpha:1.0f];
-                
+        if (raceMode != (raceAgainstLocations != nil)) {
+                if (raceAgainstLocations) {
+                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x40/255.0f blue:0x40/255.0f alpha:1.0f];
+                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x40/255.0f blue:0x40/255.0f alpha:1.0f];
+                } else {
+                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x80/255.0f blue:0x00/255.0f alpha:1.0f];
+                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0f green:0xFF/255.0f blue:0x66/255.0f alpha:1.0f];
+                }
+                raceMode = (raceAgainstLocations != nil);
+        }
+        
+        if (!raceAgainstLocations) {                
                 // Average speed and time per configured distance
                 
                 self.averageSpeedLabel.text = [delegate formatSpeed:[math averageSpeed]];
@@ -455,10 +464,7 @@
                 self.averageSpeedLabel.text = [delegate formatSpeed:3300.0f/945.0f];
                 self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:USERPREF_ESTIMATE_DISTANCE * 1000.0 / (3425.0f/945.0f) maxTime:86400 allowNegatives:NO];
 #endif                
-        } else {
-                self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x40/255.0f blue:0x40/255.0f alpha:1.0f];
-                self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x40/255.0f blue:0x40/255.0f alpha:1.0f];
-                
+        } else {                
                 // Difference in time and distance against raceAgainstLocations.
                 
                 float distDiff = [self distDifferenceInRace];

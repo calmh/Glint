@@ -41,6 +41,9 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
         CGPoint textEnd;
         float pointSize = [[self font] pointSize];
         NSInteger length = [[self text] length];
+        if (length <= 0)
+                return;
+        
         unichar chars[length];
         CGGlyph glyphs[length];
         do {
