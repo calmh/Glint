@@ -1,0 +1,22 @@
+img.bordered {
+	border: 1px solid #666;
+	margin: 3px;
+}
+
+p {
+	text-align: justify;
+}
+
+.centered {
+	text-align: center;
+}
+
+a {
+	color: #444;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+h1 {
+	font-size: 80px;
+}
