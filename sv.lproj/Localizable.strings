@@ -80,6 +80,7 @@
 "Race against" = "Tävla mot";
 "Files" = "Filer";
 "points" = "mätpunkter";
+"There are currently no saved files. To use saved files, first make a recording from the main screen." = "Det finns inga sparade filer. För att använda sparade filer, gör först en inspelning från huvudskärmen.";
 
 /*
 ** File Detail screen

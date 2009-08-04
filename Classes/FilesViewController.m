@@ -92,15 +92,34 @@
 
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section {
+        if (section < [sections count])
         return [[files objectAtIndex:section] count];
+        else
+                return 0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-        return [sections count];
+        // Always at least one section. If there are no files, the section is used for help text.
+        if ([sections count] > 1)
+                return [sections count];
+        else
+                return 1;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-        return [sections objectAtIndex:section];
+        // Return the section header if there is one, otherwise a blank header for the help text.
+        if (section < [sections count])
+                return [sections objectAtIndex:section];
+        else
+                return nil;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+        // Return the help text as footer, or nothing at all if this is a real section.
+        if (section == 0 && [sections count] == 0)
+                return NSLocalizedString(@"There are currently no saved files. To use saved files, first make a recording from the main screen.",nil);
+        else
+                return nil;
 }
 
 /*
@@ -201,7 +220,16 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         NSString *file = [[files objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, file] error:nil];
         [[files objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        if ([[files objectAtIndex:indexPath.section] count] == 0) {
+                [files removeObjectAtIndex:indexPath.section];
+                [sections removeObjectAtIndex:indexPath.section];
+                // Remove the section, unless it's the last one.
+                if ([sections count] > 0)
+                        [tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationRight];
+                else
+                        [tableView reloadData];
+        }
 }
 
 @end
