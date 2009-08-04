@@ -35,18 +35,22 @@
         documentsDirectory = [paths objectAtIndex:0];
         [documentsDirectory retain];
         [navigationController setToolbarHidden:YES];
+        files = nil;
+        sections = nil;
         self.navigationItem.rightBarButtonItem = [self editButtonItem];
         [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
         [super viewWillAppear:animated];
 }
 
 - (void) refresh {
+        [files release];
         files = [[NSMutableArray alloc] init];
+        [sections release];
         sections = [[NSMutableArray alloc] init];
         
         NSArray* fileList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
-        fileList = [fileList sortedArrayUsingSelector:@selector(compare:)];
-        NSEnumerator *enumer = [fileList reverseObjectEnumerator];
+        NSArray* sortedFileList = [fileList sortedArrayUsingSelector:@selector(compare:)];
+        NSEnumerator *enumer = [sortedFileList reverseObjectEnumerator];
         
         NSString *fileName;
         while (fileName = [enumer nextObject]) {

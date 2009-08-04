@@ -87,11 +87,9 @@
         [self disabledIndicator:racingIndicator];
         
         UIBarButtonItem *unlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
-        UIBarButtonItem *disabledUnlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
         UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
         UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Record",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
         UIBarButtonItem *stopRaceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)];
-        [disabledUnlockButton setEnabled:NO];
         lockedToolbarItems = [[NSArray arrayWithObject:unlockButton] retain];
         unlockedToolbarItems = [[NSArray arrayWithObjects:sendButton, playButton, stopRaceButton, nil] retain];
         [toolbar setItems:lockedToolbarItems animated:YES];
@@ -355,7 +353,6 @@
 - (void)updateDisplay:(NSTimer*)timer
 {
         static BOOL prevStateGood = NO;
-        static BOOL raceMode = NO;
         
         // Don't update the display if it's turned off by the proximity sensor.
         // Saves CPU cycles and battery time, I hope.
@@ -440,18 +437,10 @@
         //else if (currentDataSource == kGlintDataSourceTimer)
         //        self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
         
-        if (raceMode != (raceAgainstLocations != nil)) {
-                if (raceAgainstLocations) {
-                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x40/255.0f blue:0x40/255.0f alpha:1.0f];
-                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x40/255.0f blue:0x40/255.0f alpha:1.0f];
-                } else {
-                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x80/255.0f blue:0x00/255.0f alpha:1.0f];
-                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0f green:0xFF/255.0f blue:0x66/255.0f alpha:1.0f];
-                }
-                raceMode = (raceAgainstLocations != nil);
-        }
-        
-        if (!raceAgainstLocations) {                
+        if (!raceAgainstLocations) {
+                self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x80/255.0f blue:0x00/255.0f alpha:1.0f];
+                self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0f green:0xFF/255.0f blue:0x66/255.0f alpha:1.0f];
+
                 // Average speed and time per configured distance
                 
                 self.averageSpeedLabel.text = [delegate formatSpeed:[math averageSpeed]];
@@ -465,7 +454,7 @@
                 self.averageSpeedLabel.text = [delegate formatSpeed:3300.0f/945.0f];
                 self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:USERPREF_ESTIMATE_DISTANCE * 1000.0 / (3425.0f/945.0f) maxTime:86400 allowNegatives:NO];
 #endif                
-        } else {                
+        } else {
                 // Difference in time and distance against raceAgainstLocations.
                 
                 float distDiff = [self distDifferenceInRace];
@@ -476,18 +465,18 @@
                         self.averageSpeedLabel.text = @"?";
                 }
                 self.averageSpeedDescrLabel.text = NSLocalizedString(@"dist diff", nil);
-                //if (distDiff < 0.0)
-                //        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x88/255.0 blue:0x88/255.0 alpha:1.0];
-                //else
-                //        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0x88/255.0 green:0xFF/255.0 blue:0x88/255.0 alpha:1.0];
+                if (distDiff < 0.0)
+                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x40/255.0 blue:0x40/255.0 alpha:1.0];
+                else
+                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0x40/255.0 green:0xFF/255.0 blue:0x40/255.0 alpha:1.0];
                 
                 float timeDiff = [self timeDifferenceInRace];
                 self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:timeDiff maxTime:86400 allowNegatives:YES];
                 self.currentTimePerDistanceDescrLabel.text = NSLocalizedString(@"time diff", nil);
-                //if (timeDiff > 0.0)
-                //        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x88/255.0 blue:0x88/255.0 alpha:1.0];
-                //else
-                //        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x88/255.0 green:0xFF/255.0 blue:0x88/255.0 alpha:1.0];
+                if (timeDiff > 0.0)
+                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x40/255.0 blue:0x40/255.0 alpha:1.0];
+                else
+                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x40/255.0 green:0xFF/255.0 blue:0x40/255.0 alpha:1.0];
         }
         
         // Number of saved measurements
@@ -536,14 +525,24 @@
 
 // How far ahead (-) or behind (+) in time we are.
 - (float)timeDifferenceInRace {
+#ifdef SCREENSHOT
+        float raceTime = [math timeAtLocationByDistance:3425.0f inLocations:raceAgainstLocations];
+        return 945.0f - raceTime;
+#else
         float raceTime = [math timeAtLocationByDistance:[math estimatedTotalDistance] inLocations:raceAgainstLocations];
         return [[NSDate date] timeIntervalSinceDate:firstMeasurementDate] - raceTime;
+#endif
 }
 
 // How far ahead (+) or behind (-) in position we are.
 - (float)distDifferenceInRace {
+#ifdef SCREENSHOT
+        float raceDist = [math distanceAtPointInTime:945.0f inLocations:raceAgainstLocations];
+        return 3425.0f - raceDist;
+#else
         float raceDist = [math distanceAtPointInTime:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] inLocations:raceAgainstLocations];
         return [math estimatedTotalDistance] - raceDist;
+#endif   
 }
 
 // Color the specified UILabel green

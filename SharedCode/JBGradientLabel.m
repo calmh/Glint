@@ -17,16 +17,29 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
 {
 	[super awakeFromNib];
         gradient = nil;
+        oldColor = nil;
         [self setTextColor:self.textColor];
 }
 
+- (void)dealloc {
+        [oldColor release];
+        CGGradientRelease(gradient);
+        [super dealloc];
+}
+
 - (void) setTextColor:(UIColor*)color {
-        [super setTextColor:color];
+        if ([color isEqual:oldColor])
+                        return;
+        
         const float *c1 = CGColorGetComponents([color CGColor]);
         float divisor = 3.0f;
         float colors[] = { c1[0], c1[1], c1[2], 1.0f, c1[0]/divisor, c1[1]/divisor, c1[2]/divisor, 1.0f };
         float positions[] = { 0.4f, 1.0f };
         [self setGradientWithParts:2 andColors:colors atPositions:positions];
+        [super setTextColor:color];
+        
+        [oldColor release];
+        oldColor = [color retain];
 }
 
 - (void)setGradientWithParts:(int)numParts andColors:(float[])colors atPositions:(float[])positions {

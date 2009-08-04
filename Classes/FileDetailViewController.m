@@ -8,6 +8,14 @@
 
 #import "FileDetailViewController.h"
 
+@interface FileDetailViewController ()
+
+- (void)enableButtons;
+- (void)disableButtons;
+
+@end
+
+
 @implementation FileDetailViewController
 
 @synthesize navigationController, toolbarItems, tableView;
@@ -34,6 +42,7 @@
         emailButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Email",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFile:)];
         raceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Race against",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(raceAgainstFile:)];
         self.toolbarItems = [NSArray arrayWithObjects:emailButton, raceButton, nil];
+        [self disableButtons];
         [navigationController setToolbarHidden:NO];
         [startTime release];
         startTime = NSLocalizedString(@"Loading...",nil);
@@ -58,7 +67,6 @@
 - (void)loadFile:(NSString*)newFilename {
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
         NSLog(@"Starting loadFile:");
-        [self performSelectorOnMainThread:@selector(disableButtons) withObject:nil waitUntilDone:NO];
         [filename release];
         filename = [newFilename retain];
         [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];        
@@ -83,6 +91,7 @@
                 startTime = @"-";
                 endTime = @"-";
         }
+        [formatter release];
         
         distance = [delegate formatDistance:[math totalDistance]];
         [distance retain];

@@ -10,6 +10,7 @@
 
 @interface JBGradientLabel : UILabel {
         CGGradientRef gradient;
+        UIColor *oldColor;
 }
 
 - (void)setGradientWithParts:(int)numParts andColors:(float[])colors atPositions:(float[])positions;

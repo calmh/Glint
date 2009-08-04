@@ -96,6 +96,7 @@ didStartElement:(NSString *)elementName
                 [form setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
                 [form setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
                 lastReadDate = [[form dateFromString:string] retain];
+                [form release];
         }
 }
 
