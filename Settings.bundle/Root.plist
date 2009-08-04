@@ -23,21 +23,19 @@
 			<string>75</string>
 			<key>Titles</key>
 			<array>
-				<string>10 meters</string>
-				<string>25 meters</string>
-				<string>50 meters</string>
-				<string>75 meters</string>
-				<string>100 meters</string>
-				<string>200 meters</string>
-				<string>1000 meters</string>
-				<string>It&apos;s all good</string>
+				<string>10 m</string>
+				<string>25 m</string>
+				<string>50 m</string>
+				<string>100 m</string>
+				<string>200 m</string>
+				<string>1000 m</string>
+				<string>Any</string>
 			</array>
 			<key>Values</key>
 			<array>
 				<string>10</string>
 				<string>25</string>
 				<string>50</string>
-				<string>75</string>
 				<string>100</string>
 				<string>200</string>
 				<string>1000</string>
@@ -55,14 +53,14 @@
 			<string>10</string>
 			<key>Titles</key>
 			<array>
-				<string>5 seconds</string>
-				<string>10 seconds</string>
-				<string>30 seconds</string>
-				<string>1 minute</string>
-				<string>5 minutes</string>
-				<string>10 minutes</string>
-				<string>15 minutes</string>
-				<string>30 minutes</string>
+				<string>5 s</string>
+				<string>10 s</string>
+				<string>30 s</string>
+				<string>1 min</string>
+				<string>5 min</string>
+				<string>10 min</string>
+				<string>15 min</string>
+				<string>30 min</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -133,6 +131,9 @@
 				<string>1 M</string>
 				<string>10 M</string>
 				<string>100 M</string>
+				<string>1 mi</string>
+				<string>10 mi</string>
+				<string>100 mi</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -142,6 +143,9 @@
 				<string>1.852</string>
 				<string>18.52</string>
 				<string>185.2</string>
+				<string>1.609344</string>
+				<string>16.09344</string>
+				<string>160.9344</string>
 			</array>
 		</dict>
 		<dict>
