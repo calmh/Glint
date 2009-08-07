@@ -13,30 +13,18 @@
 		<key>Tabs</key>
 		<array>
 			<dict>
+				<key>DocumentURL</key>
+				<string>file://localhost/Users/jb/projekt/iPhone/Glint/trunk/Website/index.html</string>
+				<key>StateType</key>
+				<string>DefaultTab</string>
+			</dict>
+			<dict>
 				<key>StateType</key>
 				<string>PreviewTab</string>
 				<key>Title</key>
 				<string>Glint</string>
 				<key>URL</key>
-				<string>file:///Users/jb/Desktop/Website/index.html</string>
-			</dict>
-			<dict>
-				<key>DocumentURL</key>
-				<string>file://localhost/Users/jb/Desktop/Website/default.css</string>
-				<key>StateType</key>
-				<string>DefaultTab</string>
-			</dict>
-			<dict>
-				<key>DocumentURL</key>
-				<string>file://localhost/Users/jb/Desktop/Website/blueprint/plugins/fancy-type/screen.css</string>
-				<key>StateType</key>
-				<string>DefaultTab</string>
-			</dict>
-			<dict>
-				<key>DocumentURL</key>
-				<string>file://localhost/Users/jb/Desktop/Website/index.html</string>
-				<key>StateType</key>
-				<string>DefaultTab</string>
+				<string>file:///Users/jb/projekt/iPhone/Glint/trunk/Website/index.html</string>
 			</dict>
 		</array>
 	</dict>
