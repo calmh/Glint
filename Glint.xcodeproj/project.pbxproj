@@ -25,6 +25,7 @@
 		296729CF101CC745001BBEDF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296729CE101CC745001BBEDF /* MessageUI.framework */; };
 		2974372C101C617F00DDBB6A /* reference.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2974372B101C617F00DDBB6A /* reference.gpx */; };
 		2974387E101C727800DDBB6A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2974387D101C727800DDBB6A /* Default.png */; };
+		29760DE0102F125F00EE89CB /* SlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29760DDF102F125F00EE89CB /* SlideView.m */; };
 		29874F9A0FF776EB0080E20D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
 		2988667D101C96320051F368 /* JBGPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886676101C96320051F368 /* JBGPXReader.m */; };
 		2988667E101C96320051F368 /* JBGPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* JBGPXWriter.m */; };
@@ -76,6 +77,8 @@
 		296729CE101CC745001BBEDF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		2974372B101C617F00DDBB6A /* reference.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference.gpx; path = Resources/reference.gpx; sourceTree = "<group>"; };
 		2974387D101C727800DDBB6A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		29760DDE102F125F00EE89CB /* SlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideView.h; sourceTree = "<group>"; };
+		29760DDF102F125F00EE89CB /* SlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideView.m; sourceTree = "<group>"; };
 		297A05AF102328BE0031D57B /* JBGradientLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBGradientLabel.h; path = SharedCode/JBGradientLabel.h; sourceTree = "<group>"; };
 		297A05B0102328BE0031D57B /* JBGradientLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBGradientLabel.m; path = SharedCode/JBGradientLabel.m; sourceTree = "<group>"; };
 		29874F990FF776EB0080E20D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
@@ -145,6 +148,8 @@
 				29C7910410027A8E00EA28CC /* CompassView.m */,
 				2913DBE81024FD6B00F56A2A /* FileDetailViewController.h */,
 				2913DBE91024FD6B00F56A2A /* FileDetailViewController.m */,
+				29760DDE102F125F00EE89CB /* SlideView.h */,
+				29760DDF102F125F00EE89CB /* SlideView.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -370,6 +375,7 @@
 				2988667F101C96320051F368 /* JBLocationMath.m in Sources */,
 				29886680101C96320051F368 /* JBSoundEffect.m in Sources */,
 				2913DBEB1024FD6B00F56A2A /* FileDetailViewController.m in Sources */,
+				29760DE0102F125F00EE89CB /* SlideView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
