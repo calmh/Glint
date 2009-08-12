@@ -21,4 +21,6 @@
 @property (retain, nonatomic) IBOutlet UIButton *slider;
 @property (retain, nonatomic) IBOutlet id <SlideViewDelegate> delegate;
 
+- (void)reset;
+
 @end

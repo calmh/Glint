@@ -220,7 +220,13 @@
                 else
                         [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:2] setEnabled:NO];
                 
-                [slider setHidden:YES];
+                [UIView beginAnimations:nil context:NULL];
+                [UIView setAnimationDuration:0.3];
+                CGRect rect = slider.frame;
+                rect.origin.y = self.view.frame.size.height + 1;
+                [slider setFrame:rect];
+                [UIView commitAnimations];
+                //[slider setHidden:YES];
                 
                 if (lockTimer) {
                         [lockTimer invalidate];
@@ -242,7 +248,14 @@
                         [lockTimer release];
                         lockTimer = nil;
                 }
-                [slider setHidden:NO];
+                [slider reset];
+                [UIView beginAnimations:nil context:NULL];
+                [UIView setAnimationDuration:0.3];
+                CGRect rect = slider.frame;
+                rect.origin.y = self.view.frame.size.height - slider.frame.size.height;
+                [slider setFrame:rect];
+                [UIView commitAnimations];
+                //[slider setHidden:NO];
                 //[toolbar setItems:lockedToolbarItems animated:NO];
                 debug_NSLog(@"lock: done");
         }
