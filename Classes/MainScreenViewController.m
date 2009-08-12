@@ -92,7 +92,7 @@
         UIBarButtonItem *stopRaceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)];
         lockedToolbarItems = [[NSArray arrayWithObject:unlockButton] retain];
         unlockedToolbarItems = [[NSArray arrayWithObjects:sendButton, playButton, stopRaceButton, nil] retain];
-        [toolbar setItems:lockedToolbarItems animated:YES];
+        [toolbar setItems:unlockedToolbarItems animated:YES];
         
         if (USERPREF_DISABLE_IDLE)
                 [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
@@ -200,11 +200,15 @@
  * IBActions
  */
 
+- (void)slided:(id)sender {
+        [self unlock:sender];
+}
+
 - (IBAction)unlock:(id)sender
 {
         @synchronized (self) {
-                NSLog(@"unlock: start");
-                [toolbar setItems:unlockedToolbarItems animated:NO];
+                debug_NSLog(@"unlock: start");
+                //[toolbar setItems:unlockedToolbarItems animated:NO];
                 
                 if (gpxWriter)
                         [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"End Recording", nil)];
@@ -216,6 +220,8 @@
                 else
                         [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:2] setEnabled:NO];
                 
+                [slider setHidden:YES];
+                
                 if (lockTimer) {
                         [lockTimer invalidate];
                         [lockTimer release];
@@ -223,21 +229,22 @@
                 lockTimer = [NSTimer timerWithTimeInterval:5.0 target:self selector:@selector(lock:) userInfo:nil repeats:NO];
                 [lockTimer retain];
                 [[NSRunLoop currentRunLoop] addTimer:lockTimer forMode:NSDefaultRunLoopMode];
-                NSLog(@"unlock: done");
+                debug_NSLog(@"unlock: done");
         }
 }
 
 - (IBAction)lock:(id)sender
 {
         @synchronized (self) {
-                NSLog(@"lock: start");
+                debug_NSLog(@"lock: start");
                 if (lockTimer) {
                         [lockTimer invalidate];
                         [lockTimer release];
                         lockTimer = nil;
                 }
-                [toolbar setItems:lockedToolbarItems animated:NO];
-                NSLog(@"lock: done");
+                [slider setHidden:NO];
+                //[toolbar setItems:lockedToolbarItems animated:NO];
+                debug_NSLog(@"lock: done");
         }
 }
 
@@ -320,18 +327,18 @@
         // track segment so this is reflected in the saved file.
         
         CLLocation *current = locationManager.location;
-        NSLog([locationManager.location description]);
+        debug_NSLog([locationManager.location description]);
         if (gpxWriter && (!lastWrittenDate || [now timeIntervalSinceDate:lastWrittenDate] >= averageInterval - MEASUREMENT_THREAD_INTERVAL/2.0 )) {
                 if ([self precisionAcceptable:current]) {
-                        NSLog(@"Good precision, saving waypoint");
+                        debug_NSLog(@"Good precision, saving waypoint");
                         [lastWrittenDate release];
                         lastWrittenDate = [now retain];
                         [gpxWriter addTrackPoint:current];
                 } else if ([gpxWriter isInTrackSegment]) {
-                        NSLog(@"Bad precision, breaking track segment");
+                        debug_NSLog(@"Bad precision, breaking track segment");
                         [gpxWriter addTrackSegment];
                 } else {
-                        NSLog(@"Bad precision, waiting for waypoint");                        
+                        debug_NSLog(@"Bad precision, waiting for waypoint");                        
                 }
         }
         
@@ -505,7 +512,7 @@
  */
 
 - (void)enableGPS {
-        NSLog(@"Starting GPS");
+        debug_NSLog(@"Starting GPS");
         locationManager = [[CLLocationManager alloc] init];
         locationManager.distanceFilter = FILTER_DISTANCE;
         locationManager.desiredAccuracy = kCLLocationAccuracyBest;
@@ -515,7 +522,7 @@
 }
 
 - (void)disableGPS {
-        NSLog(@"Stopping GPS");
+        debug_NSLog(@"Stopping GPS");
         locationManager.delegate = nil;
         [locationManager stopUpdatingHeading];
         [locationManager release];

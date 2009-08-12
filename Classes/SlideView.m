@@ -10,7 +10,7 @@
 
 @implementation SlideView
 
-@synthesize slider;
+@synthesize slider, delegate;
 
 - (id)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
@@ -60,6 +60,11 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+        if (slider.frame.origin.x + slider.frame.size.width > self.frame.size.width - 10)
+                [delegate slided:self];
+        CGRect rect = slider.frame;
+        rect.origin.x = 0.0f;
+        [slider setFrame:rect];
 }
 
 @end

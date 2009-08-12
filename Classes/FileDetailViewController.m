@@ -66,7 +66,7 @@
 
 - (void)loadFile:(NSString*)newFilename {
         NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-        NSLog(@"Starting loadFile:");
+        debug_NSLog(@"Starting loadFile:");
         [filename release];
         filename = [newFilename retain];
         [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];        
@@ -99,7 +99,7 @@
         [averageSpeed retain];
         [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];        
         [self performSelectorOnMainThread:@selector(enableButtons) withObject:nil waitUntilDone:NO];
-        NSLog(@"Finished loadFile:");
+        debug_NSLog(@"Finished loadFile:");
         [pool release];
 }
 

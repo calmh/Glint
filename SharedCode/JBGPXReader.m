@@ -36,7 +36,7 @@
                 [parser setShouldResolveExternalEntities:NO];
                 [parser setDelegate:self];
                 if (![parser parse]) {
-                        NSLog([[parser parserError] description]);
+                        debug_NSLog([[parser parserError] description]);
                 }
                 [parser release];
                 // Release any left over stuff from parsing a strange file
@@ -61,6 +61,7 @@ didStartElement:(NSString *)elementName
   namespaceURI:(NSString *)namespaceURI
  qualifiedName:(NSString *)qualifiedName
     attributes:(NSDictionary *)attributeDict {
+        debug_NSLog(@"JBGPXReader didStartElement: %@",elementName);
         if([elementName isEqualToString:@"time"]) {
                 currentlyReadingTime = YES;
         }

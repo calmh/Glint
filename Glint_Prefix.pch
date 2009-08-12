@@ -29,7 +29,7 @@
 // How often to save a new trackpoint, when recording
 #define USERPREF_MEASUREMENT_INTERVAL [[NSUserDefaults standardUserDefaults] integerForKey:@"average_interval"]
 
-// Minimum (maximum?) horizontal accuracy to accept GPS data
+// Minimum (maximum?) horizontal acc uracy to accept GPS data
 #define USERPREF_MINIMUM_PRECISION [[NSUserDefaults standardUserDefaults] integerForKey:@"gps_minprec"]
 
 // Which unit set to use. See unitsets.plist.
@@ -54,3 +54,9 @@
 #define USERPREF_SOUNDS [[NSUserDefaults standardUserDefaults] boolForKey:@"sounds_enabled"]
 
 // #define SCREENSHOT
+
+#ifdef DEBUG
+#define debug_NSLog(format, ...) NSLog(format, ## __VA_ARGS__)
+#else
+#define debug_NSLog(format, ...)
+#endif

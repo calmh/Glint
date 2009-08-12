@@ -43,7 +43,7 @@
                         id defaultValue = [prefItem objectForKey:@"DefaultValue"];
                         if (keyValueStr && defaultValue) {
                                 [defaults setObject:defaultValue forKey:keyValueStr];
-                                NSLog(@"Setting preference: %@=%@", keyValueStr, [defaultValue description]);
+                                debug_NSLog(@"Setting preference: %@=%@", keyValueStr, [defaultValue description]);
                         }
                 }
                 

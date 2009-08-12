@@ -8,12 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SlideViewDelegate
+- (void)slided:(id)sender;
+@end
 
 @interface SlideView : UIView {
         CGPoint touchPoint2;
         UIButton *slider;
+        id <SlideViewDelegate> delegate;
 }
 
 @property (retain, nonatomic) IBOutlet UIButton *slider;
+@property (retain, nonatomic) IBOutlet id <SlideViewDelegate> delegate;
 
 @end

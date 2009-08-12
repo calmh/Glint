@@ -28,7 +28,7 @@
         [super dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewDidLoad {
         delegate = [[UIApplication sharedApplication] delegate];
         self.title = NSLocalizedString(@"Files",nil);
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
@@ -37,6 +37,10 @@
         [navigationController setToolbarHidden:YES];
         files = nil;
         sections = nil;
+        [super viewDidLoad];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
         self.navigationItem.rightBarButtonItem = [self editButtonItem];
         [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
         [super viewWillAppear:animated];
@@ -212,7 +216,8 @@
 
 - (void)tableView:(UITableView *)etableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         NSIndexPath *p = [tableView indexPathForSelectedRow];
-        NSString *file = [[files objectAtIndex:p.section] objectAtIndex:p.row];                
+        NSArray *section = [files objectAtIndex:p.section];
+        NSString *file = [section objectAtIndex:p.row];                
         NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
         [navigationController pushViewController:detailViewController animated:YES];
         [detailViewController performSelectorInBackground:@selector(loadFile:) withObject:fullPath];
