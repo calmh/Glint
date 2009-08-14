@@ -25,8 +25,8 @@
         CGContextRef ctx = UIGraphicsGetCurrentContext();        
         CGContextSetGrayFillColor(ctx, 0.1, 1.0);        
         float colors[] = {
-                0.05f, 0.05f, 0.05f, 1.0f,
-                0.15f, 0.15f, 0.15f, 1.0f
+                0x19/255.0f, 0x19/255.0f, 0x19/255.0f, 1.0f,
+                0.25f, 0.25f, 0.25f, 1.0f
         };
         float positions[] = { 0.0f, 1.0f };
         CGGradientRef gradient = CGGradientCreateWithColorComponents(CGColorSpaceCreateDeviceRGB(), colors, positions, 2);
@@ -36,11 +36,13 @@
         CGGradientRelease(gradient);
 
         // Border
+        /*
         CGContextBeginPath(ctx);
         CGContextSetLineWidth(ctx, 2.0);
-        CGContextSetRGBStrokeColor(ctx, 0.3, 0.3, 0.3, 2.0);
+        CGContextSetRGBStrokeColor(ctx, 0.25, 0.25, 0.25, 2.0);
         CGContextAddRect(ctx, rect);
         CGContextStrokePath(ctx);        
+         */
 }
 
 

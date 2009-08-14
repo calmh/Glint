@@ -9,8 +9,8 @@
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="6"/>
+			<integer value="143"/>
 			<integer value="122"/>
-			<integer value="186"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -188,23 +188,26 @@
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
 								<object class="NSFont" key="IBUIFont">
-									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">1.500000e+01</double>
+									<string key="NSName">GillSans-Bold</string>
+									<double key="NSSize">4.600000e+01</double>
 									<int key="NSfFlags">16</int>
 								</object>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Slider</string>
+								<string type="base64-UTF8" key="IBUINormalTitle">4p6fA</string>
 								<object class="NSColor" key="IBUIHighlightedTitleColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
 								</object>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC4xOTYwNzg0MyAwLjMwOTgwMzkzIDAuNTIxNTY4NjYAA</bytes>
+									<bytes key="NSRGB">MC4yIDAuMiAwLjIAA</bytes>
 								</object>
 								<object class="NSColor" key="IBUINormalTitleShadowColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4yIDAuMiAwLjIAA</bytes>
+								</object>
+								<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">shaded_button.png</string>
 								</object>
 							</object>
 						</object>
