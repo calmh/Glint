@@ -61,7 +61,7 @@ didStartElement:(NSString *)elementName
   namespaceURI:(NSString *)namespaceURI
  qualifiedName:(NSString *)qualifiedName
     attributes:(NSDictionary *)attributeDict {
-        debug_NSLog(@"JBGPXReader didStartElement: %@",elementName);
+        //debug_NSLog(@"JBGPXReader didStartElement: %@",elementName);
         if([elementName isEqualToString:@"time"]) {
                 currentlyReadingTime = YES;
         }

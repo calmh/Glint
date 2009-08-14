@@ -32,7 +32,6 @@
 		2988667F101C96320051F368 /* JBLocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* JBLocationMath.m */; };
 		29886680101C96320051F368 /* JBSoundEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667C101C96320051F368 /* JBSoundEffect.m */; };
 		2988668C101C96880051F368 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2988668B101C96880051F368 /* unitsets.plist */; };
-		299212821035F0F8002DB6E2 /* shaded_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 299212811035F0F8002DB6E2 /* shaded_button.png */; };
 		29BA74A3102328F500262650 /* JBGradientLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 297A05B0102328BE0031D57B /* JBGradientLabel.m */; };
 		29C7910510027A8E00EA28CC /* CompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* CompassView.m */; };
 		29C9A4F51011E9CA004CCBDD /* MainScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */; };
@@ -40,6 +39,8 @@
 		29CD711F100FB9F2001150A1 /* FilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD711D100FB9F2001150A1 /* FilesViewController.m */; };
 		29D191951011E2DA00B9E8CF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 29D191931011E2DA00B9E8CF /* Localizable.strings */; };
 		29D8BFD7101E51C1006C7865 /* reference.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2974372B101C617F00DDBB6A /* reference.gpx */; };
+		29EAF6C010361AC90017DB8D /* slider_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 29EAF6BE10361AC90017DB8D /* slider_background.png */; };
+		29EAF6C110361AC90017DB8D /* slider_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 29EAF6BF10361AC90017DB8D /* slider_button.png */; };
 		29FE31E30FF4359D00E9FE05 /* Basso.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DD0FF4359D00E9FE05 /* Basso.aiff */; };
 		29FE31E60FF4359D00E9FE05 /* Purr.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31E00FF4359D00E9FE05 /* Purr.aiff */; };
 		29FE32110FF436AC00E9FE05 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 29FE32100FF436AC00E9FE05 /* Settings.bundle */; };
@@ -92,7 +93,6 @@
 		2988667B101C96320051F368 /* JBSoundEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBSoundEffect.h; path = SharedCode/JBSoundEffect.h; sourceTree = "<group>"; };
 		2988667C101C96320051F368 /* JBSoundEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBSoundEffect.m; path = SharedCode/JBSoundEffect.m; sourceTree = "<group>"; };
 		2988668B101C96880051F368 /* unitsets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = unitsets.plist; path = Resources/unitsets.plist; sourceTree = "<group>"; };
-		299212811035F0F8002DB6E2 /* shaded_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shaded_button.png; path = Graphics/shaded_button.png; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29C7910310027A8E00EA28CC /* CompassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompassView.h; sourceTree = "<group>"; };
 		29C7910410027A8E00EA28CC /* CompassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompassView.m; sourceTree = "<group>"; };
@@ -102,6 +102,8 @@
 		29CD711D100FB9F2001150A1 /* FilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilesViewController.m; sourceTree = "<group>"; };
 		29D191941011E2DA00B9E8CF /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		29D191981011E31600B9E8CF /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
+		29EAF6BE10361AC90017DB8D /* slider_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = slider_background.png; path = Graphics/slider_background.png; sourceTree = "<group>"; };
+		29EAF6BF10361AC90017DB8D /* slider_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = slider_button.png; path = Graphics/slider_button.png; sourceTree = "<group>"; };
 		29FE31DD0FF4359D00E9FE05 /* Basso.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Basso.aiff; path = Resources/Basso.aiff; sourceTree = "<group>"; };
 		29FE31E00FF4359D00E9FE05 /* Purr.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Purr.aiff; path = Resources/Purr.aiff; sourceTree = "<group>"; };
 		29FE32100FF436AC00E9FE05 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -219,7 +221,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				299212811035F0F8002DB6E2 /* shaded_button.png */,
+				29EAF6BE10361AC90017DB8D /* slider_background.png */,
+				29EAF6BF10361AC90017DB8D /* slider_button.png */,
 				29FE32100FF436AC00E9FE05 /* Settings.bundle */,
 				8D1107310486CEB800E47090 /* Glint-Info.plist */,
 				29874F990FF776EB0080E20D /* Icon.png */,
@@ -333,7 +336,8 @@
 				2988668C101C96880051F368 /* unitsets.plist in Resources */,
 				2913DBEC1024FD6B00F56A2A /* FileDetailViewController.xib in Resources */,
 				2913DE2010260A9F00F56A2A /* FilesViewController.xib in Resources */,
-				299212821035F0F8002DB6E2 /* shaded_button.png in Resources */,
+				29EAF6C010361AC90017DB8D /* slider_background.png in Resources */,
+				29EAF6C110361AC90017DB8D /* slider_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

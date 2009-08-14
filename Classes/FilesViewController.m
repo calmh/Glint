@@ -34,7 +34,6 @@
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
         documentsDirectory = [paths objectAtIndex:0];
         [documentsDirectory retain];
-        [navigationController setToolbarHidden:YES];
         files = nil;
         sections = nil;
         [super viewDidLoad];
@@ -43,6 +42,7 @@
 - (void)viewWillAppear:(BOOL)animated {
         self.navigationItem.rightBarButtonItem = [self editButtonItem];
         [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+        [navigationController setToolbarHidden:YES];
         [super viewWillAppear:animated];
 }
 

@@ -13,7 +13,6 @@
 @end
 
 @interface SlideView : UIView {
-        CGPoint touchPoint2;
         UIButton *slider;
         id <SlideViewDelegate> delegate;
 }
@@ -24,3 +23,5 @@
 - (void)reset;
 
 @end
+
+#define MARGIN 15.0f

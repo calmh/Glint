@@ -13,10 +13,10 @@
 @synthesize slider, delegate;
 
 - (id)initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
-        // Initialization code
-    }
-    return self;
+        if (self = [super initWithFrame:frame]) {
+                // Initialization code
+        }
+        return self;
 }
 
 
@@ -34,41 +34,37 @@
         CGPoint end = CGPointMake(rect.origin.x, rect.size.height);
         CGContextDrawLinearGradient(ctx, gradient, start, end, 0);
         CGGradientRelease(gradient);
-
+        
         // Border
         /*
-        CGContextBeginPath(ctx);
-        CGContextSetLineWidth(ctx, 2.0);
-        CGContextSetRGBStrokeColor(ctx, 0.25, 0.25, 0.25, 2.0);
-        CGContextAddRect(ctx, rect);
-        CGContextStrokePath(ctx);        
+         CGContextBeginPath(ctx);
+         CGContextSetLineWidth(ctx, 2.0);
+         CGContextSetRGBStrokeColor(ctx, 0.25, 0.25, 0.25, 2.0);
+         CGContextAddRect(ctx, rect);
+         CGContextStrokePath(ctx);        
          */
 }
 
 
 - (void)dealloc {
-    [super dealloc];
+        [super dealloc];
 }
 
 - (void)reset {
         CGRect rect = slider.frame;
-        rect.origin.x = 5.0f;
+        rect.origin.x = MARGIN;
         [slider setFrame:rect];
-}
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
         UITouch *touch = [touches anyObject];
-        touchPoint2 = [touch locationInView:self];
-        float buttonX = touchPoint2.x - [slider frame].size.width / 2.0f;
-        if (buttonX < 5.0f)
-                buttonX = 5.0f;
-        if (buttonX > [self frame].size.width - [slider frame].size.width - 5.0f)
-                buttonX = [self frame].size.width - [slider frame].size.width - 5.0f;
+        CGPoint touchPoint = [touch locationInView:self];
+        float buttonX = touchPoint.x - [slider frame].size.width / 2.0f;
+        if (buttonX < MARGIN)
+                buttonX = MARGIN;
+        if (buttonX > [self frame].size.width - [slider frame].size.width - MARGIN)
+                buttonX = [self frame].size.width - [slider frame].size.width - MARGIN;
         CGRect rect = CGRectMake(buttonX, slider.frame.origin.y, slider.frame.size.width, slider.frame.size.height);
         [slider setFrame:rect];
         [self setNeedsDisplay];
@@ -76,15 +72,15 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-        if (slider.frame.origin.x + slider.frame.size.width > self.frame.size.width - 10) {
+        if (slider.frame.origin.x + slider.frame.size.width > self.frame.size.width - MARGIN - 10 /* sensitivity */) {
                 [delegate slided:self];
         } else {
-        [UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:0.2];
-        CGRect rect = slider.frame;
-        rect.origin.x = 5.0f;
-        [slider setFrame:rect];
-        [UIView commitAnimations];
+                [UIView beginAnimations:nil context:NULL];
+                [UIView setAnimationDuration:0.2];
+                CGRect rect = slider.frame;
+                rect.origin.x = 15.0f;
+                [slider setFrame:rect];
+                [UIView commitAnimations];
         }
 }
 
