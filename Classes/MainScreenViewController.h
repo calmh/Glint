@@ -38,6 +38,9 @@ typedef enum enumGlintDataSource {
         NSTimer *lockTimer;
         NSArray *raceAgainstLocations;
         BOOL stateGood;
+        
+        CGPoint touchStartPoint;
+        NSDate *touchStartTime;
 
         // Main screen
         

@@ -20,6 +20,9 @@
 - (void)positiveIndicator:(UILabel*)indicator;
 - (void)negativeIndicator:(UILabel*)indicator;
 - (void)disabledIndicator:(UILabel*)indicator;
+- (void)resetPage;
+- (void)switchPage;
+- (void)switchPageWithSpeed:(float)secs;
 @end
 
 /*
@@ -37,6 +40,7 @@
 @synthesize signalIndicator, recordingIndicator, racingIndicator;
 @synthesize toolbar;
 @synthesize measurementsLabel;
+@synthesize slider;
 
 @synthesize elapsedTimeLabel, elapsedTimeDescrLabel;
 @synthesize totalDistanceLabel, totalDistanceDescrLabel;
@@ -70,7 +74,10 @@
         
         [containerView addSubview:primaryView];
         [containerView addSubview:secondaryView];
-        [containerView bringSubviewToFront:primaryView];
+        CGRect r = containerView.frame;
+        r.origin.x = containerView.frame.size.width;
+        secondaryView.frame = r;
+        pager.currentPage = 0;
         
         math = [[JBLocationMath alloc] init];
         badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
@@ -81,6 +88,7 @@
         lockTimer = nil;
         gpsEnabled = YES;
         raceAgainstLocations = nil;
+        touchStartTime = nil;
         
         [self disabledIndicator:signalIndicator];
         [self disabledIndicator:recordingIndicator];
@@ -164,12 +172,63 @@
         }
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//        UITouch* touch = [touches anyObject];
+//       if (touch.view == containerView && touch.tapCount == 1) {
+//               pager.currentPage = (pager.currentPage + 1) % pager.numberOfPages;
+//                [self pageChanged:nil];
+//        }
+//}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
         UITouch* touch = [touches anyObject];
-        if (touch.view == containerView && touch.tapCount == 1) {
-                pager.currentPage = (pager.currentPage + 1) % pager.numberOfPages;
-                [self pageChanged:nil];
+        if (touch.view == containerView) {
+                touchStartPoint = [touch locationInView:containerView];
+                [touchStartTime release];
+                touchStartTime = [[NSDate date] retain];
         }
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+        UITouch* touch = [touches anyObject];
+        CGPoint point = [touch locationInView:containerView];
+        float xdiff = point.x - touchStartPoint.x;
+        CGRect r = containerView.frame;
+        CGRect page1 = r;
+        page1.origin.x = xdiff;
+        CGRect page2 = r;
+        if (pager.currentPage == 0) {
+                [primaryView setFrame:page1];
+                page2.origin.x = xdiff + page1.size.width;
+                [secondaryView setFrame:page2];
+        } else {
+                [secondaryView setFrame:page1];
+                page2.origin.x = xdiff - page1.size.width;
+                [primaryView setFrame:page2];
+        }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+        UITouch* touch = [touches anyObject];
+        CGPoint point = [touch locationInView:containerView];
+        float xdiff = point.x - touchStartPoint.x;
+        float tdiff = [[NSDate date] timeIntervalSinceDate:touchStartTime];
+        
+        if (pager.currentPage == 0 && (xdiff <= -containerView.frame.size.width / 2.0 || xdiff / tdiff <= -250.0f)
+            || pager.currentPage == 1 && (xdiff >= containerView.frame.size.width / 2.0 || xdiff / tdiff >= 250.0f)) {
+                pager.currentPage = !pager.currentPage;
+                float leftToMove = containerView.frame.size.width - fabs(xdiff);
+                float speed = fabs(xdiff/tdiff);
+                float animationSecs = leftToMove / speed;
+                debug_NSLog(@"Finishing animation with speed %f s",animationSecs);
+                [self switchPageWithSpeed:animationSecs];
+        } else {
+                [self resetPage];
+        }
+        
 }
 
 /*
@@ -295,17 +354,20 @@
 }
 
 - (IBAction)pageChanged:(id)sender {
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationDuration:1.2];
-        [UIView setAnimationRepeatAutoreverses:NO];
-        if (pager.currentPage == 0) {
-                [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:containerView cache:YES];
-                [containerView bringSubviewToFront:primaryView];
-        } else if (pager.currentPage == 1) {
-                [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:containerView cache:YES];
-                [containerView bringSubviewToFront:secondaryView];
-        }
-        [UIView commitAnimations];
+        /*
+         [UIView beginAnimations:nil context:NULL];
+         [UIView setAnimationDuration:1.2];
+         [UIView setAnimationRepeatAutoreverses:NO];
+         if (pager.currentPage == 0) {
+         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:containerView cache:YES];
+         [containerView bringSubviewToFront:primaryView];
+         } else if (pager.currentPage == 1) {
+         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:containerView cache:YES];
+         [containerView bringSubviewToFront:secondaryView];
+         }
+         [UIView commitAnimations];
+         */
+        [self switchPage];
 }
 
 /*
@@ -460,7 +522,7 @@
         if (!raceAgainstLocations) {
                 self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x80/255.0f blue:0x00/255.0f alpha:1.0f];
                 self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0f green:0xFF/255.0f blue:0x66/255.0f alpha:1.0f];
-
+                
                 // Average speed and time per configured distance
                 
                 self.averageSpeedLabel.text = [delegate formatSpeed:[math averageSpeed]];
@@ -589,6 +651,53 @@
                 minPrec = USERPREF_MINIMUM_PRECISION;
         float currentPrec = location.horizontalAccuracy;
         return currentPrec > 0.0 && currentPrec <= minPrec;
+}
+
+// Switch the main screen to the other page
+
+- (void) switchPage {
+        [self switchPageWithSpeed:0.5];
+}
+
+- (void) switchPageWithSpeed:(float)secs {
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:secs];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        CGRect r = containerView.frame;
+        // pager.currentPage reflects the state we are moving to, not the state we are in
+        if (pager.currentPage == 1) {
+                [secondaryView setFrame:r];
+                r.origin.x = -containerView.frame.size.width;
+                [primaryView setFrame:r];
+                //[containerView bringSubviewToFront:secondaryView];
+        } else if (pager.currentPage == 0) {
+                [primaryView setFrame:r];
+                r.origin.x = containerView.frame.size.width;
+                [secondaryView setFrame:r];
+                //[containerView bringSubviewToFront:primaryView];
+        }
+        [UIView commitAnimations];
+        
+}
+
+// Reset the main screen to the same page we are on
+
+- (void) resetPage {
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:0.5];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        CGRect r = containerView.frame;
+        if (pager.currentPage == 0) {
+                [primaryView setFrame:r];
+                r.origin.x = containerView.frame.size.width;
+                [secondaryView setFrame:r];
+        } else if (pager.currentPage == 1) {
+                [secondaryView setFrame:r];
+                r.origin.x = -containerView.frame.size.width;
+                [primaryView setFrame:r];
+        }
+        [UIView commitAnimations];
+        
 }
 
 @end
