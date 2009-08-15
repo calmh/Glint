@@ -23,6 +23,8 @@
 - (void)resetPage;
 - (void)switchPage;
 - (void)switchPageWithSpeed:(float)secs;
+- (void)organizeViews;
+- (void)shiftViewsTo:(float)position;
 @end
 
 /*
@@ -74,10 +76,9 @@
         
         [containerView addSubview:primaryView];
         [containerView addSubview:secondaryView];
-        CGRect r = containerView.frame;
-        r.origin.x = containerView.frame.size.width;
-        secondaryView.frame = r;
-        pager.currentPage = 0;
+        [self organizeViews];
+        int numPages = [containerView.subviews count];
+        [pager setNumberOfPages:numPages];
         
         math = [[JBLocationMath alloc] init];
         badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
@@ -94,20 +95,16 @@
         [self disabledIndicator:recordingIndicator];
         [self disabledIndicator:racingIndicator];
         
-        UIBarButtonItem *unlockButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Unlock",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(unlock:)];
         UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
         UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Record",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
         UIBarButtonItem *stopRaceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)];
-        lockedToolbarItems = [[NSArray arrayWithObject:unlockButton] retain];
-        unlockedToolbarItems = [[NSArray arrayWithObjects:sendButton, playButton, stopRaceButton, nil] retain];
-        [toolbar setItems:unlockedToolbarItems animated:YES];
+        toolbarItems = [[NSArray arrayWithObjects:sendButton, playButton, stopRaceButton, nil] retain];
+        [toolbar setItems:toolbarItems animated:YES];
         
         if (USERPREF_DISABLE_IDLE)
                 [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
         if (USERPREF_ENABLE_PROXIMITY)
                 [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-        
-        //self.measurementsLabel.text = @"-";
         
         // Primary page
         
@@ -172,14 +169,6 @@
         }
 }
 
-//- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-//        UITouch* touch = [touches anyObject];
-//       if (touch.view == containerView && touch.tapCount == 1) {
-//               pager.currentPage = (pager.currentPage + 1) % pager.numberOfPages;
-//                [self pageChanged:nil];
-//        }
-//}
-
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
         UITouch* touch = [touches anyObject];
@@ -195,19 +184,7 @@
         UITouch* touch = [touches anyObject];
         CGPoint point = [touch locationInView:containerView];
         float xdiff = point.x - touchStartPoint.x;
-        CGRect r = containerView.frame;
-        CGRect page1 = r;
-        page1.origin.x = xdiff;
-        CGRect page2 = r;
-        if (pager.currentPage == 0) {
-                [primaryView setFrame:page1];
-                page2.origin.x = xdiff + page1.size.width;
-                [secondaryView setFrame:page2];
-        } else {
-                [secondaryView setFrame:page1];
-                page2.origin.x = xdiff - page1.size.width;
-                [primaryView setFrame:page2];
-        }
+        [self shiftViewsTo:xdiff - pager.currentPage * containerView.frame.size.width];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -216,10 +193,21 @@
         CGPoint point = [touch locationInView:containerView];
         float xdiff = point.x - touchStartPoint.x;
         float tdiff = [[NSDate date] timeIntervalSinceDate:touchStartTime];
+        int minPage = 0;
+        int maxPage = [containerView.subviews count] - 1;
+        bool pageChanged = NO;
         
-        if (pager.currentPage == 0 && (xdiff <= -containerView.frame.size.width / 2.0 || xdiff / tdiff <= -250.0f)
-            || pager.currentPage == 1 && (xdiff >= containerView.frame.size.width / 2.0 || xdiff / tdiff >= 250.0f)) {
-                pager.currentPage = !pager.currentPage;
+        if (pager.currentPage < maxPage && (xdiff <= -containerView.frame.size.width / 2.0 || xdiff / tdiff <= -250.0f)) {
+                // Moving right
+                pager.currentPage = pager.currentPage + 1;
+                pageChanged = YES;
+        } else if (pager.currentPage > minPage && (xdiff >= containerView.frame.size.width / 2.0 || xdiff / tdiff >= 250.0f)) {
+                // Moving left
+                pager.currentPage = pager.currentPage - 1;
+                pageChanged = YES;
+        }
+
+        if (pageChanged) {
                 float leftToMove = containerView.frame.size.width - fabs(xdiff);
                 float speed = fabs(xdiff/tdiff);
                 float animationSecs = leftToMove / speed;
@@ -266,18 +254,16 @@
 - (IBAction)unlock:(id)sender
 {
         @synchronized (self) {
-                debug_NSLog(@"unlock: start");
-                //[toolbar setItems:unlockedToolbarItems animated:NO];
-                
+                debug_NSLog(@"unlock: start");                
                 if (gpxWriter)
-                        [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"End Recording", nil)];
+                        [(UIBarButtonItem*) [toolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"End Recording", nil)];
                 else
-                        [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"Record", nil)];
+                        [(UIBarButtonItem*) [toolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"Record", nil)];
                 
                 if (raceAgainstLocations)
-                        [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:2] setEnabled:YES];
+                        [(UIBarButtonItem*) [toolbarItems objectAtIndex:2] setEnabled:YES];
                 else
-                        [(UIBarButtonItem*) [unlockedToolbarItems objectAtIndex:2] setEnabled:NO];
+                        [(UIBarButtonItem*) [toolbarItems objectAtIndex:2] setEnabled:NO];
                 
                 [UIView beginAnimations:nil context:NULL];
                 [UIView setAnimationDuration:0.3];
@@ -285,7 +271,6 @@
                 rect.origin.y = self.view.frame.size.height + 1;
                 [slider setFrame:rect];
                 [UIView commitAnimations];
-                //[slider setHidden:YES];
                 
                 if (lockTimer) {
                         [lockTimer invalidate];
@@ -350,7 +335,7 @@
         raceAgainstLocations = nil;
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"raceAgainstFile"];
         [self disabledIndicator:racingIndicator];
-        [toolbar setItems:lockedToolbarItems animated:YES];
+        [self lock:sender];
 }
 
 - (IBAction)pageChanged:(id)sender {
@@ -663,19 +648,7 @@
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationDuration:secs];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        CGRect r = containerView.frame;
-        // pager.currentPage reflects the state we are moving to, not the state we are in
-        if (pager.currentPage == 1) {
-                [secondaryView setFrame:r];
-                r.origin.x = -containerView.frame.size.width;
-                [primaryView setFrame:r];
-                //[containerView bringSubviewToFront:secondaryView];
-        } else if (pager.currentPage == 0) {
-                [primaryView setFrame:r];
-                r.origin.x = containerView.frame.size.width;
-                [secondaryView setFrame:r];
-                //[containerView bringSubviewToFront:primaryView];
-        }
+        [self shiftViewsTo:-pager.currentPage*containerView.frame.size.width]; 
         [UIView commitAnimations];
         
 }
@@ -686,18 +659,22 @@
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationDuration:0.5];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        CGRect r = containerView.frame;
-        if (pager.currentPage == 0) {
-                [primaryView setFrame:r];
-                r.origin.x = containerView.frame.size.width;
-                [secondaryView setFrame:r];
-        } else if (pager.currentPage == 1) {
-                [secondaryView setFrame:r];
-                r.origin.x = -containerView.frame.size.width;
-                [primaryView setFrame:r];
-        }
+        [self shiftViewsTo:-pager.currentPage*containerView.frame.size.width]; 
         [UIView commitAnimations];
         
+}
+
+- (void)organizeViews {
+        [self shiftViewsTo:0.0f];
+}
+
+- (void)shiftViewsTo:(float)position {
+        CGRect r = containerView.frame;
+        r.origin.x += position;
+        for (UIView *view in containerView.subviews) {
+                view.frame = r;
+                r.origin.x += r.size.width;
+        }
 }
 
 @end

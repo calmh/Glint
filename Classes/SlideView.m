@@ -62,7 +62,7 @@
         
         // Verify that the touch is actually on the slider
         CGPoint inSliderButton = [touch locationInView:slider];
-        if (inSliderButton.x < 0.0f || inSliderButton.x > slider.frame.size.width)
+        if (inSliderButton.x < 0.0f || inSliderButton.x > (slider.frame.size.width * 2.0f))
                 return;
         
         // Move the slider to the new position

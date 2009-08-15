@@ -33,8 +33,7 @@ typedef enum enumGlintDataSource {
         JBSoundEffect *goodSound;
         JBSoundEffect *badSound;
         BOOL gpsEnabled;
-        NSArray *lockedToolbarItems;
-        NSArray *unlockedToolbarItems;
+        NSArray *toolbarItems;
         NSTimer *lockTimer;
         NSArray *raceAgainstLocations;
         BOOL stateGood;
