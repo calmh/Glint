@@ -59,14 +59,26 @@
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
         UITouch *touch = [touches anyObject];
+        
+        // Verify that the touch is actually on the slider
+        CGPoint inSliderButton = [touch locationInView:slider];
+        if (inSliderButton.x < 0.0f || inSliderButton.x > slider.frame.size.width)
+                return;
+        
+        // Move the slider to the new position
         CGPoint touchPoint = [touch locationInView:self];
-        float buttonX = touchPoint.x - [slider frame].size.width / 2.0f;
-        if (buttonX < MARGIN)
-                buttonX = MARGIN;
-        if (buttonX > [self frame].size.width - [slider frame].size.width - MARGIN)
-                buttonX = [self frame].size.width - [slider frame].size.width - MARGIN;
-        CGRect rect = CGRectMake(buttonX, slider.frame.origin.y, slider.frame.size.width, slider.frame.size.height);
+        if (touchPoint.y < 0.0f) // Above the frame
+                return;
+        float newx = touchPoint.x - [slider frame].size.width / 2.0f;
+        if (newx < MARGIN)
+                newx = MARGIN;
+        if (newx > [self frame].size.width - [slider frame].size.width - MARGIN)
+                newx = [self frame].size.width - [slider frame].size.width - MARGIN;
+        CGRect rect = slider.frame;
+        rect.origin.x = newx;
         [slider setFrame:rect];
+        
+        // Redraw
         [self setNeedsDisplay];
 }
 

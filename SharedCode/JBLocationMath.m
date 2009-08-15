@@ -14,7 +14,7 @@
 
 @implementation JBLocationMath
 
-@synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition, averageSpeed;
+@synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition;
 
 - (id)init {
         if (self = [super init]) {
@@ -161,7 +161,7 @@
  */
 
 - (void)updateCurrentSpeed:(float)newSpeed {
-        float weightFactor = 0.75f;
+        float weightFactor = 0.65f;
         currentSpeed = (weightFactor * newSpeed + currentSpeed) / (1 + weightFactor);
 }
 
