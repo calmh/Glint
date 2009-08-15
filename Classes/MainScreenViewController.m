@@ -37,7 +37,7 @@
 
 @implementation MainScreenViewController
 
-@synthesize containerView, primaryView, secondaryView;
+@synthesize containerView, primaryView, secondaryView, tertiaryView;
 @synthesize pager;
 @synthesize signalIndicator, recordingIndicator, racingIndicator;
 @synthesize toolbar;
@@ -58,6 +58,8 @@
 @synthesize verAccuracyLabel, verAccuracyDescrLabel;
 @synthesize courseLabel, courseDescrLabel;
 
+@synthesize mapView;
+
 - (void)dealloc {
         [locationManager release];
         [math release];
@@ -76,6 +78,7 @@
         
         [containerView addSubview:primaryView];
         [containerView addSubview:secondaryView];
+        [containerView addSubview:tertiaryView];
         [self organizeViews];
         int numPages = [containerView.subviews count];
         [pager setNumberOfPages:numPages];
@@ -241,6 +244,11 @@
                         }
                 }
         }
+        
+        // Update the map to show our position and appropriate amount of surroundings.
+        float mapSpan = newLocation.horizontalAccuracy * 10.0f / 60.0f / 1852.0f;
+        MKCoordinateRegion r = MKCoordinateRegionMake(newLocation.coordinate, MKCoordinateSpanMake(mapSpan, mapSpan));
+        [mapView setRegion:r animated:YES];
 }
 
 /*
@@ -672,7 +680,16 @@
         CGRect r = containerView.frame;
         r.origin.x += position;
         for (UIView *view in containerView.subviews) {
+                // Set the page position
                 view.frame = r;
+                
+                // Fade away pages that are not in the center of the view.
+                float visibleAmount = 1.0 - fabs(r.origin.x) / containerView.frame.size.width;
+                if (visibleAmount < 0.0f)
+                        visibleAmount = 0.0f;
+                view.alpha = visibleAmount;
+
+                // Update coordinate for next page
                 r.origin.x += r.size.width;
         }
 }

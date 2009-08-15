@@ -8,9 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="6"/>
-			<integer value="122"/>
-			<integer value="195"/>
+			<integer value="199"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -34,7 +32,7 @@
 				<string key="IBProxiedObjectIdentifier">IBFirstResponder</string>
 			</object>
 			<object class="IBUIView" id="897899329">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -241,7 +239,6 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
-				<reference key="NSSuperview"/>
 				<reference key="IBUIBackgroundColor" ref="1008659989"/>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics">
@@ -270,7 +267,7 @@
 				</object>
 			</object>
 			<object class="IBUIView" id="774585933">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -496,13 +493,12 @@
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 344}</string>
-				<reference key="NSSuperview"/>
 				<reference key="IBUIBackgroundColor" ref="1008659989"/>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<bool key="IBUIUserInteractionEnabled">NO</bool>
 			</object>
 			<object class="IBUIView" id="880489266">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -768,6 +764,29 @@
 							<bytes key="NSRGB">MC4yIDAuMiAwLjIAA</bytes>
 						</object>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+					</object>
+				</object>
+				<string key="NSFrameSize">{320, 344}</string>
+				<reference key="IBUIBackgroundColor" ref="1008659989"/>
+				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+				<bool key="IBUIUserInteractionEnabled">NO</bool>
+			</object>
+			<object class="IBUIView" id="927338610">
+				<reference key="NSNextResponder"/>
+				<int key="NSvFlags">274</int>
+				<object class="NSMutableArray" key="NSSubviews">
+					<bool key="EncodedWithXMLCoder">YES</bool>
+					<object class="IBMKMapView" id="74009882">
+						<reference key="NSNextResponder" ref="927338610"/>
+						<int key="NSvFlags">268</int>
+						<string key="NSFrameSize">{320, 344}</string>
+						<reference key="NSSuperview" ref="927338610"/>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<int key="IBUIContentMode">4</int>
+						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+						<bool key="IBMKScrollEnabled">NO</bool>
+						<bool key="IBMKShowsUserLocation">YES</bool>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 344}</string>
@@ -1077,6 +1096,22 @@
 					</object>
 					<int key="connectionID">198</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">tertiaryView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="927338610"/>
+					</object>
+					<int key="connectionID">215</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">mapView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="74009882"/>
+					</object>
+					<int key="connectionID">217</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1370,6 +1405,21 @@
 						<reference key="object" ref="259551922"/>
 						<reference key="parent" ref="131160125"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">199</int>
+						<reference key="object" ref="927338610"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="74009882"/>
+						</object>
+						<reference key="parent" ref="296293708"/>
+						<string key="objectName">Tertiary Stats View</string>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">216</int>
+						<reference key="object" ref="74009882"/>
+						<reference key="parent" ref="927338610"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -1420,8 +1470,11 @@
 					<string>191.IBPluginDependency</string>
 					<string>195.CustomClassName</string>
 					<string>195.IBPluginDependency</string>
+					<string>199.IBEditorWindowLastContentRect</string>
+					<string>199.IBPluginDependency</string>
 					<string>20.IBPluginDependency</string>
 					<string>21.IBPluginDependency</string>
+					<string>216.IBPluginDependency</string>
 					<string>23.IBPluginDependency</string>
 					<string>39.CustomClassName</string>
 					<string>39.IBPluginDependency</string>
@@ -1449,7 +1502,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>JBGradientLabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{82, 511}, {320, 344}}</string>
+					<string>{{406, 140}, {320, 344}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>JBGradientLabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1484,6 +1537,9 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SlideView</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>{{406, 140}, {320, 344}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1525,7 +1581,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">198</int>
+			<int key="maxID">217</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1629,6 +1685,7 @@
 							<string>latitudeLabel</string>
 							<string>longitudeDescrLabel</string>
 							<string>longitudeLabel</string>
+							<string>mapView</string>
 							<string>measurementsLabel</string>
 							<string>pager</string>
 							<string>primaryView</string>
@@ -1637,6 +1694,7 @@
 							<string>secondaryView</string>
 							<string>signalIndicator</string>
 							<string>slider</string>
+							<string>tertiaryView</string>
 							<string>toolbar</string>
 							<string>totalDistanceDescrLabel</string>
 							<string>totalDistanceLabel</string>
@@ -1665,6 +1723,7 @@
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
+							<string>MKMapView</string>
 							<string>UILabel</string>
 							<string>UIPageControl</string>
 							<string>UIView</string>
@@ -1673,6 +1732,7 @@
 							<string>UIView</string>
 							<string>UILabel</string>
 							<string>SlideView</string>
+							<string>UIView</string>
 							<string>UIToolbar</string>
 							<string>UILabel</string>
 							<string>UILabel</string>

@@ -27,6 +27,7 @@
 		2974387E101C727800DDBB6A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2974387D101C727800DDBB6A /* Default.png */; };
 		29760DE0102F125F00EE89CB /* SlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29760DDF102F125F00EE89CB /* SlideView.m */; };
 		2979FF161036DD4000E5E418 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2979FF151036DD4000E5E418 /* SystemConfiguration.framework */; };
+		29850316103701F1000D97A2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29850315103701F1000D97A2 /* MapKit.framework */; };
 		29874F9A0FF776EB0080E20D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
 		2988667D101C96320051F368 /* JBGPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886676101C96320051F368 /* JBGPXReader.m */; };
 		2988667E101C96320051F368 /* JBGPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* JBGPXWriter.m */; };
@@ -85,6 +86,7 @@
 		2979FF151036DD4000E5E418 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		297A05AF102328BE0031D57B /* JBGradientLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBGradientLabel.h; path = SharedCode/JBGradientLabel.h; sourceTree = "<group>"; };
 		297A05B0102328BE0031D57B /* JBGradientLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBGradientLabel.m; path = SharedCode/JBGradientLabel.m; sourceTree = "<group>"; };
+		29850315103701F1000D97A2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		29874F990FF776EB0080E20D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		29886675101C96320051F368 /* JBGPXReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBGPXReader.h; path = SharedCode/JBGPXReader.h; sourceTree = "<group>"; };
 		29886676101C96320051F368 /* JBGPXReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBGPXReader.m; path = SharedCode/JBGPXReader.m; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				29FE32280FF4370200E9FE05 /* CoreLocation.framework in Frameworks */,
 				29CD7111100FB8B4001150A1 /* CFNetwork.framework in Frameworks */,
 				296729CF101CC745001BBEDF /* MessageUI.framework in Frameworks */,
+				29850316103701F1000D97A2 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,6 +249,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				29850315103701F1000D97A2 /* MapKit.framework */,
 				296729CE101CC745001BBEDF /* MessageUI.framework */,
 				29CD7110100FB8B4001150A1 /* CFNetwork.framework */,
 				29FE32170FF436EF00E9FE05 /* AudioToolbox.framework */,

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 #import "JBSoundEffect.h"
 #import "JBLocationMath.h"
 #import "JBGPXWriter.h"
@@ -43,7 +44,7 @@ typedef enum enumGlintDataSource {
 
         // Main screen
         
-        UIView *containerView, *primaryView, *secondaryView;
+        UIView *containerView, *primaryView, *secondaryView, *tertiaryView;
         UIPageControl *pager;
         UILabel *signalIndicator, *recordingIndicator, *racingIndicator;
         UIToolbar *toolbar;
@@ -67,9 +68,13 @@ typedef enum enumGlintDataSource {
         UILabel *horAccuracyLabel, *horAccuracyDescrLabel;
         UILabel *verAccuracyLabel, *verAccuracyDescrLabel;
         UILabel *courseLabel, *courseDescrLabel;
+        
+        // Tertiary page
+        
+        MKMapView *mapView;
 }
 
-@property (nonatomic, retain) IBOutlet UIView *containerView, *primaryView, *secondaryView;
+@property (nonatomic, retain) IBOutlet UIView *containerView, *primaryView, *secondaryView, *tertiaryView;
 @property (nonatomic, retain) IBOutlet UIPageControl *pager;
 @property (nonatomic, retain) IBOutlet UILabel *signalIndicator, *recordingIndicator, *racingIndicator;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
@@ -89,6 +94,8 @@ typedef enum enumGlintDataSource {
 @property (nonatomic, retain) IBOutlet UILabel *horAccuracyLabel, *horAccuracyDescrLabel;        
 @property (nonatomic, retain) IBOutlet UILabel *verAccuracyLabel, *verAccuracyDescrLabel;        
 @property (nonatomic, retain) IBOutlet UILabel *courseLabel, *courseDescrLabel;
+
+@property (nonatomic, retain) IBOutlet MKMapView *mapView;
 
 - (void)setRaceAgainstLocations:(NSArray*)locations;
 
