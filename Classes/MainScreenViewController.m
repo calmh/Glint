@@ -23,6 +23,7 @@
 - (void)resetPage;
 - (void)switchPage;
 - (void)switchPageWithSpeed:(float)secs;
+- (void)switchPageWithoutAnimation;
 - (void)organizeViews;
 - (void)shiftViewsTo:(float)position;
 @end
@@ -145,6 +146,9 @@
         [[NSRunLoop currentRunLoop] addTimer:averagedMeasurementTaker forMode:NSDefaultRunLoopMode];
         
         [self enableGPS];
+        
+        [pager setCurrentPage:USERPREF_CURRENTPAGE];
+        [self switchPageWithoutAnimation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -653,12 +657,24 @@
 }
 
 - (void) switchPageWithSpeed:(float)secs {
+        // Save page number as future default
+        [[NSUserDefaults standardUserDefaults] setInteger:pager.currentPage forKey:@"current_page"];
+        
+        // Animate to the new page
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationDuration:secs];
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
         [self shiftViewsTo:-pager.currentPage*containerView.frame.size.width]; 
         [UIView commitAnimations];
         
+}
+
+- (void) switchPageWithoutAnimation {
+        // Save page number as future default
+        [[NSUserDefaults standardUserDefaults] setInteger:pager.currentPage forKey:@"current_page"];
+
+        // Shift instantly to the new page
+        [self shiftViewsTo:-pager.currentPage*containerView.frame.size.width]; 
 }
 
 // Reset the main screen to the same page we are on

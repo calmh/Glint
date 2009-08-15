@@ -53,6 +53,9 @@
 // Whether to play sounds or not.
 #define USERPREF_SOUNDS [[NSUserDefaults standardUserDefaults] boolForKey:@"sounds_enabled"]
 
+// Whether to play sounds or not.
+#define USERPREF_CURRENTPAGE [[NSUserDefaults standardUserDefaults] integerForKey:@"current_page"]
+
 // #define SCREENSHOT
 
 #ifdef DEBUG
