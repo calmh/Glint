@@ -43,6 +43,7 @@
 		29D8BFD7101E51C1006C7865 /* reference.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2974372B101C617F00DDBB6A /* reference.gpx */; };
 		29EAF6C010361AC90017DB8D /* slider_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 29EAF6BE10361AC90017DB8D /* slider_background.png */; };
 		29EAF6C110361AC90017DB8D /* slider_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 29EAF6BF10361AC90017DB8D /* slider_button.png */; };
+		29EF16731037292800A0982A /* LapTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EF16721037292800A0982A /* LapTimeViewController.m */; };
 		29FE31E30FF4359D00E9FE05 /* Basso.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DD0FF4359D00E9FE05 /* Basso.aiff */; };
 		29FE31E60FF4359D00E9FE05 /* Purr.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31E00FF4359D00E9FE05 /* Purr.aiff */; };
 		29FE32110FF436AC00E9FE05 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 29FE32100FF436AC00E9FE05 /* Settings.bundle */; };
@@ -108,6 +109,8 @@
 		29D191981011E31600B9E8CF /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		29EAF6BE10361AC90017DB8D /* slider_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = slider_background.png; path = Graphics/slider_background.png; sourceTree = "<group>"; };
 		29EAF6BF10361AC90017DB8D /* slider_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = slider_button.png; path = Graphics/slider_button.png; sourceTree = "<group>"; };
+		29EF16711037292800A0982A /* LapTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LapTimeViewController.h; sourceTree = "<group>"; };
+		29EF16721037292800A0982A /* LapTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LapTimeViewController.m; sourceTree = "<group>"; };
 		29FE31DD0FF4359D00E9FE05 /* Basso.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Basso.aiff; path = Resources/Basso.aiff; sourceTree = "<group>"; };
 		29FE31E00FF4359D00E9FE05 /* Purr.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Purr.aiff; path = Resources/Purr.aiff; sourceTree = "<group>"; };
 		29FE32100FF436AC00E9FE05 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -160,6 +163,8 @@
 				2913DBE91024FD6B00F56A2A /* FileDetailViewController.m */,
 				29760DDE102F125F00EE89CB /* SlideView.h */,
 				29760DDF102F125F00EE89CB /* SlideView.m */,
+				29EF16711037292800A0982A /* LapTimeViewController.h */,
+				29EF16721037292800A0982A /* LapTimeViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -392,6 +397,7 @@
 				29886680101C96320051F368 /* JBSoundEffect.m in Sources */,
 				2913DBEB1024FD6B00F56A2A /* FileDetailViewController.m in Sources */,
 				29760DE0102F125F00EE89CB /* SlideView.m in Sources */,
+				29EF16731037292800A0982A /* LapTimeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

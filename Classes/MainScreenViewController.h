@@ -16,6 +16,7 @@
 #import "CompassView.h"
 #import "GlintAppDelegate.h"
 #import "SlideView.h"
+#import "LapTimeViewController.h"
 
 typedef enum enumGlintDataSource {
         kGlintDataSourceMovement,
@@ -70,8 +71,8 @@ typedef enum enumGlintDataSource {
         UILabel *courseLabel, *courseDescrLabel;
         
         // Tertiary page
+        LapTimeViewController *lapTimeController;
         
-        MKMapView *mapView;
 }
 
 @property (nonatomic, retain) IBOutlet UIView *containerView, *primaryView, *secondaryView, *tertiaryView;
@@ -95,7 +96,7 @@ typedef enum enumGlintDataSource {
 @property (nonatomic, retain) IBOutlet UILabel *verAccuracyLabel, *verAccuracyDescrLabel;        
 @property (nonatomic, retain) IBOutlet UILabel *courseLabel, *courseDescrLabel;
 
-@property (nonatomic, retain) IBOutlet MKMapView *mapView;
+@property (nonatomic, retain) IBOutlet LapTimeViewController *lapTimeController;
 
 - (void)setRaceAgainstLocations:(NSArray*)locations;
 

@@ -776,17 +776,20 @@
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBMKMapView" id="74009882">
+					<object class="IBUITableView" id="121877108">
 						<reference key="NSNextResponder" ref="927338610"/>
-						<int key="NSvFlags">268</int>
-						<string key="NSFrameSize">{320, 344}</string>
+						<int key="NSvFlags">274</int>
+						<string key="NSFrame">{{20, 20}, {280, 324}}</string>
 						<reference key="NSSuperview" ref="927338610"/>
+						<reference key="IBUIBackgroundColor" ref="1008659989"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
-						<int key="IBUIContentMode">4</int>
-						<bool key="IBUIMultipleTouchEnabled">YES</bool>
-						<bool key="IBMKScrollEnabled">NO</bool>
-						<bool key="IBMKShowsUserLocation">YES</bool>
+						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+						<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
+						<bool key="IBUIShowsSelectionImmediatelyOnTouchBegin">YES</bool>
+						<float key="IBUIRowHeight">4.400000e+01</float>
+						<float key="IBUISectionHeaderHeight">2.200000e+01</float>
+						<float key="IBUISectionFooterHeight">2.200000e+01</float>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 344}</string>
@@ -794,6 +797,9 @@
 				<reference key="IBUIBackgroundColor" ref="1008659989"/>
 				<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
 				<bool key="IBUIUserInteractionEnabled">NO</bool>
+			</object>
+			<object class="IBUITableViewController" id="583820857">
+				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -1106,11 +1112,35 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">mapView</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="74009882"/>
+						<string key="label">delegate</string>
+						<reference key="source" ref="121877108"/>
+						<reference key="destination" ref="583820857"/>
 					</object>
-					<int key="connectionID">217</int>
+					<int key="connectionID">221</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">dataSource</string>
+						<reference key="source" ref="121877108"/>
+						<reference key="destination" ref="583820857"/>
+					</object>
+					<int key="connectionID">222</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">view</string>
+						<reference key="source" ref="583820857"/>
+						<reference key="destination" ref="121877108"/>
+					</object>
+					<int key="connectionID">223</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">lapTimeController</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="583820857"/>
+					</object>
+					<int key="connectionID">224</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1410,14 +1440,22 @@
 						<reference key="object" ref="927338610"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="74009882"/>
+							<reference ref="121877108"/>
 						</object>
 						<reference key="parent" ref="296293708"/>
 						<string key="objectName">Tertiary Stats View</string>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">216</int>
-						<reference key="object" ref="74009882"/>
+						<int key="objectID">219</int>
+						<reference key="object" ref="583820857"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
+						<reference key="parent" ref="296293708"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">220</int>
+						<reference key="object" ref="121877108"/>
 						<reference key="parent" ref="927338610"/>
 					</object>
 				</object>
@@ -1474,7 +1512,10 @@
 					<string>199.IBPluginDependency</string>
 					<string>20.IBPluginDependency</string>
 					<string>21.IBPluginDependency</string>
-					<string>216.IBPluginDependency</string>
+					<string>219.CustomClassName</string>
+					<string>219.IBEditorWindowLastContentRect</string>
+					<string>219.IBPluginDependency</string>
+					<string>220.IBPluginDependency</string>
 					<string>23.IBPluginDependency</string>
 					<string>39.CustomClassName</string>
 					<string>39.IBPluginDependency</string>
@@ -1538,9 +1579,12 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>SlideView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{406, 140}, {320, 344}}</string>
+					<string>{{427, 108}, {320, 344}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>LapTimeViewController</string>
+					<string>{{0, 354}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1581,7 +1625,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">217</int>
+			<int key="maxID">224</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1640,6 +1684,14 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">LapTimeViewController</string>
+					<string key="superclassName">UITableViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/LapTimeViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">MainScreenViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<object class="NSMutableDictionary" key="actions">
@@ -1681,11 +1733,11 @@
 							<string>elevationLabel</string>
 							<string>horAccuracyDescrLabel</string>
 							<string>horAccuracyLabel</string>
+							<string>lapTimeController</string>
 							<string>latitudeDescrLabel</string>
 							<string>latitudeLabel</string>
 							<string>longitudeDescrLabel</string>
 							<string>longitudeLabel</string>
-							<string>mapView</string>
 							<string>measurementsLabel</string>
 							<string>pager</string>
 							<string>primaryView</string>
@@ -1719,11 +1771,11 @@
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
+							<string>LapTimeViewController</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
-							<string>MKMapView</string>
 							<string>UILabel</string>
 							<string>UIPageControl</string>
 							<string>UIView</string>

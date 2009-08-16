@@ -23,8 +23,14 @@
                 totalDistance = 0.0f;
                 lastKnownPosition = nil;
                 firstMeasurement = nil;
+                locations = [[NSMutableArray alloc] init];
         }
         return self;
+}
+
+- (void)dealloc {
+        [locations release];
+        [super dealloc];
 }
 
 - (void)updateLocation:(CLLocation*)location {
@@ -42,6 +48,7 @@
         }
 
         self.lastKnownPosition = location;
+        [locations addObject:location];
 }
 
 - (float)speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB {
@@ -66,6 +73,10 @@
         if (bearing >= 360.0)
                 bearing -= 360.0;
         return bearing;
+}
+
+- (float)distanceAtPointInTime:(float)targetTime {
+        return [self distanceAtPointInTime:targetTime inLocations:locations];
 }
 
 - (float)distanceAtPointInTime:(float)targetTime inLocations:(NSArray*)locations {
@@ -94,6 +105,10 @@
         float factor = remainingTime / timeBetweenP1andP2;
         float targetDistance = distance + factor * [pointTwo getDistanceFrom:pointOne];
         return targetDistance;
+}
+
+- (float)timeAtLocationByDistance:(float)targetDistance {
+        return [self timeAtLocationByDistance:targetDistance inLocations:locations];
 }
 
 - (float)timeAtLocationByDistance:(float)targetDistance inLocations:(NSArray*)locations {

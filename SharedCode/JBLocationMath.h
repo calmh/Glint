@@ -16,6 +16,7 @@
         float totalDistance;
         NSDate *firstMeasurement;
         CLLocation *lastKnownPosition;
+        NSMutableArray *locations;
 }
 
 @property (readonly) float currentSpeed;
@@ -27,6 +28,8 @@
 - (void)updateLocation:(CLLocation*)location;
 - (float)speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
 - (float)bearingFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
+- (float)distanceAtPointInTime:(float)targetTime;
+- (float)timeAtLocationByDistance:(float)targetDistance;
 - (float)distanceAtPointInTime:(float)targetTime inLocations:(NSArray*)locations;
 - (float)timeAtLocationByDistance:(float)targetDistance inLocations:(NSArray*)locations;
 - (float)totalDistanceOverArray:(NSArray*)locations;

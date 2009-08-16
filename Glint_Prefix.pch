@@ -56,6 +56,9 @@
 // Whether to play sounds or not.
 #define USERPREF_CURRENTPAGE [[NSUserDefaults standardUserDefaults] integerForKey:@"current_page"]
 
+// Length of a "lap"
+#define USERPREF_LAPLENGTH [[NSUserDefaults standardUserDefaults] integerForKey:@"lap_length"]
+
 // #define SCREENSHOT
 
 #ifdef DEBUG

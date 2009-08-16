@@ -13,6 +13,14 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
 
 @implementation JBGradientLabel
 
+- (id)initWithFrame:(CGRect)frame {
+        if (self = [super initWithFrame:frame]) {
+        gradient = nil;
+        oldColor = nil;
+        }
+        return self;
+}
+
 -(void)awakeFromNib 
 {
 	[super awakeFromNib];

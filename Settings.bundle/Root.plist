@@ -180,6 +180,40 @@
 		</dict>
 		<dict>
 			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Lap Length</string>
+			<key>Key</key>
+			<string>lap_length</string>
+			<key>DefaultValue</key>
+			<string>1.0</string>
+			<key>Titles</key>
+			<array>
+				<string>100 m</string>
+				<string>250 m</string>
+				<string>500 m</string>
+				<string>1 km</string>
+				<string>2 km</string>
+				<string>2.5 2km</string>
+				<string>4 km</string>
+				<string>5 km</string>
+				<string>10 km</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>100</string>
+				<string>250</string>
+				<string>500</string>
+				<string>1000</string>
+				<string>2000</string>
+				<string>2500</string>
+				<string>4000</string>
+				<string>5000</string>
+				<string>10000</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string>Email Settings</string>

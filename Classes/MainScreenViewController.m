@@ -59,7 +59,7 @@
 @synthesize verAccuracyLabel, verAccuracyDescrLabel;
 @synthesize courseLabel, courseDescrLabel;
 
-@synthesize mapView;
+@synthesize lapTimeController;
 
 - (void)dealloc {
         [locationManager release];
@@ -248,11 +248,6 @@
                         }
                 }
         }
-        
-        // Update the map to show our position and appropriate amount of surroundings.
-        float mapSpan = newLocation.horizontalAccuracy * 10.0f / 60.0f / 1852.0f;
-        MKCoordinateRegion r = MKCoordinateRegionMake(newLocation.coordinate, MKCoordinateSpanMake(mapSpan, mapSpan));
-        [mapView setRegion:r animated:YES];
 }
 
 /*
@@ -400,7 +395,7 @@
         
         CLLocation *current = locationManager.location;
         debug_NSLog([locationManager.location description]);
-        if (gpxWriter && (!lastWrittenDate || [now timeIntervalSinceDate:lastWrittenDate] >= averageInterval - MEASUREMENT_THREAD_INTERVAL/2.0 )) {
+        if (gpxWriter && (!lastWrittenDate || [now timeIntervalSinceDate:lastWrittenDate] >= averageInterval - MEASUREMENT_THREAD_INTERVAL/2.0f )) {
                 if ([self precisionAcceptable:current]) {
                         debug_NSLog(@"Good precision, saving waypoint");
                         [lastWrittenDate release];
@@ -432,6 +427,7 @@
 - (void)updateDisplay:(NSTimer*)timer
 {
         static BOOL prevStateGood = NO;
+        static int numLaps = 0;
         
         // Don't update the display if it's turned off by the proximity sensor.
         // Saves CPU cycles and battery time, I hope.
@@ -576,6 +572,14 @@
         self.compass.course = [math currentCourse];
         self.courseLabel.text = [NSString stringWithFormat:@"%.0f°", [math currentCourse]];
 #endif   
+        
+        // Lap times
+        if ([math totalDistance] > numLaps*USERPREF_LAPLENGTH) {
+                float lapTime = [math timeAtLocationByDistance:numLaps*USERPREF_LAPLENGTH];
+                [lapTimeController addLapTime:lapTime forDistance:numLaps*USERPREF_LAPLENGTH];
+                numLaps++;
+        }        
+        
         [current release];
 }
 
