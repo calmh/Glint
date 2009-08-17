@@ -120,10 +120,10 @@
         self.primaryScreenDescription.text = NSLocalizedString(@"Speed & Distance",nil);
         self.primaryScreenDescription.frame = pageDescriptionRect;
         self.primaryScreenDescription.transform = CGAffineTransformMakeRotation(-M_PI/2.0f);
-        self.elapsedTimeLabel.text = @"00:00:00";
-        self.totalDistanceLabel.text = @"-";
-        self.currentSpeedLabel.text = @"?";
-        self.averageSpeedLabel.text = @"?";
+        self.elapsedTimeLabel.text = [delegate formatTimestamp:0.0f maxTime:86400.0f allowNegatives:NO];
+        self.totalDistanceLabel.text = [delegate formatDistance:0.0f];
+        self.currentSpeedLabel.text = [delegate formatSpeed:0.0f];
+        self.averageSpeedLabel.text = [delegate formatSpeed:0.0f];
         self.currentTimePerDistanceLabel.text = @"?";
         self.elapsedTimeDescrLabel.text = NSLocalizedString(@"elapsed", nil);
         self.totalDistanceDescrLabel.text = NSLocalizedString(@"total distance", nil);

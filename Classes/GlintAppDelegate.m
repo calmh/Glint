@@ -114,12 +114,21 @@
                 int hour = (int) (isec / 3600);
                 int min = (int) ((isec % 3600) / 60);
                 int sec = (int) (isec % 60);
+                if (hour == 0) {
                 if (allowNegatives && !negative)
-                        return [NSString stringWithFormat:@"+%02d:%02d:%02d", hour, min, sec];
+                        return [NSString stringWithFormat:@"+%02d:%02d", min, sec];
                 else if (negative)
-                        return [NSString stringWithFormat:@"-%02d:%02d:%02d", hour, min, sec];
+                        return [NSString stringWithFormat:@"-%02d:%02d", min, sec];
                 else
-                        return [NSString stringWithFormat:@"%02d:%02d:%02d", hour, min, sec];
+                        return [NSString stringWithFormat:@"%02d:%02d", min, sec];
+                } else {
+                        if (allowNegatives && !negative)
+                                return [NSString stringWithFormat:@"+%02d:%02d:%02d", hour, min, sec];
+                        else if (negative)
+                                return [NSString stringWithFormat:@"-%02d:%02d:%02d", hour, min, sec];
+                        else
+                                return [NSString stringWithFormat:@"%02d:%02d:%02d", hour, min, sec];
+                }
         }
 }
 

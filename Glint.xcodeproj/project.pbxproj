@@ -26,7 +26,6 @@
 		2974372C101C617F00DDBB6A /* reference.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2974372B101C617F00DDBB6A /* reference.gpx */; };
 		2974387E101C727800DDBB6A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2974387D101C727800DDBB6A /* Default.png */; };
 		29760DE0102F125F00EE89CB /* SlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29760DDF102F125F00EE89CB /* SlideView.m */; };
-		2979FF161036DD4000E5E418 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2979FF151036DD4000E5E418 /* SystemConfiguration.framework */; };
 		29850316103701F1000D97A2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29850315103701F1000D97A2 /* MapKit.framework */; };
 		29874F9A0FF776EB0080E20D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
 		2988667D101C96320051F368 /* JBGPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886676101C96320051F368 /* JBGPXReader.m */; };
@@ -84,7 +83,6 @@
 		2974387D101C727800DDBB6A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		29760DDE102F125F00EE89CB /* SlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideView.h; sourceTree = "<group>"; };
 		29760DDF102F125F00EE89CB /* SlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideView.m; sourceTree = "<group>"; };
-		2979FF151036DD4000E5E418 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		297A05AF102328BE0031D57B /* JBGradientLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBGradientLabel.h; path = SharedCode/JBGradientLabel.h; sourceTree = "<group>"; };
 		297A05B0102328BE0031D57B /* JBGradientLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBGradientLabel.m; path = SharedCode/JBGradientLabel.m; sourceTree = "<group>"; };
 		29850315103701F1000D97A2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -141,7 +139,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				291C0DE6101E265800393E77 /* CoreLocation.framework in Frameworks */,
-				2979FF161036DD4000E5E418 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,7 +213,6 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				291C0D84101E206800393E77 /* Tests-Info.plist */,
-				2979FF151036DD4000E5E418 /* SystemConfiguration.framework */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";

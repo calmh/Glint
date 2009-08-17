@@ -8,9 +8,9 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="230"/>
 			<integer value="122"/>
 			<integer value="6"/>
+			<integer value="220"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -828,9 +828,10 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+						<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
+						<int key="IBUIIndicatorStyle">2</int>
 						<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
-						<bool key="IBUIShowsSelectionImmediatelyOnTouchBegin">YES</bool>
-						<float key="IBUIRowHeight">4.400000e+01</float>
+						<float key="IBUIRowHeight">3.000000e+01</float>
 						<float key="IBUISectionHeaderHeight">2.200000e+01</float>
 						<float key="IBUISectionFooterHeight">2.200000e+01</float>
 					</object>
