@@ -45,6 +45,7 @@
 @synthesize measurementsLabel;
 @synthesize slider;
 
+@synthesize primaryScreenDescription;
 @synthesize elapsedTimeLabel, elapsedTimeDescrLabel;
 @synthesize totalDistanceLabel, totalDistanceDescrLabel;
 @synthesize currentSpeedLabel, currentSpeedDescrLabel;
@@ -52,6 +53,7 @@
 @synthesize currentTimePerDistanceLabel, currentTimePerDistanceDescrLabel;
 @synthesize compass;
 
+@synthesize secondaryScreenDescription;
 @synthesize latitudeLabel, latitudeDescrLabel;
 @synthesize longitudeLabel, longitudeDescrLabel;
 @synthesize elevationLabel, elevationDescrLabel;
@@ -59,6 +61,7 @@
 @synthesize verAccuracyLabel, verAccuracyDescrLabel;
 @synthesize courseLabel, courseDescrLabel;
 
+@synthesize tertiaryScreenDescription;
 @synthesize lapTimeController;
 
 - (void)dealloc {
@@ -110,8 +113,13 @@
         if (USERPREF_ENABLE_PROXIMITY)
                 [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
         
+        CGRect pageDescriptionRect = CGRectMake(-145.0f, 344.0f/2.0f, 314.0f, 17.0f);
+        
         // Primary page
         
+        self.primaryScreenDescription.text = NSLocalizedString(@"Speed & Distance",nil);
+        self.primaryScreenDescription.frame = pageDescriptionRect;
+        self.primaryScreenDescription.transform = CGAffineTransformMakeRotation(-M_PI/2.0f);
         self.elapsedTimeLabel.text = @"00:00:00";
         self.totalDistanceLabel.text = @"-";
         self.currentSpeedLabel.text = @"?";
@@ -123,6 +131,9 @@
         
         // Secondary page
         
+        self.secondaryScreenDescription.text = NSLocalizedString(@"Position & Course",nil);
+        self.secondaryScreenDescription.frame = pageDescriptionRect;
+        self.secondaryScreenDescription.transform = CGAffineTransformMakeRotation(-M_PI/2.0f);
         self.latitudeLabel.text = @"-";
         self.longitudeLabel.text = @"-";
         self.elevationLabel.text = @"-";
@@ -136,6 +147,12 @@
         self.verAccuracyDescrLabel.text = NSLocalizedString(@"v. accuracy", nil);
         self.courseDescrLabel.text = NSLocalizedString(@"course", nil);
         
+        // Tertiary page
+        
+        self.tertiaryScreenDescription.text = NSLocalizedString(@"Lap Times",nil);
+        self.tertiaryScreenDescription.frame = pageDescriptionRect;
+        self.tertiaryScreenDescription.transform = CGAffineTransformMakeRotation(-M_PI/2.0f);
+
         NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
         NSString* marketVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
         self.measurementsLabel.text = [NSString stringWithFormat:@"Glint %@ (%@)", marketVer, bundleVer];
@@ -427,7 +444,8 @@
 - (void)updateDisplay:(NSTimer*)timer
 {
         static BOOL prevStateGood = NO;
-        static int numLaps = 0;
+        static int numLaps = 1;
+        static float prevLapTime = 0.0f;
         
         // Don't update the display if it's turned off by the proximity sensor.
         // Saves CPU cycles and battery time, I hope.
@@ -576,8 +594,9 @@
         // Lap times
         if ([math totalDistance] > numLaps*USERPREF_LAPLENGTH) {
                 float lapTime = [math timeAtLocationByDistance:numLaps*USERPREF_LAPLENGTH];
-                [lapTimeController addLapTime:lapTime forDistance:numLaps*USERPREF_LAPLENGTH];
+                [lapTimeController addLapTime:lapTime-prevLapTime forDistance:numLaps*USERPREF_LAPLENGTH];
                 numLaps++;
+                prevLapTime = lapTime;
         }        
         
         [current release];

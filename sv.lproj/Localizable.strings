@@ -91,3 +91,10 @@
 "End Time" = "Måltid";
 "Total Distance" = "Total distans";
 "Average Speed" = "Genomsn. hastighet";
+
+/*
+** Lap times screen
+*/
+"Speed & Distance" = "Hastighet & avstånd";
+"Position & Course" = "Position & kurs";
+"Lap Times" = "Varvtider";

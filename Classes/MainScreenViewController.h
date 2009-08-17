@@ -54,6 +54,7 @@ typedef enum enumGlintDataSource {
         
         // Primary stats page
         
+        UILabel *primaryScreenDescription;
         UILabel *elapsedTimeLabel, *elapsedTimeDescrLabel;
         UILabel *totalDistanceLabel, *totalDistanceDescrLabel;
         UILabel *currentSpeedLabel, *currentSpeedDescrLabel;
@@ -63,6 +64,7 @@ typedef enum enumGlintDataSource {
 
         // Secondary stats page
         
+        UILabel *secondaryScreenDescription;
         UILabel *latitudeLabel, *latitudeDescrLabel;
         UILabel *longitudeLabel, *longitudeDescrLabel;
         UILabel *elevationLabel, *elevationDescrLabel;
@@ -71,6 +73,7 @@ typedef enum enumGlintDataSource {
         UILabel *courseLabel, *courseDescrLabel;
         
         // Tertiary page
+        UILabel *tertiaryScreenDescription;
         LapTimeViewController *lapTimeController;
         
 }
@@ -82,6 +85,7 @@ typedef enum enumGlintDataSource {
 @property (nonatomic, retain) IBOutlet UILabel *measurementsLabel;
 @property (nonatomic, retain) IBOutlet SlideView *slider;
 
+@property (nonatomic, retain) IBOutlet UILabel *primaryScreenDescription;
 @property (nonatomic, retain) IBOutlet UILabel *elapsedTimeLabel, *elapsedTimeDescrLabel;
 @property (nonatomic, retain) IBOutlet UILabel *totalDistanceLabel, *totalDistanceDescrLabel;
 @property (nonatomic, retain) IBOutlet UILabel *currentSpeedLabel, *currentSpeedDescrLabel;
@@ -89,6 +93,7 @@ typedef enum enumGlintDataSource {
 @property (nonatomic, retain) IBOutlet UILabel *currentTimePerDistanceLabel, *currentTimePerDistanceDescrLabel;
 @property (nonatomic, retain) IBOutlet CompassView *compass;
 
+@property (nonatomic, retain) IBOutlet UILabel *secondaryScreenDescription;
 @property (nonatomic, retain) IBOutlet UILabel *latitudeLabel, *latitudeDescrLabel;
 @property (nonatomic, retain) IBOutlet UILabel *longitudeLabel, *longitudeDescrLabel;
 @property (nonatomic, retain) IBOutlet UILabel *elevationLabel, *elevationDescrLabel;
@@ -96,6 +101,7 @@ typedef enum enumGlintDataSource {
 @property (nonatomic, retain) IBOutlet UILabel *verAccuracyLabel, *verAccuracyDescrLabel;        
 @property (nonatomic, retain) IBOutlet UILabel *courseLabel, *courseDescrLabel;
 
+@property (nonatomic, retain) IBOutlet UILabel *tertiaryScreenDescription;
 @property (nonatomic, retain) IBOutlet LapTimeViewController *lapTimeController;
 
 - (void)setRaceAgainstLocations:(NSArray*)locations;

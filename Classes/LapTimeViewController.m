@@ -15,6 +15,9 @@
         [times addObject:[NSNumber numberWithFloat:seconds]];
         [distances addObject:[NSNumber numberWithFloat:distance]];
         [self.tableView reloadData];
+        unsigned int index[] = { 0, [times count]-1 };
+        NSIndexPath *path = [[NSIndexPath alloc] initWithIndexes:index length:2];
+        [self.tableView selectRowAtIndexPath:path animated:YES scrollPosition:UITableViewScrollPositionBottom];
 }
 
 - (id)initWithStyle:(UITableViewStyle)style {
