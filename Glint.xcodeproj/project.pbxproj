@@ -22,6 +22,7 @@
 		291C0DDE101E260900393E77 /* JBGPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* JBGPXWriter.m */; };
 		291C0DE0101E260900393E77 /* JBLocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* JBLocationMath.m */; };
 		291C0DE6101E265800393E77 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FE32270FF4370200E9FE05 /* CoreLocation.framework */; };
+		293D38071039E74F00EB0F91 /* Ping.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 293D38061039E74F00EB0F91 /* Ping.aiff */; };
 		296729CF101CC745001BBEDF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296729CE101CC745001BBEDF /* MessageUI.framework */; };
 		2974372C101C617F00DDBB6A /* reference.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2974372B101C617F00DDBB6A /* reference.gpx */; };
 		2974387E101C727800DDBB6A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2974387D101C727800DDBB6A /* Default.png */; };
@@ -78,6 +79,7 @@
 		291C0DB6101E22F600393E77 /* Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		291C0DCD101E23C500393E77 /* TestCases.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestCases.h; path = Tests/TestCases.h; sourceTree = "<group>"; };
 		291C0DCE101E23C500393E77 /* TestCases.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestCases.m; path = Tests/TestCases.m; sourceTree = "<group>"; };
+		293D38061039E74F00EB0F91 /* Ping.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Ping.aiff; path = Resources/Ping.aiff; sourceTree = "<group>"; };
 		296729CE101CC745001BBEDF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		2974372B101C617F00DDBB6A /* reference.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference.gpx; path = Resources/reference.gpx; sourceTree = "<group>"; };
 		2974387D101C727800DDBB6A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 				2913DBEA1024FD6B00F56A2A /* FileDetailViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				29FE31DD0FF4359D00E9FE05 /* Basso.aiff */,
+				293D38061039E74F00EB0F91 /* Ping.aiff */,
 				29FE31E00FF4359D00E9FE05 /* Purr.aiff */,
 				2974372B101C617F00DDBB6A /* reference.gpx */,
 				2974387D101C727800DDBB6A /* Default.png */,
@@ -347,6 +350,7 @@
 				2913DE2010260A9F00F56A2A /* FilesViewController.xib in Resources */,
 				29EAF6C010361AC90017DB8D /* slider_background.png in Resources */,
 				29EAF6C110361AC90017DB8D /* slider_button.png in Resources */,
+				293D38071039E74F00EB0F91 /* Ping.aiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

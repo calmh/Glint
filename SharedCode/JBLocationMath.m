@@ -79,7 +79,7 @@
         return [self distanceAtPointInTime:targetTime inLocations:locations];
 }
 
-- (float)distanceAtPointInTime:(float)targetTime inLocations:(NSArray*)locations {
+- (float)distanceAtPointInTime:(float)targetTime inLocations:(NSArray*)locationList {
         if (isnan(targetTime) || targetTime < 0.0)
                 return NAN;
         
@@ -87,7 +87,7 @@
         float distance = 0.0;
         float time = 0.0;
         
-        for (CLLocation *point in locations) {
+        for (CLLocation *point in locationList) {
                 if (pointOne) {
                         time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
                         distance += [pointOne getDistanceFrom:point];
@@ -111,7 +111,7 @@
         return [self timeAtLocationByDistance:targetDistance inLocations:locations];
 }
 
-- (float)timeAtLocationByDistance:(float)targetDistance inLocations:(NSArray*)locations {
+- (float)timeAtLocationByDistance:(float)targetDistance inLocations:(NSArray*)locationList {
         if (isnan(targetDistance) || targetDistance < 0.0)
                 return NAN;
         
@@ -119,7 +119,7 @@
         float time = 0.0;
         float distance = 0.0;
         
-        for (CLLocation *point in locations) {
+        for (CLLocation *point in locationList) {
                 if (pointOne) {
                         time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
                         distance += [pointOne getDistanceFrom:point];
@@ -138,10 +138,10 @@
         return targetTime;
 }
 
-- (float)totalDistanceOverArray:(NSArray*)locations {
+- (float)totalDistanceOverArray:(NSArray*)locationList {
         float distance = 0.0;
         CLLocation *last = nil;
-        for (CLLocation *loc in locations) {
+        for (CLLocation *loc in locationList) {
                 if (last)
                         distance += [loc getDistanceFrom:last];
                 last = loc;
@@ -149,9 +149,9 @@
         return distance;
 }
 
-- (NSArray*)startAndFinishTimesInArray:(NSArray*)locations {
-        NSDate *start = ((CLLocation*) [locations objectAtIndex:0]).timestamp;
-        NSDate *finish = ((CLLocation*) [locations objectAtIndex:[locations count]-1]).timestamp;
+- (NSArray*)startAndFinishTimesInArray:(NSArray*)locationList {
+        NSDate *start = ((CLLocation*) [locationList objectAtIndex:0]).timestamp;
+        NSDate *finish = ((CLLocation*) [locationList objectAtIndex:[locationList count]-1]).timestamp;
         return [NSArray arrayWithObjects:start, finish, nil];
 }
 

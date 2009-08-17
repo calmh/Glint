@@ -18,11 +18,6 @@
 #import "SlideView.h"
 #import "LapTimeViewController.h"
 
-typedef enum enumGlintDataSource {
-        kGlintDataSourceMovement,
-        kGlintDataSourceTimer
-} GlintDataSource;
-
 @interface MainScreenViewController : UIViewController  <CLLocationManagerDelegate, SlideViewDelegate> {
         GlintAppDelegate *delegate;
         CLLocationManager *locationManager;
@@ -31,9 +26,7 @@ typedef enum enumGlintDataSource {
         JBGPXWriter *gpxWriter;
         NSDate *firstMeasurementDate;
         NSDate *lastMeasurementDate;
-        GlintDataSource currentDataSource;
-        JBSoundEffect *goodSound;
-        JBSoundEffect *badSound;
+        JBSoundEffect *goodSound, *badSound, *lapSound;
         BOOL gpsEnabled;
         NSArray *toolbarItems;
         NSTimer *lockTimer;

@@ -90,6 +90,7 @@
         math = [[JBLocationMath alloc] init];
         badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
         goodSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
+        lapSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Ping" ofType:@"aiff"]];
         firstMeasurementDate  = nil;
         lastMeasurementDate = nil;
         gpxWriter = nil;
@@ -152,7 +153,7 @@
         self.tertiaryScreenDescription.text = NSLocalizedString(@"Lap Times",nil);
         self.tertiaryScreenDescription.frame = pageDescriptionRect;
         self.tertiaryScreenDescription.transform = CGAffineTransformMakeRotation(-M_PI/2.0f);
-
+        
         NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
         NSString* marketVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
         self.measurementsLabel.text = [NSString stringWithFormat:@"Glint %@ (%@)", marketVer, bundleVer];
@@ -230,7 +231,7 @@
                 pager.currentPage = pager.currentPage - 1;
                 pageChanged = YES;
         }
-
+        
         if (pageChanged) {
                 float leftToMove = containerView.frame.size.width - fabs(xdiff);
                 float speed = fabs(xdiff/tdiff);
@@ -258,11 +259,10 @@
                 } else {
                         // Update the position if it's previously unknown or if we've travelled a distance
                         // that exceeds half the average horizontal inaccuracy. This is to avoid too noisy movement.
-                        CLLocation *last = [math lastKnownPosition];
-                        if (!last || [last getDistanceFrom:newLocation] > (last.horizontalAccuracy + newLocation.horizontalAccuracy)/4.0f) {
-                                [math updateLocation:newLocation];
-                                currentDataSource = kGlintDataSourceMovement;
-                        }
+                        //CLLocation *last = [math lastKnownPosition];
+                        //if (!last || [last getDistanceFrom:newLocation] > (last.horizontalAccuracy + newLocation.horizontalAccuracy)/4.0f) {
+                        [math updateLocation:newLocation];
+                        //}
                 }
         }
 }
@@ -363,19 +363,6 @@
 }
 
 - (IBAction)pageChanged:(id)sender {
-        /*
-         [UIView beginAnimations:nil context:NULL];
-         [UIView setAnimationDuration:1.2];
-         [UIView setAnimationRepeatAutoreverses:NO];
-         if (pager.currentPage == 0) {
-         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:containerView cache:YES];
-         [containerView bringSubviewToFront:primaryView];
-         } else if (pager.currentPage == 1) {
-         [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromRight forView:containerView cache:YES];
-         [containerView bringSubviewToFront:secondaryView];
-         }
-         [UIView commitAnimations];
-         */
         [self switchPage];
 }
 
@@ -592,11 +579,13 @@
 #endif   
         
         // Lap times
-        if ([math totalDistance] > numLaps*USERPREF_LAPLENGTH) {
+        if ([math totalDistance] >= numLaps*USERPREF_LAPLENGTH) {
                 float lapTime = [math timeAtLocationByDistance:numLaps*USERPREF_LAPLENGTH];
                 [lapTimeController addLapTime:lapTime-prevLapTime forDistance:numLaps*USERPREF_LAPLENGTH];
                 numLaps++;
                 prevLapTime = lapTime;
+                if (USERPREF_SOUNDS)
+                        [lapSound play];
         }        
         
         [current release];
@@ -695,7 +684,7 @@
 - (void) switchPageWithoutAnimation {
         // Save page number as future default
         [[NSUserDefaults standardUserDefaults] setInteger:pager.currentPage forKey:@"current_page"];
-
+        
         // Shift instantly to the new page
         [self shiftViewsTo:-pager.currentPage*containerView.frame.size.width]; 
 }
@@ -727,7 +716,7 @@
                 if (visibleAmount < 0.0f)
                         visibleAmount = 0.0f;
                 view.alpha = visibleAmount;
-
+                
                 // Update coordinate for next page
                 r.origin.x += r.size.width;
         }

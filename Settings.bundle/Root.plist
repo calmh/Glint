@@ -191,10 +191,11 @@
 			<array>
 				<string>100 m</string>
 				<string>250 m</string>
+				<string>400 m</string>
 				<string>500 m</string>
 				<string>1 km</string>
 				<string>2 km</string>
-				<string>2.5 2km</string>
+				<string>2.5 km</string>
 				<string>4 km</string>
 				<string>5 km</string>
 				<string>10 km</string>
@@ -203,6 +204,7 @@
 			<array>
 				<string>100</string>
 				<string>250</string>
+				<string>400</string>
 				<string>500</string>
 				<string>1000</string>
 				<string>2000</string>

@@ -60,16 +60,17 @@
 {
         UITouch *touch = [touches anyObject];
         
-        // Verify that the touch is actually on the slider
-        CGPoint inSliderButton = [touch locationInView:slider];
-        if (inSliderButton.x < 0.0f || inSliderButton.x > (slider.frame.size.width * 2.0f))
+        CGPoint inSliderCoordinate = [touch locationInView:slider];
+        CGPoint inFrameCoordinate = [touch locationInView:self];
+        if (inSliderCoordinate.x < 0.0f || inSliderCoordinate.x > (slider.frame.size.width * 2.0f))
+                // Way outside the slider
+                return;        
+        if (inFrameCoordinate.y < -slider.frame.size.height)
+                // Way above the frame
                 return;
-        
+
         // Move the slider to the new position
-        CGPoint touchPoint = [touch locationInView:self];
-        if (touchPoint.y < 0.0f) // Above the frame
-                return;
-        float newx = touchPoint.x - [slider frame].size.width / 2.0f;
+        float newx = inFrameCoordinate.x - [slider frame].size.width / 2.0f;
         if (newx < MARGIN)
                 newx = MARGIN;
         if (newx > [self frame].size.width - [slider frame].size.width - MARGIN)
