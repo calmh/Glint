@@ -132,6 +132,9 @@
                 }
         }
         
+        if (pointTwo == nil)
+                return NAN;
+        
         float remainingDistance = targetDistance - distance;
         float factor = remainingDistance / [pointTwo getDistanceFrom:pointOne];
         float targetTime = time + factor * [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];

@@ -10,12 +10,17 @@
 #import "MainScreenViewController.h"
 #import "FilesViewController.h"
 
+@interface GlintAppDelegate ()
+- (void) loadRaceFile: (NSString *) raceAgainstFile;
+@end
+
 @implementation GlintAppDelegate
 
 @synthesize window;
 @synthesize mainScreenViewController;
 @synthesize sendFilesViewController;
 @synthesize navController;
+@synthesize queue;
 
 - (void)dealloc {
         [window release];
@@ -25,6 +30,8 @@
 }
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
+        self.queue = [[NSOperationQueue alloc] init];
+        
         // Check if there are any preferences set, and if not, load the defaults.
         float testValue = [[NSUserDefaults standardUserDefaults] doubleForKey:@"gps_minprec"];
         if (testValue == 0.0)
@@ -53,20 +60,13 @@
         }
         
         [window addSubview:mainScreenViewController.view];
-//        [window addSubview:sendFilesViewController.view];
         [window addSubview:navController.view];
         [window bringSubviewToFront:mainScreenViewController.view];
         [window makeKeyAndVisible];
 
-        // TODO: Load this in background instead
         NSString *raceAgainstFile;
         if (raceAgainstFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"raceAgainstFile"]) {
-                /*NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
-                NSString *documentsDirectory = [paths objectAtIndex:0];
-                NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, raceAgainstFile];*/
-                JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:raceAgainstFile];
-                [mainScreenViewController setRaceAgainstLocations:[reader locations]];
-                [reader release];
+                [self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(loadRaceFile:) object:raceAgainstFile] autorelease]];
         }
 }
 
@@ -184,6 +184,15 @@
         }
 
         return [NSString stringWithFormat:speedFormat, speed*speedFactor];
+}
+
+// Private
+
+- (void) loadRaceFile: (NSString *) raceAgainstFile  {
+        JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:raceAgainstFile];
+        [mainScreenViewController performSelectorOnMainThread:@selector(setRaceAgainstLocations:) withObject:[reader locations] waitUntilDone:NO];
+        [reader release];
+        
 }
 
 @end

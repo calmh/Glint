@@ -16,7 +16,7 @@
         [distances addObject:[NSNumber numberWithFloat:distance]];
         [self.tableView reloadData];
         unsigned int index[] = { 0, [times count]-1 };
-        NSIndexPath *path = [[NSIndexPath alloc] initWithIndexes:index length:2];
+        NSIndexPath *path = [[[NSIndexPath alloc] initWithIndexes:index length:2] autorelease];
         [self.tableView selectRowAtIndexPath:path animated:YES scrollPosition:UITableViewScrollPositionBottom];
 }
 
@@ -66,21 +66,21 @@
                 [cell.imageView removeFromSuperview];
                 
                 JBGradientLabel *newLabel;
-                newLabel = [[JBGradientLabel alloc] initWithFrame:CGRectMake(0.0f, 5.0f, 90.0f, 25.0f)];
+                newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(0.0f, 5.0f, 90.0f, 25.0f)] autorelease];
                 newLabel.font = [UIFont fontWithName:@"Helvetica" size:28.0f];
                 newLabel.backgroundColor = [UIColor blackColor];
                 newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
                 newLabel.textAlignment = UITextAlignmentRight;
                 [cell.contentView addSubview:newLabel];
 
-                newLabel = [[JBGradientLabel alloc] initWithFrame:CGRectMake(102.0f, 5.0f, 70.0f, 25.0f)];
+                newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(102.0f, 5.0f, 70.0f, 25.0f)] autorelease];
                 newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:28.0f];
                 newLabel.backgroundColor = [UIColor blackColor];
                 newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
                 newLabel.textAlignment = UITextAlignmentRight;
                 [cell.contentView addSubview:newLabel];
 
-                newLabel = [[JBGradientLabel alloc] initWithFrame:CGRectMake(182.0f, 5.0f, 88.0f, 25.0f)];
+                newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(182.0f, 5.0f, 88.0f, 25.0f)] autorelease];
                 newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:28.0f];
                 newLabel.backgroundColor = [UIColor blackColor];
                 newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];

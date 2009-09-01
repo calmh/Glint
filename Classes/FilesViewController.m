@@ -220,7 +220,7 @@
         NSString *file = [section objectAtIndex:p.row];                
         NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
         [navigationController pushViewController:detailViewController animated:YES];
-        [detailViewController performSelectorInBackground:@selector(loadFile:) withObject:fullPath];
+        [delegate.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:detailViewController selector:@selector(loadFile:) object:fullPath] autorelease]];
 }
 
 - (void)tableView:(UITableView *)etableView

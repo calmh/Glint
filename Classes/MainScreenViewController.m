@@ -103,9 +103,9 @@
         [self disabledIndicator:recordingIndicator];
         [self disabledIndicator:racingIndicator];
         
-        UIBarButtonItem *sendButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)];
-        UIBarButtonItem *playButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Record",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)];
-        UIBarButtonItem *stopRaceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)];
+        UIBarButtonItem *sendButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)] autorelease];
+        UIBarButtonItem *playButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Record",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)] autorelease];
+        UIBarButtonItem *stopRaceButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)] autorelease];
         toolbarItems = [[NSArray arrayWithObjects:sendButton, playButton, stopRaceButton, nil] retain];
         [toolbar setItems:toolbarItems animated:YES];
         
@@ -337,13 +337,14 @@
 - (IBAction)startStopRecording:(id)sender
 {
         if (!gpxWriter) {
-                NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+                NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
                 [formatter setDateFormat:@"yyyyMMdd-HHmmss"];
                 [self positiveIndicator:recordingIndicator];
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
                 NSString *documentsDirectory = [paths objectAtIndex:0];
                 NSString* filename = [NSString stringWithFormat:@"%@/track-%@.gpx", documentsDirectory, [formatter stringFromDate:[NSDate date]]];
                 gpxWriter = [[JBGPXWriter alloc] initWithFilename:filename];
+                gpxWriter.autoCommit = YES;
                 [gpxWriter addTrackSegment];
         } else {
                 [self disabledIndicator:recordingIndicator];

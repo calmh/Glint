@@ -15,12 +15,14 @@
         MainScreenViewController *mainScreenViewController;
         FilesViewController *sendFilesViewController;
         UINavigationController *navController;
+        NSOperationQueue *queue;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet MainScreenViewController *mainScreenViewController;
 @property (nonatomic, retain) IBOutlet FilesViewController *sendFilesViewController;
 @property (nonatomic, retain) IBOutlet UINavigationController *navController;
+@property (nonatomic, retain) NSOperationQueue *queue;
 
 - (IBAction) switchToSendFilesView:(id)sender;
 - (IBAction) switchToGPSView:(id)sender;

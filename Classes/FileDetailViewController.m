@@ -65,11 +65,11 @@
 }
 
 - (void)loadFile:(NSString*)newFilename {
-        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+        //NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
         debug_NSLog(@"Starting loadFile:");
         [filename release];
         filename = [newFilename retain];
-        [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];        
+        [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];        
         
         self.navigationController.title = NSLocalizedString(@"File",nil);
         [reader release];
@@ -97,10 +97,10 @@
         [distance retain];
         averageSpeed = [delegate formatSpeed:[math averageSpeed]];
         [averageSpeed retain];
-        [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];        
-        [self performSelectorOnMainThread:@selector(enableButtons) withObject:nil waitUntilDone:NO];
+        [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];        
+        [self performSelectorOnMainThread:@selector(enableButtons) withObject:nil waitUntilDone:YES];
         debug_NSLog(@"Finished loadFile:");
-        [pool release];
+        //[pool release];
 }
 
 - (IBAction) sendFile:(id)sender {

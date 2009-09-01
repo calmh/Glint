@@ -59,6 +59,9 @@
 // Length of a "lap"
 #define USERPREF_LAPLENGTH [[NSUserDefaults standardUserDefaults] integerForKey:@"lap_length"]
 
+// Maximum time with unsaved trackpoints (seconds)
+#define AUTO_COMMIT_INTERVAL 60.0f
+
 // #define SCREENSHOT
 
 #ifdef DEBUG

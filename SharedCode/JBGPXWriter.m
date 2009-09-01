@@ -11,6 +11,7 @@
 @implementation JBGPXWriter
 
 @synthesize numPoints;
+@synthesize autoCommit;
 
 - (void)dealloc
 {
@@ -29,6 +30,8 @@
                 minLon = minLat = maxLon = maxLat = totalDistance = 0.0;
                 numSegs = numPoints = 0;
                 last = nil;
+                lastCommit = nil;
+                autoCommit = NO;
         }
         return self;
 }
@@ -60,6 +63,9 @@
         [last release];
         last = [point retain];
         debug_NSLog(@"addTrackPoint: Saved new waypoint");
+        
+        if (autoCommit && (lastCommit == nil || [[NSDate date] timeIntervalSinceDate:lastCommit] > AUTO_COMMIT_INTERVAL))
+                [self performSelectorInBackground:@selector(commit) withObject:nil];
 }
 
 - (void)commit {
@@ -92,6 +98,9 @@
         [gpxData appendString:@"  </trk>\n"];
         [gpxData appendString:@"</gpx>\n"];
         [gpxData writeToFile:filename atomically:NO encoding:NSASCIIStringEncoding error:nil];
+        [formatter release];
+        [lastCommit release];
+        lastCommit = [[NSDate date] retain];
 }
 
 - (BOOL)isInTrackSegment {

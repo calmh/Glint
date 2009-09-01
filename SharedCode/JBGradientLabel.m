@@ -68,8 +68,7 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
         unichar chars[length];
         CGGlyph glyphs[length];
         do {
-                // Get drawing font.
-                
+                // Get drawing font.                
                 CGFontRef font = CGFontCreateWithFontName((CFStringRef)[[self font] fontName]);
                 CGContextSetFont(ctx, font);
                 CGContextSetFontSize(ctx, pointSize);
@@ -79,13 +78,14 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
                 [[self text] getCharacters:chars range:NSMakeRange(0, length)];
                 CGFontGetGlyphsForUnichars(font, chars, glyphs, length);
                 
-                // Measure text dimensions.
-                
+                // Measure text dimensions.                
                 CGContextSetTextDrawingMode(ctx, kCGTextInvisible); 
                 CGContextSetTextPosition(ctx, 0, 0);
                 CGContextShowGlyphs(ctx, glyphs, length);
                 textEnd = CGContextGetTextPosition(ctx);
-                pointSize *= 0.975;
+                if (textEnd.x > rect.size.width)
+                        pointSize *= 0.975;
+                CGFontRelease(font);
         } while (textEnd.x > rect.size.width);
         
         // Calculate text drawing point.

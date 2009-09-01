@@ -16,6 +16,8 @@
         int numSegs, numPoints;
         float totalDistance;
         CLLocation *last;
+        NSDate *lastCommit;
+        BOOL autoCommit;
 }
 
 - (id)initWithFilename:(NSString*)newFilename;
@@ -25,5 +27,6 @@
 - (BOOL)isInTrackSegment;
 
 @property (readonly, getter=numberOfTrackPoints) int numPoints;
+@property BOOL autoCommit;
 
 @end

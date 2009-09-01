@@ -11,7 +11,7 @@
 @interface TestCases ()
 
 - (void)privateTestGPXReader:(JBGPXReader*)reader;
-- (JBGPXReader*)getDefaultGPXReader;
+- (JBGPXReader*)newDefaultGPXReader;
 - (NSString*) bundlePath;
 
 @end
@@ -46,7 +46,7 @@
 }
 
 - (void)testGPXWriter {
-        JBGPXReader *reader = [self getDefaultGPXReader];
+        JBGPXReader *reader = [self newDefaultGPXReader];
         JBGPXWriter *writer = [[JBGPXWriter alloc] initWithFilename:@"/tmp/unittest.gpx"];
 
         [writer addTrackSegment];
@@ -63,7 +63,7 @@
 
 - (void)testInterpolation {
         JBLocationMath *math = [[JBLocationMath alloc] init];
-        JBGPXReader *reader = [self getDefaultGPXReader];
+        JBGPXReader *reader = [self newDefaultGPXReader];
         NSArray *locations = [reader locations];
         
         float result;
@@ -144,7 +144,7 @@
         [math release];
 }
 
-- (JBGPXReader*)getDefaultGPXReader {
+- (JBGPXReader*)newDefaultGPXReader {
         NSString *filename = [NSString stringWithFormat:@"%@/reference.gpx", [self bundlePath]];
         
         BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:filename];
