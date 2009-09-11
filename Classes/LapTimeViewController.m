@@ -49,59 +49,84 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-        return [times count];
+        if ([times count] > 0)
+                return [times count];
+        else
+                return 1;
 }
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
         
-        static NSString *CellIdentifier = @"Cell";
-        
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                [cell.textLabel removeFromSuperview];
-                [cell.detailTextLabel removeFromSuperview];
-                [cell.imageView removeFromSuperview];
+        if ([times count] > 0) {
+                static NSString *CellIdentifier = @"Cell";
+                UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+                if (cell == nil) {
+                        // The usual data cell.
+                        
+                        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+                        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        [cell.textLabel removeFromSuperview];
+                        [cell.detailTextLabel removeFromSuperview];
+                        [cell.imageView removeFromSuperview];
+                        
+                        JBGradientLabel *newLabel;
+                        newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(0.0f, 5.0f, 90.0f, 25.0f)] autorelease];
+                        newLabel.font = [UIFont fontWithName:@"Helvetica" size:28.0f];
+                        newLabel.backgroundColor = [UIColor blackColor];
+                        newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
+                        newLabel.textAlignment = UITextAlignmentRight;
+                        [cell.contentView addSubview:newLabel];
+                        
+                        newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(102.0f, 5.0f, 70.0f, 25.0f)] autorelease];
+                        newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:28.0f];
+                        newLabel.backgroundColor = [UIColor blackColor];
+                        newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
+                        newLabel.textAlignment = UITextAlignmentRight;
+                        [cell.contentView addSubview:newLabel];
+                        
+                        newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(182.0f, 5.0f, 88.0f, 25.0f)] autorelease];
+                        newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:28.0f];
+                        newLabel.backgroundColor = [UIColor blackColor];
+                        newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
+                        newLabel.textAlignment = UITextAlignmentRight;
+                        [cell.contentView addSubview:newLabel];
+                }
                 
-                JBGradientLabel *newLabel;
-                newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(0.0f, 5.0f, 90.0f, 25.0f)] autorelease];
-                newLabel.font = [UIFont fontWithName:@"Helvetica" size:28.0f];
-                newLabel.backgroundColor = [UIColor blackColor];
-                newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
-                newLabel.textAlignment = UITextAlignmentRight;
-                [cell.contentView addSubview:newLabel];
-
-                newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(102.0f, 5.0f, 70.0f, 25.0f)] autorelease];
-                newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:28.0f];
-                newLabel.backgroundColor = [UIColor blackColor];
-                newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
-                newLabel.textAlignment = UITextAlignmentRight;
-                [cell.contentView addSubview:newLabel];
-
-                newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(182.0f, 5.0f, 88.0f, 25.0f)] autorelease];
-                newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:28.0f];
-                newLabel.backgroundColor = [UIColor blackColor];
-                newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
-                newLabel.textAlignment = UITextAlignmentRight;
-                [cell.contentView addSubview:newLabel];
+                float lapTime = [[times objectAtIndex:indexPath.row] floatValue];
+                float distance = [[distances objectAtIndex:indexPath.row] floatValue];
+                float difference = 0.0f;
+                if (indexPath.row > 0)
+                        difference = lapTime - [[times objectAtIndex:indexPath.row-1] floatValue];
+                ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:0]).text = [delegate formatDistance:distance];
+                ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:1]).text = [delegate formatTimestamp:lapTime maxTime:86400 allowNegatives:NO];
+                ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:2]).text = [delegate formatTimestamp:difference maxTime:86400 allowNegatives:YES];
+                if (difference > 0.5f)
+                        ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:1.0f green:0.5f blue:0.5f alpha:1.0f];
+                else
+                        ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:0.5f green:1.0f blue:0.5f alpha:1.0f];
+                
+                return cell;
+        } else {
+                // Instrucitons cell.
+                
+                UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"InstructionsCell"] autorelease];
+                cell.textLabel.text = NSLocalizedString(@"NoLapTimesInstructions",nil);
+                cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+                cell.textLabel.textAlignment = UITextAlignmentCenter;
+                cell.textLabel.numberOfLines = 0;
+                cell.textLabel.textColor = [UIColor lightTextColor];
+                return cell;
+                
         }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+        if ([times count] == 0) // Instructions
+                return 300.0f;
+        else // Normal cell
+                return 44.0f;
         
-        float lapTime = [[times objectAtIndex:indexPath.row] floatValue];
-        float distance = [[distances objectAtIndex:indexPath.row] floatValue];
-        float difference = 0.0f;
-        if (indexPath.row > 0)
-                difference = lapTime - [[times objectAtIndex:indexPath.row-1] floatValue];
-        ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:0]).text = [delegate formatDistance:distance];
-        ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:1]).text = [delegate formatTimestamp:lapTime maxTime:86400 allowNegatives:NO];
-        ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:2]).text = [delegate formatTimestamp:difference maxTime:86400 allowNegatives:YES];
-        if (difference > 0.5f)
-                ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:1.0f green:0.5f blue:0.5f alpha:1.0f];
-	else
-                ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:0.5f green:1.0f blue:0.5f alpha:1.0f];
-                
-        return cell;
 }
 
 @end
