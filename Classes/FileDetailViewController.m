@@ -18,7 +18,7 @@
 
 @implementation FileDetailViewController
 
-@synthesize navigationController, toolbarItems, tableView, lapTimeController;
+@synthesize navigationController, toolbarItems, tableView, lapTimeController, routeController;
 
 - (void)dealloc {
         [reader dealloc];
@@ -150,6 +150,14 @@
         [navigationController pushViewController:lapTimeController animated:YES];
 }
 
+- (void)viewOnMap {
+        [routeController setLocations:[reader locations]];
+        [navigationController setToolbarHidden:YES];
+        //navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+        //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+        [navigationController pushViewController:routeController animated:YES];
+}
+
 /*
  * MFMailComposerViewController delegate stuff
  */
@@ -201,10 +209,16 @@
                         cell.detailTextLabel.text = averageSpeed;
                         break;
                 case 5:
-                        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LapTimesItem"] autorelease];
+                        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DisclosureItem"] autorelease];
                         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                         cell.selectionStyle = UITableViewCellSelectionStyleNone;
                         cell.textLabel.text = NSLocalizedString(@"Lap Times",nil);
+                        break;
+                case 6:
+                        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DisclosureItem"] autorelease];
+                        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.textLabel.text = NSLocalizedString(@"View On Map",nil);
                         break;
                 default:
                         cell.textLabel.text = @"What?";
@@ -219,7 +233,7 @@
         if (section == 0)
                 return 5;
         else if (section == 1 && !loading)
-                return 1;
+                return 2;
         else
                 return 0;
 }
@@ -235,6 +249,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
         if (indexPath.section == 1 && indexPath.row == 0)
                 [self viewLapTimes];
+        else if (indexPath.section == 1 && indexPath.row == 1)
+                [self viewOnMap];
 }
 
 /*

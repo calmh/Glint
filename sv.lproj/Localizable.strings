@@ -91,6 +91,7 @@
 "End Time" = "Måltid";
 "Total Distance" = "Total distans";
 "Average Speed" = "Genomsn. hastighet";
+"View On Map" = "Se på karta";
 
 /*
 ** Lap times screen
@@ -99,3 +100,8 @@
 "Position & Course" = "Position & kurs";
 "Lap Times" = "Varvtider";
 "NoLapTimesInstructions" = "Det finns för närvarande inga varvtider att visa. Varvtider visas när du passerat varvlängden (kan ändras bland inställningar) minst en gång.";
+
+/*
+** Map screen
+*/
+"Map View" = "Kartvy";

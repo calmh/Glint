@@ -23,6 +23,8 @@
 		291C0DE0101E260900393E77 /* JBLocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* JBLocationMath.m */; };
 		291C0DE6101E265800393E77 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FE32270FF4370200E9FE05 /* CoreLocation.framework */; };
 		293D38071039E74F00EB0F91 /* Ping.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 293D38061039E74F00EB0F91 /* Ping.aiff */; };
+		2941215E105AEDE800B2A524 /* CSMapRouteLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */; };
+		2941216B105AEEB900B2A524 /* RouteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941216A105AEEB900B2A524 /* RouteViewController.m */; };
 		296729CF101CC745001BBEDF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296729CE101CC745001BBEDF /* MessageUI.framework */; };
 		2974372C101C617F00DDBB6A /* reference.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 2974372B101C617F00DDBB6A /* reference.gpx */; };
 		2974387E101C727800DDBB6A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2974387D101C727800DDBB6A /* Default.png */; };
@@ -80,6 +82,10 @@
 		291C0DCD101E23C500393E77 /* TestCases.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestCases.h; path = Tests/TestCases.h; sourceTree = "<group>"; };
 		291C0DCE101E23C500393E77 /* TestCases.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestCases.m; path = Tests/TestCases.m; sourceTree = "<group>"; };
 		293D38061039E74F00EB0F91 /* Ping.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Ping.aiff; path = Resources/Ping.aiff; sourceTree = "<group>"; };
+		2941215C105AEDE800B2A524 /* CSMapRouteLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSMapRouteLayerView.h; path = SharedCode/CSMapRouteLayerView.h; sourceTree = "<group>"; };
+		2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSMapRouteLayerView.m; path = SharedCode/CSMapRouteLayerView.m; sourceTree = "<group>"; };
+		29412169105AEEB900B2A524 /* RouteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteViewController.h; sourceTree = "<group>"; };
+		2941216A105AEEB900B2A524 /* RouteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteViewController.m; sourceTree = "<group>"; };
 		296729CE101CC745001BBEDF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		2974372B101C617F00DDBB6A /* reference.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference.gpx; path = Resources/reference.gpx; sourceTree = "<group>"; };
 		2974387D101C727800DDBB6A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -164,6 +170,8 @@
 				29760DDF102F125F00EE89CB /* SlideView.m */,
 				29EF16711037292800A0982A /* LapTimeViewController.h */,
 				29EF16721037292800A0982A /* LapTimeViewController.m */,
+				29412169105AEEB900B2A524 /* RouteViewController.h */,
+				2941216A105AEEB900B2A524 /* RouteViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -199,6 +207,8 @@
 				2988667A101C96320051F368 /* JBLocationMath.m */,
 				2988667B101C96320051F368 /* JBSoundEffect.h */,
 				2988667C101C96320051F368 /* JBSoundEffect.m */,
+				2941215C105AEDE800B2A524 /* CSMapRouteLayerView.h */,
+				2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */,
 			);
 			name = "Shared Code";
 			sourceTree = "<group>";
@@ -398,6 +408,8 @@
 				2913DBEB1024FD6B00F56A2A /* FileDetailViewController.m in Sources */,
 				29760DE0102F125F00EE89CB /* SlideView.m in Sources */,
 				29EF16731037292800A0982A /* LapTimeViewController.m in Sources */,
+				2941215E105AEDE800B2A524 /* CSMapRouteLayerView.m in Sources */,
+				2941216B105AEEB900B2A524 /* RouteViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

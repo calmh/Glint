@@ -38,6 +38,7 @@
         delegate = [[UIApplication sharedApplication] delegate];
         times = [[NSMutableArray alloc] init];
         distances = [[NSMutableArray alloc] init];
+        self.title = NSLocalizedString(@"Lap Times",nil);
         
 #ifdef SCREENSHOT 
         [self addLapTime:345 forDistance:1000.0f];
