@@ -186,7 +186,7 @@
 			<key>Key</key>
 			<string>lap_length</string>
 			<key>DefaultValue</key>
-			<string>1.0</string>
+			<string>1000</string>
 			<key>Titles</key>
 			<array>
 				<string>100 m</string>

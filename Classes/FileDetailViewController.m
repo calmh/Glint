@@ -18,7 +18,7 @@
 
 @implementation FileDetailViewController
 
-@synthesize navigationController, toolbarItems, tableView;
+@synthesize navigationController, toolbarItems, tableView, lapTimeController;
 
 - (void)dealloc {
         [reader dealloc];
@@ -36,9 +36,12 @@
         endTime = nil;
         distance = nil;
         averageSpeed = nil;
+        loading = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+        navigationController.navigationBar.barStyle = UIBarStyleDefault;
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         emailButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Email",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFile:)];
         raceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Race against",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(raceAgainstFile:)];
         self.toolbarItems = [NSArray arrayWithObjects:emailButton, raceButton, nil];
@@ -65,7 +68,7 @@
 }
 
 - (void)loadFile:(NSString*)newFilename {
-        //NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+        loading = YES;
         debug_NSLog(@"Starting loadFile:");
         [filename release];
         filename = [newFilename retain];
@@ -97,13 +100,13 @@
         [distance retain];
         averageSpeed = [delegate formatSpeed:[math averageSpeed]];
         [averageSpeed retain];
+        loading = NO;
         [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];        
         [self performSelectorOnMainThread:@selector(enableButtons) withObject:nil waitUntilDone:YES];
         debug_NSLog(@"Finished loadFile:");
-        //[pool release];
 }
 
-- (IBAction) sendFile:(id)sender {
+- (IBAction)sendFile:(id)sender {
         if (![MFMailComposeViewController canSendMail]) {
                 UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Message failed",nil) message:NSLocalizedString(@"You need to configure a valid email account to send email.", @"Lacking email address") delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", @"OK") otherButtonTitles:nil] autorelease];
                 [alert show];
@@ -122,11 +125,29 @@
         [self presentModalViewController:mfmail animated:YES];
 }
 
-- (IBAction) raceAgainstFile:(id)sender {
+- (IBAction)raceAgainstFile:(id)sender {
         [(GlintAppDelegate*) [[UIApplication sharedApplication] delegate] setRaceAgainstLocations:[reader locations]];
         [[NSUserDefaults standardUserDefaults] setValue:filename forKey:@"raceAgainstFile"];
         [delegate switchToGPSView:sender];
         [navigationController popViewControllerAnimated:NO];
+}
+
+- (void)viewLapTimes {
+        [lapTimeController clear];
+        float lap = USERPREF_LAPLENGTH;
+        float dist = lap;
+        float prevLapTime = 0.0f;
+        float lapTime;
+        while ((lapTime = [math timeAtLocationByDistance:dist]) && !isnan(lapTime)) {
+                [lapTimeController addLapTime:lapTime-prevLapTime forDistance:dist];
+                prevLapTime = lapTime;
+                dist += lap;
+        }
+
+        [navigationController setToolbarHidden:YES];
+        navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+        [navigationController pushViewController:lapTimeController animated:YES];
 }
 
 /*
@@ -157,7 +178,7 @@
         }
         
         NSArray *fileParts;
-        switch (indexPath.row) {
+        switch (indexPath.row + 5 * indexPath.section) {
                 case 0:
                         fileParts = [filename componentsSeparatedByString:@"/"];
                         cell.textLabel.text = NSLocalizedString(@"File Name",nil);
@@ -179,9 +200,15 @@
                         cell.textLabel.text = NSLocalizedString(@"Average Speed",nil);
                         cell.detailTextLabel.text = averageSpeed;
                         break;
+                case 5:
+                        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"LapTimesItem"] autorelease];
+                        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.textLabel.text = NSLocalizedString(@"Lap Times",nil);
+                        break;
                 default:
                         cell.textLabel.text = @"What?";
-                        cell.detailTextLabel.text =@"No!";
+                        cell.detailTextLabel.text = @"No!";
                         break;
         }
         return cell;
@@ -189,11 +216,25 @@
 
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section {
-        return 5;
+        if (section == 0)
+                return 5;
+        else if (section == 1 && !loading)
+                return 1;
+        else
+                return 0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-        return 1;
+        if (!loading)
+                return 2;
+        else
+                return 1;
+
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+        if (indexPath.section == 1 && indexPath.row == 0)
+                [self viewLapTimes];
 }
 
 /*

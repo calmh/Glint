@@ -11,16 +11,19 @@
 #import "JBGPXReader.h"
 #import "JBLocationMath.h"
 #import "GlintAppDelegate.h"
+#import "LapTimeViewController.h"
 
 @interface FileDetailViewController : UIViewController <MFMailComposeViewControllerDelegate> {
         GlintAppDelegate *delegate;
         JBGPXReader *reader;
         JBLocationMath *math;
+        BOOL loading;
 
         UINavigationController *navigationController;
         UITableView *tableView;
         UITabBarItem *emailButton, *raceButton;
         NSArray *toolbarItems;
+        LapTimeViewController *lapTimeController;
 
         NSString *filename, *startTime, *endTime, *distance, *averageSpeed;
 }
@@ -28,9 +31,11 @@
 @property (retain, nonatomic) IBOutlet UINavigationController *navigationController;
 @property (retain, nonatomic) NSArray* toolbarItems;
 @property (retain, nonatomic) IBOutlet UITableView *tableView;
+@property (retain, nonatomic) IBOutlet LapTimeViewController *lapTimeController;
 
 - (void)loadFile:(NSString*)newFilename;
-- (IBAction) sendFile:(id)sender;
-- (IBAction) raceAgainstFile:(id)sender;
+- (IBAction)sendFile:(id)sender;
+- (IBAction)raceAgainstFile:(id)sender;
+- (void)viewLapTimes;
 
 @end
