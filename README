@@ -1,0 +1,17 @@
+Glint is an iPhone application that does GPS tracking. That means it keeps track of where you are and where you're going. It's potentially useful for running, trekking, cycling, paddling, geocaching, geotagging, etc.
+
+The source code is released under a BSD license, which means you can fork it and do pretty much what you want with it, but check LICENSE for the legalese stuff.
+
+You might need to be a registered Apple developer to deploy the compiled binary to the actual hardware platform, but you can always try it out in the simulator without registering.
+
+The "marketing" web site for Glint is at:
+
+  http://glint.nym.se
+
+The latest source code is always available at:
+
+  http://github.com/calmh/Glint/tree/master
+
+You can contact Jakob at jakob@nym.se
+
+//jb

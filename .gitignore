@@ -1,3 +1,3 @@
-build
-Glint.xcodeproj/*.pbxuser
-Glint.xcodeproj/*.perspectivev3
+Glint/build
+Glint/Glint.xcodeproj/*.pbxuser
+Glint/Glint.xcodeproj/*.perspectivev3
