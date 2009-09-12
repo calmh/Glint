@@ -15,7 +15,11 @@ You might need to be a registered Apple developer to deploy the compiled binary
 to the actual hardware platform, but you can always try it out in the simulator
 without registering.
 
-The "marketing" web site for Glint is at:
+The latest "official" binary release is available through the App Store at:
+
+  http://itunes.com/apps/Glint
+
+TThe "marketing" web site for Glint is at:
 
   http://glint.nym.se
 
