@@ -1,3 +1,5 @@
 Glint/build
 Glint/Glint.xcodeproj/*.pbxuser
 Glint/Glint.xcodeproj/*.perspectivev3
+.DS_Store
+
