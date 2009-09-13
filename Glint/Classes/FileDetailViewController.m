@@ -45,7 +45,6 @@
         emailButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Email",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFile:)];
         raceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Race against",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(raceAgainstFile:)];
         self.toolbarItems = [NSArray arrayWithObjects:emailButton, raceButton, nil];
-        [self disableButtons];
         [navigationController setToolbarHidden:NO];
         [startTime release];
         startTime = NSLocalizedString(@"Loading...",nil);
@@ -69,6 +68,7 @@
 
 - (void)loadFile:(NSString*)newFilename {
         loading = YES;
+        [self disableButtons];
         debug_NSLog(@"Starting loadFile:");
         [filename release];
         filename = [newFilename retain];
