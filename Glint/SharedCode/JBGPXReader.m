@@ -24,12 +24,13 @@
                 lastReadLat = lastReadLon = 0.0;
                 lastReadDate = nil;
                 currentlyReadingTime = NO;
-                
+                shouldAddBreakMarker = NO;
+
                 // NSXMLParser can't handle encoding='ASCII' that I used when writing GPX files.
                 // So we change it to encoding='UTF-8'. The files are anyway guaranteed not to contain other characters.
                 NSString *fileContents = [NSString stringWithContentsOfFile:filename encoding:NSUTF8StringEncoding error:nil];
                 NSString *verifiedContents = [fileContents stringByReplacingOccurrencesOfString:@"encoding='ASCII'" withString:@"encoding='UTF-8'"];
-                
+
                 NSData *data = [verifiedContents dataUsingEncoding:NSUTF8StringEncoding];
                 NSXMLParser *parser = [[NSXMLParser alloc] initWithData:data];
                 [parser setShouldProcessNamespaces:NO];
@@ -65,7 +66,7 @@ didStartElement:(NSString *)elementName
         if([elementName isEqualToString:@"time"]) {
                 currentlyReadingTime = YES;
         }
-        else if([elementName isEqualToString:@"trkpt"]) {
+        else if ([elementName isEqualToString:@"trkpt"]) {
                 lastReadLat = [[attributeDict objectForKey:@"lat"] floatValue];
                 lastReadLon = [[attributeDict objectForKey:@"lon"] floatValue];
         }
@@ -78,7 +79,16 @@ didStartElement:(NSString *)elementName
         if([elementName isEqualToString:@"time"]) {
                 currentlyReadingTime = NO;
         }
+        else if([elementName isEqualToString:@"trkseg"]) {
+                shouldAddBreakMarker = YES;
+        }
         else if([elementName isEqualToString:@"trkpt"]) {
+                if (shouldAddBreakMarker) {
+                        // We have just ended a trk segment, so obviously we are now in a new segment.
+                        // We should therefore add a marker to keep track of the break.
+                        [locations addObject:[[CLLocation alloc] initWithLatitude:-1.0f longitude:-1.0f]];
+                        shouldAddBreakMarker = NO;
+                }
                 CLLocationCoordinate2D coord;
                 coord.latitude = lastReadLat;
                 coord.longitude = lastReadLon;

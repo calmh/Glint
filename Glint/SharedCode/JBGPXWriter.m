@@ -48,10 +48,10 @@
                 debug_NSLog(@"addTrackPoint: Ignored identical waypoint");
                 return;
         }
-        
+
         [[tracks lastObject] addObject:point];
         numPoints++;
-        
+
         minLon = MIN(minLon, point.coordinate.longitude);
         maxLon = MAX(maxLon, point.coordinate.latitude);
         minLat = MIN(minLat, point.coordinate.longitude);
@@ -59,11 +59,11 @@
 
         if (last)
                 totalDistance += [point getDistanceFrom:last];
-        
+
         [last release];
         last = [point retain];
         debug_NSLog(@"addTrackPoint: Saved new waypoint");
-        
+
         if (autoCommit && (lastCommit == nil || [[NSDate date] timeIntervalSinceDate:lastCommit] > AUTO_COMMIT_INTERVAL))
                 [self performSelectorInBackground:@selector(commit) withObject:nil];
 }
@@ -71,7 +71,7 @@
 - (void)commit {
         if (numPoints < 1)
                 return;
-        
+
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
         [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];

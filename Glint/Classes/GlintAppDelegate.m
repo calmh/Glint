@@ -31,7 +31,7 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
         self.queue = [[NSOperationQueue alloc] init];
-        
+
         // Check if there are any preferences set, and if not, load the defaults.
         float testValue = [[NSUserDefaults standardUserDefaults] doubleForKey:@"gps_minprec"];
         if (testValue == 0.0)
@@ -39,10 +39,10 @@
                 NSString *pathStr = [[NSBundle mainBundle] bundlePath];
                 NSString *settingsBundlePath = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
                 NSString *finalPath = [settingsBundlePath stringByAppendingPathComponent:@"Root.plist"];
-                
+
                 NSDictionary *settingsDict = [NSDictionary dictionaryWithContentsOfFile:finalPath];
                 NSArray *prefSpecifierArray = [settingsDict objectForKey:@"PreferenceSpecifiers"];
-                
+
                 NSMutableDictionary *defaults = [[NSMutableDictionary alloc] init];
                 for (NSDictionary *prefItem in prefSpecifierArray)
                 {
@@ -53,12 +53,12 @@
                                 debug_NSLog(@"Setting preference: %@=%@", keyValueStr, [defaultValue description]);
                         }
                 }
-                
+
                 [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 [defaults release];
         }
-        
+
         [window addSubview:mainScreenViewController.view];
         [window addSubview:navController.view];
         [window bringSubviewToFront:mainScreenViewController.view];
@@ -142,13 +142,13 @@
 - (NSString*)formatLat:(float)lat {
         NSString* sign = lat >= 0 ? @"N" : @"S";
         lat = fabs(lat);
-        return [NSString stringWithFormat:@"%@ %@", [self formatDMS:lat], sign]; 
+        return [NSString stringWithFormat:@"%@ %@", [self formatDMS:lat], sign];
 }
 
 - (NSString*)formatLon:(float)lon {
         NSString* sign = lon >= 0 ? @"E" : @"W";
         lon = fabs(lon);
-        return [NSString stringWithFormat:@"%@ %@", [self formatDMS:lon], sign]; 
+        return [NSString stringWithFormat:@"%@ %@", [self formatDMS:lon], sign];
 }
 
 - (NSDictionary *) currentUnitset {
@@ -161,21 +161,21 @@
 - (NSString*)formatDistance:(float)distance {
         static float distFactor = 0;
         static NSString* distFormat = nil;
-        
+
         if (distFormat == nil) {
                 NSDictionary *units = [self currentUnitset];
                 distFactor = [[units objectForKey:@"distFactor"] floatValue];
                 distFormat = [units objectForKey:@"distFormat"];
                 [distFormat retain];
         }
- 
+
         return [NSString stringWithFormat:distFormat, distance*distFactor];
 }
 
 - (NSString*)formatSpeed:(float)speed {
         static float speedFactor = 0;
         static NSString* speedFormat = nil;
-        
+
         if (speedFormat == nil) {
                 NSDictionary *units = [self currentUnitset];
                 speedFactor = [[units objectForKey:@"speedFactor"] floatValue];
@@ -192,7 +192,7 @@
         JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:raceAgainstFile];
         [mainScreenViewController performSelectorOnMainThread:@selector(setRaceAgainstLocations:) withObject:[reader locations] waitUntilDone:NO];
         [reader release];
-        
+
 }
 
 @end

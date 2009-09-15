@@ -34,13 +34,26 @@
 }
 
 - (void)updateLocation:(CLLocation*)location {
+        static BOOL shouldSkipDistance = NO;
+        if (location.coordinate.latitude == -1.0f) {
+                // Nulls are track break markers. We should ignore them, and the next time we get a real position
+                // we should not update distance etc.
+                shouldSkipDistance = YES;
+        }
+        else {
+                [self updateLocation:location skipDistance:shouldSkipDistance];
+                shouldSkipDistance = NO;
+        }
+}
+
+- (void)updateLocation:(CLLocation*)location skipDistance:(bool)skip {
         if (!location)
                 return;
-        
+
         if (!firstMeasurement)
                 firstMeasurement = [location.timestamp retain];
-        
-        if (lastKnownPosition && [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp] > 0.0f) {
+
+        if (!skip && lastKnownPosition && [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp] > 0.0f) {
                 float dist = [lastKnownPosition getDistanceFrom:location];
                 totalDistance += dist;
                 [self updateCurrentSpeed:dist / [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp]];
@@ -48,6 +61,10 @@
         }
 
         self.lastKnownPosition = location;
+        if (skip) {
+                // Add an invalid CLLocation as a marker
+                [locations addObject:[[CLLocation alloc] initWithLatitude:-1.0f longitude:-1.0f]];
+        }
         [locations addObject:location];
 }
 
@@ -82,13 +99,13 @@
 - (float)distanceAtPointInTime:(float)targetTime inLocations:(NSArray*)locationList {
         if (isnan(targetTime) || targetTime < 0.0)
                 return NAN;
-        
+
         CLLocation *pointOne = nil, *pointTwo = nil;
         float distance = 0.0;
         float time = 0.0;
-        
+
         for (CLLocation *point in locationList) {
-                if (pointOne) {
+                if (pointOne && point && pointOne.coordinate.latitude != -1.0f && point.coordinate.latitude != -1.0f) {
                         time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
                         distance += [pointOne getDistanceFrom:point];
                 }
@@ -99,7 +116,7 @@
                         break;
                 }
         }
-        
+
         float remainingTime = targetTime - time;
         float timeBetweenP1andP2 = [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
         float factor = remainingTime / timeBetweenP1andP2;
@@ -114,13 +131,13 @@
 - (float)timeAtLocationByDistance:(float)targetDistance inLocations:(NSArray*)locationList {
         if (isnan(targetDistance) || targetDistance < 0.0)
                 return NAN;
-        
+
         CLLocation *pointOne = nil, *pointTwo = nil;
         float time = 0.0;
         float distance = 0.0;
-        
+
         for (CLLocation *point in locationList) {
-                if (pointOne) {
+                if (pointOne && point && pointOne.coordinate.latitude != -1.0f && point.coordinate.latitude != -1.0f) {
                         time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
                         distance += [pointOne getDistanceFrom:point];
                 }
@@ -131,10 +148,10 @@
                         break;
                 }
         }
-        
+
         if (pointTwo == nil)
                 return NAN;
-        
+
         float remainingDistance = targetDistance - distance;
         float factor = remainingDistance / [pointTwo getDistanceFrom:pointOne];
         float targetTime = time + factor * [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
@@ -145,7 +162,7 @@
         float distance = 0.0;
         CLLocation *last = nil;
         for (CLLocation *loc in locationList) {
-                if (last)
+                if (last && last.coordinate.latitude != -1.0f && loc.coordinate.latitude != -1.0f)
                         distance += [loc getDistanceFrom:last];
                 last = loc;
         }

@@ -72,8 +72,8 @@
         debug_NSLog(@"Starting loadFile:");
         [filename release];
         filename = [newFilename retain];
-        [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];        
-        
+        [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+
         self.navigationController.title = NSLocalizedString(@"File",nil);
         [reader release];
         [math release];
@@ -81,7 +81,7 @@
         math = [[JBLocationMath alloc] init];
         for (CLLocation *loc in [reader locations])
                 [math updateLocation:loc];
-        
+
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
         NSArray *dates = [math startAndFinishTimesInArray:[reader locations]];
@@ -95,13 +95,13 @@
                 endTime = @"-";
         }
         [formatter release];
-        
+
         distance = [delegate formatDistance:[math totalDistance]];
         [distance retain];
         averageSpeed = [delegate formatSpeed:[math averageSpeed]];
         [averageSpeed retain];
         loading = NO;
-        [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];        
+        [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
         [self performSelectorOnMainThread:@selector(enableButtons) withObject:nil waitUntilDone:YES];
         debug_NSLog(@"Finished loadFile:");
 }
@@ -112,7 +112,7 @@
                 [alert show];
                 return;
         }
-        
+
         NSData *gpxData = [NSData dataWithContentsOfFile:filename];
         MFMailComposeViewController *mfmail = [[MFMailComposeViewController alloc] init];
         if (USERPREF_EMAIL_ADDRESS)
@@ -184,7 +184,7 @@
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"FileDetailItem"] autorelease];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        
+
         NSArray *fileParts;
         switch (indexPath.row + 5 * indexPath.section) {
                 case 0:

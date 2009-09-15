@@ -22,8 +22,8 @@
 
 - (void)drawRect:(CGRect)rect {
         // Background
-        CGContextRef ctx = UIGraphicsGetCurrentContext();        
-        CGContextSetGrayFillColor(ctx, 0.1, 1.0);        
+        CGContextRef ctx = UIGraphicsGetCurrentContext();
+        CGContextSetGrayFillColor(ctx, 0.1, 1.0);
         float colors[] = {
                 0x19/255.0f, 0x19/255.0f, 0x19/255.0f, 1.0f,
                 0.25f, 0.25f, 0.25f, 1.0f
@@ -34,14 +34,14 @@
         CGPoint end = CGPointMake(rect.origin.x, rect.size.height);
         CGContextDrawLinearGradient(ctx, gradient, start, end, 0);
         CGGradientRelease(gradient);
-        
+
         // Border
         /*
          CGContextBeginPath(ctx);
          CGContextSetLineWidth(ctx, 2.0);
          CGContextSetRGBStrokeColor(ctx, 0.25, 0.25, 0.25, 2.0);
          CGContextAddRect(ctx, rect);
-         CGContextStrokePath(ctx);        
+         CGContextStrokePath(ctx);
          */
 }
 
@@ -59,12 +59,12 @@
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
         UITouch *touch = [touches anyObject];
-        
+
         CGPoint inSliderCoordinate = [touch locationInView:slider];
         CGPoint inFrameCoordinate = [touch locationInView:self];
         if (inSliderCoordinate.x < 0.0f || inSliderCoordinate.x > (slider.frame.size.width * 2.0f))
                 // Way outside the slider
-                return;        
+                return;
         if (inFrameCoordinate.y < -slider.frame.size.height)
                 // Way above the frame
                 return;
@@ -78,7 +78,7 @@
         CGRect rect = slider.frame;
         rect.origin.x = newx;
         [slider setFrame:rect];
-        
+
         // Redraw
         [self setNeedsDisplay];
 }

@@ -32,21 +32,22 @@
         NSTimer *lockTimer;
         NSArray *raceAgainstLocations;
         BOOL stateGood;
-        
+        bool isPaused;
+
         CGPoint touchStartPoint;
         NSDate *touchStartTime;
 
         // Main screen
-        
+
         UIView *containerView, *primaryView, *secondaryView, *tertiaryView;
         UIPageControl *pager;
         UILabel *signalIndicator, *recordingIndicator, *racingIndicator;
         UIToolbar *toolbar;
         UILabel *measurementsLabel;
         SlideView *slider;
-        
+
         // Primary stats page
-        
+
         UILabel *primaryScreenDescription;
         UILabel *elapsedTimeLabel, *elapsedTimeDescrLabel;
         UILabel *totalDistanceLabel, *totalDistanceDescrLabel;
@@ -56,7 +57,7 @@
         CompassView *compass;
 
         // Secondary stats page
-        
+
         UILabel *secondaryScreenDescription;
         UILabel *latitudeLabel, *latitudeDescrLabel;
         UILabel *longitudeLabel, *longitudeDescrLabel;
@@ -64,11 +65,11 @@
         UILabel *horAccuracyLabel, *horAccuracyDescrLabel;
         UILabel *verAccuracyLabel, *verAccuracyDescrLabel;
         UILabel *courseLabel, *courseDescrLabel;
-        
+
         // Tertiary page
         UILabel *tertiaryScreenDescription;
         LapTimeViewController *lapTimeController;
-        
+
 }
 
 @property (nonatomic, retain) IBOutlet UIView *containerView, *primaryView, *secondaryView, *tertiaryView;
@@ -90,8 +91,8 @@
 @property (nonatomic, retain) IBOutlet UILabel *latitudeLabel, *latitudeDescrLabel;
 @property (nonatomic, retain) IBOutlet UILabel *longitudeLabel, *longitudeDescrLabel;
 @property (nonatomic, retain) IBOutlet UILabel *elevationLabel, *elevationDescrLabel;
-@property (nonatomic, retain) IBOutlet UILabel *horAccuracyLabel, *horAccuracyDescrLabel;        
-@property (nonatomic, retain) IBOutlet UILabel *verAccuracyLabel, *verAccuracyDescrLabel;        
+@property (nonatomic, retain) IBOutlet UILabel *horAccuracyLabel, *horAccuracyDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *verAccuracyLabel, *verAccuracyDescrLabel;
 @property (nonatomic, retain) IBOutlet UILabel *courseLabel, *courseDescrLabel;
 
 @property (nonatomic, retain) IBOutlet UILabel *tertiaryScreenDescription;
@@ -99,10 +100,10 @@
 
 - (void)setRaceAgainstLocations:(NSArray*)locations;
 
-- (IBAction)startStopRecording:(id)sender;
+- (void)playPause:(id)sender;
+- (void)startStopRecording:(id)sender;
 - (void)slided:(id)sender;
-- (IBAction)unlock:(id)sender;
-- (IBAction)endRace:(id)sender;
+- (void)endRace:(id)sender;
 - (IBAction)pageChanged:(id)sender;
 
 @end

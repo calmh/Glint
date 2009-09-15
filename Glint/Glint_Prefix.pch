@@ -8,19 +8,19 @@
 #endif
 
 // Distance filter for CLLocationManager (in meters)
-#define FILTER_DISTANCE 5.0 
+#define FILTER_DISTANCE 5.0
 
 // If no updates from CLLocationManager for this long (in seconds), force an update anyway.
-#define FORCE_POSITION_UPDATE_INTERVAL 60.0 
+#define FORCE_POSITION_UPDATE_INTERVAL 60.0
 
 // How often to refresh the main screen display (in seconds)
-#define DISPLAY_THREAD_INTERVAL 0.5 
+#define DISPLAY_THREAD_INTERVAL 0.5
 
 // How often to check if it's time to record a new trackpoint (in seconds)
-#define MEASUREMENT_THREAD_INTERVAL 5.0 
+#define MEASUREMENT_THREAD_INTERVAL 5.0
 
 // Radius of the compass rose (in pixels)
-#define COMPASS_RADIUS 250.0 
+#define COMPASS_RADIUS 250.0
 
 // Constant in the currentSpeed formula:
 //   currentSpeed = (SOFTNESS_FACTOR * newCurrentSpeed + oldCurrentSpeed) / (1 + SOFTNESS_FACTOR)

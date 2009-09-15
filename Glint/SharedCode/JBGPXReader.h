@@ -11,10 +11,11 @@
 
 @interface JBGPXReader : NSObject {
         NSMutableArray *locations;
-        
+
         NSDate *lastReadDate;
         float lastReadLat, lastReadLon;
         BOOL currentlyReadingTime;
+        BOOL shouldAddBreakMarker;
 }
 
 - (id)initWithFilename:(NSString*)newFilename;

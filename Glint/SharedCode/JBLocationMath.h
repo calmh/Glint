@@ -26,6 +26,7 @@
 @property (retain) CLLocation *lastKnownPosition;
 
 - (void)updateLocation:(CLLocation*)location;
+- (void)updateLocation:(CLLocation*)location skipDistance:(bool)skip;
 - (float)speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
 - (float)bearingFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
 - (float)distanceAtPointInTime:(float)targetTime;
