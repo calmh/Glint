@@ -86,7 +86,7 @@ didStartElement:(NSString *)elementName
                 if (shouldAddBreakMarker) {
                         // We have just ended a trk segment, so obviously we are now in a new segment.
                         // We should therefore add a marker to keep track of the break.
-                        [locations addObject:[[CLLocation alloc] initWithLatitude:-1.0f longitude:-1.0f]];
+                        [locations addObject:[[CLLocation alloc] initWithLatitude:360.0f longitude:360.0f]];
                         shouldAddBreakMarker = NO;
                 }
                 CLLocationCoordinate2D coord;

@@ -33,19 +33,6 @@
         [super dealloc];
 }
 
-- (void)updateLocation:(CLLocation*)location {
-        static BOOL shouldSkipDistance = NO;
-        if (location.coordinate.latitude == -1.0f) {
-                // Nulls are track break markers. We should ignore them, and the next time we get a real position
-                // we should not update distance etc.
-                shouldSkipDistance = YES;
-        }
-        else {
-                [self updateLocation:location skipDistance:shouldSkipDistance];
-                shouldSkipDistance = NO;
-        }
-}
-
 - (void)updateLocation:(CLLocation*)location skipDistance:(bool)skip {
         if (!location)
                 return;
@@ -61,11 +48,24 @@
         }
 
         self.lastKnownPosition = location;
+
         if (skip) {
                 // Add an invalid CLLocation as a marker
-                [locations addObject:[[CLLocation alloc] initWithLatitude:-1.0f longitude:-1.0f]];
+                [locations addObject:[[CLLocation alloc] initWithLatitude:360.0f longitude:360.0f]];
         }
         [locations addObject:location];
+}
+
+// Only updates location and current course
+- (void)updateLocationForDisplayOnly:(CLLocation*)location {
+        if (!location)
+                return;
+
+        if (lastKnownPosition && [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp] > 0.0f) {
+                currentCourse = [self bearingFromLocation:lastKnownPosition toLocation:location];
+        }
+        
+        self.lastKnownPosition = location;
 }
 
 - (float)speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB {
@@ -105,7 +105,7 @@
         float time = 0.0;
 
         for (CLLocation *point in locationList) {
-                if (pointOne && point && pointOne.coordinate.latitude != -1.0f && point.coordinate.latitude != -1.0f) {
+                if (pointOne && point && pointOne.coordinate.latitude != 360.0f && point.coordinate.latitude != 360.0f) {
                         time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
                         distance += [pointOne getDistanceFrom:point];
                 }
@@ -137,7 +137,7 @@
         float distance = 0.0;
 
         for (CLLocation *point in locationList) {
-                if (pointOne && point && pointOne.coordinate.latitude != -1.0f && point.coordinate.latitude != -1.0f) {
+                if (pointOne && point && pointOne.coordinate.latitude != 360.0f && point.coordinate.latitude != 360.0f) {
                         time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
                         distance += [pointOne getDistanceFrom:point];
                 }
@@ -162,7 +162,7 @@
         float distance = 0.0;
         CLLocation *last = nil;
         for (CLLocation *loc in locationList) {
-                if (last && last.coordinate.latitude != -1.0f && loc.coordinate.latitude != -1.0f)
+                if (last && last.coordinate.latitude != 360.0f && loc.coordinate.latitude != 360.0f)
                         distance += [loc getDistanceFrom:last];
                 last = loc;
         }

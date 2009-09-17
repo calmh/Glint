@@ -160,7 +160,7 @@
         NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
         NSString* marketVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
 #ifdef DEBUG
-        self.measurementsLabel.text = [NSString stringWithFormat:@"Glint %@ (%@) DEBUG", marketVer, bundleVer];
+        self.measurementsLabel.text = [NSString stringWithFormat:@"Glint %@ (%@) DEV", marketVer, bundleVer];
 #else
         self.measurementsLabel.text = [NSString stringWithFormat:@"Glint %@ (%@)", marketVer, bundleVer];
 #endif
@@ -265,28 +265,33 @@
 
         stateGood = [self precisionAcceptable:newLocation];
         if (stateGood) {
-                if (!firstMeasurementDate) {
+                if (!firstMeasurementDate)
                         firstMeasurementDate = [[NSDate date] retain];
-                } else {
-                        if (!isPaused) {
-                                if (prevIsPaused) {
-                                        // We have been paused, so lets catch up
-                                        [math updateLocation:newLocation skipDistance:YES];
 
-                                } else {
-                                        [math updateLocation:newLocation skipDistance:NO];
-                                        if ([math totalDistance] >= numLaps*USERPREF_LAPLENGTH) {
-                                                float lapTime = [math timeAtLocationByDistance:numLaps*USERPREF_LAPLENGTH];
-                                                [lapTimeController addLapTime:lapTime-prevLapTime forDistance:numLaps*USERPREF_LAPLENGTH];
-                                                numLaps++;
-                                                prevLapTime = lapTime;
-                                                if (USERPREF_SOUNDS)
-                                                        [lapSound play];
+                if (!isPaused) {
+                        if (prevIsPaused) {
+                                // We have been paused, so lets catch up
+                                debug_NSLog(@"Cathing up from being paused");
+                                [math updateLocation:newLocation skipDistance:YES];
+                        } else {
+                                // Update normally and check if we have passed a lap length
+                                debug_NSLog(@"Updating position");
+                                [math updateLocation:newLocation skipDistance:NO];
+                                if ([math totalDistance] >= numLaps*USERPREF_LAPLENGTH) {
+                                        float lapTime = [math timeAtLocationByDistance:numLaps*USERPREF_LAPLENGTH];
+                                        [lapTimeController addLapTime:lapTime-prevLapTime forDistance:numLaps*USERPREF_LAPLENGTH];
+                                        numLaps++;
+                                        prevLapTime = lapTime;
+                                        if (USERPREF_SOUNDS)
+                                                [lapSound play];
 
-                                        }
                                 }
                         }
+                } else {
+                        debug_NSLog(@"Updating position for display only");                        
+                        [math updateLocationForDisplayOnly:newLocation];
                 }
+
                 prevIsPaused = isPaused;
         }
 }
@@ -353,11 +358,12 @@
         }
         prevIsPaused = isPaused;
 
-        // If the main screen statistics haven't been updated for a long time, do so now.
-
-        if (!isPaused && [math lastKnownPosition] && [[math lastKnownPosition].timestamp timeIntervalSinceNow] < -FORCE_POSITION_UPDATE_INTERVAL && [self precisionAcceptable:current]) {
-                [math updateLocation:current];
-        }
+        /* Is this really necessary any more? When would it actually be needed?
+         // If the main screen statistics haven't been updated for a long time, do so now.
+         if (!isPaused && [math lastKnownPosition] && [[math lastKnownPosition].timestamp timeIntervalSinceNow] < -FORCE_POSITION_UPDATE_INTERVAL && [self precisionAcceptable:current]) {
+         [math updateLocation:current];
+         }
+         */
 
         if (powersave // Power saving is enabled
             && gpsEnabled // The GPS is enabled
@@ -401,7 +407,7 @@
                 prevStateGood = stateGood;
         }
 
-        CLLocation *current = locationManager.location;
+        CLLocation *current = math.lastKnownPosition;
         [current retain];
 
         // Position and accuracy
@@ -455,47 +461,47 @@
         //        self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
 
         if (!isPaused) {
-        if (!raceAgainstLocations) {
-                self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x80/255.0f blue:0x00/255.0f alpha:1.0f];
-                self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0f green:0xFF/255.0f blue:0x66/255.0f alpha:1.0f];
+                if (!raceAgainstLocations) {
+                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0f green:0x80/255.0f blue:0x00/255.0f alpha:1.0f];
+                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66/255.0f green:0xFF/255.0f blue:0x66/255.0f alpha:1.0f];
 
-                // Average speed and time per configured distance
+                        // Average speed and time per configured distance
 
-                self.averageSpeedLabel.text = [delegate formatSpeed:[math averageSpeed]];
-                self.averageSpeedDescrLabel.text = NSLocalizedString(@"avg speed", nil);
+                        self.averageSpeedLabel.text = [delegate formatSpeed:[math averageSpeed]];
+                        self.averageSpeedDescrLabel.text = NSLocalizedString(@"avg speed", nil);
 
-                float secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / [math currentSpeed];
-                self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:secsPerEstDist maxTime:86400 allowNegatives:NO];
-                NSString *distStr = [delegate formatDistance:USERPREF_ESTIMATE_DISTANCE*1000.0];
-                self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
+                        float secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / [math currentSpeed];
+                        self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:secsPerEstDist maxTime:86400 allowNegatives:NO];
+                        NSString *distStr = [delegate formatDistance:USERPREF_ESTIMATE_DISTANCE*1000.0];
+                        self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
 #ifdef SCREENSHOT
-                self.averageSpeedLabel.text = [delegate formatSpeed:3300.0f/945.0f];
-                self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:USERPREF_ESTIMATE_DISTANCE * 1000.0 / (3425.0f/945.0f) maxTime:86400 allowNegatives:NO];
+                        self.averageSpeedLabel.text = [delegate formatSpeed:3300.0f/945.0f];
+                        self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:USERPREF_ESTIMATE_DISTANCE * 1000.0 / (3425.0f/945.0f) maxTime:86400 allowNegatives:NO];
 #endif
-        } else {
-                // Difference in time and distance against raceAgainstLocations.
-
-                float distDiff = [self distDifferenceInRace];
-                if (!isnan(distDiff)) {
-                        NSString *distString = [delegate formatDistance:distDiff];
-                        self.averageSpeedLabel.text = [distDiff < 0.0 ? @"" : @"+" stringByAppendingString:distString];
                 } else {
-                        self.averageSpeedLabel.text = @"?";
-                }
-                self.averageSpeedDescrLabel.text = NSLocalizedString(@"dist diff", nil);
-                if (distDiff < 0.0)
-                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x40/255.0 blue:0x40/255.0 alpha:1.0];
-                else
-                        self.averageSpeedLabel.textColor = [UIColor colorWithRed:0x40/255.0 green:0xFF/255.0 blue:0x40/255.0 alpha:1.0];
+                        // Difference in time and distance against raceAgainstLocations.
 
-                float timeDiff = [self timeDifferenceInRace];
-                self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:timeDiff maxTime:86400 allowNegatives:YES];
-                self.currentTimePerDistanceDescrLabel.text = NSLocalizedString(@"time diff", nil);
-                if (timeDiff > 0.0)
-                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x40/255.0 blue:0x40/255.0 alpha:1.0];
-                else
-                        self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x40/255.0 green:0xFF/255.0 blue:0x40/255.0 alpha:1.0];
-        }
+                        float distDiff = [self distDifferenceInRace];
+                        if (!isnan(distDiff)) {
+                                NSString *distString = [delegate formatDistance:distDiff];
+                                self.averageSpeedLabel.text = [distDiff < 0.0 ? @"" : @"+" stringByAppendingString:distString];
+                        } else {
+                                self.averageSpeedLabel.text = @"?";
+                        }
+                        self.averageSpeedDescrLabel.text = NSLocalizedString(@"dist diff", nil);
+                        if (distDiff < 0.0)
+                                self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x40/255.0 blue:0x40/255.0 alpha:1.0];
+                        else
+                                self.averageSpeedLabel.textColor = [UIColor colorWithRed:0x40/255.0 green:0xFF/255.0 blue:0x40/255.0 alpha:1.0];
+
+                        float timeDiff = [self timeDifferenceInRace];
+                        self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:timeDiff maxTime:86400 allowNegatives:YES];
+                        self.currentTimePerDistanceDescrLabel.text = NSLocalizedString(@"time diff", nil);
+                        if (timeDiff > 0.0)
+                                self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF/255.0 green:0x40/255.0 blue:0x40/255.0 alpha:1.0];
+                        else
+                                self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x40/255.0 green:0xFF/255.0 blue:0x40/255.0 alpha:1.0];
+                }
         }
 
         // Number of saved measurements

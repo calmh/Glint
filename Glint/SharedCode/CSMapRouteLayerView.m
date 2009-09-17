@@ -25,11 +25,11 @@
         for(int idx = 0; idx < self.points.count; idx++)
         {
                 CLLocation* currentLocation = [self.points objectAtIndex:idx];
-                
+
                 // Skip points that are break markers
-                if (currentLocation.coordinate.latitude == -1.0f)
+                if (currentLocation.coordinate.latitude == 360.0f)
                         continue;
-                
+
                 if(currentLocation.coordinate.latitude > maxLat)
                         maxLat = currentLocation.coordinate.latitude;
                 if(currentLocation.coordinate.latitude < minLat)
@@ -75,7 +75,7 @@
                 {
                         CLLocation* location = [self.points objectAtIndex:idx];
                         // Skip points that are break markers
-                        if (location.coordinate.latitude == -1.0f) {
+                        if (location.coordinate.latitude == 360.0f) {
                                 shouldSkip = YES;
                                 continue;
                         }
