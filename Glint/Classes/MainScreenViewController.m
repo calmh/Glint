@@ -407,7 +407,7 @@
                 prevStateGood = stateGood;
         }
 
-        CLLocation *current = math.lastKnownPosition;
+        CLLocation *current = locationManager.location;
         [current retain];
 
         // Position and accuracy
