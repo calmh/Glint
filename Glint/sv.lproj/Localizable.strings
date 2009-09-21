@@ -91,6 +91,7 @@
 "File Name" = "Filnamn";
 "Start Time" = "Starttid";
 "End Time" = "Måltid";
+"Elapsed Time" = "Löptid";
 "Total Distance" = "Total distans";
 "Average Speed" = "Genomsn. hastighet";
 "View On Map" = "Se på karta";

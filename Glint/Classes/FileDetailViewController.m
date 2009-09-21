@@ -86,14 +86,13 @@
         if ([dates count] == 2) {
                 startTime = [formatter stringFromDate:[dates objectAtIndex:0]];
                 [startTime retain];
-                endTime = [formatter stringFromDate:[dates objectAtIndex:1]];
-                [endTime retain];
         } else {
                 startTime = @"-";
-                endTime = @"-";
         }
         [formatter release];
 
+        endTime = [delegate formatTimestamp:[math elapsedTime] maxTime:86400.0f allowNegatives:NO];
+        [endTime retain];
         distance = [delegate formatDistance:[math totalDistance]];
         [distance retain];
         averageSpeed = [delegate formatSpeed:[math averageSpeed]];
@@ -195,7 +194,7 @@
                                 cell.detailTextLabel.text = startTime;
                         break;
                 case 2:
-                        cell.textLabel.text = NSLocalizedString(@"End Time",nil);
+                        cell.textLabel.text = NSLocalizedString(@"Elapsed Time",nil);
                                 cell.detailTextLabel.text = endTime;
                         break;
                 case 3:
