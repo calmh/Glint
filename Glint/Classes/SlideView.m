@@ -19,7 +19,6 @@
         return self;
 }
 
-
 - (void)drawRect:(CGRect)rect {
         // Background
         CGContextRef ctx = UIGraphicsGetCurrentContext();
@@ -46,7 +45,7 @@
         [slider setFrame:rect];
 }
 
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event
 {
         UITouch *touch = [touches anyObject];
 
@@ -73,7 +72,7 @@
         [self setNeedsDisplay];
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event
 {
         if (slider.frame.origin.x + slider.frame.size.width > self.frame.size.width - MARGIN - 10 /* sensitivity */) {
                 [delegate slided:self];
@@ -85,6 +84,25 @@
                 [slider setFrame:rect];
                 [UIView commitAnimations];
         }
+}
+
++ (void)drawRoundedRect:(CGRect)rrect withRadius:(CGFloat)radius
+{
+	CGFloat radius = 5.0;
+	CGFloat minx = CGRectGetMinX(rrect);
+	CGFloat midx = CGRectGetMidX(rrect);
+	CGFloat maxx = CGRectGetMaxX(rrect);
+	CGFloat miny = CGRectGetMinY(rrect);
+	CGFloat midy = CGRectGetMidY(rrect);
+	CGFloat maxy = CGRectGetMaxY(rrect);
+
+	CGContextMoveToPoint(context, minx, midy);
+	CGContextAddArcToPoint(context, minx, miny, midx, miny, radius);
+	CGContextAddArcToPoint(context, maxx, miny, maxx, midy, radius);
+	CGContextAddArcToPoint(context, maxx, maxy, midx, maxy, radius);
+	CGContextAddArcToPoint(context, minx, maxy, minx, midy, radius);
+	CGContextClosePath(context);
+	CGContextDrawPath(context, kCGPathFillStroke);
 }
 
 @end
