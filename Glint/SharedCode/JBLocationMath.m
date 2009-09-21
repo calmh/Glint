@@ -14,7 +14,11 @@
 
 @implementation JBLocationMath
 
-@synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition;
+@synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition, locations;
+
++ (BOOL)isBreakMarker:(CLLocation *)location {
+        return (!location || location.coordinate.latitude == 360.0f);
+}
 
 - (id)init {
         if (self = [super init]) {
@@ -33,27 +37,39 @@
         [super dealloc];
 }
 
-- (void)updateLocation:(CLLocation*)location skipDistance:(bool)skip {
+- (void)updateLocation:(CLLocation*)location {
         if (!location)
                 return;
 
-        if (!firstMeasurement)
-                firstMeasurement = [location.timestamp retain];
-
-        if (!skip && lastKnownPosition && [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp] > 0.0f) {
-                float dist = [lastKnownPosition getDistanceFrom:location];
-                totalDistance += dist;
-                [self updateCurrentSpeed:dist / [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp]];
-                currentCourse = [self bearingFromLocation:lastKnownPosition toLocation:location];
+        if ([JBLocationMath isBreakMarker:location])
+        {
+                [self insertBreakMarker];
+                return;
         }
 
-        self.lastKnownPosition = location;
+        @synchronized (self) {
+                if (!firstMeasurement)
+                        firstMeasurement = [location.timestamp retain];
 
-        if (skip) {
-                // Add an invalid CLLocation as a marker
-                [locations addObject:[[CLLocation alloc] initWithLatitude:360.0f longitude:360.0f]];
+                CLLocation *reference = self.lastRecordedPosition;
+                if (![JBLocationMath isBreakMarker:reference] && [location.timestamp timeIntervalSinceDate:reference.timestamp] > 0.0f) {
+                        float dist = [reference getDistanceFrom:location];
+                        totalDistance += dist;
+                        [self updateCurrentSpeed:dist / [location.timestamp timeIntervalSinceDate:reference.timestamp]];
+                        currentCourse = [self bearingFromLocation:reference toLocation:location];
+                        elapsedTime += [location.timestamp timeIntervalSinceDate:reference.timestamp];
+                }
+
+                self.lastKnownPosition = location;
+
+                [locations addObject:location];
         }
-        [locations addObject:location];
+}
+
+- (void)insertBreakMarker {
+        CLLocation *marker = [[CLLocation alloc] initWithLatitude:360.0f longitude:360.0f];
+        [locations addObject:marker];
+        [marker release];
 }
 
 // Only updates location and current course
@@ -64,7 +80,7 @@
         if (lastKnownPosition && [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp] > 0.0f) {
                 currentCourse = [self bearingFromLocation:lastKnownPosition toLocation:location];
         }
-        
+
         self.lastKnownPosition = location;
 }
 
@@ -105,7 +121,7 @@
         float time = 0.0;
 
         for (CLLocation *point in locationList) {
-                if (pointOne && point && pointOne.coordinate.latitude != 360.0f && point.coordinate.latitude != 360.0f) {
+                if (![JBLocationMath isBreakMarker:pointOne] && ![JBLocationMath isBreakMarker:point]) {
                         time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
                         distance += [pointOne getDistanceFrom:point];
                 }
@@ -137,7 +153,7 @@
         float distance = 0.0;
 
         for (CLLocation *point in locationList) {
-                if (pointOne && point && pointOne.coordinate.latitude != 360.0f && point.coordinate.latitude != 360.0f) {
+                if (![JBLocationMath isBreakMarker:point] && ![JBLocationMath isBreakMarker:pointOne]) {
                         time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
                         distance += [pointOne getDistanceFrom:point];
                 }
@@ -162,7 +178,7 @@
         float distance = 0.0;
         CLLocation *last = nil;
         for (CLLocation *loc in locationList) {
-                if (last && last.coordinate.latitude != 360.0f && loc.coordinate.latitude != 360.0f)
+                if (![JBLocationMath isBreakMarker:last] && ![JBLocationMath isBreakMarker:loc])
                         distance += [loc getDistanceFrom:last];
                 last = loc;
         }
@@ -186,9 +202,26 @@
 }
 
 - (float)averageSpeed {
-        if (!lastKnownPosition)
-                return 0.0;
-        return totalDistance / [lastKnownPosition.timestamp timeIntervalSinceDate:firstMeasurement];
+        CLLocation *reference = self.lastRecordedPosition;
+        if (![JBLocationMath isBreakMarker:reference])
+                return totalDistance / [reference.timestamp timeIntervalSinceDate:firstMeasurement];
+        else
+                return 0.0f;
+}
+
+- (float)elapsedTime {
+        CLLocation *reference = self.lastRecordedPosition;
+        if (![JBLocationMath isBreakMarker:reference])
+                return elapsedTime + [[NSDate date] timeIntervalSinceDate:reference.timestamp];
+        else
+                return elapsedTime;
+}
+
+- (CLLocation*)lastRecordedPosition {
+        if ([locations count] == 0)
+                return nil;
+        else
+                return [locations lastObject];
 }
 
 /*

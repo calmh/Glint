@@ -78,16 +78,7 @@
         [reader release];
         [math release];
         reader = [[JBGPXReader alloc] initWithFilename:newFilename];
-        math = [[JBLocationMath alloc] init];
-        BOOL skip = NO;
-        for (CLLocation *loc in [reader locations]) {
-                if (loc.coordinate.latitude == 360.0f)
-                        skip = YES;
-                else {
-                        [math updateLocation:loc skipDistance:skip];
-                        skip = NO;
-                }
-        }
+        math = [[reader locationMath] retain];
 
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];

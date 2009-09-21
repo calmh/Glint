@@ -26,7 +26,6 @@
 - (void)switchPageWithoutAnimation;
 - (void)organizeViews;
 - (void)shiftViewsTo:(float)position;
-- (float)elapsedTime;
 @end
 
 /*
@@ -261,7 +260,6 @@
 {
         static int numLaps = 1;
         static float prevLapTime = 0.0f;
-        bool prevIsPaused = NO;
 
         stateGood = [self precisionAcceptable:newLocation];
         if (stateGood) {
@@ -269,30 +267,21 @@
                         firstMeasurementDate = [[NSDate date] retain];
 
                 if (!isPaused) {
-                        if (prevIsPaused) {
-                                // We have been paused, so lets catch up
-                                debug_NSLog(@"Cathing up from being paused");
-                                [math updateLocation:newLocation skipDistance:YES];
-                        } else {
-                                // Update normally and check if we have passed a lap length
-                                debug_NSLog(@"Updating position");
-                                [math updateLocation:newLocation skipDistance:NO];
-                                if ([math totalDistance] >= numLaps*USERPREF_LAPLENGTH) {
-                                        float lapTime = [math timeAtLocationByDistance:numLaps*USERPREF_LAPLENGTH];
-                                        [lapTimeController addLapTime:lapTime-prevLapTime forDistance:numLaps*USERPREF_LAPLENGTH];
-                                        numLaps++;
-                                        prevLapTime = lapTime;
-                                        if (USERPREF_SOUNDS)
-                                                [lapSound play];
+                        debug_NSLog(@"Updating position");
+                        [math updateLocation:newLocation];
+                        if ([math totalDistance] >= numLaps*USERPREF_LAPLENGTH) {
+                                float lapTime = [math timeAtLocationByDistance:numLaps*USERPREF_LAPLENGTH];
+                                [lapTimeController addLapTime:lapTime-prevLapTime forDistance:numLaps*USERPREF_LAPLENGTH];
+                                numLaps++;
+                                prevLapTime = lapTime;
+                                if (USERPREF_SOUNDS)
+                                        [lapSound play];
 
-                                }
                         }
                 } else {
-                        debug_NSLog(@"Updating position for display only");                        
+                        debug_NSLog(@"Updating position for display only");
                         [math updateLocationForDisplayOnly:newLocation];
                 }
-
-                prevIsPaused = isPaused;
         }
 }
 
@@ -337,7 +326,7 @@
         // track segment so this is reflected in the saved file.
 
         CLLocation *current = locationManager.location;
-        debug_NSLog([locationManager.location description]);
+        debug_NSLog(@"%@", [locationManager.location description]);
         if (gpxWriter && (!lastWrittenDate || [now timeIntervalSinceDate:lastWrittenDate] >= averageInterval - MEASUREMENT_THREAD_INTERVAL/2.0f )) {
                 if (isPaused && !prevIsPaused) {
                         debug_NSLog(@"Pausing - breaking track segment");
@@ -435,7 +424,7 @@
 
         // Timer
 
-        self.elapsedTimeLabel.text =  [delegate formatTimestamp:[self elapsedTime] maxTime:86400 allowNegatives:NO];
+        self.elapsedTimeLabel.text =  [delegate formatTimestamp:[math elapsedTime] maxTime:86400 allowNegatives:NO];
 #ifdef SCREENSHOT
         self.elapsedTimeLabel.text = [delegate formatTimestamp:945 maxTime:86400 allowNegatives:NO];
 #endif
@@ -681,6 +670,7 @@
                 averageSpeedLabel.textColor = [UIColor colorWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f];
                 timePerDistColor = [currentTimePerDistanceLabel.textColor retain];
                 currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f];
+                [math insertBreakMarker];
         }
 }
 
@@ -769,28 +759,6 @@
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"raceAgainstFile"];
         [self disabledIndicator:racingIndicator];
         [self lock:sender];
-}
-
-// Returns the time elapsed since the start of measurement.
-- (float)elapsedTime {
-        static NSDate *lastUpdate = nil;
-        static float elapsed = 0.0f;
-
-        if (firstMeasurementDate == nil) {
-                return 0.0f;
-        } else {
-                NSDate *reference = [NSDate date];
-                if (!isPaused) {
-                        if (lastUpdate == nil)
-                                elapsed += [reference timeIntervalSinceDate:firstMeasurementDate];
-                        else
-                                elapsed += [reference timeIntervalSinceDate:lastUpdate];
-                }
-                [lastUpdate release];
-                lastUpdate = [reference retain];
-        }
-
-        return elapsed;
 }
 
 @end

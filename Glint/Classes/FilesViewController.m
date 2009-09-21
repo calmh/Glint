@@ -181,7 +181,7 @@
 
 - (NSString*)commentForFile:(NSString*)file {
         NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
-        NSString *fileContents = [NSString stringWithContentsOfFile:fullPath];
+        NSString *fileContents = [NSString stringWithContentsOfFile:fullPath encoding:NSUTF8StringEncoding error:nil];
         float distance = 0.0;
         int numPoints = 0;
 

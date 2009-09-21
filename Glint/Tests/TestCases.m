@@ -121,13 +121,12 @@
                 // Check speed & course calculations
                 CLLocation *loc = nil;
                 for (loc in locations)
-                        [math updateLocation:loc skipDistance:NO];
+                        [math updateLocation:loc];
                 // A few extra updates, in case we might have lost signal and got it back
                 // If it isn't checked for, this might cause a division by zero and crash the test rig
                 loc = [locations objectAtIndex:[locations count] - 1];
-                [math updateLocation:loc skipDistance:YES];
-                [math updateLocation:loc skipDistance:NO];
-                [math updateLocation:loc skipDistance:NO];
+                [math updateLocation:loc];
+                [math updateLocation:loc];
 
                 result = [math currentSpeed];
                 STAssertEqualsWithAccuracy(result, 1.29f, 0.1f, @"currentSpeed incorrect");

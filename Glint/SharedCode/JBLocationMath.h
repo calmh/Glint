@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
-#import "JBGPXReader.h"
 
 @interface JBLocationMath : NSObject {
         float currentSpeed;
         float currentCourse;
         float totalDistance;
+        float elapsedTime;
         NSDate *firstMeasurement;
         CLLocation *lastKnownPosition;
         NSMutableArray *locations;
@@ -23,9 +23,14 @@
 @property (readonly) float averageSpeed;
 @property (readonly) float currentCourse;
 @property (readonly) float totalDistance;
+@property (readonly) float elapsedTime;
 @property (retain) CLLocation *lastKnownPosition;
+@property (readonly) CLLocation *lastRecordedPosition;
+@property (readonly) NSArray *locations;
 
-- (void)updateLocation:(CLLocation*)location skipDistance:(bool)skip;
++ (BOOL)isBreakMarker:(CLLocation*)location;
+- (void)updateLocation:(CLLocation*)location;
+- (void)insertBreakMarker;
 - (void)updateLocationForDisplayOnly:(CLLocation*)location;
 - (float)speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
 - (float)bearingFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;

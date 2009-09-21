@@ -10,17 +10,17 @@
 
 @implementation JBGPXReader
 
-/* Tests on this implementation are run from JBLocationMath */
+@synthesize locationMath;
 
 - (void)dealloc {
-        [locations release];
+        [locationMath release];
         [super dealloc];
 }
 
 - (id)initWithFilename:(NSString*)filename
 {
         if (self = [self init]) {
-                locations = [[NSMutableArray alloc] init];
+                locationMath = [[JBLocationMath alloc] init];
                 lastReadLat = lastReadLon = 0.0;
                 lastReadDate = nil;
                 currentlyReadingTime = NO;
@@ -37,7 +37,7 @@
                 [parser setShouldResolveExternalEntities:NO];
                 [parser setDelegate:self];
                 if (![parser parse]) {
-                        debug_NSLog([[parser parserError] description]);
+                        debug_NSLog(@"%@", [[parser parserError] description]);
                 }
                 [parser release];
                 // Release any left over stuff from parsing a strange file
@@ -47,10 +47,7 @@
 }
 
 - (NSArray*)locations {
-        if ([locations count] > 0)
-                return [NSArray arrayWithArray:locations];
-        else
-                return nil;
+        return [locationMath locations];
 }
 
 /*
@@ -86,14 +83,16 @@ didStartElement:(NSString *)elementName
                 if (shouldAddBreakMarker) {
                         // We have just ended a trk segment, so obviously we are now in a new segment.
                         // We should therefore add a marker to keep track of the break.
-                        [locations addObject:[[CLLocation alloc] initWithLatitude:360.0f longitude:360.0f]];
+                        //[locations addObject:[[CLLocation alloc] initWithLatitude:360.0f longitude:360.0f]];
+                        [locationMath insertBreakMarker];
                         shouldAddBreakMarker = NO;
                 }
                 CLLocationCoordinate2D coord;
                 coord.latitude = lastReadLat;
                 coord.longitude = lastReadLon;
                 CLLocation *loc = [[CLLocation alloc] initWithCoordinate:coord altitude:0 horizontalAccuracy:-1 verticalAccuracy:-1 timestamp:lastReadDate];
-                [locations addObject:loc];
+                //[locations addObject:loc];
+                [locationMath updateLocation:loc];
                 [loc release];
                 [lastReadDate release];
                 lastReadDate = nil;
