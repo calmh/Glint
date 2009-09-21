@@ -741,16 +741,32 @@
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                 NSString *documentsDirectory = [paths objectAtIndex:0];
                 NSString* filename = [NSString stringWithFormat:@"%@/track-%@.gpx", documentsDirectory, [formatter stringFromDate:[NSDate date]]];
+                [[NSUserDefaults standardUserDefaults] setObject:filename forKey:@"recording_filename"];
                 gpxWriter = [[JBGPXWriter alloc] initWithFilename:filename];
                 gpxWriter.autoCommit = YES;
                 [gpxWriter addTrackSegment];
         } else {
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"recording_filename"];
                 [self disabledIndicator:recordingIndicator];
                 [gpxWriter commit];
                 [gpxWriter release];
                 gpxWriter = nil;
         }
         [self lock:sender];
+}
+
+- (void)resumeRecording:(JBLocationMath*)locationMath onFilename:(NSString*)filename {
+        [math release];
+        math = [locationMath retain];
+        gpxWriter = [[JBGPXWriter alloc] initWithFilename:filename];
+        gpxWriter.autoCommit = YES;
+        [gpxWriter addTrackSegment];
+        for (CLLocation *loc in [math locations])
+                if (![JBLocationMath isBreakMarker:loc])
+                        [gpxWriter addTrackPoint:loc];
+                else
+                        [gpxWriter addTrackSegment];
+        [self performSelectorOnMainThread:@selector(positiveIndicator:) withObject:recordingIndicator waitUntilDone:NO];
 }
 
 - (void)endRace:(id)sender {

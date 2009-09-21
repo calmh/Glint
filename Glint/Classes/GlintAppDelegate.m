@@ -11,7 +11,8 @@
 #import "FilesViewController.h"
 
 @interface GlintAppDelegate ()
-- (void) loadRaceFile: (NSString *) raceAgainstFile;
+- (void)loadRaceFile:(NSString *)raceAgainstFile;
+- (void)loadRecordingFile:(NSString *)recordingFile;
 @end
 
 @implementation GlintAppDelegate
@@ -64,6 +65,14 @@
         [window bringSubviewToFront:mainScreenViewController.view];
         [window makeKeyAndVisible];
 
+        // Load file to resume recording in, in the background
+        NSString *recordingFile;
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"restart_recording"] &&
+            (recordingFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"recording_filename"])) {
+                [self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(loadRecordingFile:) object:recordingFile] autorelease]];
+        }
+
+        // Load file to race against, in the background
         NSString *raceAgainstFile;
         if (raceAgainstFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"raceAgainstFile"]) {
                 [self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(loadRaceFile:) object:raceAgainstFile] autorelease]];
@@ -188,11 +197,19 @@
 
 // Private
 
-- (void) loadRaceFile: (NSString *) raceAgainstFile  {
+- (void)loadRaceFile:(NSString*)raceAgainstFile
+{
         JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:raceAgainstFile];
         [mainScreenViewController performSelectorOnMainThread:@selector(setRaceAgainstLocations:) withObject:[reader locations] waitUntilDone:NO];
         [reader release];
 
+}
+
+- (void)loadRecordingFile:(NSString*)recordingFile
+{
+        JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:recordingFile];
+        [mainScreenViewController resumeRecording:[reader locationMath] onFilename:recordingFile];
+        [reader release];
 }
 
 @end

@@ -102,6 +102,7 @@
 
 - (void)playPause:(id)sender;
 - (void)startStopRecording:(id)sender;
+- (void)resumeRecording:(JBLocationMath*)locationMath onFilename:(NSString*)filename;
 - (void)slided:(id)sender;
 - (void)endRace:(id)sender;
 - (IBAction)pageChanged:(id)sender;

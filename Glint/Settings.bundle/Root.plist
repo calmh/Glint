@@ -16,7 +16,7 @@
 			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>
 			<key>Title</key>
-			<string>Required Precision</string>
+			<string>Required GPS Precision</string>
 			<key>Key</key>
 			<string>gps_minprec</string>
 			<key>DefaultValue</key>
@@ -83,6 +83,16 @@
 			<string>gps_powersave</string>
 			<key>DefaultValue</key>
 			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Restart Recording on Startup</string>
+			<key>Key</key>
+			<string>restart_recording</string>
+			<key>DefaultValue</key>
+			<false/>
 		</dict>
 		<dict>
 			<key>Type</key>

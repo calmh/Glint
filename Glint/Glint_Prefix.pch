@@ -59,6 +59,9 @@
 // Length of a "lap"
 #define USERPREF_LAPLENGTH [[NSUserDefaults standardUserDefaults] integerForKey:@"lap_length"]
 
+// Whether to continue recording at startup
+#define USERPREF_RESTART_RECORDING [[NSUserDefaults standardUserDefaults] boolForKey:@"restart_recording"]
+
 // Maximum time with unsaved trackpoints (seconds)
 #define AUTO_COMMIT_INTERVAL 60.0f
 

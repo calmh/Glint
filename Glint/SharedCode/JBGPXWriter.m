@@ -72,6 +72,8 @@
         if (numPoints < 1)
                 return;
 
+        NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
         [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
@@ -101,6 +103,8 @@
         [formatter release];
         [lastCommit release];
         lastCommit = [[NSDate date] retain];
+
+        [pool release];
 }
 
 - (BOOL)isInTrackSegment {
