@@ -34,17 +34,7 @@
         CGPoint end = CGPointMake(rect.origin.x, rect.size.height);
         CGContextDrawLinearGradient(ctx, gradient, start, end, 0);
         CGGradientRelease(gradient);
-
-        // Border
-        /*
-         CGContextBeginPath(ctx);
-         CGContextSetLineWidth(ctx, 2.0);
-         CGContextSetRGBStrokeColor(ctx, 0.25, 0.25, 0.25, 2.0);
-         CGContextAddRect(ctx, rect);
-         CGContextStrokePath(ctx);
-         */
 }
-
 
 - (void)dealloc {
         [super dealloc];
@@ -91,10 +81,11 @@
                 [UIView beginAnimations:nil context:NULL];
                 [UIView setAnimationDuration:0.2];
                 CGRect rect = slider.frame;
-                rect.origin.x = 15.0f;
+                rect.origin.x = MARGIN;
                 [slider setFrame:rect];
                 [UIView commitAnimations];
         }
 }
 
 @end
+
