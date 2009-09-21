@@ -13,15 +13,16 @@
 @end
 
 @interface SlideView : UIView {
-        UIButton *slider;
+        float sliderPosition;
         id <SlideViewDelegate> delegate;
 }
 
-@property (retain, nonatomic) IBOutlet UIButton *slider;
 @property (retain, nonatomic) IBOutlet id <SlideViewDelegate> delegate;
 
 - (void)reset;
++ (void)drawRoundedRect:(CGRect)rrect inContext:(CGContextRef)context withRadius:(CGFloat)radius andGradient:(CGGradientRef)gradient;
 
 @end
 
-#define MARGIN 15.0f
+#define MARGIN 25.0f
+#define SLIDERWIDTH 65.0f
