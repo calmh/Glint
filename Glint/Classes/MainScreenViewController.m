@@ -545,7 +545,7 @@
         return 945.0f - raceTime;
 #else
         float raceTime = [math timeAtLocationByDistance:[math estimatedTotalDistance] inLocations:raceAgainstLocations];
-        return [[NSDate date] timeIntervalSinceDate:firstMeasurementDate] - raceTime;
+        return [math elapsedTime] - raceTime;
 #endif
 }
 
@@ -555,7 +555,7 @@
         float raceDist = [math distanceAtPointInTime:945.0f inLocations:raceAgainstLocations];
         return 3425.0f - raceDist;
 #else
-        float raceDist = [math distanceAtPointInTime:[[NSDate date] timeIntervalSinceDate:firstMeasurementDate] inLocations:raceAgainstLocations];
+        float raceDist = [math distanceAtPointInTime:[math elapsedTime] inLocations:raceAgainstLocations];
         return [math estimatedTotalDistance] - raceDist;
 #endif
 }
@@ -657,6 +657,11 @@
                 averageSpeedLabel.textColor = [averageSpeedColor autorelease];
                 currentTimePerDistanceLabel.textColor = [timePerDistColor autorelease];
                 isPaused = NO;
+                // Update with the latest known position and the current time.
+                // This is to make elapsed time calculations work.
+                CLLocation *loc = [[CLLocation alloc] initWithCoordinate:locationManager.location.coordinate altitude:locationManager.location.altitude horizontalAccuracy:locationManager.location.horizontalAccuracy verticalAccuracy:locationManager.location.verticalAccuracy timestamp:[NSDate date]];
+                [math updateLocation:loc];
+                [loc release];
         } else {
                 isPaused = YES;
                 [[toolbarItems objectAtIndex:0] setTitle:NSLocalizedString(@"Go",nil)];
