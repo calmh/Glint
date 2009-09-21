@@ -314,10 +314,10 @@
 
         // Check if the GPS is disabled, and if so if we should enable it to do a measurement.
 
-        if (!gpsEnabled) {
-                if ([now timeIntervalSinceDate:lastWrittenDate] > averageInterval-10 // It is soon time for a new measurement
-                    || !gpxWriter) // Or, we are not recording
-                        [self enableGPS];
+        if (!gpsEnabled // The GPS is off
+            && gpxWriter // We are recording
+            && [now timeIntervalSinceDate:lastWrittenDate] > averageInterval-10) { // It is soon time for a new measurement
+                [self enableGPS];
                 return;
         }
 
@@ -532,7 +532,7 @@
 - (void)disableGPS {
         debug_NSLog(@"Stopping GPS");
         locationManager.delegate = nil;
-        [locationManager stopUpdatingHeading];
+        [locationManager stopUpdatingLocation];
         [locationManager release];
         locationManager = nil;
         gpsEnabled = NO;
@@ -656,14 +656,11 @@
                 currentSpeedLabel.textColor = [currentSpeedColor autorelease];
                 averageSpeedLabel.textColor = [averageSpeedColor autorelease];
                 currentTimePerDistanceLabel.textColor = [timePerDistColor autorelease];
+                [self enableGPS];
                 isPaused = NO;
-                // Update with the latest known position and the current time.
-                // This is to make elapsed time calculations work.
-                CLLocation *loc = [[CLLocation alloc] initWithCoordinate:locationManager.location.coordinate altitude:locationManager.location.altitude horizontalAccuracy:locationManager.location.horizontalAccuracy verticalAccuracy:locationManager.location.verticalAccuracy timestamp:[NSDate date]];
-                [math updateLocation:loc];
-                [loc release];
         } else {
                 isPaused = YES;
+                [self disableGPS];
                 [[toolbarItems objectAtIndex:0] setTitle:NSLocalizedString(@"Go",nil)];
                 elapsedTimeColor = [elapsedTimeLabel.textColor retain];
                 elapsedTimeLabel.textColor = [UIColor colorWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f];

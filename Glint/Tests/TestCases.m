@@ -98,7 +98,7 @@
         if (locations) {
                 // Reference file contains 47 measurements
                 int numLocations = [locations count];
-                STAssertEquals(numLocations, 47, @"Wrong number of trackpoints in locations");
+                STAssertEquals(numLocations, 47, @"Wrong number of trackpoints in locations (%d should be 47)", numLocations);
 
                 // Check known bearings within the file
                 float result;
@@ -135,7 +135,7 @@
                 result = [math currentCourse];
                 STAssertEqualsWithAccuracy(result, 90.0f, 0.1f, @"currentCourse incorrect");
                 result = [math averageSpeed];
-                STAssertEqualsWithAccuracy(result, 1.0f, 0.1f, @"averageSpeed incorrect");
+                STAssertEqualsWithAccuracy(result, 1.0f, 0.1f, @"averageSpeed incorrect (%f should be ~1.0)", result);
                 NSDate *futureDate = [[math lastKnownPosition].timestamp addTimeInterval:300];
                 result = [math estimatedTotalDistanceAtTime:futureDate];
                 STAssertEqualsWithAccuracy(result, 982.8f, 0.1f, @"estimatedTotalDistance incorrect");

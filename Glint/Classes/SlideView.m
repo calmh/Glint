@@ -60,15 +60,10 @@
         NSString *label = @">>";
         CGContextSelectFont (ctx, "Helvetica", 20, kCGEncodingMacRoman);
         CGContextSetTextMatrix (ctx, CGAffineTransformMake(1,0,0,-1,0,rect.size.height));
-        CGContextSetShouldSmoothFonts(ctx, YES);
+        CGContextSetShouldSmoothFonts(ctx, NO);
         CGContextSetShouldAntialias(ctx, YES);
-        CGPoint before = CGContextGetTextPosition(ctx);
-        CGContextSetTextDrawingMode(ctx, kCGTextInvisible);
-        CGContextShowText(ctx, [label cStringUsingEncoding:NSUTF8StringEncoding], [label length]);
-        CGPoint after = CGContextGetTextPosition(ctx);
-        float width = after.x - before.x;
         CGContextSetTextDrawingMode (ctx, kCGTextFill);
-        CGContextShowTextAtPoint(ctx, sliderPosition + SLIDERWIDTH / 2.0f - width / 2.0f, rect.size.height / 2.0f + 5, [label cStringUsingEncoding:NSUTF8StringEncoding], [label length]);
+        CGContextShowTextAtPoint(ctx, sliderPosition + SLIDERWIDTH / 2.0f - 10.0f, rect.size.height / 2.0f + 5, [label cStringUsingEncoding:NSUTF8StringEncoding], [label length]);
 }
 
 - (void)dealloc {
@@ -84,9 +79,8 @@
 {
         UITouch *touch = [touches anyObject];
 
-        //CGPoint inSliderCoordinate = [touch locationInView:slider];
         CGPoint inFrameCoordinate = [touch locationInView:self];
-        if (inFrameCoordinate.x < sliderPosition || inFrameCoordinate.x > sliderPosition + SLIDERWIDTH * 2.0f)
+        if (inFrameCoordinate.x < sliderPosition || inFrameCoordinate.x > sliderPosition + SLIDERWIDTH * 2.5f)
                 // Way outside the slider
                 return;
         if (inFrameCoordinate.y < -self.frame.size.height * 2.0f)
@@ -99,9 +93,6 @@
                 newx = MARGIN;
         if (newx > [self frame].size.width - SLIDERWIDTH - MARGIN)
                 newx = [self frame].size.width - SLIDERWIDTH - MARGIN;
-        //        CGRect rect = slider.frame;
-        //rect.origin.x = newx;
-        //[slider setFrame:rect];
         sliderPosition = newx;
 
         // Redraw
@@ -113,10 +104,7 @@
         if (sliderPosition + SLIDERWIDTH > self.frame.size.width - MARGIN - 10 /* sensitivity */) {
                 [delegate slided:self];
         } else {
-                [UIView beginAnimations:nil context:NULL];
-                [UIView setAnimationDuration:0.2];
                 sliderPosition = MARGIN;
-                [UIView commitAnimations];
                 [self setNeedsDisplay];
         }
 }

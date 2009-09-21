@@ -42,8 +42,6 @@
                 [parser release];
                 // Release any left over stuff from parsing a strange file
                 [lastReadDate release];
-                // Tack on a break marker to the end, in case we intend to continue recording after this point.
-                [locationMath insertBreakMarker];
         }
         return self;
 }

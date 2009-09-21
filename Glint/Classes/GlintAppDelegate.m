@@ -208,6 +208,8 @@
 - (void)loadRecordingFile:(NSString*)recordingFile
 {
         JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:recordingFile];
+        // Tack on a break marker to the end, to signify that we have been restarted.
+        [[reader locationMath] insertBreakMarker];
         [mainScreenViewController resumeRecording:[reader locationMath] onFilename:recordingFile];
         [reader release];
 }
