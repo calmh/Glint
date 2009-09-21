@@ -288,7 +288,7 @@
                                 }
                         }
                 } else {
-                        debug_NSLog(@"Updating position for display only");                        
+                        debug_NSLog(@"Updating position for display only");
                         [math updateLocationForDisplayOnly:newLocation];
                 }
 

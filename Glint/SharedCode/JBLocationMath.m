@@ -64,7 +64,7 @@
         if (lastKnownPosition && [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp] > 0.0f) {
                 currentCourse = [self bearingFromLocation:lastKnownPosition toLocation:location];
         }
-        
+
         self.lastKnownPosition = location;
 }
 
