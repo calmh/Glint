@@ -424,7 +424,7 @@
 
         // Timer
 
-        self.elapsedTimeLabel.text =  [delegate formatTimestamp:[math elapsedTime] maxTime:86400 allowNegatives:NO];
+        self.elapsedTimeLabel.text =  [delegate formatTimestamp:[math estimatedElapsedTime] maxTime:86400 allowNegatives:NO];
 #ifdef SCREENSHOT
         self.elapsedTimeLabel.text = [delegate formatTimestamp:945 maxTime:86400 allowNegatives:NO];
 #endif

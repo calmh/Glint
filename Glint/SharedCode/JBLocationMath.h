@@ -24,11 +24,13 @@
 @property (readonly) float currentCourse;
 @property (readonly) float totalDistance;
 @property (readonly) float elapsedTime;
+@property (readonly) float estimatedElapsedTime;
 @property (retain) CLLocation *lastKnownPosition;
 @property (readonly) CLLocation *lastRecordedPosition;
 @property (readonly) NSArray *locations;
 
 + (BOOL)isBreakMarker:(CLLocation*)location;
+
 - (void)updateLocation:(CLLocation*)location;
 - (void)insertBreakMarker;
 - (void)updateLocationForDisplayOnly:(CLLocation*)location;

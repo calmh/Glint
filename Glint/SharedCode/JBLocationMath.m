@@ -14,7 +14,7 @@
 
 @implementation JBLocationMath
 
-@synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition, locations;
+@synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition, locations, elapsedTime;
 
 + (BOOL)isBreakMarker:(CLLocation *)location {
         return (!location || location.coordinate.latitude == 360.0f);
@@ -209,7 +209,7 @@
                 return 0.0f;
 }
 
-- (float)elapsedTime {
+- (float)estimatedElapsedTime {
         CLLocation *reference = self.lastRecordedPosition;
         if (![JBLocationMath isBreakMarker:reference])
                 return elapsedTime + [[NSDate date] timeIntervalSinceDate:reference.timestamp];
