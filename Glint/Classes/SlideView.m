@@ -8,6 +8,9 @@
 
 #import "SlideView.h"
 
+// Missing in standard headers.
+extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph[], size_t);
+
 @implementation SlideMarkerView
 
 - (id)initWithFrame:(CGRect)frame {
@@ -34,13 +37,18 @@
         [SlideView drawRoundedRect:outline inContext:ctx withRadius:5.0f andGradient:gradient];
         CGGradientRelease(gradient);
 
-        NSString *label = @">>";
-        CGContextSelectFont (ctx, "Helvetica", 20, kCGEncodingMacRoman);
-        CGContextSetTextMatrix (ctx, CGAffineTransformMake(1,0,0,-1,0,rect.size.height));
-        CGContextSetShouldSmoothFonts(ctx, NO);
-        CGContextSetShouldAntialias(ctx, YES);
-        CGContextSetTextDrawingMode (ctx, kCGTextFill);
-        CGContextShowTextAtPoint(ctx, rect.size.width / 2.0f - 10.0f, rect.size.height / 2.0f + 5, [label cStringUsingEncoding:NSUTF8StringEncoding], [label length]);
+        NSString *label = @"\u2192"; // →
+        CGContextSetTextMatrix (ctx, CGAffineTransformMake(1,0,0,-1.4,0,rect.size.height));
+        int length = [label length];
+        unichar chars[length];
+        CGGlyph glyphs[length];
+        [label getCharacters:chars range:NSMakeRange(0, length)];
+        CGFontRef font = CGFontCreateWithFontName((CFStringRef)@"Arial");
+        CGContextSetFont(ctx, font);
+        CGContextSetFontSize(ctx, 40.0f);
+        CGContextSetGrayFillColor(ctx, 1.0f, 1.0f);
+        CGFontGetGlyphsForUnichars(font, chars, glyphs, length);
+        CGContextShowGlyphsAtPoint(ctx, rect.size.width / 2.0f - 19.0f, rect.size.height / 2.0f + 14.0f, glyphs, length);
 }
 
 @end
