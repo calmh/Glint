@@ -8,20 +8,59 @@
 
 #import "SlideView.h"
 
+@implementation SlideMarkerView
+
+- (id)initWithFrame:(CGRect)frame {
+        if (self = [super initWithFrame:frame]) {
+                self.backgroundColor = [UIColor clearColor];
+        }
+        return self;
+}
+
+
+- (void)drawRect:(CGRect)rect {
+        CGContextRef ctx = UIGraphicsGetCurrentContext();
+        CGContextSetGrayStrokeColor(ctx, 0.8f, 1.0f);
+        CGContextSetLineWidth(ctx, 2.0f);
+        float sliderColors[] = {
+                1.0f, 1.0f, 1.0f, 1.0f,
+                0.8f, 0.8f, 0.8f, 0.8f,
+                0.7f, 0.7f, 0.7f, 0.8f,
+                0.5f, 0.5f, 0.5f, 0.5f
+        };
+        float sliderPositions[] = { 0.0f, 0.5f, 0.5f, 1.0f };
+        CGGradientRef gradient = CGGradientCreateWithColorComponents(CGColorSpaceCreateDeviceRGB(), sliderColors, sliderPositions, 4);
+        CGRect outline = CGRectInset(rect, 1.0f, 1.0f);
+        [SlideView drawRoundedRect:outline inContext:ctx withRadius:5.0f andGradient:gradient];
+        CGGradientRelease(gradient);
+        
+        NSString *label = @">>";
+        CGContextSelectFont (ctx, "Helvetica", 20, kCGEncodingMacRoman);
+        CGContextSetTextMatrix (ctx, CGAffineTransformMake(1,0,0,-1,0,rect.size.height));
+        CGContextSetShouldSmoothFonts(ctx, NO);
+        CGContextSetShouldAntialias(ctx, YES);
+        CGContextSetTextDrawingMode (ctx, kCGTextFill);
+        CGContextShowTextAtPoint(ctx, rect.size.width / 2.0f - 10.0f, rect.size.height / 2.0f + 5, [label cStringUsingEncoding:NSUTF8StringEncoding], [label length]);
+}
+
+@end
+
 @implementation SlideView
 
 @synthesize delegate;
 
 - (id)initWithFrame:(CGRect)frame {
         if (self = [super initWithFrame:frame]) {
-                sliderPosition = MARGIN;
+                marker = [[SlideMarkerView alloc] initWithFrame:CGRectMake(MARGIN, 5.0f, SLIDERWIDTH, self.frame.size.height - 10.0f)];
+                [self addSubview:marker];
         }
         return self;
 }
 
 - (void)awakeFromNib {
         [super awakeFromNib];
-        sliderPosition = MARGIN;
+        marker = [[SlideMarkerView alloc] initWithFrame:CGRectMake(MARGIN, 5.0f, SLIDERWIDTH, self.frame.size.height - 10.0f)];
+        [self addSubview:marker];
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -41,29 +80,6 @@
         CGRect outline = CGRectInset(rect, MARGIN - 3.5f, 1.5f);
         [SlideView drawRoundedRect:outline inContext:ctx withRadius:5.0f andGradient:gradient];
         CGGradientRelease(gradient);
-
-        // Draw slider
-        CGContextSetGrayStrokeColor(ctx, 0.8f, 1.0f);
-        CGContextSetLineWidth(ctx, 2.0f);
-        float sliderColors[] = {
-                1.0f, 1.0f, 1.0f, 1.0f,
-                0.8f, 0.8f, 0.8f, 0.8f,
-                0.7f, 0.7f, 0.7f, 0.8f,
-                0.5f, 0.5f, 0.5f, 0.5f
-        };
-        float sliderPositions[] = { 0.0f, 0.5f, 0.5f, 1.0f };
-        gradient = CGGradientCreateWithColorComponents(CGColorSpaceCreateDeviceRGB(), sliderColors, sliderPositions, 4);
-        outline = CGRectMake(sliderPosition, 5.5f, SLIDERWIDTH, rect.size.height - 11.0f);
-        [SlideView drawRoundedRect:outline inContext:ctx withRadius:5.0f andGradient:gradient];
-        CGGradientRelease(gradient);
-
-        NSString *label = @">>";
-        CGContextSelectFont (ctx, "Helvetica", 20, kCGEncodingMacRoman);
-        CGContextSetTextMatrix (ctx, CGAffineTransformMake(1,0,0,-1,0,rect.size.height));
-        CGContextSetShouldSmoothFonts(ctx, NO);
-        CGContextSetShouldAntialias(ctx, YES);
-        CGContextSetTextDrawingMode (ctx, kCGTextFill);
-        CGContextShowTextAtPoint(ctx, sliderPosition + SLIDERWIDTH / 2.0f - 10.0f, rect.size.height / 2.0f + 5, [label cStringUsingEncoding:NSUTF8StringEncoding], [label length]);
 }
 
 - (void)dealloc {
@@ -71,8 +87,12 @@
 }
 
 - (void)reset {
-        sliderPosition = MARGIN;
-        [self setNeedsDisplay];
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:0.2f];
+        CGRect rect = marker.frame;
+        rect.origin.x = MARGIN;
+        marker.frame = rect;
+        [UIView commitAnimations];
 }
 
 - (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event
@@ -80,7 +100,7 @@
         UITouch *touch = [touches anyObject];
 
         CGPoint inFrameCoordinate = [touch locationInView:self];
-        if (inFrameCoordinate.x < sliderPosition || inFrameCoordinate.x > sliderPosition + SLIDERWIDTH * 2.5f)
+        if (inFrameCoordinate.x < marker.frame.origin.x || inFrameCoordinate.x > marker.frame.origin.x + SLIDERWIDTH * 2.5f)
                 // Way outside the slider
                 return;
         if (inFrameCoordinate.y < -self.frame.size.height * 2.0f)
@@ -93,19 +113,18 @@
                 newx = MARGIN;
         if (newx > [self frame].size.width - SLIDERWIDTH - MARGIN)
                 newx = [self frame].size.width - SLIDERWIDTH - MARGIN;
-        sliderPosition = newx;
 
-        // Redraw
-        [self setNeedsDisplay];
+        CGRect rect = marker.frame;
+        rect.origin.x = newx;
+        marker.frame = rect;
 }
 
 - (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event
 {
-        if (sliderPosition + SLIDERWIDTH > self.frame.size.width - MARGIN - 10 /* sensitivity */) {
+        if (marker.frame.origin.x + SLIDERWIDTH > self.frame.size.width - MARGIN - 10 /* sensitivity */) {
                 [delegate slided:self];
         } else {
-                sliderPosition = MARGIN;
-                [self setNeedsDisplay];
+                [self reset];
         }
 }
 

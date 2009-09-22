@@ -12,9 +12,14 @@
 - (void)slided:(id)sender;
 @end
 
+@interface SlideMarkerView : UIView {
+}
+
+@end
+
 @interface SlideView : UIView {
-        float sliderPosition;
         id <SlideViewDelegate> delegate;
+        SlideMarkerView *marker;
 }
 
 @property (retain, nonatomic) IBOutlet id <SlideViewDelegate> delegate;
