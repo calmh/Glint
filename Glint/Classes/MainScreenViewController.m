@@ -303,7 +303,6 @@
         static float averageInterval = 0.0;
         static BOOL powersave = NO;
         NSDate *now = [NSDate date];
-        bool prevIsPaused = NO;
 
         // Load user preferences the first time we need them.
 
@@ -312,8 +311,11 @@
                 powersave = USERPREF_POWERSAVE;
         }
 
-        // Check if the GPS is disabled, and if so if we should enable it to do a measurement.
+        // If we are paused, do nothing.
+        if (isPaused)
+                return;
 
+        // Check if the GPS is disabled, and if so if we should enable it to do a measurement.
         if (!gpsEnabled // The GPS is off
             && gpxWriter // We are recording
             && [now timeIntervalSinceDate:lastWrittenDate] > averageInterval-10) { // It is soon time for a new measurement
@@ -328,10 +330,6 @@
         CLLocation *current = locationManager.location;
         debug_NSLog(@"%@", [locationManager.location description]);
         if (gpxWriter && (!lastWrittenDate || [now timeIntervalSinceDate:lastWrittenDate] >= averageInterval - MEASUREMENT_THREAD_INTERVAL/2.0f )) {
-                if (isPaused && !prevIsPaused) {
-                        debug_NSLog(@"Pausing - breaking track segment");
-                        [gpxWriter addTrackSegment];
-                } else if (!isPaused) {
                         if ([self precisionAcceptable:current]) {
                                 debug_NSLog(@"Good precision, saving waypoint");
                                 [lastWrittenDate release];
@@ -343,9 +341,7 @@
                         } else {
                                 debug_NSLog(@"Bad precision, waiting for waypoint");
                         }
-                }
         }
-        prevIsPaused = isPaused;
 
         /* Is this really necessary any more? When would it actually be needed?
          // If the main screen statistics haven't been updated for a long time, do so now.
@@ -673,6 +669,8 @@
                 timePerDistColor = [currentTimePerDistanceLabel.textColor retain];
                 currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f];
                 [math insertBreakMarker];
+                if (gpxWriter)
+                        [gpxWriter addTrackSegment];
         }
 }
 

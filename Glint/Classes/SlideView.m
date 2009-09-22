@@ -33,7 +33,7 @@
         CGRect outline = CGRectInset(rect, 1.0f, 1.0f);
         [SlideView drawRoundedRect:outline inContext:ctx withRadius:5.0f andGradient:gradient];
         CGGradientRelease(gradient);
-        
+
         NSString *label = @">>";
         CGContextSelectFont (ctx, "Helvetica", 20, kCGEncodingMacRoman);
         CGContextSetTextMatrix (ctx, CGAffineTransformMake(1,0,0,-1,0,rect.size.height));
