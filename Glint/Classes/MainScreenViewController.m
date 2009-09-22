@@ -363,12 +363,6 @@
 {
         static BOOL prevStateGood = NO;
 
-        // Don't update the display if it's turned off by the proximity sensor.
-        // Saves CPU cycles and battery time, I hope.
-
-        if ([[UIDevice currentDevice] proximityState])
-                return;
-
 #ifdef SCREENSHOT
         stateGood = YES;
 #endif
@@ -391,6 +385,12 @@
                 }
                 prevStateGood = stateGood;
         }
+
+        // Don't update the display if it's turned off by the proximity sensor.
+        // Saves CPU cycles and battery time, I hope.
+
+        if ([[UIDevice currentDevice] proximityState])
+                return;
 
         CLLocation *current = locationManager.location;
         [current retain];
