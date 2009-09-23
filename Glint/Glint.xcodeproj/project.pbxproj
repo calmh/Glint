@@ -22,6 +22,7 @@
 		291C0DDE101E260900393E77 /* JBGPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* JBGPXWriter.m */; };
 		291C0DE0101E260900393E77 /* JBLocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* JBLocationMath.m */; };
 		291C0DE6101E265800393E77 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FE32270FF4370200E9FE05 /* CoreLocation.framework */; };
+		29278F35106A01A3009AA4F5 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = 29278F34106A01A3009AA4F5 /* iTunesArtwork */; };
 		293D38071039E74F00EB0F91 /* Ping.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 293D38061039E74F00EB0F91 /* Ping.aiff */; };
 		293D998A10625C4D00C86B6C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 293D998910625C4D00C86B6C /* Entitlements.plist */; };
 		2941215E105AEDE800B2A524 /* CSMapRouteLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */; };
@@ -80,6 +81,7 @@
 		291C0DB6101E22F600393E77 /* Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		291C0DCD101E23C500393E77 /* TestCases.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestCases.h; path = Tests/TestCases.h; sourceTree = "<group>"; };
 		291C0DCE101E23C500393E77 /* TestCases.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestCases.m; path = Tests/TestCases.m; sourceTree = "<group>"; };
+		29278F34106A01A3009AA4F5 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		293D38061039E74F00EB0F91 /* Ping.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Ping.aiff; path = Resources/Ping.aiff; sourceTree = "<group>"; };
 		293D998910625C4D00C86B6C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		2941215C105AEDE800B2A524 /* CSMapRouteLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSMapRouteLayerView.h; path = SharedCode/CSMapRouteLayerView.h; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				29278F34106A01A3009AA4F5 /* iTunesArtwork */,
 				291C0DBD101E230C00393E77 /* Tests */,
 				29D191931011E2DA00B9E8CF /* Localizable.strings */,
 				29886672101C95ED0051F368 /* Shared Code */,
@@ -357,6 +360,7 @@
 				2913DE2010260A9F00F56A2A /* FilesViewController.xib in Resources */,
 				293D38071039E74F00EB0F91 /* Ping.aiff in Resources */,
 				293D998A10625C4D00C86B6C /* Entitlements.plist in Resources */,
+				29278F35106A01A3009AA4F5 /* iTunesArtwork in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
