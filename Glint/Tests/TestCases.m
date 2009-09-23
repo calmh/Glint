@@ -145,7 +145,7 @@
 }
 
 - (JBGPXReader*)newDefaultGPXReader {
-        NSString *filename = [NSString stringWithFormat:@"%@/reference.gpx", [self bundlePath]];
+        NSString *filename = [NSString stringWithFormat:@"%@/reference0.gpx", [self bundlePath]];
 
         BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:filename];
         STAssertTrue(exists, @"Reference GPX file %@ not found", filename);

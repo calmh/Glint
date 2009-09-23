@@ -29,5 +29,5 @@
 
 @end
 
-#define MARGIN 25.0f
+#define MARGIN 35.0f
 #define SLIDERWIDTH 65.0f

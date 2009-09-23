@@ -26,7 +26,8 @@
         [super dealloc];
 }
 
-- (void)viewDidLoad {
+- (void)awakeFromNib {
+        debug_NSLog(@"FileDetailViewController.awakeFromNib start");
         delegate = [[UIApplication sharedApplication] delegate];
         self.title = NSLocalizedString(@"File Details",nil);
         math = nil;
@@ -36,24 +37,20 @@
         endTime = nil;
         distance = nil;
         averageSpeed = nil;
-        loading = YES;
+        emailButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Email",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFile:)];
+        raceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Race against",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(raceAgainstFile:)];
+        [self disableButtons];
+        self.toolbarItems = [NSArray arrayWithObjects:emailButton, raceButton, nil];
+        debug_NSLog(@"FileDetailViewController.awakeFromNib end");
+        
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+        debug_NSLog(@"FileDetailViewController.viewWillAppear start");
         navigationController.navigationBar.barStyle = UIBarStyleDefault;
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-        emailButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Email",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFile:)];
-        raceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Race against",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(raceAgainstFile:)];
-        self.toolbarItems = [NSArray arrayWithObjects:emailButton, raceButton, nil];
         [navigationController setToolbarHidden:NO];
-        [startTime release];
-        startTime = NSLocalizedString(@"Loading...",nil);
-        [endTime release];
-        endTime = NSLocalizedString(@"Loading...",nil);
-        [distance release];
-        distance = NSLocalizedString(@"Loading...",nil);
-        [averageSpeed release];
-        averageSpeed = NSLocalizedString(@"Loading...",nil);
+        debug_NSLog(@"FileDetailViewController.viewWillAppear end");
 }
 
 - (void)enableButtons {
@@ -66,14 +63,29 @@
         [raceButton setEnabled:NO];
 }
 
-- (void)loadFile:(NSString*)newFilename {
+- (void)prepareForLoad:(NSString*)newFilename {
+        debug_NSLog(@"FileDetailViewController.prepareForLoad start");
         loading = YES;
-        [self disableButtons];
-        debug_NSLog(@"Starting loadFile:");
+        [self disableButtons];        
         [filename release];
-        filename = [newFilename retain];
-        [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
+        NSArray *fileParts = [newFilename componentsSeparatedByString:@"/"];
+        filename = [[fileParts objectAtIndex:[fileParts count] - 1] stringByDeletingPathExtension];
+        [filename retain];
+        [startTime release];
+        startTime = NSLocalizedString(@"Loading...",nil);
+        [endTime release];
+        endTime = NSLocalizedString(@"Loading...",nil);
+        [distance release];
+        distance = NSLocalizedString(@"Loading...",nil);
+        [averageSpeed release];
+        averageSpeed = NSLocalizedString(@"Loading...",nil);
 
+        [tableView reloadData];
+        debug_NSLog(@"FileDetailViewController.prepareForLoad end");
+}
+
+- (void)loadFile:(NSString*)newFilename {
+        debug_NSLog(@"FileDetailViewController.loadFile start");
         self.navigationController.title = NSLocalizedString(@"File",nil);
         [reader release];
         [math release];
@@ -98,9 +110,10 @@
         averageSpeed = [delegate formatSpeed:[math averageSpeed]];
         [averageSpeed retain];
         loading = NO;
+        
         [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
         [self performSelectorOnMainThread:@selector(enableButtons) withObject:nil waitUntilDone:YES];
-        debug_NSLog(@"Finished loadFile:");
+        debug_NSLog(@"FileDetailViewController.loadFile end");
 }
 
 - (IBAction)sendFile:(id)sender {
@@ -123,7 +136,8 @@
 }
 
 - (IBAction)raceAgainstFile:(id)sender {
-        [(GlintAppDelegate*) [[UIApplication sharedApplication] delegate] setRaceAgainstLocations:[reader locations]];
+        NSArray *raceLocs = [reader locations];
+        [(GlintAppDelegate*) [[UIApplication sharedApplication] delegate] setRaceAgainstLocations:raceLocs];
         [[NSUserDefaults standardUserDefaults] setValue:filename forKey:@"raceAgainstFile"];
         [delegate switchToGPSView:sender];
         [navigationController popViewControllerAnimated:NO];
@@ -182,12 +196,10 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
 
-        NSArray *fileParts;
         switch (indexPath.row + 5 * indexPath.section) {
                 case 0:
-                        fileParts = [filename componentsSeparatedByString:@"/"];
                         cell.textLabel.text = NSLocalizedString(@"File Name",nil);
-                        cell.detailTextLabel.text = [[fileParts objectAtIndex:[fileParts count] - 1] stringByDeletingPathExtension];
+                        cell.detailTextLabel.text = filename;
                         break;
                 case 1:
                         cell.textLabel.text = NSLocalizedString(@"Start Time",nil);

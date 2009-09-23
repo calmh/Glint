@@ -17,6 +17,7 @@
         NSDate *firstMeasurement;
         CLLocation *lastKnownPosition;
         NSMutableArray *locations;
+        NSArray *raceLocations;
 }
 
 @property (readonly) float currentSpeed;
@@ -25,9 +26,10 @@
 @property (readonly) float totalDistance;
 @property (readonly) float elapsedTime;
 @property (readonly) float estimatedElapsedTime;
-@property (retain) CLLocation *lastKnownPosition;
+@property (retain, nonatomic) CLLocation *lastKnownPosition;
 @property (readonly) CLLocation *lastRecordedPosition;
 @property (readonly) NSArray *locations;
+@property (retain, nonatomic) NSArray *raceLocations;
 
 + (BOOL)isBreakMarker:(CLLocation*)location;
 
@@ -44,5 +46,7 @@
 - (NSArray*)startAndFinishTimesInArray:(NSArray*)locations;
 - (float)estimatedTotalDistanceAtTime:(NSDate*)when;
 - (float)estimatedTotalDistance;
+- (float)timeDifferenceInRace;
+- (float)distDifferenceInRace;
 
 @end
