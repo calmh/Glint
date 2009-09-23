@@ -36,6 +36,7 @@
 @property (retain, nonatomic) IBOutlet LapTimeViewController *lapTimeController;
 @property (retain, nonatomic) IBOutlet RouteViewController *routeController;
 
+- (void)prepareForLoad:(NSString*)newFilename;
 - (void)loadFile:(NSString*)newFilename;
 - (IBAction)sendFile:(id)sender;
 - (IBAction)raceAgainstFile:(id)sender;

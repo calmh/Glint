@@ -11,28 +11,23 @@
 #import <MapKit/MapKit.h>
 #import "JBSoundEffect.h"
 #import "JBLocationMath.h"
-#import "JBGPXWriter.h"
 #import "JBGradientLabel.h"
 #import "CompassView.h"
 #import "GlintAppDelegate.h"
 #import "SlideView.h"
 #import "LapTimeViewController.h"
+#import "GPSManager.h"
 
 @interface MainScreenViewController : UIViewController  <CLLocationManagerDelegate, SlideViewDelegate> {
         GlintAppDelegate *delegate;
-        CLLocationManager *locationManager;
-        JBLocationMath *math;
+        GPSManager *gpsManager;
+        
         NSArray *unitSets;
-        JBGPXWriter *gpxWriter;
         NSDate *firstMeasurementDate;
         NSDate *lastMeasurementDate;
         JBSoundEffect *goodSound, *badSound, *lapSound;
-        BOOL gpsEnabled;
         NSArray *toolbarItems;
         NSTimer *lockTimer;
-        NSArray *raceAgainstLocations;
-        BOOL stateGood;
-        bool isPaused;
 
         CGPoint touchStartPoint;
         NSDate *touchStartTime;
@@ -98,11 +93,9 @@
 @property (nonatomic, retain) IBOutlet UILabel *tertiaryScreenDescription;
 @property (nonatomic, retain) IBOutlet LapTimeViewController *lapTimeController;
 
-- (void)setRaceAgainstLocations:(NSArray*)locations;
-
 - (void)playPause:(id)sender;
 - (void)startStopRecording:(id)sender;
-- (void)resumeRecording:(JBLocationMath*)locationMath onFilename:(NSString*)filename;
+- (void)resumeRecordingOnFile:(NSString*)filename;
 - (void)slided:(id)sender;
 - (void)endRace:(id)sender;
 - (IBAction)pageChanged:(id)sender;

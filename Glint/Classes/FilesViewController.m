@@ -219,6 +219,7 @@
         NSArray *section = [files objectAtIndex:p.section];
         NSString *file = [section objectAtIndex:p.row];
         NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
+        [detailViewController prepareForLoad:fullPath];
         [navigationController pushViewController:detailViewController animated:YES];
         [delegate.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:detailViewController selector:@selector(loadFile:) object:fullPath] autorelease]];
 }

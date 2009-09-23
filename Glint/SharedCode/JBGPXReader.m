@@ -90,7 +90,7 @@ didStartElement:(NSString *)elementName
                 CLLocationCoordinate2D coord;
                 coord.latitude = lastReadLat;
                 coord.longitude = lastReadLon;
-                CLLocation *loc = [[CLLocation alloc] initWithCoordinate:coord altitude:0 horizontalAccuracy:-1 verticalAccuracy:-1 timestamp:lastReadDate];
+                CLLocation *loc = [[CLLocation alloc] initWithCoordinate:coord altitude:0 horizontalAccuracy:50.0f verticalAccuracy:50.0f timestamp:lastReadDate];
                 //[locations addObject:loc];
                 [locationMath updateLocation:loc];
                 [loc release];

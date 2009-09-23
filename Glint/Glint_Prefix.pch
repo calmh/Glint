@@ -16,6 +16,9 @@
 // How often to refresh the main screen display (in seconds)
 #define DISPLAY_THREAD_INTERVAL 0.5
 
+// How often to refresh background status (in seconds)
+#define STATUS_THREAD_INTERVAL 0.4
+
 // How often to check if it's time to record a new trackpoint (in seconds)
 #define MEASUREMENT_THREAD_INTERVAL 5.0
 

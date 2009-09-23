@@ -14,7 +14,7 @@
 
 @implementation JBLocationMath
 
-@synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition, locations, elapsedTime;
+@synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition, locations, elapsedTime, raceLocations;
 
 + (BOOL)isBreakMarker:(CLLocation *)location {
         return (!location || location.coordinate.latitude == 360.0f);
@@ -27,6 +27,7 @@
                 totalDistance = 0.0f;
                 lastKnownPosition = nil;
                 firstMeasurement = nil;
+                raceLocations = nil;
                 locations = [[NSMutableArray alloc] init];
         }
         return self;
@@ -202,11 +203,11 @@
 }
 
 - (float)averageSpeed {
-        CLLocation *reference = self.lastRecordedPosition;
-        if (![JBLocationMath isBreakMarker:reference])
-                return totalDistance / [reference.timestamp timeIntervalSinceDate:firstMeasurement];
+        if (elapsedTime > 0.0f)
+                return totalDistance / elapsedTime;
         else
                 return 0.0f;
+
 }
 
 - (float)estimatedElapsedTime {
@@ -222,6 +223,18 @@
                 return nil;
         else
                 return [locations lastObject];
+}
+
+// How far ahead (-) or behind (+) in time we are.
+- (float)timeDifferenceInRace {
+        float raceTime = [self timeAtLocationByDistance:totalDistance inLocations:raceLocations];
+        return elapsedTime - raceTime;
+}
+
+// How far ahead (+) or behind (-) in position we are.
+- (float)distDifferenceInRace {
+        float raceDist = [self distanceAtPointInTime:elapsedTime inLocations:raceLocations];
+        return totalDistance - raceDist;
 }
 
 /*

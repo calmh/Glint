@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GPSManager.h"
+
 @class MainScreenViewController;
 @class FilesViewController;
 
@@ -16,6 +18,7 @@
         FilesViewController *sendFilesViewController;
         UINavigationController *navController;
         NSOperationQueue *queue;
+        GPSManager *gpsManager;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -23,6 +26,7 @@
 @property (nonatomic, retain) IBOutlet FilesViewController *sendFilesViewController;
 @property (nonatomic, retain) IBOutlet UINavigationController *navController;
 @property (nonatomic, retain) NSOperationQueue *queue;
+@property (readonly) GPSManager *gpsManager;
 
 - (IBAction) switchToSendFilesView:(id)sender;
 - (IBAction) switchToGPSView:(id)sender;

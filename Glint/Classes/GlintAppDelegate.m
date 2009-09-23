@@ -12,7 +12,6 @@
 
 @interface GlintAppDelegate ()
 - (void)loadRaceFile:(NSString *)raceAgainstFile;
-- (void)loadRecordingFile:(NSString *)recordingFile;
 @end
 
 @implementation GlintAppDelegate
@@ -69,7 +68,7 @@
         NSString *recordingFile;
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"restart_recording"] &&
             (recordingFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"recording_filename"])) {
-                [self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(loadRecordingFile:) object:recordingFile] autorelease]];
+                [self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:mainScreenViewController selector:@selector(resumeRecordingOnFile:) object:recordingFile] autorelease]];
         }
 
         // Load file to race against, in the background
@@ -77,6 +76,13 @@
         if (raceAgainstFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"raceAgainstFile"]) {
                 [self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(loadRaceFile:) object:raceAgainstFile] autorelease]];
         }
+}
+
+- (GPSManager*)gpsManager {
+        if (gpsManager == nil)
+                // Start GPS manager
+                gpsManager = [[GPSManager alloc] init];
+        return gpsManager;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -105,7 +111,7 @@
 }
 
 - (void)setRaceAgainstLocations:(NSArray*)locations {
-        [[self mainScreenViewController] setRaceAgainstLocations:locations];
+        [[gpsManager math] setRaceLocations:locations];
 }
 
 // Global formatting functions
@@ -200,17 +206,7 @@
 - (void)loadRaceFile:(NSString*)raceAgainstFile
 {
         JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:raceAgainstFile];
-        [mainScreenViewController performSelectorOnMainThread:@selector(setRaceAgainstLocations:) withObject:[reader locations] waitUntilDone:NO];
-        [reader release];
-
-}
-
-- (void)loadRecordingFile:(NSString*)recordingFile
-{
-        JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:recordingFile];
-        // Tack on a break marker to the end, to signify that we have been restarted.
-        [[reader locationMath] insertBreakMarker];
-        [mainScreenViewController resumeRecording:[reader locationMath] onFilename:recordingFile];
+        [[gpsManager math] setRaceLocations:[reader locations]];
         [reader release];
 }
 
