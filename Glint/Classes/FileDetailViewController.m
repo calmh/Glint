@@ -68,9 +68,7 @@
         loading = YES;
         [self disableButtons];
         [filename release];
-        NSArray *fileParts = [newFilename componentsSeparatedByString:@"/"];
-        filename = [[fileParts objectAtIndex:[fileParts count] - 1] stringByDeletingPathExtension];
-        [filename retain];
+        filename = [newFilename retain];
         [startTime release];
         startTime = NSLocalizedString(@"Loading...",nil);
         [endTime release];
@@ -196,10 +194,14 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
 
+        NSString *shortFilename;
+        NSArray *fileParts;
         switch (indexPath.row + 5 * indexPath.section) {
                 case 0:
+                        fileParts = [filename componentsSeparatedByString:@"/"];
+                        shortFilename = [[fileParts objectAtIndex:[fileParts count] - 1] stringByDeletingPathExtension];
                         cell.textLabel.text = NSLocalizedString(@"File Name",nil);
-                        cell.detailTextLabel.text = filename;
+                        cell.detailTextLabel.text = shortFilename;
                         break;
                 case 1:
                         cell.textLabel.text = NSLocalizedString(@"Start Time",nil);
