@@ -25,6 +25,7 @@
         [distances release];
         times = [[NSMutableArray alloc] init];
         distances = [[NSMutableArray alloc] init];
+        [(UITableView*)self.view reloadData];
 }
 
 - (void)dealloc {
@@ -39,13 +40,6 @@
         times = [[NSMutableArray alloc] init];
         distances = [[NSMutableArray alloc] init];
         self.title = NSLocalizedString(@"Lap Times",nil);
-
-#ifdef SCREENSHOT
-        [self addLapTime:345 forDistance:1000.0f];
-        [self addLapTime:354 forDistance:2000.0f];
-        [self addLapTime:340 forDistance:3000.0f];
-        [self addLapTime:340 forDistance:4000.0f];
-#endif
 }
 
 #pragma mark Table view methods
