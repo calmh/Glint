@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>39</string>
+	<string>40</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSMainNibFile</key>
@@ -29,7 +29,7 @@
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackOpaque</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.1b3</string>
+	<string>1.2.1b4</string>
 	<key>UIPrerenderedIcon</key>
 	<false/>
 </dict>
