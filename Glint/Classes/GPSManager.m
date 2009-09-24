@@ -79,7 +79,7 @@
         [math release];
         math = [[reader locationMath] retain];
         [reader release];
-        
+
         gpxWriter = [[JBGPXWriter alloc] initWithFilename:fileName];
         [gpxWriter addTrackSegment];
         for (CLLocation *loc in [math locations]) {
@@ -139,7 +139,7 @@
 {
         static int numLaps = 1;
         static float prevLapTime = 0.0f;
-        
+
         isPrecisionAcceptable = [self precisionAcceptable:newLocation];
         if (isPrecisionAcceptable) {
                 if (!isPaused) {
@@ -149,7 +149,7 @@
                                 float lapTime = [math timeAtLocationByDistance:numLaps*USERPREF_LAPLENGTH];
                                 [passedLapTimes addObject:[[[LapTime alloc] initWithDistance:numLaps*USERPREF_LAPLENGTH andTime:lapTime-prevLapTime] autorelease]];
                                 numLaps++;
-                                prevLapTime = lapTime;                                
+                                prevLapTime = lapTime;
                         }
                 } else {
                         [math updateLocationForDisplayOnly:newLocation];
@@ -194,18 +194,18 @@
         static float averageInterval = 0.0;
         static BOOL powersave = NO;
         NSDate *now = [NSDate date];
-        
+
         // Load user preferences the first time we need them.
-        
+
         if (averageInterval == 0.0) {
                 averageInterval = USERPREF_MEASUREMENT_INTERVAL;
                 powersave = USERPREF_POWERSAVE;
         }
-        
+
         // If we are paused, do nothing.
         if (isPaused)
                 return;
-        
+
         // Check if the GPS is disabled, and if so if we should enable it to do a measurement.
         if (!isGPSEnabled // The GPS is off
             && gpxWriter // We are recording
@@ -213,11 +213,11 @@
                 [self enableGPS];
                 return;
         }
-        
+
         // Check if it's time to save a trackpoint, and if we have enough precision.
         // If so, save it. If we dont have enough precision, create a break in the
         // track segment so this is reflected in the saved file.
-        
+
         CLLocation *current = locationManager.location;
         debug_NSLog(@"%@", [locationManager.location description]);
         if (gpxWriter && (!lastWrittenDate || [now timeIntervalSinceDate:lastWrittenDate] >= averageInterval - MEASUREMENT_THREAD_INTERVAL/2.0f )) {
@@ -233,7 +233,7 @@
                         debug_NSLog(@"Bad precision, waiting for waypoint");
                 }
         }
-        
+
         if (powersave // Power saving is enabled
             && isGPSEnabled // The GPS is enabled
             && gpxWriter // We are recording

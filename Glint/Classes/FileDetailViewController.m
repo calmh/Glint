@@ -42,7 +42,7 @@
         [self disableButtons];
         self.toolbarItems = [NSArray arrayWithObjects:emailButton, raceButton, nil];
         debug_NSLog(@"FileDetailViewController.awakeFromNib end");
-        
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -66,7 +66,7 @@
 - (void)prepareForLoad:(NSString*)newFilename {
         debug_NSLog(@"FileDetailViewController.prepareForLoad start");
         loading = YES;
-        [self disableButtons];        
+        [self disableButtons];
         [filename release];
         NSArray *fileParts = [newFilename componentsSeparatedByString:@"/"];
         filename = [[fileParts objectAtIndex:[fileParts count] - 1] stringByDeletingPathExtension];
@@ -110,7 +110,7 @@
         averageSpeed = [delegate formatSpeed:[math averageSpeed]];
         [averageSpeed retain];
         loading = NO;
-        
+
         [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
         [self performSelectorOnMainThread:@selector(enableButtons) withObject:nil waitUntilDone:YES];
         debug_NSLog(@"FileDetailViewController.loadFile end");

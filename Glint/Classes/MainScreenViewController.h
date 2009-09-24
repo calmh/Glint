@@ -21,7 +21,7 @@
 @interface MainScreenViewController : UIViewController  <CLLocationManagerDelegate, SlideViewDelegate> {
         GlintAppDelegate *delegate;
         GPSManager *gpsManager;
-        
+
         NSArray *unitSets;
         NSDate *firstMeasurementDate;
         NSDate *lastMeasurementDate;

@@ -78,7 +78,7 @@
         if (raceAgainstFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"raceAgainstFile"]) {
                 [self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(loadRaceFile:) object:raceAgainstFile] autorelease]];
         }
-        
+
         reachManager = [[Reachability reachabilityForInternetConnection] retain];
         [reachManager startNotifer];
 }

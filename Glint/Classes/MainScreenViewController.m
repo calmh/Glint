@@ -152,10 +152,10 @@
 
         NSTimer* displayUpdater = [NSTimer timerWithTimeInterval:DISPLAY_THREAD_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:displayUpdater forMode:NSDefaultRunLoopMode];
-        
+
         NSTimer* statusUpdater = [NSTimer timerWithTimeInterval:STATUS_THREAD_INTERVAL target:self selector:@selector(updateStatus:) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:statusUpdater forMode:NSDefaultRunLoopMode];
-        
+
         [pager setCurrentPage:USERPREF_CURRENTPAGE];
         [self switchPageWithoutAnimation];
 }
@@ -165,7 +165,7 @@
         [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
         [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
         [gpsManager commit];
-        
+
         [super viewWillDisappear:animated];
 }
 
@@ -230,9 +230,9 @@
 - (void)updateStatus:(NSTimer*)timer
 {
         static BOOL prevStateGood = NO;
-        
+
         // Update color of signal indicator, play sound on change
-        
+
         if (!gpsManager.isGPSEnabled)
                 [self disabledIndicator:signalIndicator];
         else {
@@ -240,7 +240,7 @@
                         [self positiveIndicator:signalIndicator];
                 else
                         [self negativeIndicator:signalIndicator];
-                
+
                 if (USERPREF_SOUNDS && prevStateGood != gpsManager.isPrecisionAcceptable) {
                         if (gpsManager.isPrecisionAcceptable)
                                 [goodSound play];
@@ -249,17 +249,17 @@
                 }
                 prevStateGood = gpsManager.isPrecisionAcceptable;
         }
-        
+
         JBLocationMath *tmath = [gpsManager math];
         NSArray *tloc = [tmath raceLocations];
-        
+
         if (tloc != nil)
                 [self positiveIndicator:racingIndicator];
         else
                 [self disabledIndicator:racingIndicator];
-        
+
         // Update lap times
-        
+
         NSArray *newLaptimes = [gpsManager queuedLapTimes];
         if ([newLaptimes count] > 0) {
                 [lapSound play];
