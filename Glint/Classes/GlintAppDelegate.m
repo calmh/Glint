@@ -21,6 +21,8 @@
 @synthesize sendFilesViewController;
 @synthesize navController;
 @synthesize queue;
+@synthesize reachManager;
+
 
 - (void)dealloc {
         [window release];
@@ -76,6 +78,9 @@
         if (raceAgainstFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"raceAgainstFile"]) {
                 [self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(loadRaceFile:) object:raceAgainstFile] autorelease]];
         }
+        
+        reachManager = [[Reachability reachabilityForInternetConnection] retain];
+        [reachManager startNotifer];
 }
 
 - (GPSManager*)gpsManager {

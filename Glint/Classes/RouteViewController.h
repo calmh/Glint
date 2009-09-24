@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "CSMapRouteLayerView.h"
+#import "GlintAppDelegate.h"
 
 @interface RouteViewController : UIViewController {
         NSArray *locations;

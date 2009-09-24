@@ -108,3 +108,5 @@
 ** Map screen
 */
 "Map View" = "Kartvy";
+"Internet Connectivity Required" = "Internetförbindelse krävs";
+"Utan förbindelse till Internet kan inte kartan visas. I stället visas en tom backgrund.";

@@ -37,8 +37,15 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
-        routeLayer = [[CSMapRouteLayerView alloc] initWithRoute:locations mapView:(MKMapView*)self.view];
         [super viewDidAppear:animated];
+        routeLayer = [[CSMapRouteLayerView alloc] initWithRoute:locations mapView:(MKMapView*)self.view];
+
+        GlintAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+        NetworkStatus netStatus = [[delegate reachManager] currentReachabilityStatus];
+        if (netStatus == NotReachable) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Internet Connectivity Required",nil) message:NSLocalizedString(@"Without internet connectivity, the map cannot be displayed. A blank background will be used instead.",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",nil) otherButtonTitles:nil];
+                [alert show];
+        }
 }
 
 @end

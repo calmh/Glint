@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GPSManager.h"
+#import "Reachability.h"
 
 @class MainScreenViewController;
 @class FilesViewController;
@@ -19,6 +20,7 @@
         UINavigationController *navController;
         NSOperationQueue *queue;
         GPSManager *gpsManager;
+        Reachability *reachManager;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -27,6 +29,7 @@
 @property (nonatomic, retain) IBOutlet UINavigationController *navController;
 @property (nonatomic, retain) NSOperationQueue *queue;
 @property (readonly) GPSManager *gpsManager;
+@property (readonly) Reachability *reachManager;
 
 - (IBAction) switchToSendFilesView:(id)sender;
 - (IBAction) switchToGPSView:(id)sender;

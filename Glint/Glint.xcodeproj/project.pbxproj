@@ -40,6 +40,9 @@
 		293D998A10625C4D00C86B6C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 293D998910625C4D00C86B6C /* Entitlements.plist */; };
 		2941215E105AEDE800B2A524 /* CSMapRouteLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */; };
 		2941216B105AEEB900B2A524 /* RouteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941216A105AEEB900B2A524 /* RouteViewController.m */; };
+		294DDEDC106B54B3001FD08C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 294DDEDB106B54B3001FD08C /* Reachability.m */; };
+		294DDEDD106B54B3001FD08C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 294DDEDB106B54B3001FD08C /* Reachability.m */; };
+		294DDEED106B54E5001FD08C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 294DDEEC106B54E5001FD08C /* SystemConfiguration.framework */; };
 		296729CF101CC745001BBEDF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296729CE101CC745001BBEDF /* MessageUI.framework */; };
 		2974387E101C727800DDBB6A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2974387D101C727800DDBB6A /* Default.png */; };
 		29760DE0102F125F00EE89CB /* SlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29760DDF102F125F00EE89CB /* SlideView.m */; };
@@ -162,6 +165,9 @@
 		2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSMapRouteLayerView.m; path = SharedCode/CSMapRouteLayerView.m; sourceTree = "<group>"; };
 		29412169105AEEB900B2A524 /* RouteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteViewController.h; sourceTree = "<group>"; };
 		2941216A105AEEB900B2A524 /* RouteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteViewController.m; sourceTree = "<group>"; };
+		294DDEDA106B54B3001FD08C /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = SharedCode/Reachability.h; sourceTree = "<group>"; };
+		294DDEDB106B54B3001FD08C /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = SharedCode/Reachability.m; sourceTree = "<group>"; };
+		294DDEEC106B54E5001FD08C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
 		296729CE101CC745001BBEDF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		2974387D101C727800DDBB6A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		29760DDE102F125F00EE89CB /* SlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideView.h; sourceTree = "<group>"; };
@@ -223,6 +229,7 @@
 				29CD7111100FB8B4001150A1 /* CFNetwork.framework in Frameworks */,
 				296729CF101CC745001BBEDF /* MessageUI.framework in Frameworks */,
 				29850316103701F1000D97A2 /* MapKit.framework in Frameworks */,
+				294DDEED106B54E5001FD08C /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,6 +324,8 @@
 		29886672101C95ED0051F368 /* Shared Code */ = {
 			isa = PBXGroup;
 			children = (
+				294DDEDA106B54B3001FD08C /* Reachability.h */,
+				294DDEDB106B54B3001FD08C /* Reachability.m */,
 				2941215C105AEDE800B2A524 /* CSMapRouteLayerView.h */,
 				2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */,
 				29886675101C96320051F368 /* JBGPXReader.h */,
@@ -393,6 +402,7 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				29850315103701F1000D97A2 /* MapKit.framework */,
 				296729CE101CC745001BBEDF /* MessageUI.framework */,
+				294DDEEC106B54E5001FD08C /* SystemConfiguration.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 			);
 			name = Frameworks;
@@ -620,6 +630,7 @@
 				2941215E105AEDE800B2A524 /* CSMapRouteLayerView.m in Sources */,
 				2941216B105AEEB900B2A524 /* RouteViewController.m in Sources */,
 				29FDFE2210694E8600F264F7 /* GPSManager.m in Sources */,
+				294DDEDC106B54B3001FD08C /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,6 +666,7 @@
 				29A0FD33106A85BD00DFEE47 /* CSMapRouteLayerView.m in Sources */,
 				29A0FD34106A85BD00DFEE47 /* RouteViewController.m in Sources */,
 				29A0FD35106A85BD00DFEE47 /* GPSManager.m in Sources */,
+				294DDEDD106B54B3001FD08C /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
