@@ -65,33 +65,32 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
         if (length <= 0)
                 return;
 
+        // Transform text characters to unicode glyphs.
         unichar chars[length];
         CGGlyph glyphs[length];
+        [[self text] getCharacters:chars range:NSMakeRange(0, length)];
+        CGFontRef font;
         do {
                 // Get drawing font.
-                CGFontRef font = CGFontCreateWithFontName((CFStringRef)[[self font] fontName]);
+                font = CGFontCreateWithFontName((CFStringRef)[[self font] fontName]);
                 CGContextSetFont(ctx, font);
                 CGContextSetFontSize(ctx, pointSize);
 
-                // Transform text characters to unicode glyphs.
-
-                [[self text] getCharacters:chars range:NSMakeRange(0, length)];
-                CGFontGetGlyphsForUnichars(font, chars, glyphs, length);
-
                 // Measure text dimensions.
+                CGFontGetGlyphsForUnichars(font, chars, glyphs, length);
                 CGContextSetTextDrawingMode(ctx, kCGTextInvisible);
                 CGContextSetTextPosition(ctx, 0, 0);
                 CGContextShowGlyphs(ctx, glyphs, length);
                 textEnd = CGContextGetTextPosition(ctx);
-                if (textEnd.x > rect.size.width)
+                if (textEnd.x > rect.size.width) {
                         pointSize *= 0.975;
-                CGFontRelease(font);
+                        CGFontRelease(font);
+                }
         } while (textEnd.x > rect.size.width);
 
         // Calculate text drawing point.
-
         CGPoint alignment = CGPointMake(0, 0);
-        CGPoint anchor = CGPointMake(textEnd.x * (-0.5), [[self font] pointSize] * (-0.33));
+        CGPoint anchor = CGPointMake(textEnd.x * (-0.5), pointSize * (-0.33));
         CGPoint p = CGPointApplyAffineTransform(anchor, CGAffineTransformMake(1, 0, 0, -1, 0, 1));
 
         if ([self textAlignment] == UITextAlignmentCenter) {
@@ -107,38 +106,24 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
         alignment.y = [self bounds].size.height * 0.5 + p.y;
 
         // Flip back mirrored text.
-
         CGContextSetTextMatrix(ctx, CGAffineTransformMakeScale(1, -1));
 
-        // Draw shadow.
-
-        /*
-         CGContextSaveGState(ctx);
-         CGContextSetTextDrawingMode(ctx, kCGTextFill);
-         CGContextSetFillColorWithColor(ctx, [[self shadowColor] CGColor]);
-         CGContextSetShadowWithColor(ctx, [self shadowOffset], 0, [[self shadowColor] CGColor]);
-         CGContextShowGlyphsAtPoint(ctx, alignment.x, alignment.y, glyphs, length);
-         CGContextRestoreGState(ctx);
-         */
-
         // Draw text clipping path.
-
         CGContextSetTextDrawingMode(ctx, kCGTextClip);
         CGContextShowGlyphsAtPoint(ctx, alignment.x, alignment.y, glyphs, length);
 
         // Restore text mirroring.
-
         CGContextSetTextMatrix(ctx, CGAffineTransformIdentity);
 
         // Fill text clipping path with gradient.
-
         CGPoint start = CGPointMake(rect.origin.x, rect.origin.y);
         CGPoint end = CGPointMake(rect.origin.x, rect.size.height);
         CGContextDrawLinearGradient(ctx, gradient, start, end, 0);
 
         // Cut outside clipping path.
-
         CGContextClip(ctx);
+
+        CGFontRelease(font);
 }
 
 @end
