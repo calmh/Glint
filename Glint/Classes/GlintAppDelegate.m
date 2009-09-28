@@ -135,12 +135,12 @@
                 int min = (int) ((isec % 3600) / 60);
                 int sec = (int) (isec % 60);
                 if (hour == 0) {
-                if (allowNegatives && !negative)
-                        return [NSString stringWithFormat:@"+%02d:%02d", min, sec];
-                else if (negative)
-                        return [NSString stringWithFormat:@"-%02d:%02d", min, sec];
-                else
-                        return [NSString stringWithFormat:@"%02d:%02d", min, sec];
+                        if (allowNegatives && !negative)
+                                return [NSString stringWithFormat:@"+%02d:%02d", min, sec];
+                        else if (negative)
+                                return [NSString stringWithFormat:@"-%02d:%02d", min, sec];
+                        else
+                                return [NSString stringWithFormat:@"%02d:%02d", min, sec];
                 } else {
                         if (allowNegatives && !negative)
                                 return [NSString stringWithFormat:@"+%02d:%02d:%02d", hour, min, sec];
@@ -172,10 +172,10 @@
 }
 
 - (NSDictionary *) currentUnitset {
-  NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
-                NSArray *unitSets = [NSArray arrayWithContentsOfFile:path];
-                NSDictionary* units = [unitSets objectAtIndex:USERPREF_UNITSET];
-  return units;
+        NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
+        NSArray *unitSets = [NSArray arrayWithContentsOfFile:path];
+        NSDictionary* units = [unitSets objectAtIndex:USERPREF_UNITSET];
+        return units;
 }
 
 - (NSString*)formatDistance:(float)distance {

@@ -133,5 +133,9 @@
 
 }
 
+- (int)numberOfLapTimes {
+        return [times count];
+}
+
 @end
 

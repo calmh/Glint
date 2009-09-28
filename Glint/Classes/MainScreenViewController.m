@@ -22,13 +22,6 @@
 - (void)shiftViewsTo:(float)position;
 @end
 
-/*
- * Background threads
- */
-@interface MainScreenViewController (backgroundThreads)
-- (void)updateDisplay:(NSTimer*)timer;
-@end
-
 @implementation MainScreenViewController
 
 @synthesize containerView, primaryView, secondaryView, tertiaryView;
@@ -264,6 +257,7 @@
         if ([newLaptimes count] > 0) {
                 [lapSound play];
                 for (LapTime *l in newLaptimes) {
+                        debug_NSLog(@"Lap time: %f seconds at distance %f meters", l.elapsedTime, l.distance);
                         [lapTimeController addLapTime:l.elapsedTime forDistance:l.distance];
                 }
         }

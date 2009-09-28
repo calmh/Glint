@@ -99,5 +99,7 @@
 - (void)slided:(id)sender;
 - (void)endRace:(id)sender;
 - (IBAction)pageChanged:(id)sender;
+- (void)updateStatus:(NSTimer*)timer;
+- (void)updateDisplay:(NSTimer*)timer;
 
 @end

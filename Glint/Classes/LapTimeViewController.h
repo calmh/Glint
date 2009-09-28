@@ -17,5 +17,6 @@
 
 - (void)addLapTime:(float)seconds forDistance:(float)distance;
 - (void)clear;
+- (int)numberOfLapTimes;
 
 @end

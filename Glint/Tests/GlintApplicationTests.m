@@ -104,20 +104,26 @@
         STAssertEqualsWithAccuracy([[gps math] currentSpeed], 1.3f, 0.1f, @"Current speed is wrong at completion");
         STAssertEqualsWithAccuracy([[gps math] averageSpeed], 460.0f / 485.0f, 0.1f, @"Average speed is wrong at completion");
 
-        // Check that we got four lap times, one for each 100m
-        NSArray *laptimes = [gps queuedLapTimes];
-        intres = [laptimes count];
-        STAssertEquals(intres, 4, @"Number of lap times incorrect");
-        for (int i = 1; i <= 4; i++) {
-                LapTime *lt = [laptimes objectAtIndex:i-1];
-                STAssertEquals(lt.distance, i*100.0f, @"Lap length incorrect");
-                STAssertEqualsWithAccuracy(lt.elapsedTime, 110.0f, 26.0f, @"Lap time incorrect");
-        }
+        [[appDelegate mainScreenViewController] updateStatus:nil];
+        [[appDelegate mainScreenViewController] updateDisplay:nil];
+        [[appDelegate mainScreenViewController] updateStatus:nil];
+        [[appDelegate mainScreenViewController] updateDisplay:nil];
 
-        // Check that we don't get the laps again
-        laptimes = [gps queuedLapTimes];
-        intres = [laptimes count];
-        STAssertEquals(intres, 0, @"Number of lap times incorrect second time");
+        STAssertEquals([[[appDelegate mainScreenViewController] lapTimeController] numberOfLapTimes], 4u, @"Wrong number of lap times");
+        UITableView *tableView = (UITableView*) [[[appDelegate mainScreenViewController] lapTimeController] view];
+        STAssertNotNil(tableView, @"tableView cannot be nil");
+
+        // Check the text of a lap time label
+        NSUInteger indexes[] = { 0, 3 };
+        NSIndexPath *indexPath = [[NSIndexPath alloc] initWithIndexes:indexes length:2];
+        UITableViewCell *cell = [[[appDelegate mainScreenViewController] lapTimeController] tableView:tableView cellForRowAtIndexPath:indexPath];
+        STAssertNotNil(cell, @"Cell cannot be nil");
+        NSArray *subs = [cell.contentView subviews];
+        STAssertNotNil(subs, @"Subviews cannot be nil");
+        STAssertEquals([subs count], 3u, @"Wrong number of subviews");
+        STAssertEqualObjects(((UILabel*)[subs objectAtIndex:0]).text, @"0.40 km", @"Lap time string 0 is wrong");
+        STAssertEqualObjects(((UILabel*)[subs objectAtIndex:1]).text, @"01:53", @"Lap time string 1 is wrong");
+        STAssertEqualObjects(((UILabel*)[subs objectAtIndex:2]).text, @"-00:21", @"Lap time string 2 is wrong");
 }
 
 - (void)test_b_Race {
