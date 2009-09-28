@@ -109,7 +109,7 @@
         [[appDelegate mainScreenViewController] updateStatus:nil];
         [[appDelegate mainScreenViewController] updateDisplay:nil];
 
-        STAssertEquals([[[appDelegate mainScreenViewController] lapTimeController] numberOfLapTimes], 4u, @"Wrong number of lap times");
+        STAssertEquals([[[appDelegate mainScreenViewController] lapTimeController] numberOfLapTimes], 4, @"Wrong number of lap times");
         UITableView *tableView = (UITableView*) [[[appDelegate mainScreenViewController] lapTimeController] view];
         STAssertNotNil(tableView, @"tableView cannot be nil");
 
