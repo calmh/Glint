@@ -101,5 +101,7 @@
 - (IBAction)pageChanged:(id)sender;
 - (void)updateStatus:(NSTimer*)timer;
 - (void)updateDisplay:(NSTimer*)timer;
-
+#ifdef FAKE_MOVEMENT
+- (void)fakeMovement:(NSTimer*)timer;
+#endif
 @end

@@ -68,7 +68,7 @@
 // Maximum time with unsaved trackpoints (seconds)
 #define AUTO_COMMIT_INTERVAL 60.0f
 
-// #define SCREENSHOT
+// #define FAKE_MOVEMENT
 
 #ifdef DEBUG
 #define debug_NSLog(format, ...) NSLog(format, ## __VA_ARGS__)
