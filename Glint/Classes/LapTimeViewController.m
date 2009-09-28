@@ -36,10 +36,10 @@
 
 - (void)viewDidLoad {
         [super viewDidLoad];
+
         delegate = [[UIApplication sharedApplication] delegate];
-        times = [[NSMutableArray alloc] init];
-        distances = [[NSMutableArray alloc] init];
         self.title = NSLocalizedString(@"Lap Times",nil);
+        [self clear];
 }
 
 #pragma mark Table view methods
@@ -59,6 +59,10 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+        const float maxWidth = 270.f;
+        float padding = 0.0f;
+        if (tableView.frame.size.width > maxWidth)
+                padding = (tableView.frame.size.width - maxWidth) / 2.0f;
 
         if ([times count] > 0) {
                 static NSString *CellIdentifier = @"Cell";
@@ -73,22 +77,22 @@
                         [cell.imageView removeFromSuperview];
 
                         JBGradientLabel *newLabel;
-                        newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(10.0f, 5.0f, 100.0f, 28.0f)] autorelease];
-                        newLabel.font = [UIFont fontWithName:@"Helvetica" size:28.0f];
+                        newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(padding + 0.0f, 5.0f, 80.0f, FONTSIZE)] autorelease];
+                        newLabel.font = [UIFont fontWithName:@"Helvetica" size:FONTSIZE];
                         newLabel.backgroundColor = [UIColor blackColor];
                         newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
                         newLabel.textAlignment = UITextAlignmentRight;
                         [cell.contentView addSubview:newLabel];
 
-                        newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(122.0f, 5.0f, 80.0f, 28.0f)] autorelease];
-                        newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:28.0f];
+                        newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(padding + 90.0f, 5.0f, 85.0f, FONTSIZE)] autorelease];
+                        newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:FONTSIZE];
                         newLabel.backgroundColor = [UIColor blackColor];
                         newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
                         newLabel.textAlignment = UITextAlignmentRight;
                         [cell.contentView addSubview:newLabel];
 
-                        newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(212.0f, 5.0f, 98.0f, 28.0f)] autorelease];
-                        newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:28.0f];
+                        newLabel = [[[JBGradientLabel alloc] initWithFrame:CGRectMake(padding + 185.0f, 5.0f, 85.0f, FONTSIZE)] autorelease];
+                        newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:FONTSIZE];
                         newLabel.backgroundColor = [UIColor blackColor];
                         newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
                         newLabel.textAlignment = UITextAlignmentRight;
@@ -103,7 +107,9 @@
                 ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:0]).text = [delegate formatDistance:distance];
                 ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:1]).text = [delegate formatTimestamp:lapTime maxTime:86400 allowNegatives:NO];
                 if (indexPath.row > 0) {
-                        ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:2]).text = [delegate formatTimestamp:difference maxTime:86400 allowNegatives:YES];
+                        NSString *plusOrMinus = [delegate formatTimestamp:difference maxTime:86400 allowNegatives:YES];
+                        debug_NSLog(@"Lap time delta: %@", plusOrMinus);
+                        ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:2]).text = plusOrMinus;
                         if (difference > lapTime * 0.05) // Highlight differences of at least 10%, positive and negative
                                 ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:1.0f green:0.5f blue:0.5f alpha:1.0f];
                         else if (difference < lapTime * -0.05)
@@ -129,7 +135,7 @@
         if ([times count] == 0) // Instructions
                 return 300.0f;
         else // Normal cell
-                return 33.0f;
+                return FONTSIZE + 3.0f;
 
 }
 

@@ -20,3 +20,5 @@
 - (int)numberOfLapTimes;
 
 @end
+
+#define FONTSIZE 28.0f
