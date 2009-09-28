@@ -41,7 +41,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
         self.navigationItem.rightBarButtonItem = [self editButtonItem];
-        [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
         [navigationController setToolbarHidden:YES];
         [super viewWillAppear:animated];
 }
@@ -215,9 +214,9 @@
  */
 
 - (void)tableView:(UITableView *)etableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-        NSIndexPath *p = [tableView indexPathForSelectedRow];
-        NSArray *section = [files objectAtIndex:p.section];
-        NSString *file = [section objectAtIndex:p.row];
+        [etableView deselectRowAtIndexPath:indexPath animated:YES];
+        NSArray *section = [files objectAtIndex:indexPath.section];
+        NSString *file = [section objectAtIndex:indexPath.row];
         NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
         [detailViewController prepareForLoad:fullPath];
         [navigationController pushViewController:detailViewController animated:YES];

@@ -222,13 +222,13 @@
                 case 5:
                         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DisclosureItem"] autorelease];
                         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                         cell.textLabel.text = NSLocalizedString(@"Lap Times",nil);
                         break;
                 case 6:
                         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DisclosureItem"] autorelease];
                         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                         cell.textLabel.text = NSLocalizedString(@"View On Map",nil);
                         break;
                 default:
@@ -257,7 +257,8 @@
 
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)etableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+        [etableView deselectRowAtIndexPath:indexPath animated:YES];
         if (indexPath.section == 1 && indexPath.row == 0)
                 [self viewLapTimes];
         else if (indexPath.section == 1 && indexPath.row == 1)
