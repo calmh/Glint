@@ -114,6 +114,8 @@
                                 ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:1.0f green:0.5f blue:0.5f alpha:1.0f];
                         else if (difference < lapTime * -0.05)
                                 ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:0.5f green:1.0f blue:0.5f alpha:1.0f];
+                        else
+                                ((JBGradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
                 }
 
                 return cell;
