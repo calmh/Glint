@@ -96,12 +96,12 @@
 }
 
 - (float)bearingFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB {
-        float y1 = locA.coordinate.latitude / 180.0 * M_PI;
-        float x1 = locA.coordinate.longitude / 180.0 * M_PI;
-        float y2 = locB.coordinate.latitude / 180.0 * M_PI;
-        float x2 = locB.coordinate.longitude / 180.0 * M_PI;
-        float y = cos(x1) * sin(x2) - sin(x1) * cos(x2) * cos(y2-y1);
-        float x = sin(y2-y1) * cos(x2);
+        float x1 = locA.coordinate.latitude / 180.0 * M_PI;
+        float y1 = locA.coordinate.longitude / 180.0 * M_PI;
+        float x2 = locB.coordinate.latitude / 180.0 * M_PI;
+        float y2 = locB.coordinate.longitude / 180.0 * M_PI;
+        float x = cos(x1) * sin(x2) - sin(x1) * cos(x2) * cos(y2-y1);
+        float y = sin(y2-y1) * cos(x2);
         float t = atan2(y, x);
         float bearing = t / M_PI * 180.0 + 360.0;
         if (bearing >= 360.0)
