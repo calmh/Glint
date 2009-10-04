@@ -9,8 +9,6 @@
 #import "GPSManager.h"
 
 @interface GPSManager ()
-- (void)enableGPS;
-- (void)disableGPS;
 - (bool)precisionAcceptable:(CLLocation*)location;
 - (void)takeAveragedMeasurement:(NSTimer*)timer;
 @end
@@ -129,6 +127,25 @@
         [gpxWriter commit];
 }
 
+- (void)enableGPS {
+        debug_NSLog(@"Starting GPS");
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.distanceFilter = FILTER_DISTANCE;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        locationManager.delegate = self;
+        [locationManager startUpdatingLocation];
+        isGPSEnabled = YES;
+}
+
+- (void)disableGPS {
+        debug_NSLog(@"Stopping GPS");
+        locationManager.delegate = nil;
+        [locationManager stopUpdatingLocation];
+        [locationManager release];
+        locationManager = nil;
+        isGPSEnabled = NO;
+}
+
 /*
  * LocationManager Delegate
  */
@@ -160,25 +177,6 @@
 /*
  * Private methods
  */
-
-- (void)enableGPS {
-        debug_NSLog(@"Starting GPS");
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.distanceFilter = FILTER_DISTANCE;
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        locationManager.delegate = self;
-        [locationManager startUpdatingLocation];
-        isGPSEnabled = YES;
-}
-
-- (void)disableGPS {
-        debug_NSLog(@"Stopping GPS");
-        locationManager.delegate = nil;
-        [locationManager stopUpdatingLocation];
-        [locationManager release];
-        locationManager = nil;
-        isGPSEnabled = NO;
-}
 
 - (bool)precisionAcceptable:(CLLocation*)location {
         static float minPrec = 0.0;

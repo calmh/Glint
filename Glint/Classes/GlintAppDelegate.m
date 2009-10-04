@@ -85,13 +85,16 @@
 }
 
 - (GPSManager*)gpsManager {
-        if (gpsManager == nil)
+        if (gpsManager == nil) {
                 // Start GPS manager
                 gpsManager = [[GPSManager alloc] init];
+                [gpsManager enableGPS];
+        }
         return gpsManager;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+        [gpsManager disableGPS];
         [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

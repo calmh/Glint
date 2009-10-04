@@ -43,6 +43,8 @@
 - (void)resumeUpdates;
 - (void)commit;
 - (void)clearForUnitTests;
+- (void)enableGPS;
+- (void)disableGPS;
 
 @property (retain) JBLocationMath *math;
 @property (readonly) BOOL isPaused;
