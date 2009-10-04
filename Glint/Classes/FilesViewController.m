@@ -31,7 +31,7 @@
 - (void)viewDidLoad {
         delegate = [[UIApplication sharedApplication] delegate];
         self.title = NSLocalizedString(@"Files",nil);
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);	
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         documentsDirectory = [paths objectAtIndex:0];
         [documentsDirectory retain];
         files = nil;
@@ -41,7 +41,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
         self.navigationItem.rightBarButtonItem = [self editButtonItem];
-        [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
         [navigationController setToolbarHidden:YES];
         [super viewWillAppear:animated];
 }
@@ -51,17 +50,17 @@
         files = [[NSMutableArray alloc] init];
         [sections release];
         sections = [[NSMutableArray alloc] init];
-        
+
         NSArray* fileList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
         NSArray* sortedFileList = [fileList sortedArrayUsingSelector:@selector(compare:)];
         NSEnumerator *enumer = [sortedFileList reverseObjectEnumerator];
-        
+
         NSString *fileName;
         while (fileName = [enumer nextObject]) {
                 int section = [self sectionForFile:fileName];
                 [[files objectAtIndex:section] addObject:fileName];
         }
-        
+
         [tableView reloadData];
 }
 
@@ -142,7 +141,7 @@
                         break;
         if (i < [sections count])
                 return i;
-        
+
         [sections addObject:descr];
         [files addObject:[NSMutableArray array]];
         return [sections count] - 1;
@@ -151,10 +150,10 @@
 - (NSString*)sectionDescriptionForFile:(NSString*)fileName {
         NSDictionary *attrs = [[NSFileManager defaultManager] fileAttributesAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, fileName] traverseLink:NO];
         NSDate *created = [attrs objectForKey:NSFileModificationDate];
-        
+
         NSDateComponents *comps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:created/* toDate:compare options:0*/];
         NSDateComponents *nowComps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:[NSDate date]/* toDate:compare options:0*/];
-        
+
         if (comps.year < nowComps.year)
                 return NSLocalizedString(@"Earlier",nil);
         else if (comps.month < nowComps.month - 1)
@@ -181,10 +180,10 @@
 
 - (NSString*)commentForFile:(NSString*)file {
         NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
-        NSString *fileContents = [NSString stringWithContentsOfFile:fullPath];
+        NSString *fileContents = [NSString stringWithContentsOfFile:fullPath encoding:NSUTF8StringEncoding error:nil];
         float distance = 0.0;
         int numPoints = 0;
-        
+
         NSRange rangeBegin = [fileContents rangeOfString:@"[totalDistance]"];
         NSRange rangeEnd = [fileContents rangeOfString:@"[/totalDistance]"];
         if (rangeBegin.length > 0)
@@ -195,7 +194,7 @@
                 NSString *matched = [fileContents substringWithRange:matchRange];
                 distance = [matched doubleValue];
         }
-        
+
         rangeBegin = [fileContents rangeOfString:@"[numPoints]"];
         rangeEnd = [fileContents rangeOfString:@"[/numPoints]"];
         if (rangeBegin.length > 0)
@@ -206,7 +205,7 @@
                 NSString *matched = [fileContents substringWithRange:matchRange];
                 numPoints = [matched intValue];
         }
-        
+
         return [NSString stringWithFormat:@"%d %@, %@", numPoints, NSLocalizedString(@"points",nil), [delegate formatDistance:distance]];
 }
 
@@ -215,16 +214,17 @@
  */
 
 - (void)tableView:(UITableView *)etableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-        NSIndexPath *p = [tableView indexPathForSelectedRow];
-        NSArray *section = [files objectAtIndex:p.section];
-        NSString *file = [section objectAtIndex:p.row];                
+        [etableView deselectRowAtIndexPath:indexPath animated:YES];
+        NSArray *section = [files objectAtIndex:indexPath.section];
+        NSString *file = [section objectAtIndex:indexPath.row];
         NSString *fullPath = [NSString stringWithFormat:@"%@/%@", documentsDirectory, file];
+        [detailViewController prepareForLoad:fullPath];
         [navigationController pushViewController:detailViewController animated:YES];
         [delegate.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:detailViewController selector:@selector(loadFile:) object:fullPath] autorelease]];
 }
 
 - (void)tableView:(UITableView *)etableView
-commitEditingStyle:(UITableViewCellEditingStyle)editingStyle 
+commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
 forRowAtIndexPath:(NSIndexPath *)indexPath {
         NSString *file = [[files objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, file] error:nil];

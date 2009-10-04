@@ -26,7 +26,8 @@
         [super dealloc];
 }
 
-- (void)viewDidLoad {
+- (void)awakeFromNib {
+        debug_NSLog(@"FileDetailViewController.awakeFromNib start");
         delegate = [[UIApplication sharedApplication] delegate];
         self.title = NSLocalizedString(@"File Details",nil);
         math = nil;
@@ -36,24 +37,20 @@
         endTime = nil;
         distance = nil;
         averageSpeed = nil;
-        loading = YES;
+        emailButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Email",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFile:)];
+        raceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Race against",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(raceAgainstFile:)];
+        [self disableButtons];
+        self.toolbarItems = [NSArray arrayWithObjects:emailButton, raceButton, nil];
+        debug_NSLog(@"FileDetailViewController.awakeFromNib end");
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+        debug_NSLog(@"FileDetailViewController.viewWillAppear start");
         navigationController.navigationBar.barStyle = UIBarStyleDefault;
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-        emailButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Email",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFile:)];
-        raceButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Race against",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(raceAgainstFile:)];
-        self.toolbarItems = [NSArray arrayWithObjects:emailButton, raceButton, nil];
         [navigationController setToolbarHidden:NO];
-        [startTime release];
-        startTime = NSLocalizedString(@"Loading...",nil);
-        [endTime release];
-        endTime = NSLocalizedString(@"Loading...",nil);
-        [distance release];
-        distance = NSLocalizedString(@"Loading...",nil);
-        [averageSpeed release];
-        averageSpeed = NSLocalizedString(@"Loading...",nil);
+        debug_NSLog(@"FileDetailViewController.viewWillAppear end");
 }
 
 - (void)enableButtons {
@@ -66,44 +63,55 @@
         [raceButton setEnabled:NO];
 }
 
-- (void)loadFile:(NSString*)newFilename {
+- (void)prepareForLoad:(NSString*)newFilename {
+        debug_NSLog(@"FileDetailViewController.prepareForLoad start");
         loading = YES;
         [self disableButtons];
-        debug_NSLog(@"Starting loadFile:");
         [filename release];
         filename = [newFilename retain];
-        [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];        
-        
+        [startTime release];
+        startTime = NSLocalizedString(@"Loading...",nil);
+        [endTime release];
+        endTime = NSLocalizedString(@"Loading...",nil);
+        [distance release];
+        distance = NSLocalizedString(@"Loading...",nil);
+        [averageSpeed release];
+        averageSpeed = NSLocalizedString(@"Loading...",nil);
+
+        [tableView reloadData];
+        debug_NSLog(@"FileDetailViewController.prepareForLoad end");
+}
+
+- (void)loadFile:(NSString*)newFilename {
+        debug_NSLog(@"FileDetailViewController.loadFile start");
         self.navigationController.title = NSLocalizedString(@"File",nil);
         [reader release];
         [math release];
         reader = [[JBGPXReader alloc] initWithFilename:newFilename];
-        math = [[JBLocationMath alloc] init];
-        for (CLLocation *loc in [reader locations])
-                [math updateLocation:loc];
-        
+        math = [[reader locationMath] retain];
+
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
         NSArray *dates = [math startAndFinishTimesInArray:[reader locations]];
         if ([dates count] == 2) {
                 startTime = [formatter stringFromDate:[dates objectAtIndex:0]];
                 [startTime retain];
-                endTime = [formatter stringFromDate:[dates objectAtIndex:1]];
-                [endTime retain];
         } else {
                 startTime = @"-";
-                endTime = @"-";
         }
         [formatter release];
-        
+
+        endTime = [delegate formatTimestamp:[math elapsedTime] maxTime:86400.0f allowNegatives:NO];
+        [endTime retain];
         distance = [delegate formatDistance:[math totalDistance]];
         [distance retain];
         averageSpeed = [delegate formatSpeed:[math averageSpeed]];
         [averageSpeed retain];
         loading = NO;
-        [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];        
+
+        [tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:YES];
         [self performSelectorOnMainThread:@selector(enableButtons) withObject:nil waitUntilDone:YES];
-        debug_NSLog(@"Finished loadFile:");
+        debug_NSLog(@"FileDetailViewController.loadFile end");
 }
 
 - (IBAction)sendFile:(id)sender {
@@ -112,7 +120,7 @@
                 [alert show];
                 return;
         }
-        
+
         NSData *gpxData = [NSData dataWithContentsOfFile:filename];
         MFMailComposeViewController *mfmail = [[MFMailComposeViewController alloc] init];
         if (USERPREF_EMAIL_ADDRESS)
@@ -126,7 +134,8 @@
 }
 
 - (IBAction)raceAgainstFile:(id)sender {
-        [(GlintAppDelegate*) [[UIApplication sharedApplication] delegate] setRaceAgainstLocations:[reader locations]];
+        NSArray *raceLocs = [reader locations];
+        [(GlintAppDelegate*) [[UIApplication sharedApplication] delegate] setRaceAgainstLocations:raceLocs];
         [[NSUserDefaults standardUserDefaults] setValue:filename forKey:@"raceAgainstFile"];
         [delegate switchToGPSView:sender];
         [navigationController popViewControllerAnimated:NO];
@@ -184,20 +193,22 @@
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"FileDetailItem"] autorelease];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-        
+
+        NSString *shortFilename;
         NSArray *fileParts;
         switch (indexPath.row + 5 * indexPath.section) {
                 case 0:
                         fileParts = [filename componentsSeparatedByString:@"/"];
+                        shortFilename = [[fileParts objectAtIndex:[fileParts count] - 1] stringByDeletingPathExtension];
                         cell.textLabel.text = NSLocalizedString(@"File Name",nil);
-                        cell.detailTextLabel.text = [[fileParts objectAtIndex:[fileParts count] - 1] stringByDeletingPathExtension];
+                        cell.detailTextLabel.text = shortFilename;
                         break;
                 case 1:
                         cell.textLabel.text = NSLocalizedString(@"Start Time",nil);
                                 cell.detailTextLabel.text = startTime;
                         break;
                 case 2:
-                        cell.textLabel.text = NSLocalizedString(@"End Time",nil);
+                        cell.textLabel.text = NSLocalizedString(@"Elapsed Time",nil);
                                 cell.detailTextLabel.text = endTime;
                         break;
                 case 3:
@@ -211,13 +222,13 @@
                 case 5:
                         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DisclosureItem"] autorelease];
                         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                         cell.textLabel.text = NSLocalizedString(@"Lap Times",nil);
                         break;
                 case 6:
                         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DisclosureItem"] autorelease];
                         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
                         cell.textLabel.text = NSLocalizedString(@"View On Map",nil);
                         break;
                 default:
@@ -246,7 +257,8 @@
 
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)etableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+        [etableView deselectRowAtIndexPath:indexPath animated:YES];
         if (indexPath.section == 1 && indexPath.row == 0)
                 [self viewLapTimes];
         else if (indexPath.section == 1 && indexPath.row == 1)

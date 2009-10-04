@@ -17,5 +17,8 @@
 
 - (void)addLapTime:(float)seconds forDistance:(float)distance;
 - (void)clear;
+- (int)numberOfLapTimes;
 
 @end
+
+#define FONTSIZE 28.0f

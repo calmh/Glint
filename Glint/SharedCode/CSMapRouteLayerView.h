@@ -3,6 +3,7 @@
 // mapLines
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "JBLocationMath.h"
 
 @interface CSMapRouteLayerView : UIView <MKMapViewDelegate>
 {

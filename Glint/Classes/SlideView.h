@@ -12,16 +12,22 @@
 - (void)slided:(id)sender;
 @end
 
-@interface SlideView : UIView {
-        UIButton *slider;
-        id <SlideViewDelegate> delegate;
+@interface SlideMarkerView : UIView {
 }
-
-@property (retain, nonatomic) IBOutlet UIButton *slider;
-@property (retain, nonatomic) IBOutlet id <SlideViewDelegate> delegate;
-
-- (void)reset;
 
 @end
 
-#define MARGIN 15.0f
+@interface SlideView : UIView {
+        id <SlideViewDelegate> delegate;
+        SlideMarkerView *marker;
+}
+
+@property (retain, nonatomic) IBOutlet id <SlideViewDelegate> delegate;
+
+- (void)reset;
++ (void)drawRoundedRect:(CGRect)rrect inContext:(CGContextRef)context withRadius:(CGFloat)radius andGradient:(CGGradientRef)gradient;
+
+@end
+
+#define MARGIN 35.0f
+#define SLIDERWIDTH 65.0f

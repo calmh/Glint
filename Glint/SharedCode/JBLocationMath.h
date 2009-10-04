@@ -8,24 +8,34 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
-#import "JBGPXReader.h"
 
 @interface JBLocationMath : NSObject {
         float currentSpeed;
         float currentCourse;
         float totalDistance;
+        float elapsedTime;
         NSDate *firstMeasurement;
         CLLocation *lastKnownPosition;
         NSMutableArray *locations;
+        NSArray *raceLocations;
 }
 
 @property (readonly) float currentSpeed;
 @property (readonly) float averageSpeed;
 @property (readonly) float currentCourse;
 @property (readonly) float totalDistance;
-@property (retain) CLLocation *lastKnownPosition;
+@property (readonly) float elapsedTime;
+@property (readonly) float estimatedElapsedTime;
+@property (retain, nonatomic) CLLocation *lastKnownPosition;
+@property (readonly) CLLocation *lastRecordedPosition;
+@property (readonly) NSArray *locations;
+@property (retain, nonatomic) NSArray *raceLocations;
+
++ (BOOL)isBreakMarker:(CLLocation*)location;
 
 - (void)updateLocation:(CLLocation*)location;
+- (void)insertBreakMarker;
+- (void)updateLocationForDisplayOnly:(CLLocation*)location;
 - (float)speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
 - (float)bearingFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB;
 - (float)distanceAtPointInTime:(float)targetTime;
@@ -36,5 +46,7 @@
 - (NSArray*)startAndFinishTimesInArray:(NSArray*)locations;
 - (float)estimatedTotalDistanceAtTime:(NSDate*)when;
 - (float)estimatedTotalDistance;
+- (float)timeDifferenceInRace;
+- (float)distDifferenceInRace;
 
 @end

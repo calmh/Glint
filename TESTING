@@ -1,0 +1,44 @@
+Testing the application before release
+======================================
+
+* Start Glint, select screen two, verify that GPS signal is recieved, that
+  the GPS signal indicator turns green and that the "signal OK" sound is
+  played.
+
+* Take a walk and verify that speed, course etc. are updated and seem
+  reasonable.
+
+* Start recording and verify that the recording indicator turns green and the
+  number of recorded points increase.
+
+* Pause Glint and verify that the GPS indicator turns grey to indicate
+  disabled and that no updates occur.
+
+* Unpause Glint and verify that the elapsed time starts counting from
+  (approximately) the same time as before the pause, and that updates happen.
+
+* Exit glint back to the springboard, and start it again. If the feature is
+  enabled, it should continue recording and the number of recorded points
+  should be the same as before exiting.
+
+* Continue walking and check that lap times are correctly recorded.
+
+* Stop recording.
+
+* Enter the files view and verify that the newly recorded file is there.
+
+* Mail the file to yourself.
+
+* Check the lap times against what was said during the walk. They should be
+  the same or very close.
+
+* View the recorded track on the map. It should show your walk, with breaks
+  where Glint was paused or not running.
+
+* Stop Glint and start it again. Enter the files view, pick the newly
+  recorded file and select it to be raced against. Verify that the racing
+  indicator turns green, and the two bottom fields on screen one change to
+  time and distance difference.
+
+* Continue walking and check that time and distance difference updates and
+  seems reasonable.

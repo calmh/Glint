@@ -11,7 +11,7 @@
 #import "FilesViewController.h"
 
 @interface GlintAppDelegate ()
-- (void) loadRaceFile: (NSString *) raceAgainstFile;
+- (void)loadRaceFile:(NSString *)raceAgainstFile;
 @end
 
 @implementation GlintAppDelegate
@@ -21,6 +21,8 @@
 @synthesize sendFilesViewController;
 @synthesize navController;
 @synthesize queue;
+@synthesize reachManager;
+
 
 - (void)dealloc {
         [window release];
@@ -31,7 +33,7 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
         self.queue = [[NSOperationQueue alloc] init];
-        
+
         // Check if there are any preferences set, and if not, load the defaults.
         float testValue = [[NSUserDefaults standardUserDefaults] doubleForKey:@"gps_minprec"];
         if (testValue == 0.0)
@@ -39,10 +41,10 @@
                 NSString *pathStr = [[NSBundle mainBundle] bundlePath];
                 NSString *settingsBundlePath = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
                 NSString *finalPath = [settingsBundlePath stringByAppendingPathComponent:@"Root.plist"];
-                
+
                 NSDictionary *settingsDict = [NSDictionary dictionaryWithContentsOfFile:finalPath];
                 NSArray *prefSpecifierArray = [settingsDict objectForKey:@"PreferenceSpecifiers"];
-                
+
                 NSMutableDictionary *defaults = [[NSMutableDictionary alloc] init];
                 for (NSDictionary *prefItem in prefSpecifierArray)
                 {
@@ -53,21 +55,39 @@
                                 debug_NSLog(@"Setting preference: %@=%@", keyValueStr, [defaultValue description]);
                         }
                 }
-                
+
                 [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 [defaults release];
         }
-        
+
         [window addSubview:mainScreenViewController.view];
         [window addSubview:navController.view];
         [window bringSubviewToFront:mainScreenViewController.view];
         [window makeKeyAndVisible];
 
+        // Load file to resume recording in, in the background
+        NSString *recordingFile;
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"restart_recording"] &&
+            (recordingFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"recording_filename"])) {
+                [self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:mainScreenViewController selector:@selector(resumeRecordingOnFile:) object:recordingFile] autorelease]];
+        }
+
+        // Load file to race against, in the background
         NSString *raceAgainstFile;
         if (raceAgainstFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"raceAgainstFile"]) {
                 [self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(loadRaceFile:) object:raceAgainstFile] autorelease]];
         }
+
+        reachManager = [[Reachability reachabilityForInternetConnection] retain];
+        [reachManager startNotifer];
+}
+
+- (GPSManager*)gpsManager {
+        if (gpsManager == nil)
+                // Start GPS manager
+                gpsManager = [[GPSManager alloc] init];
+        return gpsManager;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -96,7 +116,7 @@
 }
 
 - (void)setRaceAgainstLocations:(NSArray*)locations {
-        [[self mainScreenViewController] setRaceAgainstLocations:locations];
+        [[gpsManager math] setRaceLocations:locations];
 }
 
 // Global formatting functions
@@ -115,12 +135,12 @@
                 int min = (int) ((isec % 3600) / 60);
                 int sec = (int) (isec % 60);
                 if (hour == 0) {
-                if (allowNegatives && !negative)
-                        return [NSString stringWithFormat:@"+%02d:%02d", min, sec];
-                else if (negative)
-                        return [NSString stringWithFormat:@"-%02d:%02d", min, sec];
-                else
-                        return [NSString stringWithFormat:@"%02d:%02d", min, sec];
+                        if (allowNegatives && !negative)
+                                return [NSString stringWithFormat:@"+%02d:%02d", min, sec];
+                        else if (negative)
+                                return [NSString stringWithFormat:@"-%02d:%02d", min, sec];
+                        else
+                                return [NSString stringWithFormat:@"%02d:%02d", min, sec];
                 } else {
                         if (allowNegatives && !negative)
                                 return [NSString stringWithFormat:@"+%02d:%02d:%02d", hour, min, sec];
@@ -142,40 +162,40 @@
 - (NSString*)formatLat:(float)lat {
         NSString* sign = lat >= 0 ? @"N" : @"S";
         lat = fabs(lat);
-        return [NSString stringWithFormat:@"%@ %@", [self formatDMS:lat], sign]; 
+        return [NSString stringWithFormat:@"%@ %@", [self formatDMS:lat], sign];
 }
 
 - (NSString*)formatLon:(float)lon {
         NSString* sign = lon >= 0 ? @"E" : @"W";
         lon = fabs(lon);
-        return [NSString stringWithFormat:@"%@ %@", [self formatDMS:lon], sign]; 
+        return [NSString stringWithFormat:@"%@ %@", [self formatDMS:lon], sign];
 }
 
 - (NSDictionary *) currentUnitset {
-  NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
-                NSArray *unitSets = [NSArray arrayWithContentsOfFile:path];
-                NSDictionary* units = [unitSets objectAtIndex:USERPREF_UNITSET];
-  return units;
+        NSString *path=[[NSBundle mainBundle] pathForResource:@"unitsets" ofType:@"plist"];
+        NSArray *unitSets = [NSArray arrayWithContentsOfFile:path];
+        NSDictionary* units = [unitSets objectAtIndex:USERPREF_UNITSET];
+        return units;
 }
 
 - (NSString*)formatDistance:(float)distance {
         static float distFactor = 0;
         static NSString* distFormat = nil;
-        
+
         if (distFormat == nil) {
                 NSDictionary *units = [self currentUnitset];
                 distFactor = [[units objectForKey:@"distFactor"] floatValue];
                 distFormat = [units objectForKey:@"distFormat"];
                 [distFormat retain];
         }
- 
+
         return [NSString stringWithFormat:distFormat, distance*distFactor];
 }
 
 - (NSString*)formatSpeed:(float)speed {
         static float speedFactor = 0;
         static NSString* speedFormat = nil;
-        
+
         if (speedFormat == nil) {
                 NSDictionary *units = [self currentUnitset];
                 speedFactor = [[units objectForKey:@"speedFactor"] floatValue];
@@ -188,11 +208,11 @@
 
 // Private
 
-- (void) loadRaceFile: (NSString *) raceAgainstFile  {
+- (void)loadRaceFile:(NSString*)raceAgainstFile
+{
         JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:raceAgainstFile];
-        [mainScreenViewController performSelectorOnMainThread:@selector(setRaceAgainstLocations:) withObject:[reader locations] waitUntilDone:NO];
+        [[gpsManager math] setRaceLocations:[reader locations]];
         [reader release];
-        
 }
 
 @end

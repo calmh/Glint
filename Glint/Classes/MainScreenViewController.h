@@ -11,42 +11,38 @@
 #import <MapKit/MapKit.h>
 #import "JBSoundEffect.h"
 #import "JBLocationMath.h"
-#import "JBGPXWriter.h"
 #import "JBGradientLabel.h"
 #import "CompassView.h"
 #import "GlintAppDelegate.h"
 #import "SlideView.h"
 #import "LapTimeViewController.h"
+#import "GPSManager.h"
 
 @interface MainScreenViewController : UIViewController  <CLLocationManagerDelegate, SlideViewDelegate> {
         GlintAppDelegate *delegate;
-        CLLocationManager *locationManager;
-        JBLocationMath *math;
+        GPSManager *gpsManager;
+
         NSArray *unitSets;
-        JBGPXWriter *gpxWriter;
         NSDate *firstMeasurementDate;
         NSDate *lastMeasurementDate;
         JBSoundEffect *goodSound, *badSound, *lapSound;
-        BOOL gpsEnabled;
         NSArray *toolbarItems;
         NSTimer *lockTimer;
-        NSArray *raceAgainstLocations;
-        BOOL stateGood;
-        
+
         CGPoint touchStartPoint;
         NSDate *touchStartTime;
 
         // Main screen
-        
+
         UIView *containerView, *primaryView, *secondaryView, *tertiaryView;
         UIPageControl *pager;
         UILabel *signalIndicator, *recordingIndicator, *racingIndicator;
         UIToolbar *toolbar;
         UILabel *measurementsLabel;
         SlideView *slider;
-        
+
         // Primary stats page
-        
+
         UILabel *primaryScreenDescription;
         UILabel *elapsedTimeLabel, *elapsedTimeDescrLabel;
         UILabel *totalDistanceLabel, *totalDistanceDescrLabel;
@@ -56,7 +52,7 @@
         CompassView *compass;
 
         // Secondary stats page
-        
+
         UILabel *secondaryScreenDescription;
         UILabel *latitudeLabel, *latitudeDescrLabel;
         UILabel *longitudeLabel, *longitudeDescrLabel;
@@ -64,11 +60,11 @@
         UILabel *horAccuracyLabel, *horAccuracyDescrLabel;
         UILabel *verAccuracyLabel, *verAccuracyDescrLabel;
         UILabel *courseLabel, *courseDescrLabel;
-        
+
         // Tertiary page
         UILabel *tertiaryScreenDescription;
         LapTimeViewController *lapTimeController;
-        
+
 }
 
 @property (nonatomic, retain) IBOutlet UIView *containerView, *primaryView, *secondaryView, *tertiaryView;
@@ -90,19 +86,22 @@
 @property (nonatomic, retain) IBOutlet UILabel *latitudeLabel, *latitudeDescrLabel;
 @property (nonatomic, retain) IBOutlet UILabel *longitudeLabel, *longitudeDescrLabel;
 @property (nonatomic, retain) IBOutlet UILabel *elevationLabel, *elevationDescrLabel;
-@property (nonatomic, retain) IBOutlet UILabel *horAccuracyLabel, *horAccuracyDescrLabel;        
-@property (nonatomic, retain) IBOutlet UILabel *verAccuracyLabel, *verAccuracyDescrLabel;        
+@property (nonatomic, retain) IBOutlet UILabel *horAccuracyLabel, *horAccuracyDescrLabel;
+@property (nonatomic, retain) IBOutlet UILabel *verAccuracyLabel, *verAccuracyDescrLabel;
 @property (nonatomic, retain) IBOutlet UILabel *courseLabel, *courseDescrLabel;
 
 @property (nonatomic, retain) IBOutlet UILabel *tertiaryScreenDescription;
 @property (nonatomic, retain) IBOutlet LapTimeViewController *lapTimeController;
 
-- (void)setRaceAgainstLocations:(NSArray*)locations;
-
-- (IBAction)startStopRecording:(id)sender;
+- (void)playPause:(id)sender;
+- (void)startStopRecording:(id)sender;
+- (void)resumeRecordingOnFile:(NSString*)filename;
 - (void)slided:(id)sender;
-- (IBAction)unlock:(id)sender;
-- (IBAction)endRace:(id)sender;
+- (void)endRace:(id)sender;
 - (IBAction)pageChanged:(id)sender;
-
+- (void)updateStatus:(NSTimer*)timer;
+- (void)updateDisplay:(NSTimer*)timer;
+#ifdef FAKE_MOVEMENT
+- (void)fakeMovement:(NSTimer*)timer;
+#endif
 @end

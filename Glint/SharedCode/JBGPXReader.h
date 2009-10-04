@@ -8,16 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import "JBLocationMath.h"
 
 @interface JBGPXReader : NSObject {
-        NSMutableArray *locations;
-        
+        JBLocationMath *locationMath;
+
         NSDate *lastReadDate;
         float lastReadLat, lastReadLon;
         BOOL currentlyReadingTime;
+        BOOL shouldAddBreakMarker;
 }
 
 - (id)initWithFilename:(NSString*)newFilename;
-- (NSArray*)locations;
+
+@property (readonly) NSArray *locations;
+@property (readonly) JBLocationMath *locationMath;
 
 @end

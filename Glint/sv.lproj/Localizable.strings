@@ -51,6 +51,8 @@
 "v. accuracy" = "vertikal noggrannhet";
 "course" = "kurs";
 
+"Go" = "Starta";
+"Pause" = "Pausa";
 "Files" = "Filer";
 "Record" = "Spela in";
 "End Recording" = "Bryt insp.";
@@ -89,6 +91,7 @@
 "File Name" = "Filnamn";
 "Start Time" = "Starttid";
 "End Time" = "Måltid";
+"Elapsed Time" = "Löptid";
 "Total Distance" = "Total distans";
 "Average Speed" = "Genomsn. hastighet";
 "View On Map" = "Se på karta";
@@ -105,3 +108,5 @@
 ** Map screen
 */
 "Map View" = "Kartvy";
+"Internet Connectivity Required" = "Internetförbindelse krävs";
+"Utan förbindelse till Internet kan inte kartan visas. I stället visas en tom backgrund.";

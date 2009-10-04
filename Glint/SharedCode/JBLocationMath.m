@@ -14,7 +14,11 @@
 
 @implementation JBLocationMath
 
-@synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition;
+@synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition, locations, elapsedTime, raceLocations;
+
++ (BOOL)isBreakMarker:(CLLocation *)location {
+        return (!location || location.coordinate.latitude == 360.0f);
+}
 
 - (id)init {
         if (self = [super init]) {
@@ -23,6 +27,7 @@
                 totalDistance = 0.0f;
                 lastKnownPosition = nil;
                 firstMeasurement = nil;
+                raceLocations = nil;
                 locations = [[NSMutableArray alloc] init];
         }
         return self;
@@ -36,19 +41,48 @@
 - (void)updateLocation:(CLLocation*)location {
         if (!location)
                 return;
-        
-        if (!firstMeasurement)
-                firstMeasurement = [location.timestamp retain];
-        
+
+        if ([JBLocationMath isBreakMarker:location])
+        {
+                [self insertBreakMarker];
+                return;
+        }
+
+        @synchronized (self) {
+                if (!firstMeasurement)
+                        firstMeasurement = [location.timestamp retain];
+
+                CLLocation *reference = self.lastRecordedPosition;
+                if (![JBLocationMath isBreakMarker:reference] && [location.timestamp timeIntervalSinceDate:reference.timestamp] > 0.0f) {
+                        float dist = [reference getDistanceFrom:location];
+                        totalDistance += dist;
+                        [self updateCurrentSpeed:dist / [location.timestamp timeIntervalSinceDate:reference.timestamp]];
+                        currentCourse = [self bearingFromLocation:reference toLocation:location];
+                        elapsedTime += [location.timestamp timeIntervalSinceDate:reference.timestamp];
+                }
+
+                self.lastKnownPosition = location;
+
+                [locations addObject:location];
+        }
+}
+
+- (void)insertBreakMarker {
+        CLLocation *marker = [[CLLocation alloc] initWithLatitude:360.0f longitude:360.0f];
+        [locations addObject:marker];
+        [marker release];
+}
+
+// Only updates location and current course
+- (void)updateLocationForDisplayOnly:(CLLocation*)location {
+        if (!location)
+                return;
+
         if (lastKnownPosition && [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp] > 0.0f) {
-                float dist = [lastKnownPosition getDistanceFrom:location];
-                totalDistance += dist;
-                [self updateCurrentSpeed:dist / [location.timestamp timeIntervalSinceDate:lastKnownPosition.timestamp]];
                 currentCourse = [self bearingFromLocation:lastKnownPosition toLocation:location];
         }
 
         self.lastKnownPosition = location;
-        [locations addObject:location];
 }
 
 - (float)speedFromLocation:(CLLocation*)locA toLocation:(CLLocation*)locB {
@@ -82,13 +116,13 @@
 - (float)distanceAtPointInTime:(float)targetTime inLocations:(NSArray*)locationList {
         if (isnan(targetTime) || targetTime < 0.0)
                 return NAN;
-        
+
         CLLocation *pointOne = nil, *pointTwo = nil;
         float distance = 0.0;
         float time = 0.0;
-        
+
         for (CLLocation *point in locationList) {
-                if (pointOne) {
+                if (![JBLocationMath isBreakMarker:pointOne] && ![JBLocationMath isBreakMarker:point]) {
                         time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
                         distance += [pointOne getDistanceFrom:point];
                 }
@@ -99,7 +133,7 @@
                         break;
                 }
         }
-        
+
         float remainingTime = targetTime - time;
         float timeBetweenP1andP2 = [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
         float factor = remainingTime / timeBetweenP1andP2;
@@ -114,13 +148,13 @@
 - (float)timeAtLocationByDistance:(float)targetDistance inLocations:(NSArray*)locationList {
         if (isnan(targetDistance) || targetDistance < 0.0)
                 return NAN;
-        
+
         CLLocation *pointOne = nil, *pointTwo = nil;
         float time = 0.0;
         float distance = 0.0;
-        
+
         for (CLLocation *point in locationList) {
-                if (pointOne) {
+                if (![JBLocationMath isBreakMarker:point] && ![JBLocationMath isBreakMarker:pointOne]) {
                         time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
                         distance += [pointOne getDistanceFrom:point];
                 }
@@ -131,10 +165,10 @@
                         break;
                 }
         }
-        
+
         if (pointTwo == nil)
                 return NAN;
-        
+
         float remainingDistance = targetDistance - distance;
         float factor = remainingDistance / [pointTwo getDistanceFrom:pointOne];
         float targetTime = time + factor * [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
@@ -145,7 +179,7 @@
         float distance = 0.0;
         CLLocation *last = nil;
         for (CLLocation *loc in locationList) {
-                if (last)
+                if (![JBLocationMath isBreakMarker:last] && ![JBLocationMath isBreakMarker:loc])
                         distance += [loc getDistanceFrom:last];
                 last = loc;
         }
@@ -169,9 +203,38 @@
 }
 
 - (float)averageSpeed {
-        if (!lastKnownPosition)
-                return 0.0;
-        return totalDistance / [lastKnownPosition.timestamp timeIntervalSinceDate:firstMeasurement];
+        if (elapsedTime > 0.0f)
+                return totalDistance / elapsedTime;
+        else
+                return 0.0f;
+
+}
+
+- (float)estimatedElapsedTime {
+        CLLocation *reference = self.lastRecordedPosition;
+        if (![JBLocationMath isBreakMarker:reference])
+                return elapsedTime + [[NSDate date] timeIntervalSinceDate:reference.timestamp];
+        else
+                return elapsedTime;
+}
+
+- (CLLocation*)lastRecordedPosition {
+        if ([locations count] == 0)
+                return nil;
+        else
+                return [locations lastObject];
+}
+
+// How far ahead (-) or behind (+) in time we are.
+- (float)timeDifferenceInRace {
+        float raceTime = [self timeAtLocationByDistance:totalDistance inLocations:raceLocations];
+        return elapsedTime - raceTime;
+}
+
+// How far ahead (+) or behind (-) in position we are.
+- (float)distDifferenceInRace {
+        float raceDist = [self distanceAtPointInTime:elapsedTime inLocations:raceLocations];
+        return totalDistance - raceDist;
 }
 
 /*
