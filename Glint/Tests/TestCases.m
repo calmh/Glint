@@ -19,30 +19,35 @@
 @implementation TestCases
 
 - (void)testLocationMath {
-        CLLocation *locN = [[[CLLocation alloc] initWithLatitude:10.0 longitude:0.0] autorelease]; // 10.0 N
-        CLLocation *locS = [[[CLLocation alloc] initWithLatitude:-10.0 longitude:0.0] autorelease]; // 10.0 S
-        CLLocation *locE = [[[CLLocation alloc] initWithLatitude:0.0 longitude:10.0] autorelease]; // 10.0 E
-        CLLocation *locW = [[[CLLocation alloc] initWithLatitude:0.0 longitude:-10.0] autorelease]; // 10.0 W
-        CLLocation *locNE = [[[CLLocation alloc] initWithLatitude:10.0 longitude:10.0] autorelease]; // 10.0 N, 10.0 E
-        CLLocation *locSW = [[[CLLocation alloc] initWithLatitude:-10.0 longitude:-10.0] autorelease]; // 10.0 S, 10.0 W
+        for (float latOffset = -45.0f; latOffset <= 45.0f; latOffset += 45.0f) {
+                for (float lonOffset = -150.0f; lonOffset <= 150.0f; lonOffset += 50.0f) {
+                        CLLocation *locN = [[[CLLocation alloc] initWithLatitude:latOffset+1.0 longitude:lonOffset+0.0] autorelease]; // 10.0 N
+                        CLLocation *locS = [[[CLLocation alloc] initWithLatitude:latOffset-1.0 longitude:lonOffset+0.0] autorelease]; // 10.0 S
+                        CLLocation *locE = [[[CLLocation alloc] initWithLatitude:latOffset+0.0 longitude:lonOffset+1.0] autorelease]; // 10.0 E
+                        CLLocation *locW = [[[CLLocation alloc] initWithLatitude:latOffset+0.0 longitude:lonOffset-1.0] autorelease]; // 10.0 W
+                        CLLocation *locNE = [[[CLLocation alloc] initWithLatitude:latOffset+1.0 longitude:lonOffset+1.0] autorelease]; // 10.0 N, 10.0 E
+                        CLLocation *locSW = [[[CLLocation alloc] initWithLatitude:latOffset-1.0 longitude:lonOffset-1.0] autorelease]; // 10.0 S, 10.0 W
 
-        JBLocationMath *math = [[JBLocationMath alloc] init];
-        float result;
-        // Check basic bearings
-        result = [math bearingFromLocation:locN toLocation:locS];
-        STAssertEquals(result, 180.0f, @"Bearing N-S incorrect");
-        result = [math bearingFromLocation:locS toLocation:locN];
-        STAssertEquals(result, 0.0f, @"Bearing S-N incorrect");
-        result = [math bearingFromLocation:locE toLocation:locW];
-        STAssertEquals(result, 270.0f, @"Bearing E-W incorrect");
-        result = [math bearingFromLocation:locW toLocation:locE];
-        STAssertEquals(result, 90.0f, @"Bearing W-E incorrect");
-        result = [math bearingFromLocation:locSW toLocation:locNE];
-        STAssertEqualsWithAccuracy(result, 44.0f, 1.0f, @"Bearing SW-NE incorrect");
-        result = [math bearingFromLocation:locNE toLocation:locSW];
-        STAssertEqualsWithAccuracy(result, 225.0f, 1.0f, @"Bearing SW-NE incorrect");
-
-        [math release];
+                        JBLocationMath *math = [[JBLocationMath alloc] init];
+                        float result;
+                        // Check basic bearings
+                        result = [math bearingFromLocation:locN toLocation:locS];
+                        STAssertEqualsWithAccuracy(result, 180.0f, 15.0f, @"Bearing N-S incorrect (%f)", result);
+                        result = [math bearingFromLocation:locS toLocation:locN];
+                        if (result > 350.0f)
+                                result -= 360.0f;
+                        STAssertEqualsWithAccuracy(result, 0.0f, 15.0f, @"Bearing S-N incorrect (%f)", result);
+                        result = [math bearingFromLocation:locE toLocation:locW];
+                        STAssertEqualsWithAccuracy(result, 270.0f, 15.0f, @"Bearing E-W incorrect (%f)", result);
+                        result = [math bearingFromLocation:locW toLocation:locE];
+                        STAssertEqualsWithAccuracy(result, 90.0f, 15.0f, @"Bearing W-E incorrect (%f)", result);
+                        result = [math bearingFromLocation:locSW toLocation:locNE];
+                        STAssertEqualsWithAccuracy(result, 45.0f, 15.0f, @"Bearing SW-NE incorrect (%f)", result);
+                        result = [math bearingFromLocation:locNE toLocation:locSW];
+                        STAssertEqualsWithAccuracy(result, 225.0f, 15.0f, @"Bearing NE-SW incorrect (%f)", result);
+                        [math release];
+                }
+        }
 }
 
 - (void)testGPXWriter {
@@ -100,13 +105,7 @@
                 int numLocations = [locations count];
                 STAssertEquals(numLocations, 47, @"Wrong number of trackpoints in locations (%d should be 47)", numLocations);
 
-                // Check known bearings within the file
                 float result;
-                result = [math bearingFromLocation:[locations objectAtIndex:0] toLocation:[locations objectAtIndex:1]];
-                STAssertEqualsWithAccuracy(result, 277.0f, 1.0f, @"Bearing [0]-[1] incorrect");
-                result = [math bearingFromLocation:[locations objectAtIndex:1] toLocation:[locations objectAtIndex:46]];
-                STAssertEqualsWithAccuracy(result, 111.0f, 1.0f, @"Bearing [1]-[46] incorrect");
-
                 // Check that the total distance is correct
                 result = [math totalDistanceOverArray:locations];
                 STAssertEqualsWithAccuracy(result, 596.0f, 1.0f, [NSString stringWithFormat:@"Total distance incorrect (%f).", result]);
