@@ -33,10 +33,10 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
         self.queue = [[NSOperationQueue alloc] init];
-
-        // Check if there are any preferences set, and if not, load the defaults.
-        float testValue = [[NSUserDefaults standardUserDefaults] doubleForKey:@"gps_minprec"];
-        if (testValue == 0.0)
+        NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+        // Check the preferences are up to speed, and load new defaults if not.
+        NSString* defaultsVersion = [[NSUserDefaults standardUserDefaults] stringForKey:@"defaults_version"];
+        if (defaultsVersion == nil || [currentVersion compare:defaultsVersion] != 0)
         {
                 NSString *pathStr = [[NSBundle mainBundle] bundlePath];
                 NSString *settingsBundlePath = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
@@ -57,6 +57,7 @@
                 }
 
                 [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+                [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:@"defaults_version"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 [defaults release];
         }
@@ -98,20 +99,20 @@
         [sendFilesViewController refresh];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         [UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:1.2];
-	[UIView setAnimationRepeatAutoreverses:NO];
+        [UIView setAnimationDuration:1.2];
+        [UIView setAnimationRepeatAutoreverses:NO];
         [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:window cache:YES];
         [window bringSubviewToFront:navController.view];
-	[UIView commitAnimations];
+        [UIView commitAnimations];
 }
 
 - (IBAction) switchToGPSView:(id)sender {
         [UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:1.2];
-	[UIView setAnimationRepeatAutoreverses:NO];
+        [UIView setAnimationDuration:1.2];
+        [UIView setAnimationRepeatAutoreverses:NO];
         [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:window cache:YES];
         [window bringSubviewToFront:mainScreenViewController.view];
-	[UIView commitAnimations];
+        [UIView commitAnimations];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
 }
 
