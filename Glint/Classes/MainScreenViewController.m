@@ -135,12 +135,12 @@
         self.tertiaryScreenDescription.frame = pageDescriptionRect;
         self.tertiaryScreenDescription.transform = CGAffineTransformMakeRotation(-M_PI/2.0f);
 
-        NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
         NSString* marketVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
 #ifdef DEBUG
+        NSString* bundleVer = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
         self.measurementsLabel.text = [NSString stringWithFormat:@"Glint %@ (%@) DEV", marketVer, bundleVer];
 #else
-        self.measurementsLabel.text = [NSString stringWithFormat:@"Glint %@ (%@)", marketVer, bundleVer];
+        self.measurementsLabel.text = [NSString stringWithFormat:@"Glint %@", marketVer];
 #endif
 
         NSTimer* displayUpdater = [NSTimer timerWithTimeInterval:DISPLAY_THREAD_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
