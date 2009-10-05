@@ -196,6 +196,20 @@
         return [NSString stringWithFormat:distFormat, distance*distFactor];
 }
 
+- (NSString*)formatShortDistance:(float)distance {
+        static float shortDistFactor = 0;
+        static NSString* shortDistFormat = nil;
+
+        if (shortDistFormat == nil) {
+                NSDictionary *units = [self currentUnitset];
+                shortDistFactor = [[units objectForKey:@"shortDistFactor"] floatValue];
+                shortDistFormat = [units objectForKey:@"shortDistFormat"];
+                [shortDistFormat retain];
+        }
+
+        return [NSString stringWithFormat:shortDistFormat, distance*shortDistFactor];
+}
+
 - (NSString*)formatSpeed:(float)speed {
         static float speedFactor = 0;
         static NSString* speedFormat = nil;

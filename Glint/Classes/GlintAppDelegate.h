@@ -39,6 +39,7 @@
 - (NSString*)formatLat:(float)lat;
 - (NSString*)formatLon:(float)lon;
 - (NSString*)formatDistance:(float)distance;
+- (NSString*)formatShortDistance:(float)distance;
 - (NSString*)formatSpeed:(float)speed;
 
 @end

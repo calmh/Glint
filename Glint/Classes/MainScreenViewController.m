@@ -285,17 +285,17 @@
                 //self.positionLabel.text = [NSString stringWithFormat:@"%@\n%@\nelev %.0f m", [delegate formatLat: current.coordinate.latitude], [delegate formatLon: current.coordinate.longitude], current.altitude];
                 self.latitudeLabel.text = [delegate formatLat: current.coordinate.latitude];
                 self.longitudeLabel.text = [delegate formatLon: current.coordinate.longitude];
-                self.elevationLabel.text = [NSString stringWithFormat:@"%.0f m", current.altitude];
+                self.elevationLabel.text = [delegate formatShortDistance:current.altitude];
                 //self.positionLabel.textColor = [UIColor whiteColor];
                 if (current.horizontalAccuracy >= 0)
-                        self.horAccuracyLabel.text = [NSString stringWithFormat:@"±%.0f m", current.horizontalAccuracy];
+                        self.horAccuracyLabel.text = [delegate formatShortDistance:current.horizontalAccuracy];
                 else
-                        self.horAccuracyLabel.text = @"±inf m";
+                        self.horAccuracyLabel.text = @"±inf";
 
                 if (current.verticalAccuracy >= 0)
-                        self.verAccuracyLabel.text = [NSString stringWithFormat:@"±%.0f m", current.verticalAccuracy];
+                        self.verAccuracyLabel.text = [delegate formatShortDistance:current.verticalAccuracy];
                 else
-                        self.verAccuracyLabel.text = @"±inf m";
+                        self.verAccuracyLabel.text = @"±inf";
         }
 
         // Timer
