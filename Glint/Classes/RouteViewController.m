@@ -12,40 +12,44 @@
 
 @synthesize locations;
 
-- (void)dealloc {
-        [locations release];
-        [super dealloc];
+- (void)dealloc
+{
+	[locations release];
+	[super dealloc];
 }
 
 /*
-- (void)setLocations:(NSArray *)newLocations {
+   - (void)setLocations:(NSArray *)newLocations {
         if (locations != newLocations) {
                 [locations release];
                 locations = [newLocations retain];
         }
-}
-*/
+   }
+ */
 
-- (void)viewDidLoad {
-        self.title = NSLocalizedString(@"Map View",nil);
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-        [routeLayer stop];
-        [routeLayer release];
-        [super viewDidDisappear:animated];
+- (void)viewDidLoad
+{
+	self.title = NSLocalizedString(@"Map View",nil);
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-        [super viewDidAppear:animated];
-        routeLayer = [[CSMapRouteLayerView alloc] initWithRoute:locations mapView:(MKMapView*)self.view];
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[routeLayer stop];
+	[routeLayer release];
+	[super viewDidDisappear:animated];
+}
 
-        GlintAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-        NetworkStatus netStatus = [[delegate reachManager] currentReachabilityStatus];
-        if (netStatus == NotReachable) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Internet Connectivity Required",nil) message:NSLocalizedString(@"Without internet connectivity, the map cannot be displayed. A blank background will be used instead.",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",nil) otherButtonTitles:nil];
-                [alert show];
-        }
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+	routeLayer = [[CSMapRouteLayerView alloc] initWithRoute:locations mapView:(MKMapView*)self.view];
+
+	GlintAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+	NetworkStatus netStatus = [[delegate reachManager] currentReachabilityStatus];
+	if (netStatus == NotReachable) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Internet Connectivity Required",nil) message:NSLocalizedString(@"Without internet connectivity, the map cannot be displayed. A blank background will be used instead.",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK",nil) otherButtonTitles:nil];
+		[alert show];
+	}
 }
 
 @end

@@ -10,10 +10,10 @@
 
 
 @interface CompassView : UIView {
-        float course;
-        float showingCourse;
-        NSTimer *animationTimer;
-        NSDictionary *markers;
+	float course;
+	float showingCourse;
+	NSTimer *animationTimer;
+	NSDictionary *markers;
 }
 
 @property (assign) float course;

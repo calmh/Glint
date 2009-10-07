@@ -12,11 +12,11 @@
 
 - (void)dealloc
 {
-        AudioServicesDisposeSystemSoundID(soundID);
-        [super dealloc];
+	AudioServicesDisposeSystemSoundID(soundID);
+	[super dealloc];
 }
 
-- (id) initWithContentsOfFile:(NSString *)path
+- (id)initWithContentsOfFile:(NSString*)path
 {
 	self = [super init];
 	if (self != nil) {
@@ -26,7 +26,8 @@
 	return self;
 }
 
-- (void)play{
+- (void)play
+{
 	AudioServicesPlaySystemSound(soundID);
 }
 

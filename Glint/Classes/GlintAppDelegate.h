@@ -6,21 +6,21 @@
 //  Copyright Jakob Borg 2009. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "GPSManager.h"
 #import "Reachability.h"
+#import <UIKit/UIKit.h>
 
 @class MainScreenViewController;
 @class FilesViewController;
 
 @interface GlintAppDelegate : NSObject <UIApplicationDelegate> {
-        UIWindow *window;
-        MainScreenViewController *mainScreenViewController;
-        FilesViewController *sendFilesViewController;
-        UINavigationController *navController;
-        NSOperationQueue *queue;
-        GPSManager *gpsManager;
-        Reachability *reachManager;
+	UIWindow *window;
+	MainScreenViewController *mainScreenViewController;
+	FilesViewController *sendFilesViewController;
+	UINavigationController *navController;
+	NSOperationQueue *queue;
+	GPSManager *gpsManager;
+	Reachability *reachManager;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -31,14 +31,15 @@
 @property (readonly) GPSManager *gpsManager;
 @property (readonly) Reachability *reachManager;
 
-- (IBAction) switchToSendFilesView:(id)sender;
-- (IBAction) switchToGPSView:(id)sender;
+- (IBAction)switchToSendFilesView:(id)sender;
+- (IBAction)switchToGPSView:(id)sender;
 - (void)setRaceAgainstLocations:(NSArray*)locations;
 - (NSString*)formatTimestamp:(float)seconds maxTime:(float)max allowNegatives:(bool)allowNegatives;
-- (NSString*) formatDMS:(float)latLong;
+- (NSString*)formatDMS:(float)latLong;
 - (NSString*)formatLat:(float)lat;
 - (NSString*)formatLon:(float)lon;
 - (NSString*)formatDistance:(float)distance;
+- (NSString*)formatShortDistance:(float)distance;
 - (NSString*)formatSpeed:(float)speed;
 
 @end

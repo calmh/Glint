@@ -6,14 +6,14 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <MapKit/MapKit.h>
 #import "CSMapRouteLayerView.h"
 #import "GlintAppDelegate.h"
+#import <MapKit/MapKit.h>
+#import <UIKit/UIKit.h>
 
 @interface RouteViewController : UIViewController {
-        NSArray *locations;
-        CSMapRouteLayerView *routeLayer;
+	NSArray *locations;
+	CSMapRouteLayerView *routeLayer;
 }
 
 @property (retain, nonatomic) NSArray *locations;

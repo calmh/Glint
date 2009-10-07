@@ -13,6 +13,10 @@
 		<real>0.001</real>
 		<key>speedFactor</key>
 		<real>3.6</real>
+		<key>shortDistFormat</key>
+		<string>%.0f m</string>
+		<key>shortDistFactor</key>
+		<integer>1</integer>
 	</dict>
 	<dict>
 		<key>description</key>
@@ -25,6 +29,10 @@
 		<real>0.000539956803</real>
 		<key>speedFactor</key>
 		<real>1.94384449</real>
+		<key>shortDistFormat</key>
+		<string>%.0f m</string>
+		<key>shortDistFactor</key>
+		<integer>1</integer>
 	</dict>
 	<dict>
 		<key>description</key>
@@ -37,6 +45,10 @@
 		<real>0.000621371192</real>
 		<key>speedFactor</key>
 		<real>2.23693629</real>
+		<key>shortDistFormat</key>
+		<string>%.0f ft</string>
+		<key>shortDistFactor</key>
+		<real>3.2808399</real>
 	</dict>
 	<dict>
 		<key>description</key>
@@ -49,6 +61,10 @@
 		<string>%.02f km</string>
 		<key>distFactor</key>
 		<real>0.001</real>
+		<key>shortDistFormat</key>
+		<string>%.0f m</string>
+		<key>shortDistFactor</key>
+		<integer>1</integer>
 	</dict>
 </array>
 </plist>

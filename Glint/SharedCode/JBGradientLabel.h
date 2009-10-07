@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface JBGradientLabel : UILabel {
-        CGGradientRef gradient;
-        UIColor *oldColor;
+	CGGradientRef gradient;
+	UIColor *oldColor;
 }
 
 - (void)setGradientWithParts:(int)numParts andColors:(float[])colors atPositions:(float[])positions;

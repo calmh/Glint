@@ -6,13 +6,13 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <AudioToolbox/AudioServices.h>
+#import <UIKit/UIKit.h>
 
 @interface JBSoundEffect : NSObject {
 	SystemSoundID soundID;
 }
 
-- (id)initWithContentsOfFile:(NSString *)path;
+- (id)initWithContentsOfFile:(NSString*)path;
 - (void)play;
 @end

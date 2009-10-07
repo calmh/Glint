@@ -6,20 +6,20 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "JBGPXReader.h"
 #import "FileDetailViewController.h"
 #import "GlintAppDelegate.h"
+#import "JBGPXReader.h"
+#import <UIKit/UIKit.h>
 
 @interface FilesViewController : UITableViewController {
-        GlintAppDelegate *delegate;
-        NSMutableArray *files;
-        NSMutableArray *sections;
-        NSString *documentsDirectory;
-        UINavigationController *navigationController;
-        FileDetailViewController *detailViewController;
-        UITableView *tableView;
-        UIBarButtonItem *doneButton;
+	GlintAppDelegate *delegate;
+	NSMutableArray *files;
+	NSMutableArray *sections;
+	NSString *documentsDirectory;
+	UINavigationController *navigationController;
+	FileDetailViewController *detailViewController;
+	UITableView *tableView;
+	UIBarButtonItem *doneButton;
 }
 
 @property (retain, nonatomic) IBOutlet UINavigationController *navigationController;
@@ -27,7 +27,7 @@
 @property (retain, nonatomic) IBOutlet UITableView *tableView;
 @property (retain, nonatomic) IBOutlet UIBarButtonItem *doneButton;
 
-- (IBAction) switchToGPSView:(id)sender;
-- (void) refresh;
+- (IBAction)switchToGPSView:(id)sender;
+- (void)refresh;
 
 @end

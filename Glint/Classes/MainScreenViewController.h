@@ -6,65 +6,64 @@
 //  Copyright Jakob Borg 2009. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "CompassView.h"
+#import "GPSManager.h"
+#import "GlintAppDelegate.h"
+#import "JBGradientLabel.h"
+#import "JBLocationMath.h"
+#import "JBSoundEffect.h"
+#import "LapTimeViewController.h"
+#import "SlideView.h"
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
-#import "JBSoundEffect.h"
-#import "JBLocationMath.h"
-#import "JBGradientLabel.h"
-#import "CompassView.h"
-#import "GlintAppDelegate.h"
-#import "SlideView.h"
-#import "LapTimeViewController.h"
-#import "GPSManager.h"
+#import <UIKit/UIKit.h>
 
 @interface MainScreenViewController : UIViewController  <CLLocationManagerDelegate, SlideViewDelegate> {
-        GlintAppDelegate *delegate;
-        GPSManager *gpsManager;
+	GlintAppDelegate *delegate;
+	GPSManager *gpsManager;
 
-        NSArray *unitSets;
-        NSDate *firstMeasurementDate;
-        NSDate *lastMeasurementDate;
-        JBSoundEffect *goodSound, *badSound, *lapSound;
-        NSArray *toolbarItems;
-        NSTimer *lockTimer;
+	NSArray *unitSets;
+	NSDate *firstMeasurementDate;
+	NSDate *lastMeasurementDate;
+	JBSoundEffect *goodSound, *badSound, *lapSound;
+	NSArray *toolbarItems;
+	NSTimer *lockTimer;
 
-        CGPoint touchStartPoint;
-        NSDate *touchStartTime;
+	CGPoint touchStartPoint;
+	NSDate *touchStartTime;
 
-        // Main screen
+	// Main screen
 
-        UIView *containerView, *primaryView, *secondaryView, *tertiaryView;
-        UIPageControl *pager;
-        UILabel *signalIndicator, *recordingIndicator, *racingIndicator;
-        UIToolbar *toolbar;
-        UILabel *measurementsLabel;
-        SlideView *slider;
+	UIView *containerView, *primaryView, *secondaryView, *tertiaryView;
+	UIPageControl *pager;
+	UILabel *signalIndicator, *recordingIndicator, *racingIndicator;
+	UIToolbar *toolbar;
+	UILabel *measurementsLabel;
+	SlideView *slider;
 
-        // Primary stats page
+	// Primary stats page
 
-        UILabel *primaryScreenDescription;
-        UILabel *elapsedTimeLabel, *elapsedTimeDescrLabel;
-        UILabel *totalDistanceLabel, *totalDistanceDescrLabel;
-        UILabel *currentSpeedLabel, *currentSpeedDescrLabel;
-        UILabel *averageSpeedLabel, *averageSpeedDescrLabel;
-        UILabel *currentTimePerDistanceLabel, *currentTimePerDistanceDescrLabel;
-        CompassView *compass;
+	UILabel *primaryScreenDescription;
+	UILabel *elapsedTimeLabel, *elapsedTimeDescrLabel;
+	UILabel *totalDistanceLabel, *totalDistanceDescrLabel;
+	UILabel *currentSpeedLabel, *currentSpeedDescrLabel;
+	UILabel *averageSpeedLabel, *averageSpeedDescrLabel;
+	UILabel *currentTimePerDistanceLabel, *currentTimePerDistanceDescrLabel;
+	CompassView *compass;
 
-        // Secondary stats page
+	// Secondary stats page
 
-        UILabel *secondaryScreenDescription;
-        UILabel *latitudeLabel, *latitudeDescrLabel;
-        UILabel *longitudeLabel, *longitudeDescrLabel;
-        UILabel *elevationLabel, *elevationDescrLabel;
-        UILabel *horAccuracyLabel, *horAccuracyDescrLabel;
-        UILabel *verAccuracyLabel, *verAccuracyDescrLabel;
-        UILabel *courseLabel, *courseDescrLabel;
+	UILabel *secondaryScreenDescription;
+	UILabel *latitudeLabel, *latitudeDescrLabel;
+	UILabel *longitudeLabel, *longitudeDescrLabel;
+	UILabel *elevationLabel, *elevationDescrLabel;
+	UILabel *horAccuracyLabel, *horAccuracyDescrLabel;
+	UILabel *verAccuracyLabel, *verAccuracyDescrLabel;
+	UILabel *courseLabel, *courseDescrLabel;
 
-        // Tertiary page
-        UILabel *tertiaryScreenDescription;
-        LapTimeViewController *lapTimeController;
-
+	// Tertiary page
+	UILabel *tertiaryScreenDescription;
+	LapTimeViewController *lapTimeController;
 }
 
 @property (nonatomic, retain) IBOutlet UIView *containerView, *primaryView, *secondaryView, *tertiaryView;
@@ -101,7 +100,4 @@
 - (IBAction)pageChanged:(id)sender;
 - (void)updateStatus:(NSTimer*)timer;
 - (void)updateDisplay:(NSTimer*)timer;
-#ifdef FAKE_MOVEMENT
-- (void)fakeMovement:(NSTimer*)timer;
-#endif
 @end
