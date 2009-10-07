@@ -20,10 +20,9 @@
 			<key>Key</key>
 			<string>gps_minprec</string>
 			<key>DefaultValue</key>
-			<string>100</string>
+			<string>200</string>
 			<key>Titles</key>
 			<array>
-				<string>10 m</string>
 				<string>25 m</string>
 				<string>50 m</string>
 				<string>100 m</string>
@@ -33,7 +32,6 @@
 			</array>
 			<key>Values</key>
 			<array>
-				<string>10</string>
 				<string>25</string>
 				<string>50</string>
 				<string>100</string>
