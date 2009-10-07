@@ -38,7 +38,7 @@
 	NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
 	// Check the preferences are up to speed, and load new defaults if not.
 	NSString *defaultsVersion = [[NSUserDefaults standardUserDefaults] stringForKey:@"defaults_version"];
-	if (defaultsVersion == nil || [currentVersion compare:defaultsVersion] != 0) {
+	if (defaultsVersion == nil || [currentVersion compare:defaultsVersion] != NSOrderedSame) {
 		NSString *pathStr = [[NSBundle mainBundle] bundlePath];
 		NSString *settingsBundlePath = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
 		NSString *finalPath = [settingsBundlePath stringByAppendingPathComponent:@"Root.plist"];
@@ -84,11 +84,9 @@
 
 - (GPSManager*)gpsManager
 {
-	if (gpsManager == nil) {
+	if (gpsManager == nil)
 		// Start GPS manager
 		gpsManager = [[GPSManager alloc] init];
-		[gpsManager enableGPS];
-	}
 	return gpsManager;
 }
 

@@ -11,6 +11,9 @@
 @interface GPSManager ()
 - (bool)precisionAcceptable:(CLLocation*)location;
 - (void)takeAveragedMeasurement:(NSTimer*)timer;
+#ifdef FAKE_MOVEMENT
+- (void)fakeMovement:(NSTimer*)timer;
+#endif
 @end
 
 @implementation LapTime
@@ -49,6 +52,12 @@
 	[self enableGPS];
 	NSTimer *averagedMeasurementTaker = [NSTimer timerWithTimeInterval:MEASUREMENT_THREAD_INTERVAL target:self selector:@selector(takeAveragedMeasurement:) userInfo:nil repeats:YES];
 	[[NSRunLoop currentRunLoop] addTimer:averagedMeasurementTaker forMode:NSDefaultRunLoopMode];
+
+#ifdef FAKE_MOVEMENT
+	NSTimer *faker = [NSTimer timerWithTimeInterval:4.0f target:self selector:@selector(fakeMovement:) userInfo:nil repeats:YES];
+	[[NSRunLoop currentRunLoop] addTimer:faker forMode:NSDefaultRunLoopMode];
+#endif
+
 	return self;
 }
 
@@ -146,7 +155,9 @@
 	locationManager = [[CLLocationManager alloc] init];
 	locationManager.distanceFilter = FILTER_DISTANCE;
 	locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+#ifndef FAKE_MOVEMENT
 	locationManager.delegate = self;
+#endif
 	[locationManager startUpdatingLocation];
 	isGPSEnabled = YES;
 }
@@ -169,12 +180,15 @@
 {
 	static int numLaps = 1;
 	static float prevLapTime = 0.0f;
+	static int lapLength = 0;
+	if (lapLength == 0)
+		lapLength = USERPREF_LAPLENGTH;
 
 	isPrecisionAcceptable = [self precisionAcceptable:newLocation];
 	if (isPrecisionAcceptable) {
 		if (!isPaused) {
 			[math updateLocation:newLocation];
-			if ([math totalDistance] >= numLaps * USERPREF_LAPLENGTH) {
+			if ([math totalDistance] >= numLaps * lapLength) {
 				debug_NSLog(@"Adding passed lap time at %f m", [math totalDistance]);
 				float lapTime = [math timeAtLocationByDistance:numLaps * USERPREF_LAPLENGTH];
 				[passedLapTimes addObject:[[[LapTime alloc] initWithDistance:numLaps * USERPREF_LAPLENGTH andTime:lapTime - prevLapTime] autorelease]];
@@ -258,5 +272,25 @@
 	[math release];
 	math = [[JBLocationMath alloc] init];
 }
+
+#ifdef FAKE_MOVEMENT
+- (void)fakeMovement:(NSTimer*)timer
+{
+	static unsigned i = 0;
+	static CLLocation *oldLoc = nil;
+	static float deltaLat = 0.0f;
+	static float deltaLon = 0.0f;
+	deltaLat += -0.00011 + 0.00002 * ((float)rand() / RAND_MAX);
+	deltaLon += -0.00011 + 0.00002 * ((float)rand() / RAND_MAX);
+	CLLocationCoordinate2D coord;
+	coord.latitude = [locationManager location].coordinate.latitude + deltaLat;
+	coord.longitude = [locationManager location].coordinate.longitude + deltaLon;
+	CLLocation *loc = [[CLLocation alloc] initWithCoordinate:coord altitude:23.0f horizontalAccuracy:49.0f verticalAccuracy:163.0f timestamp:[NSDate date]];
+	[self locationManager:locationManager didUpdateToLocation:loc fromLocation:oldLoc];
+	[oldLoc release];
+	oldLoc = loc;
+	i++;
+}
+#endif
 
 @end

@@ -151,11 +151,6 @@
 	NSTimer *statusUpdater = [NSTimer timerWithTimeInterval:STATUS_THREAD_INTERVAL target:self selector:@selector(updateStatus:) userInfo:nil repeats:YES];
 	[[NSRunLoop currentRunLoop] addTimer:statusUpdater forMode:NSDefaultRunLoopMode];
 
-#ifdef FAKE_MOVEMENT
-	NSTimer *faker = [NSTimer timerWithTimeInterval:10.0f target:self selector:@selector(fakeMovement:) userInfo:nil repeats:YES];
-	[[NSRunLoop currentRunLoop] addTimer:faker forMode:NSDefaultRunLoopMode];
-#endif
-
 	[pager setCurrentPage:USERPREF_CURRENTPAGE];
 	[self switchPageWithoutAnimation];
 }
@@ -575,23 +570,5 @@
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"raceAgainstFile"];
 	[self lock:sender];
 }
-
-#ifdef FAKE_MOVEMENT
-- (void)fakeMovement:(NSTimer*)timer
-{
-	static unsigned i = 0;
-	static CLLocation *oldLoc = nil;
-	const float deltaLat = 0.002;
-	const float deltaLon = 0.003;
-	CLLocationCoordinate2D coord;
-	coord.latitude = [gpsManager location].coordinate.latitude + i * deltaLat;
-	coord.longitude = [gpsManager location].coordinate.longitude + i * deltaLon;
-	CLLocation *loc = [[CLLocation alloc] initWithCoordinate:coord altitude:23.0f horizontalAccuracy:50.0f verticalAccuracy:50.0f timestamp:[NSDate date]];
-	[gpsManager locationManager:nil didUpdateToLocation:loc fromLocation:oldLoc];
-	[oldLoc release];
-	oldLoc = loc;
-	i++;
-}
-#endif
 
 @end
