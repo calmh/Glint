@@ -160,7 +160,7 @@
 }
 
 - (void)viewOnMap {
-        [routeController setLocations:[reader locations]];
+        [routeController setLocations:[math interpolatedLocations]];
         [navigationController setToolbarHidden:YES];
         //navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
         //[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
