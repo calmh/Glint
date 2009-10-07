@@ -6,16 +6,16 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreLocation/CoreLocation.h>
-#import "JBLocationMath.h"
-#import "JBGPXWriter.h"
 #import "JBGPXReader.h"
+#import "JBGPXWriter.h"
+#import "JBLocationMath.h"
+#import <CoreLocation/CoreLocation.h>
+#import <Foundation/Foundation.h>
 
 @interface LapTime : NSObject
 {
-        float distance;
-        float elapsedTime;
+	float distance;
+	float elapsedTime;
 }
 
 - (id)initWithDistance:(float)idistance andTime:(float)ielapsedTime;
@@ -26,13 +26,13 @@
 @end
 
 @interface GPSManager : NSObject <CLLocationManagerDelegate> {
-        CLLocationManager *locationManager;
-        JBLocationMath *math;
-        JBGPXWriter *gpxWriter;
-        NSMutableArray *passedLapTimes;
-        BOOL isPaused;
-        BOOL isGPSEnabled;
-        BOOL isPrecisionAcceptable;
+	CLLocationManager *locationManager;
+	JBLocationMath *math;
+	JBGPXWriter *gpxWriter;
+	NSMutableArray *passedLapTimes;
+	BOOL isPaused;
+	BOOL isGPSEnabled;
+	BOOL isPrecisionAcceptable;
 }
 
 - (NSArray*)queuedLapTimes;

@@ -6,18 +6,18 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <Foundation/Foundation.h>
 
 @interface JBLocationMath : NSObject {
-        float currentSpeed;
-        float currentCourse;
-        float totalDistance;
-        float elapsedTime;
-        NSDate *firstMeasurement;
-        CLLocation *lastKnownPosition;
-        NSMutableArray *locations;
-        NSArray *raceLocations;
+	float currentSpeed;
+	float currentCourse;
+	float totalDistance;
+	float elapsedTime;
+	NSDate *firstMeasurement;
+	CLLocation *lastKnownPosition;
+	NSMutableArray *locations;
+	NSArray *raceLocations;
 }
 
 @property (readonly) float currentSpeed;

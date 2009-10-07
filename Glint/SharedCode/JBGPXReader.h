@@ -6,17 +6,17 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreLocation/CoreLocation.h>
 #import "JBLocationMath.h"
+#import <CoreLocation/CoreLocation.h>
+#import <Foundation/Foundation.h>
 
 @interface JBGPXReader : NSObject {
-        JBLocationMath *locationMath;
+	JBLocationMath *locationMath;
 
-        NSDate *lastReadDate;
-        float lastReadLat, lastReadLon;
-        BOOL currentlyReadingTime;
-        BOOL shouldAddBreakMarker;
+	NSDate *lastReadDate;
+	float lastReadLat, lastReadLon;
+	BOOL currentlyReadingTime;
+	BOOL shouldAddBreakMarker;
 }
 
 - (id)initWithFilename:(NSString*)newFilename;
