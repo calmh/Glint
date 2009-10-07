@@ -48,5 +48,6 @@
 - (float)estimatedTotalDistance;
 - (float)timeDifferenceInRace;
 - (float)distDifferenceInRace;
+- (NSArray*)interpolatedLocations;
 
 @end

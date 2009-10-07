@@ -10,6 +10,9 @@
 
 @interface JBLocationMath ()
 - (void)updateCurrentSpeed:(float)newSpeed;
+- (NSArray*)interpolatedSegmentForLocations:(NSArray*)locationSegment;
+- (float*)hermiteInterpolate1dWithSteps:(int)steps y0:(float)y0 y1:(float)y1 y2:(float)y2 y3:(float)y3;
+- (NSArray*)hermiteCurveFromSource:(CLLocation*)origin toDestination:(CLLocation*)destination fromPrev:(CLLocation*)prev toNext:(CLLocation*)next;
 @end
 
 @implementation JBLocationMath
@@ -237,6 +240,24 @@
         return totalDistance - raceDist;
 }
 
+- (NSArray*)interpolatedLocations {
+        NSMutableArray *interpolated = [[[NSMutableArray alloc] initWithCapacity:[locations count]*10] autorelease];
+	
+        NSMutableArray *tmp = [[[NSMutableArray alloc] init] autorelease];
+        for (int i = 0; i < [locations count]; i++) {
+                CLLocation *current = [locations objectAtIndex:i];
+                if ([JBLocationMath isBreakMarker:current]) {
+                        [interpolated addObjectsFromArray:[self interpolatedSegmentForLocations:tmp]];
+                        [interpolated addObject:[locations objectAtIndex:i]];
+                        tmp = [[[NSMutableArray alloc] init] autorelease];
+                } else {
+                        [tmp addObject:current];
+                }
+        }
+        [interpolated addObjectsFromArray:[self interpolatedSegmentForLocations:tmp]];
+        return interpolated;
+}
+
 /*
  * Private methods
  */
@@ -244,6 +265,82 @@
 - (void)updateCurrentSpeed:(float)newSpeed {
         float weightFactor = 0.65f;
         currentSpeed = (weightFactor * newSpeed + currentSpeed) / (1 + weightFactor);
+}
+
+- (NSArray*)interpolatedSegmentForLocations:(NSArray*)locationSegment {
+        if ([locationSegment count] < 4)
+                return locationSegment;
+
+        CLLocation *prev = nil, *orig = nil, *dest = nil, *next = nil;
+        NSMutableArray *interpolated = [[[NSMutableArray alloc] initWithCapacity:[locationSegment count]*10] autorelease];
+
+        prev = [locationSegment objectAtIndex:0];
+        orig = [locationSegment objectAtIndex:0];
+        dest = [locationSegment objectAtIndex:1];
+        next = [locationSegment objectAtIndex:2];
+        [interpolated addObject:orig];
+        [interpolated addObjectsFromArray:[self hermiteCurveFromSource:orig toDestination:dest fromPrev:prev toNext:next]];
+
+        for (int i = 3; i < [locationSegment count]; i++) {
+                prev = orig;
+                orig = dest;
+                dest = next;
+                next = [locationSegment objectAtIndex:i];
+                [interpolated addObject:orig];
+                [interpolated addObjectsFromArray:[self hermiteCurveFromSource:orig toDestination:dest fromPrev:prev toNext:next]];
+        }
+
+        prev = orig;
+        orig = dest;
+        dest = next;
+        [interpolated addObject:orig];
+        [interpolated addObjectsFromArray:[self hermiteCurveFromSource:orig toDestination:dest fromPrev:prev toNext:next]];
+        [interpolated addObject:dest];
+        return interpolated;
+}
+
+- (float*)hermiteInterpolate1dWithSteps:(int)steps y0:(float)y0 y1:(float)y1 y2:(float)y2 y3:(float)y3
+{
+        float tension = 0.0f;
+        float bias = 0.0f;
+        float m0,m1,mu2,mu3;
+        float a0,a1,a2,a3;
+        float *result = (float*)malloc(steps*sizeof(float));
+        float mu = 1.0f / (steps + 1);
+        for (int i = 0; i < steps; i++) {
+                mu2 = mu * mu;
+                mu3 = mu2 * mu;
+                m0  = (y1-y0)*(1+bias)*(1-tension)/2;
+                m0 += (y2-y1)*(1-bias)*(1-tension)/2;
+                m1  = (y2-y1)*(1+bias)*(1-tension)/2;
+                m1 += (y3-y2)*(1-bias)*(1-tension)/2;
+                a0 =  2*mu3 - 3*mu2 + 1;
+                a1 =    mu3 - 2*mu2 + mu;
+                a2 =    mu3 -   mu2;
+                a3 = -2*mu3 + 3*mu2;
+                result[i] = a0*y1+a1*m0+a2*m1+a3*y2;
+                mu += 1.0f / (steps + 1);
+        }
+        return result;
+}
+
+- (NSArray*)hermiteCurveFromSource:(CLLocation*)origin toDestination:(CLLocation*)destination fromPrev:(CLLocation*)prev toNext:(CLLocation*)next {
+        int steps = 10;
+        NSMutableArray *result = [[[NSMutableArray alloc] initWithCapacity:steps] autorelease];
+        float *lat = [self hermiteInterpolate1dWithSteps:steps y0:prev.coordinate.latitude y1:origin.coordinate.latitude y2:destination.coordinate.latitude y3:next.coordinate.latitude];
+        float *lon = [self hermiteInterpolate1dWithSteps:steps y0:prev.coordinate.longitude y1:origin.coordinate.longitude y2:destination.coordinate.longitude y3:next.coordinate.longitude];
+        for (int i = 0; i < steps; i++) {
+                CLLocationCoordinate2D coord;
+                coord.latitude = lat[i];
+                coord.longitude = lon[i];
+                CLLocation *loc = [[[CLLocation alloc] initWithCoordinate:coord altitude:0.0f horizontalAccuracy:-1.0f verticalAccuracy:-1.0f timestamp:origin.timestamp] autorelease];
+                [result addObject:loc];
+                debug_NSLog(@"%@", loc);
+
+        }
+        free(lat);
+        free(lon);
+        return result;
 }
 
 @end
