@@ -49,6 +49,7 @@
 		isPaused = NO;
 		passedLapTimes = [[NSMutableArray alloc] init];
 	}
+	started = [[NSDate date] retain];
 	[self enableGPS];
 	NSTimer *averagedMeasurementTaker = [NSTimer timerWithTimeInterval:MEASUREMENT_THREAD_INTERVAL target:self selector:@selector(takeAveragedMeasurement:) userInfo:nil repeats:YES];
 	[[NSRunLoop currentRunLoop] addTimer:averagedMeasurementTaker forMode:NSDefaultRunLoopMode];
@@ -183,6 +184,12 @@
 	static int lapLength = 0;
 	if (lapLength == 0)
 		lapLength = USERPREF_LAPLENGTH;
+
+	// Ignore data points that come from before we actually started measuring.
+	// This is necessary because the location manager by default reports the last
+	// known position immediately, even if it's, say, several days old.
+	if ([newLocation.timestamp timeIntervalSinceDate:started] < 0)
+		return;
 
 	isPrecisionAcceptable = [self precisionAcceptable:newLocation];
 	if (isPrecisionAcceptable) {

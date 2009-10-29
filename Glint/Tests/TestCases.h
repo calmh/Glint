@@ -12,6 +12,7 @@
 #import "JBLocationMath.h"
 #import "JBGPXReader.h"
 #import "JBGPXWriter.h"
+#import "GPSManager.h"
 
 @interface TestCases : SenTestCase {
 

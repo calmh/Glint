@@ -18,6 +18,13 @@
 
 @implementation TestCases
 
+- (void)setUp {
+        // Set lap length to 100m so we get about five laps on the coming run
+        [[NSUserDefaults standardUserDefaults] setFloat:100.0f forKey:@"lap_length"];
+        // Set required GPS precision to 100m so the read values are Ok
+        [[NSUserDefaults standardUserDefaults] setFloat:100.0f forKey:@"gps_minprec"];
+}
+
 - (void)testLocationMath {
         for (float latOffset = -45.0f; latOffset <= 45.0f; latOffset += 45.0f) {
                 for (float lonOffset = -150.0f; lonOffset <= 150.0f; lonOffset += 50.0f) {
@@ -92,6 +99,38 @@
 
         [reader release];
         [math release];
+}
+
+- (void)testGPSManager {
+	GPSManager *manager = [[GPSManager alloc] init];
+	CLLocationCoordinate2D coord;
+	CLLocation *loc, *oldLoc;
+	oldLoc = nil;
+	coord.latitude = 10.0f;
+	coord.longitude = 10.0f;
+	loc = [[[CLLocation alloc] initWithCoordinate:coord altitude:0.0f horizontalAccuracy:50.0f verticalAccuracy:0.0f timestamp:[NSDate dateWithTimeIntervalSinceNow:-60]] autorelease];
+	[manager locationManager:nil didUpdateToLocation:loc fromLocation:oldLoc];
+	STAssertFalse([manager isPrecisionAcceptable], @"Precision cannot be acceptable");
+	STAssertEquals([[manager math] totalDistance], 0.0f, @"Distance travelled must be zero");
+	sleep(0.1);
+
+	oldLoc = loc;
+	coord.latitude = 11.0f;
+	loc = [[[CLLocation alloc] initWithCoordinate:coord altitude:0.0f horizontalAccuracy:50.0f verticalAccuracy:0.0f timestamp:[NSDate date]] autorelease];
+	[manager locationManager:nil didUpdateToLocation:loc fromLocation:oldLoc];
+	STAssertTrue([manager isPrecisionAcceptable], @"Precision must be acceptable");
+	float result = [[manager math] totalDistance];
+	STAssertEquals(result, 0.0f, @"Distance travelled must be zero (%f)", result);
+	sleep(01);
+
+	oldLoc = loc;
+	coord.latitude = 12.0f;
+	loc = [[[CLLocation alloc] initWithCoordinate:coord altitude:0.0f horizontalAccuracy:50.0f verticalAccuracy:0.0f timestamp:[NSDate date]] autorelease];
+	[manager locationManager:nil didUpdateToLocation:loc fromLocation:oldLoc];
+	STAssertTrue([manager isPrecisionAcceptable], @"Precision must be acceptable");
+	result = [[manager math] totalDistance];
+	STAssertEqualsWithAccuracy(result, 1852.0f*60.0f, 200.0f, @"Distance travelled is wrong (%f)", result);
+	[manager locationManager:nil didUpdateToLocation:loc fromLocation:oldLoc];
 }
 
 - (void)privateTestGPXReader:(JBGPXReader*)reader {
