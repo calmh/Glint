@@ -179,6 +179,9 @@
 	UITouch *touch = [touches anyObject];
 	CGPoint point = [touch locationInView:containerView];
 	float xdiff = point.x - touchStartPoint.x;
+    if (xdiff > 0.0f && pager.currentPage == 0 || // Moving too far to the left
+            xdiff < 0.0f && pager.currentPage == pager.numberOfPages - 1) // Moving too far to the right
+            xdiff /= 2.0f; // Increase "resistance"
 	[self shiftViewsTo:xdiff - pager.currentPage * containerView.frame.size.width];
 }
 
