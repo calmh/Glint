@@ -27,7 +27,9 @@
 		filename = [NSString stringWithString:newFilename];
 		[filename retain];
 		tracks = [[NSMutableArray alloc] init];
-		minLon = minLat = maxLon = maxLat = totalDistance = 0.0;
+		minLon = minLat = 360.0f;
+		maxLon = maxLat = -360.0f;
+		totalDistance = 0.0;
 		numSegs = numPoints = 0;
 		last = nil;
 		lastCommit = nil;
@@ -55,8 +57,8 @@
 	numPoints++;
 
 	minLon = MIN(minLon, point.coordinate.longitude);
-	maxLon = MAX(maxLon, point.coordinate.latitude);
-	minLat = MIN(minLat, point.coordinate.longitude);
+	maxLon = MAX(maxLon, point.coordinate.longitude);
+	minLat = MIN(minLat, point.coordinate.latitude);
 	maxLat = MAX(maxLat, point.coordinate.latitude);
 
 	if (last)
