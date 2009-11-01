@@ -33,6 +33,7 @@
 	BOOL isPaused;
 	BOOL isGPSEnabled;
 	BOOL isPrecisionAcceptable;
+	NSDate *started;
 }
 
 - (NSArray*)queuedLapTimes;
