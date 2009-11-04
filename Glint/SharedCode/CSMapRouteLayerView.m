@@ -68,21 +68,31 @@
 		// Draw them with a 2.0 stroke width so they are a bit more visible.
 		CGContextSetLineWidth(context, 2.0);
 
-		BOOL shouldSkip = NO;
-		for (int idx = 0; idx < self.points.count; idx++) {
-			CLLocation *location = [self.points objectAtIndex:idx];
-			// Skip points that are break markers
-			if ([JBLocationMath isBreakMarker:location]) {
-				shouldSkip = YES;
-				continue;
-			}
+		if (self.points.count > 1) {
+			BOOL shouldSkip = NO;
+			for (int idx = 0; idx < self.points.count; idx++) {
+				CLLocation *location = [self.points objectAtIndex:idx];
+				// Skip points that are break markers
+				if ([JBLocationMath isBreakMarker:location]) {
+					shouldSkip = YES;
+					continue;
+				}
 
-			CGPoint point = [_mapView convertCoordinate:location.coordinate toPointToView:self];
-			if (idx == 0 || shouldSkip)
-				CGContextMoveToPoint(context, point.x, point.y);
-			else
-				CGContextAddLineToPoint(context, point.x, point.y);
-			shouldSkip = NO;
+				CGPoint point = [_mapView convertCoordinate:location.coordinate toPointToView:self];
+				if (idx == 0 || shouldSkip)
+					CGContextMoveToPoint(context, point.x, point.y);
+				else
+					CGContextAddLineToPoint(context, point.x, point.y);
+				shouldSkip = NO;
+			}
+		} else if (self.points.count == 1) {
+			CGPoint point = [_mapView convertCoordinate:((CLLocation*)[self.points objectAtIndex:0]).coordinate toPointToView:self];
+			int diamond_size = 4;
+			CGContextMoveToPoint(context, point.x, point.y - diamond_size);
+			CGContextAddLineToPoint(context, point.x + diamond_size, point.y);
+			CGContextAddLineToPoint(context, point.x, point.y + diamond_size);
+			CGContextAddLineToPoint(context, point.x - diamond_size, point.y);
+			CGContextAddLineToPoint(context, point.x, point.y - diamond_size);
 		}
 
 		CGContextStrokePath(context);
