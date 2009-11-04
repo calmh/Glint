@@ -240,7 +240,7 @@
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DisclosureItem"] autorelease];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-		cell.textLabel.text = NSLocalizedString(@"Lap Times",nil);
+		cell.textLabel.text = NSLocalizedString(@"View Lap Times",nil);
 		break;
 	case 6:
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DisclosureItem"] autorelease];

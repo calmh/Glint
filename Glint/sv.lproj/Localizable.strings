@@ -94,7 +94,9 @@
 "Elapsed Time" = "Löptid";
 "Total Distance" = "Total distans";
 "Average Speed" = "Genomsn. hastighet";
-"View On Map" = "Se på karta";
+"View Lap Times" = "Visa varvtider";
+"View On Map" = "Visa på karta";
+"View Raw Data" = "Visa rådata";
 
 /*
 ** Lap times screen
