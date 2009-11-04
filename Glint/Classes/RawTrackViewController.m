@@ -74,12 +74,12 @@
 
 	if (indexPath.row == 0) {
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"#%d; %@",
-					     indexPath.row,
+					     indexPath.row + 1,
 					     [formatter stringFromDate:loc.timestamp]];
 	} else {
 		CLLocation *prev_loc = [locations objectAtIndex:indexPath.row - 1];
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"#%d; %@; %@; %.0f°",
-					     indexPath.row,
+					     indexPath.row + 1,
 					     [formatter stringFromDate:loc.timestamp],
 					     [delegate formatShortDistance:[loc getDistanceFrom:prev_loc]],
 					     [math bearingFromLocation:prev_loc toLocation:loc]];
