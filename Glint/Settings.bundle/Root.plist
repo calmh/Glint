@@ -237,6 +237,24 @@
 			<string>email_address</string>
 			<key>DefaultValue</key>
 			<string></string>
+			<key>KeyboardType</key>
+			<string>EmailAddress</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>About</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>Version</string>
+			<key>Key</key>
+			<string>current_version</string>
+			<key>DefaultValue</key>
+			<string>-</string>
 		</dict>
 	</array>
 </dict>
