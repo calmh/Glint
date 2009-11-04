@@ -35,9 +35,9 @@
 - (void)applicationDidFinishLaunching:(UIApplication*)application
 {
 	self.queue = [[NSOperationQueue alloc] init];
-	NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+	NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
 	// Check the preferences are up to speed, and load new defaults if not.
-	NSString *defaultsVersion = [[NSUserDefaults standardUserDefaults] stringForKey:@"defaults_version"];
+	NSString *defaultsVersion = [[NSUserDefaults standardUserDefaults] stringForKey:@"current_version"];
 	if (defaultsVersion == nil || [currentVersion compare:defaultsVersion] != NSOrderedSame) {
 		NSString *pathStr = [[NSBundle mainBundle] bundlePath];
 		NSString *settingsBundlePath = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
@@ -57,7 +57,7 @@
 		}
 
 		[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-		[[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:@"defaults_version"];
+		[[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:@"current_version"];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		[defaults release];
 	}

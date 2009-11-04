@@ -18,7 +18,7 @@
 
 @implementation FileDetailViewController
 
-@synthesize navigationController, toolbarItems, tableView, lapTimeController, routeController;
+@synthesize navigationController, toolbarItems, tableView, lapTimeController, routeController, rawTrackController;
 
 - (void)dealloc
 {
@@ -176,6 +176,15 @@
 	[navigationController pushViewController:routeController animated:YES];
 }
 
+- (void)viewRawPositions
+{
+	[rawTrackController setLocations:[reader locations]];
+	[navigationController setToolbarHidden:YES];
+	//navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+	//[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+	[navigationController pushViewController:rawTrackController animated:YES];
+}
+
 /*
  * MFMailComposerViewController delegate stuff
  */
@@ -231,13 +240,19 @@
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DisclosureItem"] autorelease];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-		cell.textLabel.text = NSLocalizedString(@"Lap Times",nil);
+		cell.textLabel.text = NSLocalizedString(@"View Lap Times",nil);
 		break;
 	case 6:
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DisclosureItem"] autorelease];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 		cell.textLabel.text = NSLocalizedString(@"View On Map",nil);
+		break;
+	case 7:
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"DisclosureItem"] autorelease];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+		cell.textLabel.text = NSLocalizedString(@"View Raw Data",nil);
 		break;
 	default:
 		cell.textLabel.text = @"What?";
@@ -252,7 +267,7 @@
 	if (section == 0)
 		return 5;
 	else if (section == 1 && !loading)
-		return 2;
+		return 3;
 	else
 		return 0;
 }
@@ -272,6 +287,8 @@
 		[self viewLapTimes];
 	else if (indexPath.section == 1 && indexPath.row == 1)
 		[self viewOnMap];
+	else if (indexPath.section == 1 && indexPath.row == 2)
+		[self viewRawPositions];
 }
 
 /*

@@ -11,6 +11,7 @@
 #import "JBLocationMath.h"
 #import "LapTimeViewController.h"
 #import "RouteViewController.h"
+#import "RawTrackViewController.h"
 #import <MessageUI/MessageUI.h>
 #import <UIKit/UIKit.h>
 
@@ -26,6 +27,7 @@
 	NSArray *toolbarItems;
 	LapTimeViewController *lapTimeController;
 	RouteViewController *routeController;
+	RawTrackViewController *rawTrackController;
 
 	NSString *filename, *startTime, *endTime, *distance, *averageSpeed;
 }
@@ -35,6 +37,7 @@
 @property (retain, nonatomic) IBOutlet UITableView *tableView;
 @property (retain, nonatomic) IBOutlet LapTimeViewController *lapTimeController;
 @property (retain, nonatomic) IBOutlet RouteViewController *routeController;
+@property (retain, nonatomic) IBOutlet RawTrackViewController *rawTrackController;
 
 - (void)prepareForLoad:(NSString*)newFilename;
 - (void)loadFile:(NSString*)newFilename;

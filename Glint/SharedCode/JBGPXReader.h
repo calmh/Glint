@@ -10,12 +10,18 @@
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 
+typedef enum {
+	Nothing,
+	Time,
+	Elevation
+} CurrentlyReadingEnum;
+
 @interface JBGPXReader : NSObject {
 	JBLocationMath *locationMath;
 
 	NSDate *lastReadDate;
-	float lastReadLat, lastReadLon;
-	BOOL currentlyReadingTime;
+	float lastReadLat, lastReadLon, lastReadElevation;
+	CurrentlyReadingEnum currentlyReading;
 	BOOL shouldAddBreakMarker;
 }
 
