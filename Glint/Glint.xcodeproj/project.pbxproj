@@ -115,6 +115,7 @@
 		29AEFA2A106AB3900063AB50 /* reference1.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9E3106AB1A70063AB50 /* reference1.gpx */; };
 		29AEFA2B106AB3900063AB50 /* reference2.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9E4106AB1A70063AB50 /* reference2.gpx */; };
 		29AEFAC7106ABC470063AB50 /* reference0.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9F3106AB2720063AB50 /* reference0.gpx */; };
+		29B2D3A910A1DBE900A32201 /* RawTrackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B2D3A810A1DBE900A32201 /* RawTrackViewController.m */; };
 		29BA74A3102328F500262650 /* JBGradientLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 297A05B0102328BE0031D57B /* JBGradientLabel.m */; };
 		29C7910510027A8E00EA28CC /* CompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* CompassView.m */; };
 		29C9A4F51011E9CA004CCBDD /* MainScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */; };
@@ -232,6 +233,8 @@
 		29AEF9E3106AB1A70063AB50 /* reference1.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference1.gpx; path = Resources/reference1.gpx; sourceTree = "<group>"; };
 		29AEF9E4106AB1A70063AB50 /* reference2.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference2.gpx; path = Resources/reference2.gpx; sourceTree = "<group>"; };
 		29AEF9F3106AB2720063AB50 /* reference0.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference0.gpx; path = Resources/reference0.gpx; sourceTree = "<group>"; };
+		29B2D3A710A1DBE900A32201 /* RawTrackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RawTrackViewController.h; sourceTree = "<group>"; };
+		29B2D3A810A1DBE900A32201 /* RawTrackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RawTrackViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29C7910310027A8E00EA28CC /* CompassView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompassView.h; sourceTree = "<group>"; };
 		29C7910410027A8E00EA28CC /* CompassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompassView.m; sourceTree = "<group>"; };
@@ -335,6 +338,8 @@
 				2941216A105AEEB900B2A524 /* RouteViewController.m */,
 				29760DDE102F125F00EE89CB /* SlideView.h */,
 				29760DDF102F125F00EE89CB /* SlideView.m */,
+				29B2D3A710A1DBE900A32201 /* RawTrackViewController.h */,
+				29B2D3A810A1DBE900A32201 /* RawTrackViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -687,6 +692,7 @@
 				2941216B105AEEB900B2A524 /* RouteViewController.m in Sources */,
 				29FDFE2210694E8600F264F7 /* GPSManager.m in Sources */,
 				294DDEDC106B54B3001FD08C /* Reachability.m in Sources */,
+				29B2D3A910A1DBE900A32201 /* RawTrackViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
