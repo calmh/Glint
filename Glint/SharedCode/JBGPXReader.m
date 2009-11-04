@@ -105,9 +105,8 @@
 		[form setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
 		lastReadDate = [[form dateFromString:string] retain];
 		[form release];
-	} else if (currentlyReading == Elevation) {
+	} else if (currentlyReading == Elevation)
 		lastReadElevation = [string floatValue];
-	}
 
 }
 

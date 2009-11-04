@@ -95,7 +95,7 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GPXFileItem"];
 	if (cell == nil)
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"GPXFileItem"] autorelease];
-		//cell.selectionStyle = UITableViewCellSelectionStyleNone;
+	//cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	NSString *fileName = [[files objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 	cell.textLabel.text = [self descriptionForFile:fileName];
 	cell.detailTextLabel.text = [self commentForFile:fileName];

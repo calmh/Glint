@@ -13,14 +13,16 @@
 
 @synthesize locations;
 
-- (void)dealloc {
+- (void)dealloc
+{
 	self.locations = nil;
 	[formatter release];
 	[math release];
 	[super dealloc];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
 	[super viewDidLoad];
 	delegate = [[UIApplication sharedApplication] delegate];
 	formatter = [[NSDateFormatter alloc] init];
@@ -28,7 +30,8 @@
 	math = [[JBLocationMath alloc] init];
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
+- (void)viewDidDisappear:(BOOL)animated
+{
 	[super viewDidDisappear:animated];
 	self.locations = nil;
 }
@@ -41,13 +44,15 @@
 
 #pragma mark Table view methods
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
+{
 	return 1;
 }
 
 
 // Customize the number of rows in the table view.
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
+{
 	if (locations)
 		return locations.count;
 	else
@@ -56,8 +61,8 @@
 
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
 	static NSString *CellIdentifier = @"PositionCell";
 
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -67,22 +72,13 @@
 	}
 
 	CLLocation *loc = [locations objectAtIndex:indexPath.row];
-	cell.textLabel.text = [NSString stringWithFormat:@"%@; %@; %@",
-			       [delegate formatLat:loc.coordinate.latitude],
-			       [delegate formatLon:loc.coordinate.longitude],
-			       [delegate formatShortDistance:loc.altitude]];
+	cell.textLabel.text = [NSString stringWithFormat:@"%@; %@; %@", [delegate formatLat:loc.coordinate.latitude], [delegate formatLon:loc.coordinate.longitude], [delegate formatShortDistance:loc.altitude]];
 
-	if (indexPath.row == 0) {
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"#%d; %@",
-					     indexPath.row + 1,
-					     [formatter stringFromDate:loc.timestamp]];
-	} else {
+	if (indexPath.row == 0)
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"#%d; %@", indexPath.row + 1, [formatter stringFromDate:loc.timestamp]];
+	else {
 		CLLocation *prev_loc = [locations objectAtIndex:indexPath.row - 1];
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"#%d; %@; %@; %.0f°",
-					     indexPath.row + 1,
-					     [formatter stringFromDate:loc.timestamp],
-					     [delegate formatShortDistance:[loc getDistanceFrom:prev_loc]],
-					     [math bearingFromLocation:prev_loc toLocation:loc]];
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"#%d; %@; %@; %.0f°", indexPath.row + 1, [formatter stringFromDate:loc.timestamp], [delegate formatShortDistance:[loc getDistanceFrom:prev_loc]], [math bearingFromLocation:prev_loc toLocation:loc]];
 	}
 
 

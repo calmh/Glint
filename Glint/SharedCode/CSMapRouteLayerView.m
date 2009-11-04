@@ -21,7 +21,7 @@
 	CLLocationDegrees minLat = 90;
 	CLLocationDegrees minLon = 180;
 
-	if (self.points.count > 1) {
+	if (self.points.count > 1)
 		// determine the extents of the trip points that were passed in, and zoom in to that area.
 		for (int idx = 0; idx < self.points.count; idx++) {
 			CLLocation *currentLocation = [self.points objectAtIndex:idx];
@@ -39,7 +39,7 @@
 			if (currentLocation.coordinate.longitude < minLon)
 				minLon = currentLocation.coordinate.longitude;
 		}
-	} else if (self.points.count == 1) {
+	else if (self.points.count == 1) {
 		CLLocation *loc = [self.points objectAtIndex:0];
 		maxLat = loc.coordinate.latitude + 100.0f / 1852.0f / 60.0f;
 		minLat = loc.coordinate.latitude - 100.0f / 1852.0f / 60.0f;

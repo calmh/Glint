@@ -6,9 +6,9 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "GlintAppDelegate.h"
 #import "JBLocationMath.h"
+#import <UIKit/UIKit.h>
 
 @interface RawTrackViewController : UITableViewController {
 	NSArray *locations;
