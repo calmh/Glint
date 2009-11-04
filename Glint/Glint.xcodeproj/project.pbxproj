@@ -648,7 +648,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=/usr/local/bin:$PATH\ncd ${PROJECT_DIR}\nsed \"s/CURVERSION/`git describe`/\" < Glint-Info.plist > Glint-Info-Versioned.plist\nexit 0";
+			shellScript = "export PATH=/usr/local/bin:$PATH\ncd ${PROJECT_DIR}\nVER=`git describe | sed 's/^v//'`\nsed \"s/CURVERSION/$VER/\" < Glint-Info.plist > Glint-Info-Versioned.plist\nexit 0";
 		};
 		29A0FD59106A85F300DFEE47 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
