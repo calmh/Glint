@@ -24,7 +24,7 @@
 		locationMath = [[JBLocationMath alloc] init];
 		lastReadLat = lastReadLon = 0.0;
 		lastReadDate = nil;
-		currentlyReadingTime = NO;
+		currentlyReading = Nothing;
 		shouldAddBreakMarker = NO;
 
 		// NSXMLParser can't handle encoding='ASCII' that I used when writing GPX files.
@@ -59,7 +59,9 @@
 {
 	//debug_NSLog(@"JBGPXReader didStartElement: %@",elementName);
 	if ([elementName isEqualToString:@"time"])
-		currentlyReadingTime = YES;
+		currentlyReading = Time;
+	if ([elementName isEqualToString:@"ele"])
+		currentlyReading = Elevation;
 	else if ([elementName isEqualToString:@"trkpt"]) {
 		lastReadLat = [[attributeDict objectForKey:@"lat"] floatValue];
 		lastReadLon = [[attributeDict objectForKey:@"lon"] floatValue];
@@ -69,7 +71,9 @@
 - (void)parser:(NSXMLParser*)parser didEndElement:(NSString*)elementName namespaceURI:(NSString*)namespaceURI qualifiedName:(NSString*)qName
 {
 	if ([elementName isEqualToString:@"time"])
-		currentlyReadingTime = NO;
+		currentlyReading = Nothing;
+	else if ([elementName isEqualToString:@"ele"])
+		currentlyReading = Nothing;
 	else if ([elementName isEqualToString:@"trkseg"])
 		shouldAddBreakMarker = YES;
 	else if ([elementName isEqualToString:@"trkpt"]) {
@@ -83,7 +87,7 @@
 		CLLocationCoordinate2D coord;
 		coord.latitude = lastReadLat;
 		coord.longitude = lastReadLon;
-		CLLocation *loc = [[CLLocation alloc] initWithCoordinate:coord altitude:0 horizontalAccuracy:50.0f verticalAccuracy:50.0f timestamp:lastReadDate];
+		CLLocation *loc = [[CLLocation alloc] initWithCoordinate:coord altitude:lastReadElevation horizontalAccuracy:50.0f verticalAccuracy:50.0f timestamp:lastReadDate];
 		//[locations addObject:loc];
 		[locationMath updateLocation:loc];
 		[loc release];
@@ -95,13 +99,16 @@
 
 - (void)parser:(NSXMLParser*)parser foundCharacters:(NSString*)string
 {
-	if (currentlyReadingTime) {
+	if (currentlyReading == Time) {
 		NSDateFormatter *form = [[NSDateFormatter alloc] init];
 		[form setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 		[form setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
 		lastReadDate = [[form dateFromString:string] retain];
 		[form release];
+	} else if (currentlyReading == Elevation) {
+		lastReadElevation = [string floatValue];
 	}
+	
 }
 
 @end
