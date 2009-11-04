@@ -57,21 +57,21 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	
+
 	static NSString *CellIdentifier = @"PositionCell";
-	
+
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
 		cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:14.0f];
 	}
-	
+
 	CLLocation *loc = [locations objectAtIndex:indexPath.row];
 	cell.textLabel.text = [NSString stringWithFormat:@"%@; %@; %@",
 			       [delegate formatLat:loc.coordinate.latitude],
 			       [delegate formatLon:loc.coordinate.longitude],
 			       [delegate formatShortDistance:loc.altitude]];
-	
+
 	if (indexPath.row == 0) {
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"#%d; %@",
 					     indexPath.row,
@@ -84,8 +84,8 @@
 					     [delegate formatShortDistance:[loc getDistanceFrom:prev_loc]],
 					     [math bearingFromLocation:prev_loc toLocation:loc]];
 	}
-	
-	
+
+
 	return cell;
 }
 
