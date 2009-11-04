@@ -30,6 +30,13 @@
 - (void)viewDidLoad
 {
 	self.title = NSLocalizedString(@"Map View",nil);
+	MKMapView *map_view = (MKMapView*) self.view;
+	if (USERPREF_MAP_TYPE == 0)
+		[map_view setMapType:MKMapTypeStandard];
+	else if (USERPREF_MAP_TYPE == 1)
+		[map_view setMapType:MKMapTypeSatellite];
+	else if (USERPREF_MAP_TYPE == 2)
+		[map_view setMapType:MKMapTypeHybrid];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

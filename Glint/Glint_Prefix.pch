@@ -65,6 +65,9 @@
 // Whether to continue recording at startup
 #define USERPREF_RESTART_RECORDING [[NSUserDefaults standardUserDefaults] boolForKey:@"restart_recording"]
 
+// What type of map to display
+#define USERPREF_MAP_TYPE [[NSUserDefaults standardUserDefaults] integerForKey:@"map_type"]
+
 // Maximum time with unsaved trackpoints (seconds)
 #define AUTO_COMMIT_INTERVAL 60.0f
 
