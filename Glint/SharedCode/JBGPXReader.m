@@ -107,7 +107,6 @@
 		[form release];
 	} else if (currentlyReading == Elevation)
 		lastReadElevation = [string floatValue];
-
 }
 
 @end

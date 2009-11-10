@@ -80,6 +80,11 @@
 
 	reachManager = [[Reachability reachabilityForInternetConnection] retain];
 	[reachManager startNotifer];
+
+	if (USERPREF_DISABLE_IDLE)
+		[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+
+	[self enableProximitySensor];
 }
 
 - (GPSManager*)gpsManager
@@ -93,11 +98,13 @@
 - (void)applicationWillTerminate:(UIApplication*)application
 {
 	[gpsManager disableGPS];
+	[self disableProximitySensor];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)switchToSendFilesView:(id)sender
 {
+	[self disableProximitySensor];
 	[sendFilesViewController refresh];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 	[UIView beginAnimations:nil context:NULL];
@@ -110,6 +117,7 @@
 
 - (IBAction)switchToGPSView:(id)sender
 {
+	[self enableProximitySensor];
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:1.2];
 	[UIView setAnimationRepeatAutoreverses:NO];
@@ -231,6 +239,22 @@
 	}
 
 	return [NSString stringWithFormat:speedFormat, speed * speedFactor];
+}
+
+- (void)enableProximitySensor
+{
+	if (USERPREF_ENABLE_PROXIMITY) {
+		[[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+		debug_NSLog(@"Enabling proximity sensor");
+	}
+}
+
+- (void)disableProximitySensor
+{
+	if (USERPREF_ENABLE_PROXIMITY) {
+		[[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+		debug_NSLog(@"Disabling proximity sensor");
+	}
 }
 
 // Private

@@ -92,11 +92,6 @@
 	toolbarItems = [[NSArray arrayWithObjects:playPauseButton, filesButton, recordButton, stopRaceButton, nil] retain];
 	[toolbar setItems:toolbarItems animated:YES];
 
-	if (USERPREF_DISABLE_IDLE)
-		[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-	if (USERPREF_ENABLE_PROXIMITY)
-		[[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-
 	CGRect pageDescriptionRect = CGRectMake(-145.0f, 344.0f / 2.0f, 314.0f, 24.0f);
 
 	// Primary page
