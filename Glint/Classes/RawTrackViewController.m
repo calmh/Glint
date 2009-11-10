@@ -49,7 +49,6 @@
 	return 1;
 }
 
-
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -58,7 +57,6 @@
 	else
 		return 0;
 }
-
 
 // Customize the appearance of table view cells.
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
@@ -86,4 +84,3 @@
 }
 
 @end
-

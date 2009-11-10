@@ -298,6 +298,7 @@
 	oldLoc = loc;
 	i++;
 }
+
 #endif
 
 @end

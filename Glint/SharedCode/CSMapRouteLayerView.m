@@ -115,6 +115,7 @@
 	// transition.
 	self.hidden = YES;
 }
+
 - (void)mapView:(MKMapView*)mapView regionDidChangeAnimated:(BOOL)animated
 {
 	// re-enable and re-poosition the route display.

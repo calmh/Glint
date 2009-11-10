@@ -26,7 +26,7 @@
 
 - (void)testLocationMath
 {
-	for (float latOffset = -45.0f; latOffset <= 45.0f; latOffset += 45.0f)
+	for (float latOffset = -45.0f; latOffset <= 45.0f; latOffset += 45.0f) {
 		for (float lonOffset = -150.0f; lonOffset <= 150.0f; lonOffset += 50.0f) {
 			CLLocation *locN = [[[CLLocation alloc] initWithLatitude:latOffset + 1.0 longitude:lonOffset + 0.0] autorelease]; // 10.0 N
 			CLLocation *locS = [[[CLLocation alloc] initWithLatitude:latOffset - 1.0 longitude:lonOffset + 0.0] autorelease]; // 10.0 S
@@ -54,6 +54,7 @@
 			STAssertEqualsWithAccuracy(result, 225.0f, 15.0f, @"Bearing NE-SW incorrect (%f)", result);
 			[math release];
 		}
+	}
 }
 
 - (void)testGPXReaderWriter

@@ -84,5 +84,3 @@ typedef enum {
 //WiFi may require a connection for VPN on Demand.
 - (BOOL)connectionRequired;
 @end
-
-

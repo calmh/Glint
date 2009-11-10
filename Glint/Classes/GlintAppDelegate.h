@@ -45,4 +45,3 @@
 - (void)disableProximitySensor;
 
 @end
-
