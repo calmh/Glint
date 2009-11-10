@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <gpx version='1.1' creator='Glint http://glint.nym.se/' xmlns='http://www.topografix.com/GPX/1/1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd'>
   <!-- [numPoints]157[/numPoints] -->
-  <!-- [totalDistance]5008.151367[/totalDistance] -->
+  <!-- [totalDistance]4923.261719[/totalDistance] -->
   <time>2009-09-09T10:39:24Z</time>
   <bounds minlat='55.713066' minlon='13.210185' maxlat='55.727798' maxlon='13.223227'/>
   <trk>
@@ -130,6 +130,8 @@
         <ele>102.000000</ele>
         <time>2009-09-09T10:17:23Z</time>
       </trkpt>
+    </trkseg>
+    <trkseg>
       <trkpt lat='55.720668' lon='13.211516'>
         <ele>102.000000</ele>
         <time>2009-09-09T10:17:34Z</time>
@@ -306,6 +308,8 @@
         <ele>118.000000</ele>
         <time>2009-09-09T10:25:13Z</time>
       </trkpt>
+    </trkseg>
+    <trkseg>
       <trkpt lat='55.727086' lon='13.219332'>
         <ele>120.000000</ele>
         <time>2009-09-09T10:25:24Z</time>
