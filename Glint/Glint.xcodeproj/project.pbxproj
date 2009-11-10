@@ -18,6 +18,17 @@
 			name = "Version Handling";
 			productName = "Version Handling";
 		};
+		29F1026510A97E7B0055EA4F /* Uncrustify */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 29F1026A10A97E9A0055EA4F /* Build configuration list for PBXAggregateTarget "Uncrustify" */;
+			buildPhases = (
+				29F1026410A97E7B0055EA4F /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Uncrustify;
+			productName = Uncrustify;
+		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
@@ -557,6 +568,7 @@
 				29A0FD13106A85BD00DFEE47 /* GlintTesting */,
 				29A0FD5A106A85F300DFEE47 /* GlintTests */,
 				2933F32C109DC35900F8F56D /* Version Handling */,
+				29F1026510A97E7B0055EA4F /* Uncrustify */,
 			);
 		};
 /* End PBXProject section */
@@ -667,6 +679,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n# \"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		29F1026410A97E7B0055EA4F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=~/bin:$PATH\nuncrustify -l oc -c Resources/uncrustify.cfg --replace --no-backup Classes/* SharedCode/* main.m\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1039,6 +1064,34 @@
 			};
 			name = Distribution;
 		};
+		29F1026610A97E7C0055EA4F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = Uncrustify;
+			};
+			name = Debug;
+		};
+		29F1026710A97E7C0055EA4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = Uncrustify;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		29F1026810A97E7C0055EA4F /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = Uncrustify;
+			};
+			name = Distribution;
+		};
 		29FFE05B1013B8570091ACC8 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1160,6 +1213,16 @@
 				29A0FD5D106A85F400DFEE47 /* Debug */,
 				29A0FD5E106A85F400DFEE47 /* Release */,
 				29A0FD5F106A85F400DFEE47 /* Distribution */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		29F1026A10A97E9A0055EA4F /* Build configuration list for PBXAggregateTarget "Uncrustify" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29F1026610A97E7C0055EA4F /* Debug */,
+				29F1026710A97E7C0055EA4F /* Release */,
+				29F1026810A97E7C0055EA4F /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
