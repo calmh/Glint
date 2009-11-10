@@ -10,8 +10,6 @@
 
 @interface GlintUnitTests ()
 
-- (void)privateTestGPXReader:(JBGPXReader*)reader;
-- (JBGPXReader*)newDefaultGPXReader;
 - (NSString*)bundlePath;
 
 @end
@@ -77,15 +75,14 @@
 
 	NSString *fileDataOriginal = [NSString stringWithContentsOfFile:filename encoding:NSUTF8StringEncoding error:nil];
 	NSString *fileDataNew = [NSString stringWithContentsOfFile:@"/tmp/unittest.gpx" encoding:NSUTF8StringEncoding error:nil];
-	NSLog(@"%@", fileDataOriginal);
-	NSLog(@"%@", fileDataNew);
 	STAssertEquals([fileDataOriginal compare:fileDataNew], 0, @"");
 }
 
 - (void)testInterpolation
 {
 	JBLocationMath *math = [[JBLocationMath alloc] init];
-	JBGPXReader *reader = [self newDefaultGPXReader];
+	NSString *filename = [NSString stringWithFormat:@"%@/reference0.gpx", [self bundlePath]];
+	JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:filename];
 	NSArray *locations = [reader locations];
 
 	float result;
@@ -132,7 +129,7 @@
 	STAssertTrue([manager isPrecisionAcceptable], @"Precision must be acceptable");
 	float result = [[manager math] totalDistance];
 	STAssertEquals(result, 0.0f, @"Distance travelled must be zero (%f)", result);
-	sleep(01);
+	sleep(0.1);
 
 	oldLoc = loc;
 	coord.latitude = 12.0f;
@@ -142,67 +139,6 @@
 	result = [[manager math] totalDistance];
 	STAssertEqualsWithAccuracy(result, 1852.0f * 60.0f, 200.0f, @"Distance travelled is wrong (%f)", result);
 	[manager locationManager:nil didUpdateToLocation:loc fromLocation:oldLoc];
-}
-
-- (void)privateTestGPXReader:(JBGPXReader*)reader
-{
-	STAssertNotNil(reader, @"Reader cannot be nil");
-
-	JBLocationMath *math = [[JBLocationMath alloc] init];
-	NSArray *locations = [reader locations];
-	STAssertNotNil(locations, @"Got no locations");
-	if (locations) {
-		// Reference file contains 47 measurements
-		int numLocations = [locations count];
-		STAssertEquals(numLocations, 47, @"Wrong number of trackpoints in locations (%d should be 47)", numLocations);
-
-		float result;
-		// Check that the total distance is correct
-		result = [math totalDistanceOverArray:locations];
-		STAssertEqualsWithAccuracy(result, 596.0f, 1.0f, [NSString stringWithFormat:@"Total distance incorrect (%f).", result]);
-
-		// Check that we get start and end times.
-		// TODO: Verify that they are correct.
-		NSArray *times = [math startAndFinishTimesInArray:locations];
-		STAssertNotNil(times, @"Start and finish times cannot be nil");
-		int num = [times count];
-		STAssertEquals(num, 2, @"startAndFinishTimesInArray: should return exactly two objects");
-
-		// Check speed & course calculations
-		CLLocation *loc = nil;
-		for (loc in locations)
-			[math updateLocation:loc];
-		// A few extra updates, in case we might have lost signal and got it back
-		// If it isn't checked for, this might cause a division by zero and crash the test rig
-		loc = [locations objectAtIndex:[locations count] - 1];
-		[math updateLocation:loc];
-		[math updateLocation:loc];
-
-		result = [math currentSpeed];
-		STAssertEqualsWithAccuracy(result, 1.29f, 0.1f, @"currentSpeed incorrect");
-		result = [math totalDistance];
-		STAssertEqualsWithAccuracy(result, 596.0f, 0.1f, @"totalDistance incorrect");
-		result = [math currentCourse];
-		STAssertEqualsWithAccuracy(result, 90.0f, 0.1f, @"currentCourse incorrect");
-		result = [math averageSpeed];
-		STAssertEqualsWithAccuracy(result, 1.0f, 0.1f, @"averageSpeed incorrect (%f should be ~1.0)", result);
-		NSDate *futureDate = [[math lastKnownPosition].timestamp addTimeInterval:300];
-		result = [math estimatedTotalDistanceAtTime:futureDate];
-		STAssertEqualsWithAccuracy(result, 982.8f, 0.1f, @"estimatedTotalDistance incorrect");
-	}
-	[reader release];
-	[math release];
-}
-
-- (JBGPXReader*)newDefaultGPXReader
-{
-	NSString *filename = [NSString stringWithFormat:@"%@/reference0.gpx", [self bundlePath]];
-
-	BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:filename];
-	STAssertTrue(exists, @"Reference GPX file %@ not found", filename);
-
-	JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:filename];
-	return reader;
 }
 
 - (NSString*)bundlePath
