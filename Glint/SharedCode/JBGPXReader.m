@@ -63,8 +63,10 @@
 	if ([elementName isEqualToString:@"ele"])
 		currentlyReading = Elevation;
 	else if ([elementName isEqualToString:@"trkpt"]) {
-		lastReadLat = [[attributeDict objectForKey:@"lat"] floatValue];
-		lastReadLon = [[attributeDict objectForKey:@"lon"] floatValue];
+		NSLog(@"obj: %@", [attributeDict objectForKey:@"lat"]);
+		lastReadLat = [[attributeDict objectForKey:@"lat"] doubleValue];
+		NSLog(@"float: %f", lastReadLat);
+		lastReadLon = [[attributeDict objectForKey:@"lon"] doubleValue];
 	}
 }
 
@@ -88,7 +90,6 @@
 		coord.latitude = lastReadLat;
 		coord.longitude = lastReadLon;
 		CLLocation *loc = [[CLLocation alloc] initWithCoordinate:coord altitude:lastReadElevation horizontalAccuracy:50.0f verticalAccuracy:50.0f timestamp:lastReadDate];
-		//[locations addObject:loc];
 		[locationMath updateLocation:loc];
 		[loc release];
 		[lastReadDate release];

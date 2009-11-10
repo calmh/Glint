@@ -20,7 +20,7 @@ typedef enum {
 	JBLocationMath *locationMath;
 
 	NSDate *lastReadDate;
-	float lastReadLat, lastReadLon, lastReadElevation;
+	double lastReadLat, lastReadLon, lastReadElevation;
 	CurrentlyReadingEnum currentlyReading;
 	BOOL shouldAddBreakMarker;
 }

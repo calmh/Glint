@@ -58,21 +58,28 @@
 		}
 }
 
-- (void)testGPXWriter
+- (void)testGPXReaderWriter
 {
-	JBGPXReader *reader = [self newDefaultGPXReader];
+	NSString *filename = [NSString stringWithFormat:@"%@/reference2.gpx", [self bundlePath]];
+	JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:filename];
 	JBGPXWriter *writer = [[JBGPXWriter alloc] initWithFilename:@"/tmp/unittest.gpx"];
 
 	[writer addTrackSegment];
 	for (CLLocation*loc in [reader locations])
-		[writer addTrackPoint:loc];
+		if ([JBLocationMath isBreakMarker:loc])
+			[writer addTrackSegment];
+		else
+			[writer addTrackPoint:loc];
 	[writer commit];
-	[writer release];
 
+	[writer release];
 	[reader release];
 
-	reader = [[JBGPXReader alloc] initWithFilename:@"/tmp/unittest.gpx"];
-	[self privateTestGPXReader:reader];
+	NSString *fileDataOriginal = [NSString stringWithContentsOfFile:filename encoding:NSUTF8StringEncoding error:nil];
+	NSString *fileDataNew = [NSString stringWithContentsOfFile:@"/tmp/unittest.gpx" encoding:NSUTF8StringEncoding error:nil];
+	NSLog(@"%@", fileDataOriginal);
+	NSLog(@"%@", fileDataNew);
+	STAssertEquals([fileDataOriginal compare:fileDataNew], 0, @"");
 }
 
 - (void)testInterpolation
@@ -88,7 +95,7 @@
 	result  = [math timeAtLocationByDistance:400.0 inLocations:locations];
 	STAssertEqualsWithAccuracy(result, 372.0f, 1.0f, @"Time to 400 m incorrect");
 	result  = [math timeAtLocationByDistance:500.0 inLocations:locations];
-	STAssertEqualsWithAccuracy(result, 521.0f, 1.0f, @"Time to 500 m incorrect");
+	STAssertEqualsWithAccuracy(result, 520.0f, 1.0f, @"");
 	result  = [math timeAtLocationByDistance:600.0f inLocations:locations];
 	STAssertTrue(isnan(result), @"Time to 600 m incorrect");
 
