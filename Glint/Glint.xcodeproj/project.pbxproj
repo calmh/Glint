@@ -216,36 +216,10 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				29C7910310027A8E00EA28CC /* CompassView.h */,
-				29C7910410027A8E00EA28CC /* CompassView.m */,
-				2913DBE81024FD6B00F56A2A /* FileDetailViewController.h */,
-				2913DBE91024FD6B00F56A2A /* FileDetailViewController.m */,
-				29CD711C100FB9F2001150A1 /* FilesViewController.h */,
-				29CD711D100FB9F2001150A1 /* FilesViewController.m */,
-				1D3623240D0F684500981E51 /* GlintAppDelegate.h */,
-				1D3623250D0F684500981E51 /* GlintAppDelegate.m */,
-				29FDFE2010694E8600F264F7 /* GPSManager.h */,
-				29FDFE2110694E8600F264F7 /* GPSManager.m */,
-				29886675101C96320051F368 /* GPXReader.h */,
-				29886676101C96320051F368 /* GPXReader.m */,
-				29886677101C96320051F368 /* GPXWriter.h */,
-				29886678101C96320051F368 /* GPXWriter.m */,
-				297A05AF102328BE0031D57B /* GradientLabel.h */,
-				297A05B0102328BE0031D57B /* GradientLabel.m */,
-				29EF16711037292800A0982A /* LapTimeViewController.h */,
-				29EF16721037292800A0982A /* LapTimeViewController.m */,
-				29886679101C96320051F368 /* LocationMath.h */,
-				2988667A101C96320051F368 /* LocationMath.m */,
-				28D7ACF60DDB3853001CB0EB /* MainScreenViewController.h */,
-				28D7ACF70DDB3853001CB0EB /* MainScreenViewController.m */,
-				29B2D3A710A1DBE900A32201 /* RawTrackViewController.h */,
-				29B2D3A810A1DBE900A32201 /* RawTrackViewController.m */,
-				29412169105AEEB900B2A524 /* RouteViewController.h */,
-				2941216A105AEEB900B2A524 /* RouteViewController.m */,
-				29760DDE102F125F00EE89CB /* SlideView.h */,
-				29760DDF102F125F00EE89CB /* SlideView.m */,
-				2988667B101C96320051F368 /* SoundEffect.h */,
-				2988667C101C96320051F368 /* SoundEffect.m */,
+				29F106FE10AA14AE0055EA4F /* GPS */,
+				29F1070110AA150F0055EA4F /* Other */,
+				29F106FB10AA14760055EA4F /* UI Controllers */,
+				29F1070610AA155C0055EA4F /* UI Widgets */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -341,6 +315,64 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		29F106FB10AA14760055EA4F /* UI Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2913DBE81024FD6B00F56A2A /* FileDetailViewController.h */,
+				2913DBE91024FD6B00F56A2A /* FileDetailViewController.m */,
+				29CD711C100FB9F2001150A1 /* FilesViewController.h */,
+				29CD711D100FB9F2001150A1 /* FilesViewController.m */,
+				29EF16711037292800A0982A /* LapTimeViewController.h */,
+				29EF16721037292800A0982A /* LapTimeViewController.m */,
+				28D7ACF60DDB3853001CB0EB /* MainScreenViewController.h */,
+				28D7ACF70DDB3853001CB0EB /* MainScreenViewController.m */,
+				29B2D3A710A1DBE900A32201 /* RawTrackViewController.h */,
+				29B2D3A810A1DBE900A32201 /* RawTrackViewController.m */,
+				29412169105AEEB900B2A524 /* RouteViewController.h */,
+				2941216A105AEEB900B2A524 /* RouteViewController.m */,
+			);
+			name = "UI Controllers";
+			sourceTree = "<group>";
+		};
+		29F106FE10AA14AE0055EA4F /* GPS */ = {
+			isa = PBXGroup;
+			children = (
+				29FDFE2010694E8600F264F7 /* GPSManager.h */,
+				29FDFE2110694E8600F264F7 /* GPSManager.m */,
+				29886675101C96320051F368 /* GPXReader.h */,
+				29886676101C96320051F368 /* GPXReader.m */,
+				29886677101C96320051F368 /* GPXWriter.h */,
+				29886678101C96320051F368 /* GPXWriter.m */,
+				29886679101C96320051F368 /* LocationMath.h */,
+				2988667A101C96320051F368 /* LocationMath.m */,
+			);
+			name = GPS;
+			sourceTree = "<group>";
+		};
+		29F1070110AA150F0055EA4F /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				1D3623240D0F684500981E51 /* GlintAppDelegate.h */,
+				1D3623250D0F684500981E51 /* GlintAppDelegate.m */,
+				2988667B101C96320051F368 /* SoundEffect.h */,
+				2988667C101C96320051F368 /* SoundEffect.m */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
+		29F1070610AA155C0055EA4F /* UI Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				29C7910310027A8E00EA28CC /* CompassView.h */,
+				29C7910410027A8E00EA28CC /* CompassView.m */,
+				297A05AF102328BE0031D57B /* GradientLabel.h */,
+				297A05B0102328BE0031D57B /* GradientLabel.m */,
+				29760DDE102F125F00EE89CB /* SlideView.h */,
+				29760DDF102F125F00EE89CB /* SlideView.m */,
+			);
+			name = "UI Widgets";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
