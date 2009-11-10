@@ -35,7 +35,7 @@
 			CLLocation *locNE = [[[CLLocation alloc] initWithLatitude:latOffset + 1.0 longitude:lonOffset + 1.0] autorelease]; // 10.0 N, 10.0 E
 			CLLocation *locSW = [[[CLLocation alloc] initWithLatitude:latOffset - 1.0 longitude:lonOffset - 1.0] autorelease]; // 10.0 S, 10.0 W
 
-			JBLocationMath *math = [[JBLocationMath alloc] init];
+			LocationMath *math = [[LocationMath alloc] init];
 			float result;
 			// Check basic bearings
 			result = [math bearingFromLocation:locN toLocation:locS];
@@ -60,12 +60,12 @@
 - (void)testGPXReaderWriter
 {
 	NSString *filename = [NSString stringWithFormat:@"%@/reference2.gpx", [self bundlePath]];
-	JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:filename];
-	JBGPXWriter *writer = [[JBGPXWriter alloc] initWithFilename:@"/tmp/unittest.gpx"];
+	GPXReader *reader = [[GPXReader alloc] initWithFilename:filename];
+	GPXWriter *writer = [[GPXWriter alloc] initWithFilename:@"/tmp/unittest.gpx"];
 
 	[writer addTrackSegment];
 	for (CLLocation*loc in [reader locations])
-		if ([JBLocationMath isBreakMarker:loc])
+		if ([LocationMath isBreakMarker:loc])
 			[writer addTrackSegment];
 		else
 			[writer addTrackPoint:loc];
@@ -81,9 +81,9 @@
 
 - (void)testInterpolation
 {
-	JBLocationMath *math = [[JBLocationMath alloc] init];
+	LocationMath *math = [[LocationMath alloc] init];
 	NSString *filename = [NSString stringWithFormat:@"%@/reference0.gpx", [self bundlePath]];
-	JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:filename];
+	GPXReader *reader = [[GPXReader alloc] initWithFilename:filename];
 	NSArray *locations = [reader locations];
 
 	float result;

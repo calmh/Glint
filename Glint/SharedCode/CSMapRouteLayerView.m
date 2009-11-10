@@ -27,7 +27,7 @@
 			CLLocation *currentLocation = [self.points objectAtIndex:idx];
 
 			// Skip points that are break markers
-			if ([JBLocationMath isBreakMarker:currentLocation])
+			if ([LocationMath isBreakMarker:currentLocation])
 				continue;
 
 			if (currentLocation.coordinate.latitude > maxLat)
@@ -81,7 +81,7 @@
 			for (int idx = 0; idx < self.points.count; idx++) {
 				CLLocation *location = [self.points objectAtIndex:idx];
 				// Skip points that are break markers
-				if ([JBLocationMath isBreakMarker:location]) {
+				if ([LocationMath isBreakMarker:location]) {
 					shouldSkip = YES;
 					continue;
 				}

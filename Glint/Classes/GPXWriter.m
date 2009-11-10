@@ -6,9 +6,9 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import "JBGPXWriter.h"
+#import "GPXWriter.h"
 
-@implementation JBGPXWriter
+@implementation GPXWriter
 
 @synthesize numPoints;
 @synthesize autoCommit;

@@ -7,8 +7,8 @@
 //
 
 #import "GlintAppDelegate.h"
-#import "JBGPXReader.h"
-#import "JBLocationMath.h"
+#import "GPXReader.h"
+#import "LocationMath.h"
 #import "LapTimeViewController.h"
 #import "RawTrackViewController.h"
 #import "RouteViewController.h"
@@ -17,8 +17,8 @@
 
 @interface FileDetailViewController : UIViewController <MFMailComposeViewControllerDelegate> {
 	GlintAppDelegate *delegate;
-	JBGPXReader *reader;
-	JBLocationMath *math;
+	GPXReader *reader;
+	LocationMath *math;
 	BOOL loading;
 
 	UINavigationController *navigationController;

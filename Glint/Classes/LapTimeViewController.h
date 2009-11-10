@@ -7,7 +7,7 @@
 //
 
 #import "GlintAppDelegate.h"
-#import "JBGradientLabel.h"
+#import "GradientLabel.h"
 #import <UIKit/UIKit.h>
 
 @interface LapTimeViewController : UITableViewController {

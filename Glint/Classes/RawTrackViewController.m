@@ -27,7 +27,7 @@
 	delegate = [[UIApplication sharedApplication] delegate];
 	formatter = [[NSDateFormatter alloc] init];
 	[formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-	math = [[JBLocationMath alloc] init];
+	math = [[LocationMath alloc] init];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

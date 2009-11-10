@@ -6,16 +6,16 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import "JBLocationMath.h"
+#import "LocationMath.h"
 
-@interface JBLocationMath ()
+@interface LocationMath ()
 - (void)updateCurrentSpeed:(float)newSpeed;
 - (NSArray*)interpolatedSegmentForLocations:(NSArray*)locationSegment;
 - (float*)hermiteInterpolate1dWithSteps:(int)steps y0:(float)y0 y1:(float)y1 y2:(float)y2 y3:(float)y3;
 - (NSArray*)hermiteCurveFromSource:(CLLocation*)origin toDestination:(CLLocation*)destination fromPrev:(CLLocation*)prev toNext:(CLLocation*)next;
 @end
 
-@implementation JBLocationMath
+@implementation LocationMath
 
 @synthesize currentSpeed, currentCourse, totalDistance, lastKnownPosition, locations, elapsedTime, raceLocations;
 
@@ -49,7 +49,7 @@
 	if (!location)
 		return;
 
-	if ([JBLocationMath isBreakMarker:location]) {
+	if ([LocationMath isBreakMarker:location]) {
 		[self insertBreakMarker];
 		return;
 	}
@@ -59,7 +59,7 @@
 			firstMeasurement = [location.timestamp retain];
 
 		CLLocation *reference = self.lastRecordedPosition;
-		if (![JBLocationMath isBreakMarker:reference] && [location.timestamp timeIntervalSinceDate:reference.timestamp] > 0.0f) {
+		if (![LocationMath isBreakMarker:reference] && [location.timestamp timeIntervalSinceDate:reference.timestamp] > 0.0f) {
 			float dist = [reference getDistanceFrom:location];
 			totalDistance += dist;
 			[self updateCurrentSpeed:dist / [location.timestamp timeIntervalSinceDate:reference.timestamp]];
@@ -133,7 +133,7 @@
 	float time = 0.0;
 
 	for (CLLocation*point in locationList) {
-		if (![JBLocationMath isBreakMarker:pointOne] && ![JBLocationMath isBreakMarker:point]) {
+		if (![LocationMath isBreakMarker:pointOne] && ![LocationMath isBreakMarker:point]) {
 			time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
 			distance += [pointOne getDistanceFrom:point];
 		}
@@ -167,7 +167,7 @@
 	float distance = 0.0;
 
 	for (CLLocation*point in locationList) {
-		if (![JBLocationMath isBreakMarker:point] && ![JBLocationMath isBreakMarker:pointOne]) {
+		if (![LocationMath isBreakMarker:point] && ![LocationMath isBreakMarker:pointOne]) {
 			time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
 			distance += [pointOne getDistanceFrom:point];
 		}
@@ -193,7 +193,7 @@
 	float distance = 0.0;
 	CLLocation *last = nil;
 	for (CLLocation*loc in locationList) {
-		if (![JBLocationMath isBreakMarker:last] && ![JBLocationMath isBreakMarker:loc])
+		if (![LocationMath isBreakMarker:last] && ![LocationMath isBreakMarker:loc])
 			distance += [loc getDistanceFrom:last];
 		last = loc;
 	}
@@ -230,7 +230,7 @@
 - (float)estimatedElapsedTime
 {
 	CLLocation *reference = self.lastRecordedPosition;
-	if (![JBLocationMath isBreakMarker:reference])
+	if (![LocationMath isBreakMarker:reference])
 		return elapsedTime + [[NSDate date] timeIntervalSinceDate : reference.timestamp];
 	else
 		return elapsedTime;
@@ -265,7 +265,7 @@
 	NSMutableArray *tmp = [[[NSMutableArray alloc] init] autorelease];
 	for (int i = 0; i < [locations count]; i++) {
 		CLLocation *current = [locations objectAtIndex:i];
-		if ([JBLocationMath isBreakMarker:current]) {
+		if ([LocationMath isBreakMarker:current]) {
 			[interpolated addObjectsFromArray:[self interpolatedSegmentForLocations:tmp]];
 			[interpolated addObject:[locations objectAtIndex:i]];
 			tmp = [[[NSMutableArray alloc] init] autorelease];

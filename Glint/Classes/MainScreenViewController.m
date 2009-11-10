@@ -73,9 +73,9 @@
 	int numPages = [containerView.subviews count];
 	[pager setNumberOfPages:numPages];
 
-	badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
-	goodSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
-	lapSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Ping" ofType:@"aiff"]];
+	badSound = [[SoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
+	goodSound = [[SoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
+	lapSound = [[SoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Ping" ofType:@"aiff"]];
 	firstMeasurementDate  = nil;
 	lastMeasurementDate = nil;
 	lockTimer = nil;
@@ -236,7 +236,7 @@
 		prevStateGood = gpsManager.isPrecisionAcceptable;
 	}
 
-	JBLocationMath *tmath = [gpsManager math];
+	LocationMath *tmath = [gpsManager math];
 	NSArray *tloc = [tmath raceLocations];
 
 	if (tloc != nil)

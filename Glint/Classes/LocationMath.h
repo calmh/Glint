@@ -9,7 +9,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 
-@interface JBLocationMath : NSObject {
+@interface LocationMath : NSObject {
 	float currentSpeed;
 	float currentCourse;
 	float totalDistance;

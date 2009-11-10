@@ -9,7 +9,7 @@
 #import <AudioToolbox/AudioServices.h>
 #import <UIKit/UIKit.h>
 
-@interface JBSoundEffect : NSObject {
+@interface SoundEffect : NSObject {
 	SystemSoundID soundID;
 }
 

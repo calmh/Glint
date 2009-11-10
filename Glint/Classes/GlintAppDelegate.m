@@ -23,7 +23,6 @@
 @synthesize queue;
 @synthesize reachManager;
 
-
 - (void)dealloc
 {
 	[window release];
@@ -261,7 +260,7 @@
 
 - (void)loadRaceFile:(NSString*)raceAgainstFile
 {
-	JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:raceAgainstFile];
+	GPXReader *reader = [[GPXReader alloc] initWithFilename:raceAgainstFile];
 	[[gpsManager math] setRaceLocations:[reader locations]];
 	[reader release];
 }

@@ -9,9 +9,9 @@
 #import "CompassView.h"
 #import "GPSManager.h"
 #import "GlintAppDelegate.h"
-#import "JBGradientLabel.h"
-#import "JBLocationMath.h"
-#import "JBSoundEffect.h"
+#import "GradientLabel.h"
+#import "LocationMath.h"
+#import "SoundEffect.h"
 #import "LapTimeViewController.h"
 #import "SlideView.h"
 #import <CoreLocation/CoreLocation.h>
@@ -25,7 +25,7 @@
 	NSArray *unitSets;
 	NSDate *firstMeasurementDate;
 	NSDate *lastMeasurementDate;
-	JBSoundEffect *goodSound, *badSound, *lapSound;
+	SoundEffect *goodSound, *badSound, *lapSound;
 	NSArray *toolbarItems;
 	NSTimer *lockTimer;
 

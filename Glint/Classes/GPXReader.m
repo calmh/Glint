@@ -6,9 +6,9 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import "JBGPXReader.h"
+#import "GPXReader.h"
 
-@implementation JBGPXReader
+@implementation GPXReader
 
 @synthesize locationMath;
 
@@ -21,7 +21,7 @@
 - (id)initWithFilename:(NSString*)filename
 {
 	if (self = [self init]) {
-		locationMath = [[JBLocationMath alloc] init];
+		locationMath = [[LocationMath alloc] init];
 		lastReadLat = lastReadLon = 0.0;
 		lastReadDate = nil;
 		currentlyReading = Nothing;

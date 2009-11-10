@@ -42,7 +42,7 @@
 - (id)init
 {
 	if (self = [super init]) {
-		math = [[JBLocationMath alloc] init];
+		math = [[LocationMath alloc] init];
 		gpxWriter = nil;
 		isGPSEnabled = NO;
 		isPrecisionAcceptable = NO;
@@ -80,7 +80,7 @@
 {
 	if (gpxWriter)
 		[self stopRecording];
-	gpxWriter = [[JBGPXWriter alloc] initWithFilename:fileName];
+	gpxWriter = [[GPXWriter alloc] initWithFilename:fileName];
 	gpxWriter.autoCommit = YES;
 	[gpxWriter addTrackSegment];
 }
@@ -89,15 +89,15 @@
 {
 	if (gpxWriter)
 		[self stopRecording];
-	JBGPXReader *reader = [[JBGPXReader alloc] initWithFilename:fileName];
+	GPXReader *reader = [[GPXReader alloc] initWithFilename:fileName];
 	[math release];
 	math = [[reader locationMath] retain];
 	[reader release];
 
-	gpxWriter = [[JBGPXWriter alloc] initWithFilename:fileName];
+	gpxWriter = [[GPXWriter alloc] initWithFilename:fileName];
 	[gpxWriter addTrackSegment];
 	for (CLLocation*loc in [math locations]) {
-		if ([JBLocationMath isBreakMarker:loc])
+		if ([LocationMath isBreakMarker:loc])
 			[gpxWriter addTrackSegment];
 		else
 			[gpxWriter addTrackPoint:loc];
@@ -277,7 +277,7 @@
 - (void)clearForUnitTests
 {
 	[math release];
-	math = [[JBLocationMath alloc] init];
+	math = [[LocationMath alloc] init];
 }
 
 #ifdef FAKE_MOVEMENT

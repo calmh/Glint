@@ -6,9 +6,9 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import "JBSoundEffect.h"
+#import "SoundEffect.h"
 
-@implementation JBSoundEffect
+@implementation SoundEffect
 
 - (void)dealloc
 {

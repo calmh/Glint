@@ -6,12 +6,12 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import "JBGradientLabel.h"
+#import "GradientLabel.h"
 
 // Missing in standard headers.
 extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph[], size_t);
 
-@implementation JBGradientLabel
+@implementation GradientLabel
 
 - (id)initWithFrame:(CGRect)frame
 {

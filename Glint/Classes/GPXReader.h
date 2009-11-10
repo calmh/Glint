@@ -6,7 +6,7 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import "JBLocationMath.h"
+#import "LocationMath.h"
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 
@@ -16,8 +16,8 @@ typedef enum {
 	Elevation
 } CurrentlyReadingEnum;
 
-@interface JBGPXReader : NSObject {
-	JBLocationMath *locationMath;
+@interface GPXReader : NSObject {
+	LocationMath *locationMath;
 
 	NSDate *lastReadDate;
 	double lastReadLat, lastReadLon, lastReadElevation;
@@ -28,6 +28,6 @@ typedef enum {
 - (id)initWithFilename:(NSString*)newFilename;
 
 @property (readonly) NSArray *locations;
-@property (readonly) JBLocationMath *locationMath;
+@property (readonly) LocationMath *locationMath;
 
 @end

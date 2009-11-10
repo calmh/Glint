@@ -43,9 +43,9 @@
 		2913DBEC1024FD6B00F56A2A /* FileDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2913DBEA1024FD6B00F56A2A /* FileDetailViewController.xib */; };
 		2913DE2010260A9F00F56A2A /* FilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2913DE1F10260A9F00F56A2A /* FilesViewController.xib */; };
 		291C0DCF101E23C500393E77 /* GlintUnitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C0DCE101E23C500393E77 /* GlintUnitTests.m */; };
-		291C0DDC101E260900393E77 /* JBGPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886676101C96320051F368 /* JBGPXReader.m */; };
-		291C0DDE101E260900393E77 /* JBGPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* JBGPXWriter.m */; };
-		291C0DE0101E260900393E77 /* JBLocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* JBLocationMath.m */; };
+		291C0DDC101E260900393E77 /* GPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886676101C96320051F368 /* GPXReader.m */; };
+		291C0DDE101E260900393E77 /* GPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* GPXWriter.m */; };
+		291C0DE0101E260900393E77 /* LocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* LocationMath.m */; };
 		291C0DE6101E265800393E77 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FE32270FF4370200E9FE05 /* CoreLocation.framework */; };
 		293D38071039E74F00EB0F91 /* Ping.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 293D38061039E74F00EB0F91 /* Ping.aiff */; };
 		293D998A10625C4D00C86B6C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 293D998910625C4D00C86B6C /* Entitlements.plist */; };
@@ -58,16 +58,16 @@
 		29760DE0102F125F00EE89CB /* SlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29760DDF102F125F00EE89CB /* SlideView.m */; };
 		29850316103701F1000D97A2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29850315103701F1000D97A2 /* MapKit.framework */; };
 		29874F9A0FF776EB0080E20D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
-		2988667D101C96320051F368 /* JBGPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886676101C96320051F368 /* JBGPXReader.m */; };
-		2988667E101C96320051F368 /* JBGPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* JBGPXWriter.m */; };
-		2988667F101C96320051F368 /* JBLocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* JBLocationMath.m */; };
-		29886680101C96320051F368 /* JBSoundEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667C101C96320051F368 /* JBSoundEffect.m */; };
+		2988667D101C96320051F368 /* GPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886676101C96320051F368 /* GPXReader.m */; };
+		2988667E101C96320051F368 /* GPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* GPXWriter.m */; };
+		2988667F101C96320051F368 /* LocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* LocationMath.m */; };
+		29886680101C96320051F368 /* SoundEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667C101C96320051F368 /* SoundEffect.m */; };
 		2988668C101C96880051F368 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2988668B101C96880051F368 /* unitsets.plist */; };
 		29AEF9E7106AB1A70063AB50 /* reference1.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9E3106AB1A70063AB50 /* reference1.gpx */; };
 		29AEF9E8106AB1A70063AB50 /* reference2.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9E4106AB1A70063AB50 /* reference2.gpx */; };
 		29AEF9F5106AB2720063AB50 /* reference0.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9F3106AB2720063AB50 /* reference0.gpx */; };
 		29B2D3A910A1DBE900A32201 /* RawTrackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B2D3A810A1DBE900A32201 /* RawTrackViewController.m */; };
-		29BA74A3102328F500262650 /* JBGradientLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 297A05B0102328BE0031D57B /* JBGradientLabel.m */; };
+		29BA74A3102328F500262650 /* GradientLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 297A05B0102328BE0031D57B /* GradientLabel.m */; };
 		29C7910510027A8E00EA28CC /* CompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* CompassView.m */; };
 		29C9A4F51011E9CA004CCBDD /* MainScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */; };
 		29CD7111100FB8B4001150A1 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CD7110100FB8B4001150A1 /* CFNetwork.framework */; };
@@ -145,18 +145,18 @@
 		2974387D101C727800DDBB6A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		29760DDE102F125F00EE89CB /* SlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideView.h; sourceTree = "<group>"; };
 		29760DDF102F125F00EE89CB /* SlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideView.m; sourceTree = "<group>"; };
-		297A05AF102328BE0031D57B /* JBGradientLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBGradientLabel.h; path = SharedCode/JBGradientLabel.h; sourceTree = "<group>"; };
-		297A05B0102328BE0031D57B /* JBGradientLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBGradientLabel.m; path = SharedCode/JBGradientLabel.m; sourceTree = "<group>"; };
+		297A05AF102328BE0031D57B /* GradientLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientLabel.h; sourceTree = "<group>"; };
+		297A05B0102328BE0031D57B /* GradientLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientLabel.m; sourceTree = "<group>"; };
 		29850315103701F1000D97A2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		29874F990FF776EB0080E20D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
-		29886675101C96320051F368 /* JBGPXReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBGPXReader.h; path = SharedCode/JBGPXReader.h; sourceTree = "<group>"; };
-		29886676101C96320051F368 /* JBGPXReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBGPXReader.m; path = SharedCode/JBGPXReader.m; sourceTree = "<group>"; };
-		29886677101C96320051F368 /* JBGPXWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBGPXWriter.h; path = SharedCode/JBGPXWriter.h; sourceTree = "<group>"; };
-		29886678101C96320051F368 /* JBGPXWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBGPXWriter.m; path = SharedCode/JBGPXWriter.m; sourceTree = "<group>"; };
-		29886679101C96320051F368 /* JBLocationMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBLocationMath.h; path = SharedCode/JBLocationMath.h; sourceTree = "<group>"; };
-		2988667A101C96320051F368 /* JBLocationMath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBLocationMath.m; path = SharedCode/JBLocationMath.m; sourceTree = "<group>"; };
-		2988667B101C96320051F368 /* JBSoundEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBSoundEffect.h; path = SharedCode/JBSoundEffect.h; sourceTree = "<group>"; };
-		2988667C101C96320051F368 /* JBSoundEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBSoundEffect.m; path = SharedCode/JBSoundEffect.m; sourceTree = "<group>"; };
+		29886675101C96320051F368 /* GPXReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPXReader.h; sourceTree = "<group>"; };
+		29886676101C96320051F368 /* GPXReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPXReader.m; sourceTree = "<group>"; };
+		29886677101C96320051F368 /* GPXWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPXWriter.h; sourceTree = "<group>"; };
+		29886678101C96320051F368 /* GPXWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPXWriter.m; sourceTree = "<group>"; };
+		29886679101C96320051F368 /* LocationMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationMath.h; sourceTree = "<group>"; };
+		2988667A101C96320051F368 /* LocationMath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationMath.m; sourceTree = "<group>"; };
+		2988667B101C96320051F368 /* SoundEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundEffect.h; sourceTree = "<group>"; };
+		2988667C101C96320051F368 /* SoundEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundEffect.m; sourceTree = "<group>"; };
 		2988668B101C96880051F368 /* unitsets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = unitsets.plist; path = Resources/unitsets.plist; sourceTree = "<group>"; };
 		29AEF9E3106AB1A70063AB50 /* reference1.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference1.gpx; path = Resources/reference1.gpx; sourceTree = "<group>"; };
 		29AEF9E4106AB1A70063AB50 /* reference2.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference2.gpx; path = Resources/reference2.gpx; sourceTree = "<group>"; };
@@ -226,16 +226,26 @@
 				1D3623250D0F684500981E51 /* GlintAppDelegate.m */,
 				29FDFE2010694E8600F264F7 /* GPSManager.h */,
 				29FDFE2110694E8600F264F7 /* GPSManager.m */,
+				29886675101C96320051F368 /* GPXReader.h */,
+				29886676101C96320051F368 /* GPXReader.m */,
+				29886677101C96320051F368 /* GPXWriter.h */,
+				29886678101C96320051F368 /* GPXWriter.m */,
+				297A05AF102328BE0031D57B /* GradientLabel.h */,
+				297A05B0102328BE0031D57B /* GradientLabel.m */,
 				29EF16711037292800A0982A /* LapTimeViewController.h */,
 				29EF16721037292800A0982A /* LapTimeViewController.m */,
+				29886679101C96320051F368 /* LocationMath.h */,
+				2988667A101C96320051F368 /* LocationMath.m */,
 				28D7ACF60DDB3853001CB0EB /* MainScreenViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* MainScreenViewController.m */,
+				29B2D3A710A1DBE900A32201 /* RawTrackViewController.h */,
+				29B2D3A810A1DBE900A32201 /* RawTrackViewController.m */,
 				29412169105AEEB900B2A524 /* RouteViewController.h */,
 				2941216A105AEEB900B2A524 /* RouteViewController.m */,
 				29760DDE102F125F00EE89CB /* SlideView.h */,
 				29760DDF102F125F00EE89CB /* SlideView.m */,
-				29B2D3A710A1DBE900A32201 /* RawTrackViewController.h */,
-				29B2D3A810A1DBE900A32201 /* RawTrackViewController.m */,
+				2988667B101C96320051F368 /* SoundEffect.h */,
+				2988667C101C96320051F368 /* SoundEffect.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -263,16 +273,6 @@
 			children = (
 				2941215C105AEDE800B2A524 /* CSMapRouteLayerView.h */,
 				2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */,
-				29886675101C96320051F368 /* JBGPXReader.h */,
-				29886676101C96320051F368 /* JBGPXReader.m */,
-				29886677101C96320051F368 /* JBGPXWriter.h */,
-				29886678101C96320051F368 /* JBGPXWriter.m */,
-				297A05AF102328BE0031D57B /* JBGradientLabel.h */,
-				297A05B0102328BE0031D57B /* JBGradientLabel.m */,
-				29886679101C96320051F368 /* JBLocationMath.h */,
-				2988667A101C96320051F368 /* JBLocationMath.m */,
-				2988667B101C96320051F368 /* JBSoundEffect.h */,
-				2988667C101C96320051F368 /* JBSoundEffect.m */,
 				294DDEDA106B54B3001FD08C /* Reachability.h */,
 				294DDEDB106B54B3001FD08C /* Reachability.m */,
 			);
@@ -494,16 +494,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29BA74A3102328F500262650 /* JBGradientLabel.m in Sources */,
+				29BA74A3102328F500262650 /* GradientLabel.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* GlintAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* MainScreenViewController.m in Sources */,
 				29C7910510027A8E00EA28CC /* CompassView.m in Sources */,
 				29CD711F100FB9F2001150A1 /* FilesViewController.m in Sources */,
-				2988667D101C96320051F368 /* JBGPXReader.m in Sources */,
-				2988667E101C96320051F368 /* JBGPXWriter.m in Sources */,
-				2988667F101C96320051F368 /* JBLocationMath.m in Sources */,
-				29886680101C96320051F368 /* JBSoundEffect.m in Sources */,
+				2988667D101C96320051F368 /* GPXReader.m in Sources */,
+				2988667E101C96320051F368 /* GPXWriter.m in Sources */,
+				2988667F101C96320051F368 /* LocationMath.m in Sources */,
+				29886680101C96320051F368 /* SoundEffect.m in Sources */,
 				2913DBEB1024FD6B00F56A2A /* FileDetailViewController.m in Sources */,
 				29760DE0102F125F00EE89CB /* SlideView.m in Sources */,
 				29EF16731037292800A0982A /* LapTimeViewController.m in Sources */,
@@ -519,9 +519,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				291C0DDC101E260900393E77 /* JBGPXReader.m in Sources */,
-				291C0DDE101E260900393E77 /* JBGPXWriter.m in Sources */,
-				291C0DE0101E260900393E77 /* JBLocationMath.m in Sources */,
+				291C0DDC101E260900393E77 /* GPXReader.m in Sources */,
+				291C0DDE101E260900393E77 /* GPXWriter.m in Sources */,
+				291C0DE0101E260900393E77 /* LocationMath.m in Sources */,
 				291C0DCF101E23C500393E77 /* GlintUnitTests.m in Sources */,
 				29FDFE2310694E8600F264F7 /* GPSManager.m in Sources */,
 			);

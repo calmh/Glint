@@ -93,7 +93,7 @@
 	self.navigationController.title = NSLocalizedString(@"File",nil);
 	[reader release];
 	[math release];
-	reader = [[JBGPXReader alloc] initWithFilename:newFilename];
+	reader = [[GPXReader alloc] initWithFilename:newFilename];
 	math = [[reader locationMath] retain];
 
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];

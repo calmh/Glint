@@ -8,9 +8,9 @@
 //  See Also: http://developer.apple.com/iphone/library/documentation/Xcode/Conceptual/iphone_development/135-Unit_Testing_Applications/unit_testing_applications.html
 
 #import "GPSManager.h"
-#import "JBGPXReader.h"
-#import "JBGPXWriter.h"
-#import "JBLocationMath.h"
+#import "GPXReader.h"
+#import "GPXWriter.h"
+#import "LocationMath.h"
 #import <SenTestingKit/SenTestingKit.h>
 #import <UIKit/UIKit.h>
 
