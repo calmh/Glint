@@ -63,9 +63,7 @@
 	if ([elementName isEqualToString:@"ele"])
 		currentlyReading = Elevation;
 	else if ([elementName isEqualToString:@"trkpt"]) {
-		NSLog(@"obj: %@", [attributeDict objectForKey:@"lat"]);
 		lastReadLat = [[attributeDict objectForKey:@"lat"] doubleValue];
-		NSLog(@"float: %f", lastReadLat);
 		lastReadLon = [[attributeDict objectForKey:@"lon"] doubleValue];
 	}
 }

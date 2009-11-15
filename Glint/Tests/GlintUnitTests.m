@@ -24,20 +24,19 @@
 	[[NSUserDefaults standardUserDefaults] setFloat:100.0f forKey:@"gps_minprec"];
 }
 
-- (void)testLocationMath
+- (void)testLocationMathBearings
 {
 	for (float latOffset = -45.0f; latOffset <= 45.0f; latOffset += 45.0f) {
 		for (float lonOffset = -150.0f; lonOffset <= 150.0f; lonOffset += 50.0f) {
-			CLLocation *locN = [[[CLLocation alloc] initWithLatitude:latOffset + 1.0 longitude:lonOffset + 0.0] autorelease]; // 10.0 N
-			CLLocation *locS = [[[CLLocation alloc] initWithLatitude:latOffset - 1.0 longitude:lonOffset + 0.0] autorelease]; // 10.0 S
-			CLLocation *locE = [[[CLLocation alloc] initWithLatitude:latOffset + 0.0 longitude:lonOffset + 1.0] autorelease]; // 10.0 E
-			CLLocation *locW = [[[CLLocation alloc] initWithLatitude:latOffset + 0.0 longitude:lonOffset - 1.0] autorelease]; // 10.0 W
-			CLLocation *locNE = [[[CLLocation alloc] initWithLatitude:latOffset + 1.0 longitude:lonOffset + 1.0] autorelease]; // 10.0 N, 10.0 E
-			CLLocation *locSW = [[[CLLocation alloc] initWithLatitude:latOffset - 1.0 longitude:lonOffset - 1.0] autorelease]; // 10.0 S, 10.0 W
+			CLLocation *locN = [[[CLLocation alloc] initWithLatitude:latOffset + 1.0 longitude:lonOffset + 0.0] autorelease];
+			CLLocation *locS = [[[CLLocation alloc] initWithLatitude:latOffset - 1.0 longitude:lonOffset + 0.0] autorelease];
+			CLLocation *locE = [[[CLLocation alloc] initWithLatitude:latOffset + 0.0 longitude:lonOffset + 1.0] autorelease];
+			CLLocation *locW = [[[CLLocation alloc] initWithLatitude:latOffset + 0.0 longitude:lonOffset - 1.0] autorelease];
+			CLLocation *locNE = [[[CLLocation alloc] initWithLatitude:latOffset + 1.0 longitude:lonOffset + 1.0] autorelease];
+			CLLocation *locSW = [[[CLLocation alloc] initWithLatitude:latOffset - 1.0 longitude:lonOffset - 1.0] autorelease];
 
 			LocationMath *math = [[LocationMath alloc] init];
 			float result;
-			// Check basic bearings
 			result = [math bearingFromLocation:locN toLocation:locS];
 			STAssertEqualsWithAccuracy(result, 180.0f, 15.0f, @"Bearing N-S incorrect (%f)", result);
 			result = [math bearingFromLocation:locS toLocation:locN];
@@ -54,6 +53,56 @@
 			STAssertEqualsWithAccuracy(result, 225.0f, 15.0f, @"Bearing NE-SW incorrect (%f)", result);
 			[math release];
 		}
+	}
+}
+
+- (void)testLocationMathDistanceAtPointInTime
+{
+	LocationMath *math = [[LocationMath alloc] init];
+	NSMutableArray *locations = [[NSMutableArray alloc] init];
+	CLLocationCoordinate2D coord;
+	coord.latitude = 0.0; // We need to stay close to the equator for this test to succeed
+	coord.longitude = 50.0;
+	NSDate *baseDate = [NSDate date];
+	// Add 100 points at a speed of .001 degree per minute
+	// i is time in minutes
+	for (int i = 0; i < 100; i++) {
+		[locations addObject:[[CLLocation alloc] initWithCoordinate:coord altitude:0.0 horizontalAccuracy:10.0f verticalAccuracy:10.0 timestamp:[baseDate addTimeInterval:i * 60]]];
+		coord.latitude += sin(0.3) * 0.001;
+		coord.longitude += cos(0.3) * 0.001;
+	}
+	// Check a few points
+	// i is time in tenths of minutes
+	for (int i = 5; i < 900; i += 2) {
+		float dist = [math distanceAtPointInTime:i * 6 inLocations:locations];
+		float expected = i * 185.2 * 60.0 * 0.001;
+		STAssertFalse(isnan(expected), @"");
+		STAssertEqualsWithAccuracy(dist, expected, 20.0, @"");
+	}
+}
+
+- (void)testLocationMathTimeAtDistance
+{
+	LocationMath *math = [[LocationMath alloc] init];
+	NSMutableArray *locations = [[NSMutableArray alloc] init];
+	CLLocationCoordinate2D coord;
+	coord.latitude = 0.0; // We need to stay close to the equator for this test to succeed
+	coord.longitude = 50.0;
+	NSDate *baseDate = [NSDate date];
+	// Add 100 points at a speed of .001 degree per minute.
+	// i is time in minutes
+	for (int i = 0; i < 100; i++) {
+		[locations addObject:[[CLLocation alloc] initWithCoordinate:coord altitude:0.0 horizontalAccuracy:10.0f verticalAccuracy:10.0 timestamp:[baseDate addTimeInterval:i * 60]]];
+		coord.latitude += sin(0.3) * 0.001;
+		coord.longitude += cos(0.3) * 0.001;
+	}
+	// Check a few points
+	// i is time in seconds
+	for (int i = 5; i < 99 * 60; i += 14) {
+		float distance = i * 1852.0 * 0.001;
+		float time = [math timeAtLocationByDistance:distance inLocations:locations];
+		STAssertFalse(isnan(time), @"");
+		STAssertEqualsWithAccuracy(time, (float)i, 15.0, @"");
 	}
 }
 

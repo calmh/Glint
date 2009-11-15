@@ -10,10 +10,10 @@
 #import "GPSManager.h"
 #import "GlintAppDelegate.h"
 #import "GradientLabel.h"
-#import "LocationMath.h"
-#import "SoundEffect.h"
 #import "LapTimeViewController.h"
+#import "LocationMath.h"
 #import "SlideView.h"
+#import "SoundEffect.h"
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 #import <UIKit/UIKit.h>
