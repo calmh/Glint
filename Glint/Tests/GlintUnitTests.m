@@ -10,6 +10,9 @@
 
 @interface GlintUnitTests ()
 
+#ifdef LONG_UNIT_TESTS
+- (void)fakeMovementForGPSManager:(GPSManager*)manager duringSeconds:(int)seconds atSpeed:(double)speed;
+#endif
 - (NSString*)bundlePath;
 
 @end
@@ -158,12 +161,15 @@
 	[math release];
 }
 
-- (void)testGPSManager
+- (void)testGPSManagerBasics
 {
 	GPSManager *manager = [[GPSManager alloc] init];
 	CLLocationCoordinate2D coord;
 	CLLocation *loc, *oldLoc;
 	oldLoc = nil;
+
+	// Send an update with an old timestamp (60 seconds ago).
+	// It should be ignored.
 	coord.latitude = 10.0f;
 	coord.longitude = 10.0f;
 	loc = [[[CLLocation alloc] initWithCoordinate:coord altitude:0.0f horizontalAccuracy:50.0f verticalAccuracy:0.0f timestamp:[NSDate dateWithTimeIntervalSinceNow:-60]] autorelease];
@@ -172,6 +178,7 @@
 	STAssertEquals([[manager math] totalDistance], 0.0f, @"Distance travelled must be zero");
 	sleep(0.1);
 
+	// Send an update with a new location.
 	oldLoc = loc;
 	coord.latitude = 11.0f;
 	loc = [[[CLLocation alloc] initWithCoordinate:coord altitude:0.0f horizontalAccuracy:50.0f verticalAccuracy:0.0f timestamp:[NSDate date]] autorelease];
@@ -181,6 +188,7 @@
 	STAssertEquals(result, 0.0f, @"Distance travelled must be zero (%f)", result);
 	sleep(0.1);
 
+	// Another update, to test distance calculation.
 	oldLoc = loc;
 	coord.latitude = 12.0f;
 	loc = [[[CLLocation alloc] initWithCoordinate:coord altitude:0.0f horizontalAccuracy:50.0f verticalAccuracy:0.0f timestamp:[NSDate date]] autorelease];
@@ -191,11 +199,78 @@
 	[manager locationManager:nil didUpdateToLocation:loc fromLocation:oldLoc];
 }
 
+#ifdef LONG_UNIT_TESTS
+- (void)testGPSManagerPauseAndResume
+{
+	GPSManager *manager = [[GPSManager alloc] init];
+
+	// Assert start state
+	STAssertFalse(manager.isPaused, @"");
+	STAssertEquals(manager.math.elapsedTime, 0.0f, @"");
+	STAssertEquals(manager.math.totalDistance, 0.0f, @"");
+
+	// Move 100 meters during ten seconds.
+	[self fakeMovementForGPSManager:manager duringSeconds:10 atSpeed:10.0];
+
+	STAssertEqualsWithAccuracy(manager.math.elapsedTime, 10.0f, 0.5f, @"");
+	STAssertEqualsWithAccuracy(manager.math.totalDistance, 100.0f, 10.0f, @"");
+
+	// Start ignoreing updates
+	[manager pauseUpdates];
+	STAssertTrue(manager.isPaused, @"");
+
+	// Move 100 meters during ten seconds.
+	[self fakeMovementForGPSManager:manager duringSeconds:10 atSpeed:10.0];
+
+	// Nothing should have changed.
+	STAssertEqualsWithAccuracy(manager.math.elapsedTime, 10.0f, 0.5f, @"");
+	STAssertEqualsWithAccuracy(manager.math.totalDistance, 100.0f, 10.0f, @"");
+
+	// Restart measurements
+	[manager resumeUpdates];
+	STAssertFalse(manager.isPaused, @"");
+
+	// Move 100 meters during ten seconds.
+	[self fakeMovementForGPSManager:manager duringSeconds:10 atSpeed:10.0];
+
+	// We should have moved about 100 meters more
+	STAssertEqualsWithAccuracy(manager.math.elapsedTime, 20.0f, 0.5f, @"");
+	STAssertEqualsWithAccuracy(manager.math.totalDistance, 200.0f, 10.0f, @"");
+}
+
+#endif
+
 - (NSString*)bundlePath
 {
 	NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
 	NSString *bundlePath = [myBundle bundlePath];
 	return bundlePath;
 }
+
+#ifdef LONG_UNIT_TESTS
+- (void)fakeMovementForGPSManager:(GPSManager*)manager duringSeconds:(int)seconds atSpeed:(double)speed
+{
+	static CLLocation *oldLoc = nil;
+	static float lat = 0.0f; // Starting position.
+	static float lon = -0.0f;
+	float direction = 0.23; // In radians. Doesn't really matter.
+	speed /= 60 * 1852.0; // meters/seconds to degrees/second, roughly. This is only true close to the equator, so chose the starting position accordingly.
+
+	for (int i = 0; i <= seconds; i++) {
+		lat += speed * sin(direction);
+		lon += speed * cos(direction);
+
+		CLLocationCoordinate2D coord;
+		coord.latitude = lat;
+		coord.longitude = lon;
+		CLLocation *loc = [[CLLocation alloc] initWithCoordinate:coord altitude:23.0f horizontalAccuracy:49.0f verticalAccuracy:163.0f timestamp:[NSDate date]];
+		[manager locationManager:nil didUpdateToLocation:loc fromLocation:oldLoc];
+		[oldLoc release];
+		oldLoc = loc;
+		sleep(1);
+	}
+}
+
+#endif
 
 @end
