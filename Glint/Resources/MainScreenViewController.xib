@@ -176,7 +176,7 @@
 					<object class="IBUIView" id="131160125">
 						<reference key="NSNextResponder" ref="897899329"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{0, 416}, {320, 44}}</string>
+						<string key="NSFrame">{{0, 415}, {320, 45}}</string>
 						<reference key="NSSuperview" ref="897899329"/>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -186,6 +186,7 @@
 							</object>
 						</object>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
+						<float key="IBUIAlpha">0.89999997615814209</float>
 					</object>
 				</object>
 				<string key="NSFrameSize">{320, 460}</string>
@@ -1705,6 +1706,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">Classes/FilesViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">GradientLabel</string>
+					<string key="superclassName">UILabel</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/GradientLabel.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
