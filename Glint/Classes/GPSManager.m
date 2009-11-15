@@ -49,7 +49,6 @@
 		isPaused = NO;
 		passedLapTimes = [[NSMutableArray alloc] init];
 	}
-	started = [[NSDate date] retain];
 	[self enableGPS];
 	NSTimer *averagedMeasurementTaker = [NSTimer timerWithTimeInterval:MEASUREMENT_THREAD_INTERVAL target:self selector:@selector(takeAveragedMeasurement:) userInfo:nil repeats:YES];
 	[[NSRunLoop currentRunLoop] addTimer:averagedMeasurementTaker forMode:NSDefaultRunLoopMode];
@@ -153,6 +152,12 @@
 - (void)enableGPS
 {
 	debug_NSLog(@"Starting GPS");
+
+	// Update "started" time. We accept no updates earlier than this timestamp.
+	[started release];
+	started = [[NSDate date] retain];
+
+	// Start the GPS.
 	locationManager = [[CLLocationManager alloc] init];
 	locationManager.distanceFilter = FILTER_DISTANCE;
 	locationManager.desiredAccuracy = kCLLocationAccuracyBest;
@@ -272,12 +277,6 @@
 	    && lastWrittenDate // We have written at least one position
 	    && [now timeIntervalSinceDate:lastWrittenDate] < averageInterval - 10) // It is less than averageInterval-10 seconds since the last measurement
 		[self disableGPS];
-}
-
-- (void)clearForUnitTests
-{
-	[math release];
-	math = [[LocationMath alloc] init];
 }
 
 #ifdef FAKE_MOVEMENT

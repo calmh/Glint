@@ -43,7 +43,6 @@
 - (void)pauseUpdates;
 - (void)resumeUpdates;
 - (void)commit;
-- (void)clearForUnitTests;
 - (void)enableGPS;
 - (void)disableGPS;
 
