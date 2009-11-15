@@ -75,7 +75,7 @@
 // #define FAKE_MOVEMENT
 
 // Run long (slow) unit tests that simulate movement.
-#define LONG_UNIT_TESTS
+// #define LONG_UNIT_TESTS
 
 #ifdef DEBUG
 #define debug_NSLog(format, ...) NSLog(format, ## __VA_ARGS__)

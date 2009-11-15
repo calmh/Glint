@@ -12,10 +12,11 @@
 #import "LocationMath.h"
 #import "RawTrackViewController.h"
 #import "RouteViewController.h"
+#import "StringEditorController.h"
 #import <MessageUI/MessageUI.h>
 #import <UIKit/UIKit.h>
 
-@interface FileDetailViewController : UIViewController <MFMailComposeViewControllerDelegate> {
+@interface FileDetailViewController : UIViewController <MFMailComposeViewControllerDelegate, StringEditorControllerDelegate> {
 	GlintAppDelegate *delegate;
 	GPXReader *reader;
 	LocationMath *math;
@@ -28,6 +29,7 @@
 	LapTimeViewController *lapTimeController;
 	RouteViewController *routeController;
 	RawTrackViewController *rawTrackController;
+	StringEditorController *stringEditorController;
 
 	NSString *filename, *startTime, *endTime, *distance, *averageSpeed;
 }
@@ -38,6 +40,7 @@
 @property (retain, nonatomic) IBOutlet LapTimeViewController *lapTimeController;
 @property (retain, nonatomic) IBOutlet RouteViewController *routeController;
 @property (retain, nonatomic) IBOutlet RawTrackViewController *rawTrackController;
+@property (retain, nonatomic) IBOutlet StringEditorController *stringEditorController;
 
 - (void)prepareForLoad:(NSString*)newFilename;
 - (void)loadFile:(NSString*)newFilename;

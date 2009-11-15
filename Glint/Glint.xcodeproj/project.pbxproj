@@ -63,6 +63,8 @@
 		2988667F101C96320051F368 /* LocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* LocationMath.m */; };
 		29886680101C96320051F368 /* SoundEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667C101C96320051F368 /* SoundEffect.m */; };
 		2988668C101C96880051F368 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2988668B101C96880051F368 /* unitsets.plist */; };
+		299888F310B084DA00E5B703 /* StringEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 299888F110B084D900E5B703 /* StringEditorController.m */; };
+		299888F410B084DA00E5B703 /* StringEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 299888F210B084D900E5B703 /* StringEditorController.xib */; };
 		29AEF9E7106AB1A70063AB50 /* reference1.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9E3106AB1A70063AB50 /* reference1.gpx */; };
 		29AEF9E8106AB1A70063AB50 /* reference2.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9E4106AB1A70063AB50 /* reference2.gpx */; };
 		29AEF9F5106AB2720063AB50 /* reference0.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9F3106AB2720063AB50 /* reference0.gpx */; };
@@ -158,6 +160,9 @@
 		2988667B101C96320051F368 /* SoundEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundEffect.h; sourceTree = "<group>"; };
 		2988667C101C96320051F368 /* SoundEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundEffect.m; sourceTree = "<group>"; };
 		2988668B101C96880051F368 /* unitsets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = unitsets.plist; path = Resources/unitsets.plist; sourceTree = "<group>"; };
+		299888F010B084D900E5B703 /* StringEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringEditorController.h; sourceTree = "<group>"; };
+		299888F110B084D900E5B703 /* StringEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringEditorController.m; sourceTree = "<group>"; };
+		299888F210B084D900E5B703 /* StringEditorController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = StringEditorController.xib; path = Resources/StringEditorController.xib; sourceTree = "<group>"; };
 		29AEF9E3106AB1A70063AB50 /* reference1.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference1.gpx; path = Resources/reference1.gpx; sourceTree = "<group>"; };
 		29AEF9E4106AB1A70063AB50 /* reference2.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference2.gpx; path = Resources/reference2.gpx; sourceTree = "<group>"; };
 		29AEF9F3106AB2720063AB50 /* reference0.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference0.gpx; path = Resources/reference0.gpx; sourceTree = "<group>"; };
@@ -297,6 +302,7 @@
 				2913DE1F10260A9F00F56A2A /* FilesViewController.xib */,
 				29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				299888F210B084D900E5B703 /* StringEditorController.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -332,6 +338,8 @@
 				29B2D3A810A1DBE900A32201 /* RawTrackViewController.m */,
 				29412169105AEEB900B2A524 /* RouteViewController.h */,
 				2941216A105AEEB900B2A524 /* RouteViewController.m */,
+				299888F010B084D900E5B703 /* StringEditorController.h */,
+				299888F110B084D900E5B703 /* StringEditorController.m */,
 			);
 			name = "UI Controllers";
 			sourceTree = "<group>";
@@ -463,6 +471,7 @@
 				2913DE2010260A9F00F56A2A /* FilesViewController.xib in Resources */,
 				293D38071039E74F00EB0F91 /* Ping.aiff in Resources */,
 				293D998A10625C4D00C86B6C /* Entitlements.plist in Resources */,
+				299888F410B084DA00E5B703 /* StringEditorController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -544,6 +553,7 @@
 				29FDFE2210694E8600F264F7 /* GPSManager.m in Sources */,
 				294DDEDC106B54B3001FD08C /* Reachability.m in Sources */,
 				29B2D3A910A1DBE900A32201 /* RawTrackViewController.m in Sources */,
+				299888F310B084DA00E5B703 /* StringEditorController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

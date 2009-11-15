@@ -9,6 +9,22 @@
 #import "FilesViewController.h"
 #import "GlintAppDelegate.h"
 
+NSInteger sortByDate(NSString *a, NSString *b, void *context)
+{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+
+	NSString *fullFilename = [NSString stringWithFormat:@"%@/%@", documentsDirectory, a];
+	NSDictionary *attrs = [[NSFileManager defaultManager] fileAttributesAtPath:fullFilename traverseLink:NO];
+	NSDate *createdA = [attrs objectForKey:NSFileModificationDate];
+
+	fullFilename = [NSString stringWithFormat:@"%@/%@", documentsDirectory, b];
+	attrs = [[NSFileManager defaultManager] fileAttributesAtPath:fullFilename traverseLink:NO];
+	NSDate *createdB = [attrs objectForKey:NSFileModificationDate];
+
+	return [createdA compare:createdB];
+}
+
 @interface FilesViewController ()
 - (int)sectionForFile:(NSString*)fileName;
 - (NSString*)sectionDescriptionForFile:(NSString*)fileName;
@@ -45,6 +61,7 @@
 {
 	self.navigationItem.rightBarButtonItem = [self editButtonItem];
 	[navigationController setToolbarHidden:YES];
+	[self refresh];
 	[super viewWillAppear:animated];
 }
 
@@ -56,7 +73,7 @@
 	sections = [[NSMutableArray alloc] init];
 
 	NSArray *fileList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
-	NSArray *sortedFileList = [fileList sortedArrayUsingSelector:@selector(compare:)];
+	NSArray *sortedFileList = [fileList sortedArrayUsingFunction:&sortByDate context:nil];
 	NSEnumerator *enumer = [sortedFileList reverseObjectEnumerator];
 
 	NSString *fileName;
@@ -158,7 +175,8 @@
 
 - (NSString*)sectionDescriptionForFile:(NSString*)fileName
 {
-	NSDictionary *attrs = [[NSFileManager defaultManager] fileAttributesAtPath:[NSString stringWithFormat:@"%@/%@", documentsDirectory, fileName] traverseLink:NO];
+	NSString *fullFileName = [NSString stringWithFormat:@"%@/%@", documentsDirectory, fileName];
+	NSDictionary *attrs = [[NSFileManager defaultManager] fileAttributesAtPath:fullFileName traverseLink:NO];
 	NSDate *created = [attrs objectForKey:NSFileModificationDate];
 
 	NSDateComponents *comps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:created /* toDate:compare options:0*/];

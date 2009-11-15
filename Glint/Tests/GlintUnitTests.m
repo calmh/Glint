@@ -200,6 +200,7 @@
 }
 
 #ifdef LONG_UNIT_TESTS
+
 - (void)testGPSManagerPauseAndResume
 {
 	GPSManager *manager = [[GPSManager alloc] init];
@@ -248,6 +249,7 @@
 }
 
 #ifdef LONG_UNIT_TESTS
+
 - (void)fakeMovementForGPSManager:(GPSManager*)manager duringSeconds:(int)seconds atSpeed:(double)speed
 {
 	static CLLocation *oldLoc = nil;

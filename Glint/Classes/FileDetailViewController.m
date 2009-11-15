@@ -18,7 +18,7 @@
 
 @implementation FileDetailViewController
 
-@synthesize navigationController, toolbarItems, tableView, lapTimeController, routeController, rawTrackController;
+@synthesize navigationController, toolbarItems, tableView, lapTimeController, routeController, rawTrackController, stringEditorController;
 
 - (void)dealloc
 {
@@ -171,8 +171,6 @@
 {
 	[routeController setLocations:[math interpolatedLocations]];
 	[navigationController setToolbarHidden:YES];
-	//navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-	//[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
 	[navigationController pushViewController:routeController animated:YES];
 }
 
@@ -180,9 +178,40 @@
 {
 	[rawTrackController setLocations:[reader locations]];
 	[navigationController setToolbarHidden:YES];
-	//navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-	//[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
 	[navigationController pushViewController:rawTrackController animated:YES];
+}
+
+- (void)renameFile
+{
+	[navigationController setToolbarHidden:NO];
+	[navigationController pushViewController:stringEditorController animated:YES];
+	NSString *shortFilename;
+	NSArray *fileParts;
+	fileParts = [filename componentsSeparatedByString:@"/"];
+	shortFilename = [[fileParts objectAtIndex:[fileParts count] - 1] stringByDeletingPathExtension];
+	stringEditorController.label.text = NSLocalizedString(@"Rename file",nil);
+	stringEditorController.textField.text = shortFilename;
+}
+
+/*
+   StringEditorControllerDelegate stuff
+ */
+
+- (void)stringEditorController:(id)controller producedValue:(NSString*)value
+{
+	[navigationController popViewControllerAnimated:YES];
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	NSError *error = nil;
+	[[NSFileManager defaultManager] moveItemAtPath:filename toPath:[NSString stringWithFormat:@"%@/%@.gpx", documentsDirectory, value] error:&error];
+	if (error == nil) {
+		[filename release];
+		filename = [value retain];
+		[tableView reloadData];
+	} else {
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't rename",nil) message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alertView show];
+	}
 }
 
 /*
@@ -289,6 +318,8 @@
 		[self viewOnMap];
 	else if (indexPath.section == 1 && indexPath.row == 2)
 		[self viewRawPositions];
+	else if (indexPath.section == 0 && indexPath.row == 0)
+		[self renameFile];
 }
 
 /*
