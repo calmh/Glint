@@ -200,17 +200,21 @@
 - (void)stringEditorController:(id)controller producedValue:(NSString*)value
 {
 	[navigationController popViewControllerAnimated:YES];
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *documentsDirectory = [paths objectAtIndex:0];
-	NSError *error = nil;
-	[[NSFileManager defaultManager] moveItemAtPath:filename toPath:[NSString stringWithFormat:@"%@/%@.gpx", documentsDirectory, value] error:&error];
-	if (error == nil) {
-		[filename release];
-		filename = [value retain];
-		[tableView reloadData];
-	} else {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't rename",nil) message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[alertView show];
+	NSArray *fileParts = [filename componentsSeparatedByString:@"/"];
+	NSString *shortFilename = [[fileParts objectAtIndex:[fileParts count] - 1] stringByDeletingPathExtension];
+	if ([value compare:shortFilename] != 0) {
+		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+		NSString *documentsDirectory = [paths objectAtIndex:0];
+		NSError *error = nil;
+		[[NSFileManager defaultManager] moveItemAtPath:filename toPath:[NSString stringWithFormat:@"%@/%@.gpx", documentsDirectory, value] error:&error];
+		if (error == nil) {
+			[filename release];
+			filename = [value retain];
+			[tableView reloadData];
+		} else {
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Couldn't rename",nil) message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alertView show];
+		}
 	}
 }
 
@@ -248,6 +252,8 @@
 		shortFilename = [[fileParts objectAtIndex:[fileParts count] - 1] stringByDeletingPathExtension];
 		cell.textLabel.text = NSLocalizedString(@"File Name",nil);
 		cell.detailTextLabel.text = shortFilename;
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 		break;
 	case 1:
 		cell.textLabel.text = NSLocalizedString(@"Start Time",nil);
