@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface JBGradientLabel : UILabel {
+@interface GradientLabel : UILabel {
 	CGGradientRef gradient;
 	UIColor *oldColor;
 }

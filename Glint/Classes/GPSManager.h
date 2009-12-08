@@ -6,9 +6,9 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import "JBGPXReader.h"
-#import "JBGPXWriter.h"
-#import "JBLocationMath.h"
+#import "GPXReader.h"
+#import "GPXWriter.h"
+#import "LocationMath.h"
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 
@@ -27,8 +27,8 @@
 
 @interface GPSManager : NSObject <CLLocationManagerDelegate> {
 	CLLocationManager *locationManager;
-	JBLocationMath *math;
-	JBGPXWriter *gpxWriter;
+	LocationMath *math;
+	GPXWriter *gpxWriter;
 	NSMutableArray *passedLapTimes;
 	BOOL isPaused;
 	BOOL isGPSEnabled;
@@ -43,11 +43,10 @@
 - (void)pauseUpdates;
 - (void)resumeUpdates;
 - (void)commit;
-- (void)clearForUnitTests;
 - (void)enableGPS;
 - (void)disableGPS;
 
-@property (retain) JBLocationMath *math;
+@property (retain) LocationMath *math;
 @property (readonly) BOOL isPaused;
 @property (readonly) BOOL isGPSEnabled;
 @property (readonly) BOOL isPrecisionAcceptable;

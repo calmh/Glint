@@ -112,3 +112,15 @@
 "Map View" = "Kartvy";
 "Internet Connectivity Required" = "Internetförbindelse krävs";
 "Utan förbindelse till Internet kan inte kartan visas. I stället visas en tom backgrund.";
+
+/*
+** Raw track screen
+*/
+"Break in recording" = "Avbrott i inspelning";
+"Paused or lost GPS reception" = "Pausad eller brist på GPS-signal";
+
+/*
+** Renaming screen
+*/
+"Rename file" = "Döp om fil";
+"Couldn't rename" = "Kunde inte döpa om";

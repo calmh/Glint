@@ -73,9 +73,9 @@
 	int numPages = [containerView.subviews count];
 	[pager setNumberOfPages:numPages];
 
-	badSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
-	goodSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
-	lapSound = [[JBSoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Ping" ofType:@"aiff"]];
+	badSound = [[SoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
+	goodSound = [[SoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
+	lapSound = [[SoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Ping" ofType:@"aiff"]];
 	firstMeasurementDate  = nil;
 	lastMeasurementDate = nil;
 	lockTimer = nil;
@@ -91,11 +91,6 @@
 	UIBarButtonItem *stopRaceButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)] autorelease];
 	toolbarItems = [[NSArray arrayWithObjects:playPauseButton, filesButton, recordButton, stopRaceButton, nil] retain];
 	[toolbar setItems:toolbarItems animated:YES];
-
-	if (USERPREF_DISABLE_IDLE)
-		[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
-	if (USERPREF_ENABLE_PROXIMITY)
-		[[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
 
 	CGRect pageDescriptionRect = CGRectMake(-145.0f, 344.0f / 2.0f, 314.0f, 24.0f);
 
@@ -173,9 +168,9 @@
 	UITouch *touch = [touches anyObject];
 	CGPoint point = [touch locationInView:containerView];
 	float xdiff = point.x - touchStartPoint.x;
-    if (xdiff > 0.0f && pager.currentPage == 0 || // Moving too far to the left
-            xdiff < 0.0f && pager.currentPage == pager.numberOfPages - 1) // Moving too far to the right
-            xdiff /= 2.0f; // Increase "resistance"
+	if (xdiff > 0.0f && pager.currentPage == 0 || // Moving too far to the left
+	    xdiff < 0.0f && pager.currentPage == pager.numberOfPages - 1) // Moving too far to the right
+		xdiff /= 2.0f;  // Increase "resistance"
 	[self shiftViewsTo:xdiff - pager.currentPage * containerView.frame.size.width];
 }
 
@@ -207,7 +202,6 @@
 		[self switchPageWithSpeed:animationSecs];
 	} else
 		[self resetPage];
-
 }
 
 /*
@@ -242,7 +236,7 @@
 		prevStateGood = gpsManager.isPrecisionAcceptable;
 	}
 
-	JBLocationMath *tmath = [gpsManager math];
+	LocationMath *tmath = [gpsManager math];
 	NSArray *tloc = [tmath raceLocations];
 
 	if (tloc != nil)

@@ -6,9 +6,9 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import "JBGPXWriter.h"
+#import "GPXWriter.h"
 
-@implementation JBGPXWriter
+@implementation GPXWriter
 
 @synthesize numPoints;
 @synthesize autoCommit;
@@ -86,8 +86,9 @@
 	[gpxData appendString:@"<?xml version='1.0' encoding='UTF-8' standalone='yes'?>\n"];
 	[gpxData appendString:@"<gpx version='1.1' creator='Glint http://glint.nym.se/' xmlns='http://www.topografix.com/GPX/1/1' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd'>\n"];
 	[gpxData appendFormat:@"  <!-- [numPoints]%d[/numPoints] -->\n", numPoints];
-	[gpxData appendFormat:@"  <!-- [totalDistance]%f[/totalDistance] -->\n", totalDistance];
-	[gpxData appendFormat:@"  <time>%@</time>\n", [formatter stringFromDate:[NSDate date]]];
+	[gpxData appendFormat:@"  <!-- [totalDistance]%0f[/totalDistance] -->\n", totalDistance];
+	CLLocation *lastLoc = [[tracks lastObject] lastObject];
+	[gpxData appendFormat:@"  <time>%@</time>\n", [formatter stringFromDate:lastLoc.timestamp]];
 	[gpxData appendFormat:@"  <bounds minlat='%f' minlon='%f' maxlat='%f' maxlon='%f'/>\n", minLat, minLon, maxLat, maxLon];
 	[gpxData appendString:@"  <trk>\n"];
 	for (NSArray*track in tracks) {

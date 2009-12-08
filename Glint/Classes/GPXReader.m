@@ -6,9 +6,9 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import "JBGPXReader.h"
+#import "GPXReader.h"
 
-@implementation JBGPXReader
+@implementation GPXReader
 
 @synthesize locationMath;
 
@@ -21,7 +21,7 @@
 - (id)initWithFilename:(NSString*)filename
 {
 	if (self = [self init]) {
-		locationMath = [[JBLocationMath alloc] init];
+		locationMath = [[LocationMath alloc] init];
 		lastReadLat = lastReadLon = 0.0;
 		lastReadDate = nil;
 		currentlyReading = Nothing;
@@ -63,8 +63,8 @@
 	if ([elementName isEqualToString:@"ele"])
 		currentlyReading = Elevation;
 	else if ([elementName isEqualToString:@"trkpt"]) {
-		lastReadLat = [[attributeDict objectForKey:@"lat"] floatValue];
-		lastReadLon = [[attributeDict objectForKey:@"lon"] floatValue];
+		lastReadLat = [[attributeDict objectForKey:@"lat"] doubleValue];
+		lastReadLon = [[attributeDict objectForKey:@"lon"] doubleValue];
 	}
 }
 
@@ -88,7 +88,6 @@
 		coord.latitude = lastReadLat;
 		coord.longitude = lastReadLon;
 		CLLocation *loc = [[CLLocation alloc] initWithCoordinate:coord altitude:lastReadElevation horizontalAccuracy:50.0f verticalAccuracy:50.0f timestamp:lastReadDate];
-		//[locations addObject:loc];
 		[locationMath updateLocation:loc];
 		[loc release];
 		[lastReadDate release];
@@ -105,10 +104,8 @@
 		[form setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
 		lastReadDate = [[form dateFromString:string] retain];
 		[form release];
-	} else if (currentlyReading == Elevation) {
+	} else if (currentlyReading == Elevation)
 		lastReadElevation = [string floatValue];
-	}
-
 }
 
 @end

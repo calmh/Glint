@@ -7,8 +7,8 @@
 //
 
 #import "FileDetailViewController.h"
+#import "GPXReader.h"
 #import "GlintAppDelegate.h"
-#import "JBGPXReader.h"
 #import <UIKit/UIKit.h>
 
 @interface FilesViewController : UITableViewController {

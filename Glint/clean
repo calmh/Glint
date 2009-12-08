@@ -1,5 +1,0 @@
-#!/bin/sh
-
-uncrustify -l oc -c uncrustify.cfg --replace --no-backup Classes/* SharedCode/* main.m
-rm -rf build
-

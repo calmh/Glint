@@ -18,6 +18,17 @@
 			name = "Version Handling";
 			productName = "Version Handling";
 		};
+		29F1026510A97E7B0055EA4F /* Uncrustify */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 29F1026A10A97E9A0055EA4F /* Build configuration list for PBXAggregateTarget "Uncrustify" */;
+			buildPhases = (
+				29F1026410A97E7B0055EA4F /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = Uncrustify;
+			productName = Uncrustify;
+		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
@@ -31,100 +42,39 @@
 		2913DBEB1024FD6B00F56A2A /* FileDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2913DBE91024FD6B00F56A2A /* FileDetailViewController.m */; };
 		2913DBEC1024FD6B00F56A2A /* FileDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2913DBEA1024FD6B00F56A2A /* FileDetailViewController.xib */; };
 		2913DE2010260A9F00F56A2A /* FilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2913DE1F10260A9F00F56A2A /* FilesViewController.xib */; };
-		291C0DCF101E23C500393E77 /* TestCases.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C0DCE101E23C500393E77 /* TestCases.m */; };
-		291C0DDC101E260900393E77 /* JBGPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886676101C96320051F368 /* JBGPXReader.m */; };
-		291C0DDE101E260900393E77 /* JBGPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* JBGPXWriter.m */; };
-		291C0DE0101E260900393E77 /* JBLocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* JBLocationMath.m */; };
+		291C0DCF101E23C500393E77 /* GlintUnitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 291C0DCE101E23C500393E77 /* GlintUnitTests.m */; };
+		291C0DDC101E260900393E77 /* GPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886676101C96320051F368 /* GPXReader.m */; };
+		291C0DDE101E260900393E77 /* GPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* GPXWriter.m */; };
+		291C0DE0101E260900393E77 /* LocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* LocationMath.m */; };
 		291C0DE6101E265800393E77 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FE32270FF4370200E9FE05 /* CoreLocation.framework */; };
-		291C858E106A8B4300AF8E87 /* JBGPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886676101C96320051F368 /* JBGPXReader.m */; };
-		291C8597106A8BF800AF8E87 /* JBGPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* JBGPXWriter.m */; };
-		291C8598106A8BF800AF8E87 /* JBLocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* JBLocationMath.m */; };
-		291C8599106A8BF800AF8E87 /* JBSoundEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667C101C96320051F368 /* JBSoundEffect.m */; };
-		291C859B106A8C0D00AF8E87 /* GPSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FDFE2110694E8600F264F7 /* GPSManager.m */; };
-		291C859C106A8C0D00AF8E87 /* GlintAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* GlintAppDelegate.m */; };
-		291C85B2106A8C7400AF8E87 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FE32270FF4370200E9FE05 /* CoreLocation.framework */; };
-		291C8699106A8C9600AF8E87 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
-		291C869A106A8C9600AF8E87 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
-		291C869B106A8C9600AF8E87 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
-		291C869C106A8C9600AF8E87 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FE32170FF436EF00E9FE05 /* AudioToolbox.framework */; };
-		291C869D106A8C9600AF8E87 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CD7110100FB8B4001150A1 /* CFNetwork.framework */; };
-		291C869E106A8C9600AF8E87 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296729CE101CC745001BBEDF /* MessageUI.framework */; };
-		291C869F106A8C9600AF8E87 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29850315103701F1000D97A2 /* MapKit.framework */; };
 		293D38071039E74F00EB0F91 /* Ping.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 293D38061039E74F00EB0F91 /* Ping.aiff */; };
 		293D998A10625C4D00C86B6C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 293D998910625C4D00C86B6C /* Entitlements.plist */; };
 		2941215E105AEDE800B2A524 /* CSMapRouteLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */; };
 		2941216B105AEEB900B2A524 /* RouteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941216A105AEEB900B2A524 /* RouteViewController.m */; };
 		294DDEDC106B54B3001FD08C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 294DDEDB106B54B3001FD08C /* Reachability.m */; };
-		294DDEDD106B54B3001FD08C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 294DDEDB106B54B3001FD08C /* Reachability.m */; };
 		294DDEED106B54E5001FD08C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 294DDEEC106B54E5001FD08C /* SystemConfiguration.framework */; };
 		296729CF101CC745001BBEDF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296729CE101CC745001BBEDF /* MessageUI.framework */; };
 		2974387E101C727800DDBB6A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2974387D101C727800DDBB6A /* Default.png */; };
 		29760DE0102F125F00EE89CB /* SlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29760DDF102F125F00EE89CB /* SlideView.m */; };
 		29850316103701F1000D97A2 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29850315103701F1000D97A2 /* MapKit.framework */; };
 		29874F9A0FF776EB0080E20D /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
-		2988667D101C96320051F368 /* JBGPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886676101C96320051F368 /* JBGPXReader.m */; };
-		2988667E101C96320051F368 /* JBGPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* JBGPXWriter.m */; };
-		2988667F101C96320051F368 /* JBLocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* JBLocationMath.m */; };
-		29886680101C96320051F368 /* JBSoundEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667C101C96320051F368 /* JBSoundEffect.m */; };
+		2988667D101C96320051F368 /* GPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886676101C96320051F368 /* GPXReader.m */; };
+		2988667E101C96320051F368 /* GPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* GPXWriter.m */; };
+		2988667F101C96320051F368 /* LocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* LocationMath.m */; };
+		29886680101C96320051F368 /* SoundEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667C101C96320051F368 /* SoundEffect.m */; };
 		2988668C101C96880051F368 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2988668B101C96880051F368 /* unitsets.plist */; };
-		29A0FD17106A85BD00DFEE47 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
-		29A0FD18106A85BD00DFEE47 /* Basso.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31DD0FF4359D00E9FE05 /* Basso.aiff */; };
-		29A0FD19106A85BD00DFEE47 /* Purr.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 29FE31E00FF4359D00E9FE05 /* Purr.aiff */; };
-		29A0FD1A106A85BD00DFEE47 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 29FE32100FF436AC00E9FE05 /* Settings.bundle */; };
-		29A0FD1B106A85BD00DFEE47 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 29874F990FF776EB0080E20D /* Icon.png */; };
-		29A0FD1C106A85BD00DFEE47 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 29D191931011E2DA00B9E8CF /* Localizable.strings */; };
-		29A0FD1D106A85BD00DFEE47 /* MainScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */; };
-		29A0FD1F106A85BD00DFEE47 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2974387D101C727800DDBB6A /* Default.png */; };
-		29A0FD20106A85BD00DFEE47 /* unitsets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2988668B101C96880051F368 /* unitsets.plist */; };
-		29A0FD21106A85BD00DFEE47 /* FileDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2913DBEA1024FD6B00F56A2A /* FileDetailViewController.xib */; };
-		29A0FD22106A85BD00DFEE47 /* FilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2913DE1F10260A9F00F56A2A /* FilesViewController.xib */; };
-		29A0FD23106A85BD00DFEE47 /* Ping.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 293D38061039E74F00EB0F91 /* Ping.aiff */; };
-		29A0FD24106A85BD00DFEE47 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 293D998910625C4D00C86B6C /* Entitlements.plist */; };
-		29A0FD26106A85BD00DFEE47 /* JBGradientLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 297A05B0102328BE0031D57B /* JBGradientLabel.m */; };
-		29A0FD27106A85BD00DFEE47 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
-		29A0FD28106A85BD00DFEE47 /* GlintAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* GlintAppDelegate.m */; };
-		29A0FD29106A85BD00DFEE47 /* MainScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MainScreenViewController.m */; };
-		29A0FD2A106A85BD00DFEE47 /* CompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* CompassView.m */; };
-		29A0FD2B106A85BD00DFEE47 /* FilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD711D100FB9F2001150A1 /* FilesViewController.m */; };
-		29A0FD2C106A85BD00DFEE47 /* JBGPXReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886676101C96320051F368 /* JBGPXReader.m */; };
-		29A0FD2D106A85BD00DFEE47 /* JBGPXWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 29886678101C96320051F368 /* JBGPXWriter.m */; };
-		29A0FD2E106A85BD00DFEE47 /* JBLocationMath.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667A101C96320051F368 /* JBLocationMath.m */; };
-		29A0FD2F106A85BD00DFEE47 /* JBSoundEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 2988667C101C96320051F368 /* JBSoundEffect.m */; };
-		29A0FD30106A85BD00DFEE47 /* FileDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2913DBE91024FD6B00F56A2A /* FileDetailViewController.m */; };
-		29A0FD31106A85BD00DFEE47 /* SlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29760DDF102F125F00EE89CB /* SlideView.m */; };
-		29A0FD32106A85BD00DFEE47 /* LapTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EF16721037292800A0982A /* LapTimeViewController.m */; };
-		29A0FD33106A85BD00DFEE47 /* CSMapRouteLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */; };
-		29A0FD34106A85BD00DFEE47 /* RouteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941216A105AEEB900B2A524 /* RouteViewController.m */; };
-		29A0FD35106A85BD00DFEE47 /* GPSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FDFE2110694E8600F264F7 /* GPSManager.m */; };
-		29A0FD37106A85BD00DFEE47 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
-		29A0FD38106A85BD00DFEE47 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
-		29A0FD39106A85BD00DFEE47 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
-		29A0FD3A106A85BD00DFEE47 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FE32170FF436EF00E9FE05 /* AudioToolbox.framework */; };
-		29A0FD3B106A85BD00DFEE47 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FE32270FF4370200E9FE05 /* CoreLocation.framework */; };
-		29A0FD3C106A85BD00DFEE47 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CD7110100FB8B4001150A1 /* CFNetwork.framework */; };
-		29A0FD3D106A85BD00DFEE47 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296729CE101CC745001BBEDF /* MessageUI.framework */; };
-		29A0FD3E106A85BD00DFEE47 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29850315103701F1000D97A2 /* MapKit.framework */; };
-		29A0FD66106A862C00DFEE47 /* GlintTests.octest in Resources */ = {isa = PBXBuildFile; fileRef = 29A0FD5B106A85F300DFEE47 /* GlintTests.octest */; };
-		29A0FD69106A866500DFEE47 /* GlintApplicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 29A0FD68106A866500DFEE47 /* GlintApplicationTests.m */; };
-		29AEF9E5106AB1A70063AB50 /* reference1.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9E3106AB1A70063AB50 /* reference1.gpx */; };
-		29AEF9E6106AB1A70063AB50 /* reference2.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9E4106AB1A70063AB50 /* reference2.gpx */; };
+		299888F310B084DA00E5B703 /* StringEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 299888F110B084D900E5B703 /* StringEditorController.m */; };
+		299888F410B084DA00E5B703 /* StringEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 299888F210B084D900E5B703 /* StringEditorController.xib */; };
 		29AEF9E7106AB1A70063AB50 /* reference1.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9E3106AB1A70063AB50 /* reference1.gpx */; };
 		29AEF9E8106AB1A70063AB50 /* reference2.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9E4106AB1A70063AB50 /* reference2.gpx */; };
-		29AEF9F4106AB2720063AB50 /* reference0.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9F3106AB2720063AB50 /* reference0.gpx */; };
 		29AEF9F5106AB2720063AB50 /* reference0.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9F3106AB2720063AB50 /* reference0.gpx */; };
-		29AEFA2A106AB3900063AB50 /* reference1.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9E3106AB1A70063AB50 /* reference1.gpx */; };
-		29AEFA2B106AB3900063AB50 /* reference2.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9E4106AB1A70063AB50 /* reference2.gpx */; };
-		29AEFAC7106ABC470063AB50 /* reference0.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 29AEF9F3106AB2720063AB50 /* reference0.gpx */; };
 		29B2D3A910A1DBE900A32201 /* RawTrackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B2D3A810A1DBE900A32201 /* RawTrackViewController.m */; };
-		29BA74A3102328F500262650 /* JBGradientLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 297A05B0102328BE0031D57B /* JBGradientLabel.m */; };
+		29BA74A3102328F500262650 /* GradientLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 297A05B0102328BE0031D57B /* GradientLabel.m */; };
 		29C7910510027A8E00EA28CC /* CompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29C7910410027A8E00EA28CC /* CompassView.m */; };
 		29C9A4F51011E9CA004CCBDD /* MainScreenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */; };
 		29CD7111100FB8B4001150A1 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29CD7110100FB8B4001150A1 /* CFNetwork.framework */; };
 		29CD711F100FB9F2001150A1 /* FilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29CD711D100FB9F2001150A1 /* FilesViewController.m */; };
 		29D191951011E2DA00B9E8CF /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 29D191931011E2DA00B9E8CF /* Localizable.strings */; };
-		29D8A1291070EA9000E75704 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 294DDEEC106B54E5001FD08C /* SystemConfiguration.framework */; };
-		29D8A1511070EB5200E75704 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 294DDEDB106B54B3001FD08C /* Reachability.m */; };
-		29D8A1541070EB6D00E75704 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 294DDEEC106B54E5001FD08C /* SystemConfiguration.framework */; };
 		29EF16731037292800A0982A /* LapTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29EF16721037292800A0982A /* LapTimeViewController.m */; };
 		29FDFE2210694E8600F264F7 /* GPSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FDFE2110694E8600F264F7 /* GPSManager.m */; };
 		29FDFE2310694E8600F264F7 /* GPSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29FDFE2110694E8600F264F7 /* GPSManager.m */; };
@@ -150,13 +100,6 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
-		291C8779106A9B8500AF8E87 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 291C0DB5101E22F600393E77;
-			remoteInfo = Tests;
-		};
 		2933F300109DBC3C00F8F56D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -170,13 +113,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2933F32C109DC35900F8F56D;
 			remoteInfo = "Version Handling";
-		};
-		29A0FD61106A860C00DFEE47 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 29A0FD5A106A85F300DFEE47;
-			remoteInfo = GlintTests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -196,8 +132,8 @@
 		2913DE1F10260A9F00F56A2A /* FilesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = FilesViewController.xib; path = Resources/FilesViewController.xib; sourceTree = "<group>"; };
 		291C0D84101E206800393E77 /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		291C0DB6101E22F600393E77 /* Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		291C0DCD101E23C500393E77 /* TestCases.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestCases.h; path = Tests/TestCases.h; sourceTree = "<group>"; };
-		291C0DCE101E23C500393E77 /* TestCases.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TestCases.m; path = Tests/TestCases.m; sourceTree = "<group>"; };
+		291C0DCD101E23C500393E77 /* GlintUnitTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlintUnitTests.h; path = Tests/GlintUnitTests.h; sourceTree = "<group>"; };
+		291C0DCE101E23C500393E77 /* GlintUnitTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GlintUnitTests.m; path = Tests/GlintUnitTests.m; sourceTree = "<group>"; };
 		293D38061039E74F00EB0F91 /* Ping.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Ping.aiff; path = Resources/Ping.aiff; sourceTree = "<group>"; };
 		293D998910625C4D00C86B6C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		2941215C105AEDE800B2A524 /* CSMapRouteLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSMapRouteLayerView.h; path = SharedCode/CSMapRouteLayerView.h; sourceTree = "<group>"; };
@@ -211,25 +147,22 @@
 		2974387D101C727800DDBB6A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		29760DDE102F125F00EE89CB /* SlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideView.h; sourceTree = "<group>"; };
 		29760DDF102F125F00EE89CB /* SlideView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideView.m; sourceTree = "<group>"; };
-		297A05AF102328BE0031D57B /* JBGradientLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBGradientLabel.h; path = SharedCode/JBGradientLabel.h; sourceTree = "<group>"; };
-		297A05B0102328BE0031D57B /* JBGradientLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBGradientLabel.m; path = SharedCode/JBGradientLabel.m; sourceTree = "<group>"; };
+		297A05AF102328BE0031D57B /* GradientLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientLabel.h; sourceTree = "<group>"; };
+		297A05B0102328BE0031D57B /* GradientLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientLabel.m; sourceTree = "<group>"; };
 		29850315103701F1000D97A2 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		29874F990FF776EB0080E20D /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
-		29886675101C96320051F368 /* JBGPXReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBGPXReader.h; path = SharedCode/JBGPXReader.h; sourceTree = "<group>"; };
-		29886676101C96320051F368 /* JBGPXReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBGPXReader.m; path = SharedCode/JBGPXReader.m; sourceTree = "<group>"; };
-		29886677101C96320051F368 /* JBGPXWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBGPXWriter.h; path = SharedCode/JBGPXWriter.h; sourceTree = "<group>"; };
-		29886678101C96320051F368 /* JBGPXWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBGPXWriter.m; path = SharedCode/JBGPXWriter.m; sourceTree = "<group>"; };
-		29886679101C96320051F368 /* JBLocationMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBLocationMath.h; path = SharedCode/JBLocationMath.h; sourceTree = "<group>"; };
-		2988667A101C96320051F368 /* JBLocationMath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBLocationMath.m; path = SharedCode/JBLocationMath.m; sourceTree = "<group>"; };
-		2988667B101C96320051F368 /* JBSoundEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JBSoundEffect.h; path = SharedCode/JBSoundEffect.h; sourceTree = "<group>"; };
-		2988667C101C96320051F368 /* JBSoundEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JBSoundEffect.m; path = SharedCode/JBSoundEffect.m; sourceTree = "<group>"; };
+		29886675101C96320051F368 /* GPXReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPXReader.h; sourceTree = "<group>"; };
+		29886676101C96320051F368 /* GPXReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPXReader.m; sourceTree = "<group>"; };
+		29886677101C96320051F368 /* GPXWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GPXWriter.h; sourceTree = "<group>"; };
+		29886678101C96320051F368 /* GPXWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GPXWriter.m; sourceTree = "<group>"; };
+		29886679101C96320051F368 /* LocationMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationMath.h; sourceTree = "<group>"; };
+		2988667A101C96320051F368 /* LocationMath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationMath.m; sourceTree = "<group>"; };
+		2988667B101C96320051F368 /* SoundEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundEffect.h; sourceTree = "<group>"; };
+		2988667C101C96320051F368 /* SoundEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundEffect.m; sourceTree = "<group>"; };
 		2988668B101C96880051F368 /* unitsets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = unitsets.plist; path = Resources/unitsets.plist; sourceTree = "<group>"; };
-		29A0FD43106A85BD00DFEE47 /* Glint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Glint.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		29A0FD45106A85BE00DFEE47 /* Glint-Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Glint-Info copy.plist"; sourceTree = "<group>"; };
-		29A0FD5B106A85F300DFEE47 /* GlintTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GlintTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		29A0FD5C106A85F400DFEE47 /* GlintTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GlintTests-Info.plist"; sourceTree = "<group>"; };
-		29A0FD67106A866500DFEE47 /* GlintApplicationTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlintApplicationTests.h; path = Tests/GlintApplicationTests.h; sourceTree = "<group>"; };
-		29A0FD68106A866500DFEE47 /* GlintApplicationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GlintApplicationTests.m; path = Tests/GlintApplicationTests.m; sourceTree = "<group>"; };
+		299888F010B084D900E5B703 /* StringEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringEditorController.h; sourceTree = "<group>"; };
+		299888F110B084D900E5B703 /* StringEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringEditorController.m; sourceTree = "<group>"; };
+		299888F210B084D900E5B703 /* StringEditorController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = StringEditorController.xib; path = Resources/StringEditorController.xib; sourceTree = "<group>"; };
 		29AEF9E3106AB1A70063AB50 /* reference1.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference1.gpx; path = Resources/reference1.gpx; sourceTree = "<group>"; };
 		29AEF9E4106AB1A70063AB50 /* reference2.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference2.gpx; path = Resources/reference2.gpx; sourceTree = "<group>"; };
 		29AEF9F3106AB2720063AB50 /* reference0.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = reference0.gpx; path = Resources/reference0.gpx; sourceTree = "<group>"; };
@@ -282,64 +215,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		29A0FD36106A85BD00DFEE47 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				29D8A1291070EA9000E75704 /* SystemConfiguration.framework in Frameworks */,
-				29A0FD37106A85BD00DFEE47 /* Foundation.framework in Frameworks */,
-				29A0FD38106A85BD00DFEE47 /* UIKit.framework in Frameworks */,
-				29A0FD39106A85BD00DFEE47 /* CoreGraphics.framework in Frameworks */,
-				29A0FD3A106A85BD00DFEE47 /* AudioToolbox.framework in Frameworks */,
-				29A0FD3B106A85BD00DFEE47 /* CoreLocation.framework in Frameworks */,
-				29A0FD3C106A85BD00DFEE47 /* CFNetwork.framework in Frameworks */,
-				29A0FD3D106A85BD00DFEE47 /* MessageUI.framework in Frameworks */,
-				29A0FD3E106A85BD00DFEE47 /* MapKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		29A0FD58106A85F300DFEE47 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				29D8A1541070EB6D00E75704 /* SystemConfiguration.framework in Frameworks */,
-				291C8699106A8C9600AF8E87 /* Foundation.framework in Frameworks */,
-				291C869A106A8C9600AF8E87 /* UIKit.framework in Frameworks */,
-				291C869B106A8C9600AF8E87 /* CoreGraphics.framework in Frameworks */,
-				291C869C106A8C9600AF8E87 /* AudioToolbox.framework in Frameworks */,
-				291C85B2106A8C7400AF8E87 /* CoreLocation.framework in Frameworks */,
-				291C869D106A8C9600AF8E87 /* CFNetwork.framework in Frameworks */,
-				291C869E106A8C9600AF8E87 /* MessageUI.framework in Frameworks */,
-				291C869F106A8C9600AF8E87 /* MapKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				29C7910310027A8E00EA28CC /* CompassView.h */,
-				29C7910410027A8E00EA28CC /* CompassView.m */,
-				2913DBE81024FD6B00F56A2A /* FileDetailViewController.h */,
-				2913DBE91024FD6B00F56A2A /* FileDetailViewController.m */,
-				29CD711C100FB9F2001150A1 /* FilesViewController.h */,
-				29CD711D100FB9F2001150A1 /* FilesViewController.m */,
-				1D3623240D0F684500981E51 /* GlintAppDelegate.h */,
-				1D3623250D0F684500981E51 /* GlintAppDelegate.m */,
-				29FDFE2010694E8600F264F7 /* GPSManager.h */,
-				29FDFE2110694E8600F264F7 /* GPSManager.m */,
-				29EF16711037292800A0982A /* LapTimeViewController.h */,
-				29EF16721037292800A0982A /* LapTimeViewController.m */,
-				28D7ACF60DDB3853001CB0EB /* MainScreenViewController.h */,
-				28D7ACF70DDB3853001CB0EB /* MainScreenViewController.m */,
-				29412169105AEEB900B2A524 /* RouteViewController.h */,
-				2941216A105AEEB900B2A524 /* RouteViewController.m */,
-				29760DDE102F125F00EE89CB /* SlideView.h */,
-				29760DDF102F125F00EE89CB /* SlideView.m */,
-				29B2D3A710A1DBE900A32201 /* RawTrackViewController.h */,
-				29B2D3A810A1DBE900A32201 /* RawTrackViewController.m */,
+				29F106FE10AA14AE0055EA4F /* GPS */,
+				29F1070110AA150F0055EA4F /* Other */,
+				29F106FB10AA14760055EA4F /* UI Controllers */,
+				29F1070610AA155C0055EA4F /* UI Widgets */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -349,8 +234,6 @@
 			children = (
 				1D6058910D05DD3D006BFB54 /* Glint.app */,
 				291C0DB6101E22F600393E77 /* Tests.octest */,
-				29A0FD43106A85BD00DFEE47 /* Glint.app */,
-				29A0FD5B106A85F300DFEE47 /* GlintTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -358,10 +241,8 @@
 		291C0DBD101E230C00393E77 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				29A0FD67106A866500DFEE47 /* GlintApplicationTests.h */,
-				29A0FD68106A866500DFEE47 /* GlintApplicationTests.m */,
-				291C0DCD101E23C500393E77 /* TestCases.h */,
-				291C0DCE101E23C500393E77 /* TestCases.m */,
+				291C0DCD101E23C500393E77 /* GlintUnitTests.h */,
+				291C0DCE101E23C500393E77 /* GlintUnitTests.m */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -371,16 +252,6 @@
 			children = (
 				2941215C105AEDE800B2A524 /* CSMapRouteLayerView.h */,
 				2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */,
-				29886675101C96320051F368 /* JBGPXReader.h */,
-				29886676101C96320051F368 /* JBGPXReader.m */,
-				29886677101C96320051F368 /* JBGPXWriter.h */,
-				29886678101C96320051F368 /* JBGPXWriter.m */,
-				297A05AF102328BE0031D57B /* JBGradientLabel.h */,
-				297A05B0102328BE0031D57B /* JBGradientLabel.m */,
-				29886679101C96320051F368 /* JBLocationMath.h */,
-				2988667A101C96320051F368 /* JBLocationMath.m */,
-				2988667B101C96320051F368 /* JBSoundEffect.h */,
-				2988667C101C96320051F368 /* JBSoundEffect.m */,
 				294DDEDA106B54B3001FD08C /* Reachability.h */,
 				294DDEDB106B54B3001FD08C /* Reachability.m */,
 			);
@@ -397,9 +268,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				291C0D84101E206800393E77 /* Tests-Info.plist */,
-				293D998910625C4D00C86B6C /* Entitlements.plist */,
-				29A0FD5C106A85F400DFEE47 /* GlintTests-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -417,15 +285,16 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				29AEF9F3106AB2720063AB50 /* reference0.gpx */,
-				29AEF9E3106AB1A70063AB50 /* reference1.gpx */,
-				29AEF9E4106AB1A70063AB50 /* reference2.gpx */,
 				29FE31DD0FF4359D00E9FE05 /* Basso.aiff */,
 				293D38061039E74F00EB0F91 /* Ping.aiff */,
 				29FE31E00FF4359D00E9FE05 /* Purr.aiff */,
 				29FE32100FF436AC00E9FE05 /* Settings.bundle */,
-				29A0FD45106A85BE00DFEE47 /* Glint-Info copy.plist */,
+				29AEF9F3106AB2720063AB50 /* reference0.gpx */,
+				29AEF9E3106AB1A70063AB50 /* reference1.gpx */,
+				29AEF9E4106AB1A70063AB50 /* reference2.gpx */,
+				293D998910625C4D00C86B6C /* Entitlements.plist */,
 				8D1107310486CEB800E47090 /* Glint-Info.plist */,
+				291C0D84101E206800393E77 /* Tests-Info.plist */,
 				2988668B101C96880051F368 /* unitsets.plist */,
 				2974387D101C727800DDBB6A /* Default.png */,
 				29874F990FF776EB0080E20D /* Icon.png */,
@@ -433,6 +302,7 @@
 				2913DE1F10260A9F00F56A2A /* FilesViewController.xib */,
 				29C9A4F41011E9CA004CCBDD /* MainScreenViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				299888F210B084D900E5B703 /* StringEditorController.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -451,6 +321,66 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		29F106FB10AA14760055EA4F /* UI Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2913DBE81024FD6B00F56A2A /* FileDetailViewController.h */,
+				2913DBE91024FD6B00F56A2A /* FileDetailViewController.m */,
+				29CD711C100FB9F2001150A1 /* FilesViewController.h */,
+				29CD711D100FB9F2001150A1 /* FilesViewController.m */,
+				29EF16711037292800A0982A /* LapTimeViewController.h */,
+				29EF16721037292800A0982A /* LapTimeViewController.m */,
+				28D7ACF60DDB3853001CB0EB /* MainScreenViewController.h */,
+				28D7ACF70DDB3853001CB0EB /* MainScreenViewController.m */,
+				29B2D3A710A1DBE900A32201 /* RawTrackViewController.h */,
+				29B2D3A810A1DBE900A32201 /* RawTrackViewController.m */,
+				29412169105AEEB900B2A524 /* RouteViewController.h */,
+				2941216A105AEEB900B2A524 /* RouteViewController.m */,
+				299888F010B084D900E5B703 /* StringEditorController.h */,
+				299888F110B084D900E5B703 /* StringEditorController.m */,
+			);
+			name = "UI Controllers";
+			sourceTree = "<group>";
+		};
+		29F106FE10AA14AE0055EA4F /* GPS */ = {
+			isa = PBXGroup;
+			children = (
+				29FDFE2010694E8600F264F7 /* GPSManager.h */,
+				29FDFE2110694E8600F264F7 /* GPSManager.m */,
+				29886675101C96320051F368 /* GPXReader.h */,
+				29886676101C96320051F368 /* GPXReader.m */,
+				29886677101C96320051F368 /* GPXWriter.h */,
+				29886678101C96320051F368 /* GPXWriter.m */,
+				29886679101C96320051F368 /* LocationMath.h */,
+				2988667A101C96320051F368 /* LocationMath.m */,
+			);
+			name = GPS;
+			sourceTree = "<group>";
+		};
+		29F1070110AA150F0055EA4F /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				1D3623240D0F684500981E51 /* GlintAppDelegate.h */,
+				1D3623250D0F684500981E51 /* GlintAppDelegate.m */,
+				2988667B101C96320051F368 /* SoundEffect.h */,
+				2988667C101C96320051F368 /* SoundEffect.m */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
+		29F1070610AA155C0055EA4F /* UI Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				29C7910310027A8E00EA28CC /* CompassView.h */,
+				29C7910410027A8E00EA28CC /* CompassView.m */,
+				297A05AF102328BE0031D57B /* GradientLabel.h */,
+				297A05B0102328BE0031D57B /* GradientLabel.m */,
+				29760DDE102F125F00EE89CB /* SlideView.h */,
+				29760DDF102F125F00EE89CB /* SlideView.m */,
+			);
+			name = "UI Widgets";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -476,9 +406,9 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* Glint.app */;
 			productType = "com.apple.product-type.application";
 		};
-		291C0DB5101E22F600393E77 /* Tests */ = {
+		291C0DB5101E22F600393E77 /* Unit Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 291C0DBE101E230C00393E77 /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildConfigurationList = 291C0DBE101E230C00393E77 /* Build configuration list for PBXNativeTarget "Unit Tests" */;
 			buildPhases = (
 				291C0DB1101E22F600393E77 /* Resources */,
 				291C0DB2101E22F600393E77 /* Sources */,
@@ -489,46 +419,9 @@
 			);
 			dependencies = (
 			);
-			name = Tests;
+			name = "Unit Tests";
 			productName = Tests;
 			productReference = 291C0DB6101E22F600393E77 /* Tests.octest */;
-			productType = "com.apple.product-type.bundle";
-		};
-		29A0FD13106A85BD00DFEE47 /* GlintTesting */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 29A0FD3F106A85BD00DFEE47 /* Build configuration list for PBXNativeTarget "GlintTesting" */;
-			buildPhases = (
-				29A0FD16106A85BD00DFEE47 /* Resources */,
-				29A0FD25106A85BD00DFEE47 /* Sources */,
-				29A0FD36106A85BD00DFEE47 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				291C877A106A9B8500AF8E87 /* PBXTargetDependency */,
-				29A0FD62106A860C00DFEE47 /* PBXTargetDependency */,
-			);
-			name = GlintTesting;
-			productName = Glint;
-			productReference = 29A0FD43106A85BD00DFEE47 /* Glint.app */;
-			productType = "com.apple.product-type.application";
-		};
-		29A0FD5A106A85F300DFEE47 /* GlintTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 29A0FD60106A85F400DFEE47 /* Build configuration list for PBXNativeTarget "GlintTests" */;
-			buildPhases = (
-				29A0FD56106A85F300DFEE47 /* Resources */,
-				29A0FD57106A85F300DFEE47 /* Sources */,
-				29A0FD58106A85F300DFEE47 /* Frameworks */,
-				29A0FD59106A85F300DFEE47 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = GlintTests;
-			productName = GlintTests;
-			productReference = 29A0FD5B106A85F300DFEE47 /* GlintTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -553,10 +446,9 @@
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Glint */,
-				291C0DB5101E22F600393E77 /* Tests */,
-				29A0FD13106A85BD00DFEE47 /* GlintTesting */,
-				29A0FD5A106A85F300DFEE47 /* GlintTests */,
+				291C0DB5101E22F600393E77 /* Unit Tests */,
 				2933F32C109DC35900F8F56D /* Version Handling */,
+				29F1026510A97E7B0055EA4F /* Uncrustify */,
 			);
 		};
 /* End PBXProject section */
@@ -579,6 +471,7 @@
 				2913DE2010260A9F00F56A2A /* FilesViewController.xib in Resources */,
 				293D38071039E74F00EB0F91 /* Ping.aiff in Resources */,
 				293D998A10625C4D00C86B6C /* Entitlements.plist in Resources */,
+				299888F410B084DA00E5B703 /* StringEditorController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -589,40 +482,6 @@
 				29AEF9E7106AB1A70063AB50 /* reference1.gpx in Resources */,
 				29AEF9E8106AB1A70063AB50 /* reference2.gpx in Resources */,
 				29AEF9F5106AB2720063AB50 /* reference0.gpx in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		29A0FD16106A85BD00DFEE47 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				29AEFAC7106ABC470063AB50 /* reference0.gpx in Resources */,
-				29AEFA2A106AB3900063AB50 /* reference1.gpx in Resources */,
-				29AEFA2B106AB3900063AB50 /* reference2.gpx in Resources */,
-				29A0FD66106A862C00DFEE47 /* GlintTests.octest in Resources */,
-				29A0FD17106A85BD00DFEE47 /* MainWindow.xib in Resources */,
-				29A0FD18106A85BD00DFEE47 /* Basso.aiff in Resources */,
-				29A0FD19106A85BD00DFEE47 /* Purr.aiff in Resources */,
-				29A0FD1A106A85BD00DFEE47 /* Settings.bundle in Resources */,
-				29A0FD1B106A85BD00DFEE47 /* Icon.png in Resources */,
-				29A0FD1C106A85BD00DFEE47 /* Localizable.strings in Resources */,
-				29A0FD1D106A85BD00DFEE47 /* MainScreenViewController.xib in Resources */,
-				29A0FD1F106A85BD00DFEE47 /* Default.png in Resources */,
-				29A0FD20106A85BD00DFEE47 /* unitsets.plist in Resources */,
-				29A0FD21106A85BD00DFEE47 /* FileDetailViewController.xib in Resources */,
-				29A0FD22106A85BD00DFEE47 /* FilesViewController.xib in Resources */,
-				29A0FD23106A85BD00DFEE47 /* Ping.aiff in Resources */,
-				29A0FD24106A85BD00DFEE47 /* Entitlements.plist in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		29A0FD56106A85F300DFEE47 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				29AEF9E5106AB1A70063AB50 /* reference1.gpx in Resources */,
-				29AEF9E6106AB1A70063AB50 /* reference2.gpx in Resources */,
-				29AEF9F4106AB2720063AB50 /* reference0.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,6 +500,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+			showEnvVarsInLog = 0;
 		};
 		2933F32B109DC35900F8F56D /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -655,7 +515,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export PATH=/usr/local/bin:$PATH\ncd ${PROJECT_DIR}\nVER=`git describe | sed 's/^v//'`\nsed \"s/CURVERSION/$VER/\" < Glint-Info.plist > Glint-Info-Versioned.plist\nexit 0";
 		};
-		29A0FD59106A85F300DFEE47 /* ShellScript */ = {
+		29F1026410A97E7B0055EA4F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -666,7 +526,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n# \"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+			shellScript = "export PATH=~/bin:$PATH\nuncrustify -l oc -c Resources/uncrustify.cfg --replace --no-backup Classes/* SharedCode/* Tests/* main.m\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -675,16 +535,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29BA74A3102328F500262650 /* JBGradientLabel.m in Sources */,
+				29BA74A3102328F500262650 /* GradientLabel.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* GlintAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* MainScreenViewController.m in Sources */,
 				29C7910510027A8E00EA28CC /* CompassView.m in Sources */,
 				29CD711F100FB9F2001150A1 /* FilesViewController.m in Sources */,
-				2988667D101C96320051F368 /* JBGPXReader.m in Sources */,
-				2988667E101C96320051F368 /* JBGPXWriter.m in Sources */,
-				2988667F101C96320051F368 /* JBLocationMath.m in Sources */,
-				29886680101C96320051F368 /* JBSoundEffect.m in Sources */,
+				2988667D101C96320051F368 /* GPXReader.m in Sources */,
+				2988667E101C96320051F368 /* GPXWriter.m in Sources */,
+				2988667F101C96320051F368 /* LocationMath.m in Sources */,
+				29886680101C96320051F368 /* SoundEffect.m in Sources */,
 				2913DBEB1024FD6B00F56A2A /* FileDetailViewController.m in Sources */,
 				29760DE0102F125F00EE89CB /* SlideView.m in Sources */,
 				29EF16731037292800A0982A /* LapTimeViewController.m in Sources */,
@@ -693,6 +553,7 @@
 				29FDFE2210694E8600F264F7 /* GPSManager.m in Sources */,
 				294DDEDC106B54B3001FD08C /* Reachability.m in Sources */,
 				29B2D3A910A1DBE900A32201 /* RawTrackViewController.m in Sources */,
+				299888F310B084DA00E5B703 /* StringEditorController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,75 +561,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				291C0DDC101E260900393E77 /* JBGPXReader.m in Sources */,
-				291C0DDE101E260900393E77 /* JBGPXWriter.m in Sources */,
-				291C0DE0101E260900393E77 /* JBLocationMath.m in Sources */,
-				291C0DCF101E23C500393E77 /* TestCases.m in Sources */,
+				291C0DDC101E260900393E77 /* GPXReader.m in Sources */,
+				291C0DDE101E260900393E77 /* GPXWriter.m in Sources */,
+				291C0DE0101E260900393E77 /* LocationMath.m in Sources */,
+				291C0DCF101E23C500393E77 /* GlintUnitTests.m in Sources */,
 				29FDFE2310694E8600F264F7 /* GPSManager.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		29A0FD25106A85BD00DFEE47 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				29A0FD26106A85BD00DFEE47 /* JBGradientLabel.m in Sources */,
-				29A0FD27106A85BD00DFEE47 /* main.m in Sources */,
-				29A0FD28106A85BD00DFEE47 /* GlintAppDelegate.m in Sources */,
-				29A0FD29106A85BD00DFEE47 /* MainScreenViewController.m in Sources */,
-				29A0FD2A106A85BD00DFEE47 /* CompassView.m in Sources */,
-				29A0FD2B106A85BD00DFEE47 /* FilesViewController.m in Sources */,
-				29A0FD2C106A85BD00DFEE47 /* JBGPXReader.m in Sources */,
-				29A0FD2D106A85BD00DFEE47 /* JBGPXWriter.m in Sources */,
-				29A0FD2E106A85BD00DFEE47 /* JBLocationMath.m in Sources */,
-				29A0FD2F106A85BD00DFEE47 /* JBSoundEffect.m in Sources */,
-				29A0FD30106A85BD00DFEE47 /* FileDetailViewController.m in Sources */,
-				29A0FD31106A85BD00DFEE47 /* SlideView.m in Sources */,
-				29A0FD32106A85BD00DFEE47 /* LapTimeViewController.m in Sources */,
-				29A0FD33106A85BD00DFEE47 /* CSMapRouteLayerView.m in Sources */,
-				29A0FD34106A85BD00DFEE47 /* RouteViewController.m in Sources */,
-				29A0FD35106A85BD00DFEE47 /* GPSManager.m in Sources */,
-				294DDEDD106B54B3001FD08C /* Reachability.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		29A0FD57106A85F300DFEE47 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				291C859B106A8C0D00AF8E87 /* GPSManager.m in Sources */,
-				291C859C106A8C0D00AF8E87 /* GlintAppDelegate.m in Sources */,
-				291C858E106A8B4300AF8E87 /* JBGPXReader.m in Sources */,
-				291C8597106A8BF800AF8E87 /* JBGPXWriter.m in Sources */,
-				291C8598106A8BF800AF8E87 /* JBLocationMath.m in Sources */,
-				291C8599106A8BF800AF8E87 /* JBSoundEffect.m in Sources */,
-				29A0FD69106A866500DFEE47 /* GlintApplicationTests.m in Sources */,
-				29D8A1511070EB5200E75704 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		291C877A106A9B8500AF8E87 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 291C0DB5101E22F600393E77 /* Tests */;
-			targetProxy = 291C8779106A9B8500AF8E87 /* PBXContainerItemProxy */;
-		};
 		2933F301109DBC3C00F8F56D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 291C0DB5101E22F600393E77 /* Tests */;
+			target = 291C0DB5101E22F600393E77 /* Unit Tests */;
 			targetProxy = 2933F300109DBC3C00F8F56D /* PBXContainerItemProxy */;
 		};
 		2933F336109DC3D000F8F56D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 2933F32C109DC35900F8F56D /* Version Handling */;
 			targetProxy = 2933F335109DC3D000F8F56D /* PBXContainerItemProxy */;
-		};
-		29A0FD62106A860C00DFEE47 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 29A0FD5A106A85F300DFEE47 /* GlintTests */;
-			targetProxy = 29A0FD61106A860C00DFEE47 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -927,115 +739,31 @@
 			};
 			name = Distribution;
 		};
-		29A0FD40106A85BD00DFEE47 /* Debug */ = {
+		29F1026610A97E7C0055EA4F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Glint_Prefix.pch;
-				INFOPLIST_FILE = "Glint-Info copy.plist";
-				PRODUCT_NAME = Glint;
+				PRODUCT_NAME = Uncrustify;
 			};
 			name = Debug;
 		};
-		29A0FD41106A85BD00DFEE47 /* Release */ = {
+		29F1026710A97E7C0055EA4F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Glint_Prefix.pch;
-				INFOPLIST_FILE = "Glint-Info copy.plist";
-				PRODUCT_NAME = Glint;
-			};
-			name = Release;
-		};
-		29A0FD42106A85BD00DFEE47 /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = Glint_Prefix.pch;
-				INFOPLIST_FILE = "Glint-Info copy.plist";
-				PRODUCT_NAME = Glint;
-			};
-			name = Distribution;
-		};
-		29A0FD5D106A85F400DFEE47 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREFIX_HEADER = Glint_Prefix.pch;
-				INFOPLIST_FILE = "GlintTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					SenTestingKit,
-					"-framework",
-					UIKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = GlintTests;
-				WRAPPER_EXTENSION = octest;
-			};
-			name = Debug;
-		};
-		29A0FD5E106A85F400DFEE47 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				INFOPLIST_FILE = "GlintTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					SenTestingKit,
-					"-framework",
-					UIKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = GlintTests;
-				WRAPPER_EXTENSION = octest;
+				PRODUCT_NAME = Uncrustify;
 				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
-		29A0FD5F106A85F400DFEE47 /* Distribution */ = {
+		29F1026810A97E7C0055EA4F /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				INFOPLIST_FILE = "GlintTests-Info.plist";
-				OTHER_LDFLAGS = (
-					"-framework",
-					Foundation,
-					"-framework",
-					SenTestingKit,
-					"-framework",
-					UIKit,
-				);
-				PREBINDING = NO;
-				PRODUCT_NAME = GlintTests;
-				WRAPPER_EXTENSION = octest;
+				PRODUCT_NAME = Uncrustify;
 			};
 			name = Distribution;
 		};
@@ -1044,7 +772,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1077,7 +805,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -1097,7 +825,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1124,7 +852,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		291C0DBE101E230C00393E77 /* Build configuration list for PBXNativeTarget "Tests" */ = {
+		291C0DBE101E230C00393E77 /* Build configuration list for PBXNativeTarget "Unit Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				291C0DB7101E22F700393E77 /* Debug */,
@@ -1144,22 +872,12 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		29A0FD3F106A85BD00DFEE47 /* Build configuration list for PBXNativeTarget "GlintTesting" */ = {
+		29F1026A10A97E9A0055EA4F /* Build configuration list for PBXAggregateTarget "Uncrustify" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				29A0FD40106A85BD00DFEE47 /* Debug */,
-				29A0FD41106A85BD00DFEE47 /* Release */,
-				29A0FD42106A85BD00DFEE47 /* Distribution */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		29A0FD60106A85F400DFEE47 /* Build configuration list for PBXNativeTarget "GlintTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				29A0FD5D106A85F400DFEE47 /* Debug */,
-				29A0FD5E106A85F400DFEE47 /* Release */,
-				29A0FD5F106A85F400DFEE47 /* Distribution */,
+				29F1026610A97E7C0055EA4F /* Debug */,
+				29F1026710A97E7C0055EA4F /* Release */,
+				29F1026810A97E7C0055EA4F /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

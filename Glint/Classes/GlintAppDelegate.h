@@ -41,6 +41,7 @@
 - (NSString*)formatDistance:(float)distance;
 - (NSString*)formatShortDistance:(float)distance;
 - (NSString*)formatSpeed:(float)speed;
+- (void)enableProximitySensor;
+- (void)disableProximitySensor;
 
 @end
-

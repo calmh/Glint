@@ -78,7 +78,6 @@ static void PrintReachabilityFlags(SCNetworkReachabilityFlags flags, const char 
 #endif
 }
 
-
 @implementation Reachability
 static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *info)
 {
@@ -238,4 +237,5 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	}
 	return retVal;
 }
+
 @end

@@ -6,19 +6,20 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
+#import "GPXReader.h"
 #import "GlintAppDelegate.h"
-#import "JBGPXReader.h"
-#import "JBLocationMath.h"
 #import "LapTimeViewController.h"
-#import "RouteViewController.h"
+#import "LocationMath.h"
 #import "RawTrackViewController.h"
+#import "RouteViewController.h"
+#import "StringEditorController.h"
 #import <MessageUI/MessageUI.h>
 #import <UIKit/UIKit.h>
 
-@interface FileDetailViewController : UIViewController <MFMailComposeViewControllerDelegate> {
+@interface FileDetailViewController : UIViewController <MFMailComposeViewControllerDelegate, StringEditorControllerDelegate> {
 	GlintAppDelegate *delegate;
-	JBGPXReader *reader;
-	JBLocationMath *math;
+	GPXReader *reader;
+	LocationMath *math;
 	BOOL loading;
 
 	UINavigationController *navigationController;
@@ -28,6 +29,7 @@
 	LapTimeViewController *lapTimeController;
 	RouteViewController *routeController;
 	RawTrackViewController *rawTrackController;
+	StringEditorController *stringEditorController;
 
 	NSString *filename, *startTime, *endTime, *distance, *averageSpeed;
 }
@@ -38,6 +40,7 @@
 @property (retain, nonatomic) IBOutlet LapTimeViewController *lapTimeController;
 @property (retain, nonatomic) IBOutlet RouteViewController *routeController;
 @property (retain, nonatomic) IBOutlet RawTrackViewController *rawTrackController;
+@property (retain, nonatomic) IBOutlet StringEditorController *stringEditorController;
 
 - (void)prepareForLoad:(NSString*)newFilename;
 - (void)loadFile:(NSString*)newFilename;
