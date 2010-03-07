@@ -160,26 +160,6 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Proximity Sensor</string>
-			<key>Key</key>
-			<string>enable_proximity</string>
-			<key>DefaultValue</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Disable Idle Timer</string>
-			<key>Key</key>
-			<string>disable_idle</string>
-			<key>DefaultValue</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
 			<string>Sounds</string>
 			<key>Key</key>
 			<string>sounds_enabled</string>

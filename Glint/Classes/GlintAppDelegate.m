@@ -80,8 +80,7 @@
 	reachManager = [[Reachability reachabilityForInternetConnection] retain];
 	[reachManager startNotifer];
 
-	if (USERPREF_DISABLE_IDLE)
-		[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+	[[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 
 	[self enableProximitySensor];
 }
@@ -242,18 +241,14 @@
 
 - (void)enableProximitySensor
 {
-	if (USERPREF_ENABLE_PROXIMITY) {
-		[[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-		debug_NSLog(@"Enabling proximity sensor");
-	}
+	[[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+	debug_NSLog(@"Enabling proximity sensor");
 }
 
 - (void)disableProximitySensor
 {
-	if (USERPREF_ENABLE_PROXIMITY) {
-		[[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-		debug_NSLog(@"Disabling proximity sensor");
-	}
+	[[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+	debug_NSLog(@"Disabling proximity sensor");
 }
 
 // Private
