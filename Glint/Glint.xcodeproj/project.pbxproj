@@ -7,17 +7,6 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		2933F32C109DC35900F8F56D /* Version Handling */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 2933F332109DC36A00F8F56D /* Build configuration list for PBXAggregateTarget "Version Handling" */;
-			buildPhases = (
-				2933F32B109DC35900F8F56D /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = "Version Handling";
-			productName = "Version Handling";
-		};
 		29F1026510A97E7B0055EA4F /* Uncrustify */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 29F1026A10A97E9A0055EA4F /* Build configuration list for PBXAggregateTarget "Uncrustify" */;
@@ -107,13 +96,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 291C0DB5101E22F600393E77;
 			remoteInfo = Tests;
-		};
-		2933F335109DC3D000F8F56D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2933F32C109DC35900F8F56D;
-			remoteInfo = "Version Handling";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -403,7 +385,6 @@
 				2933F31C109DBF6E00F8F56D /* PBXBuildRule */,
 			);
 			dependencies = (
-				2933F336109DC3D000F8F56D /* PBXTargetDependency */,
 				2933F301109DBC3C00F8F56D /* PBXTargetDependency */,
 			);
 			name = Glint;
@@ -452,7 +433,6 @@
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Glint */,
 				291C0DB5101E22F600393E77 /* Unit Tests */,
-				2933F32C109DC35900F8F56D /* Version Handling */,
 				29F1026510A97E7B0055EA4F /* Uncrustify */,
 			);
 		};
@@ -506,19 +486,6 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 			showEnvVarsInLog = 0;
-		};
-		2933F32B109DC35900F8F56D /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=/usr/local/bin:$PATH\ncd ${PROJECT_DIR}\nVER=`git describe | sed 's/^v//'`\nsed \"s/CURVERSION/$VER/\" < Glint-Info.plist > Glint-Info-Versioned.plist\nexit 0";
 		};
 		29F1026410A97E7B0055EA4F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -583,11 +550,6 @@
 			target = 291C0DB5101E22F600393E77 /* Unit Tests */;
 			targetProxy = 2933F300109DBC3C00F8F56D /* PBXContainerItemProxy */;
 		};
-		2933F336109DC3D000F8F56D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2933F32C109DC35900F8F56D /* Version Handling */;
-			targetProxy = 2933F335109DC3D000F8F56D /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -612,7 +574,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Glint_Prefix.pch;
-				INFOPLIST_FILE = "Glint-Info-Versioned.plist";
+				INFOPLIST_FILE = "Glint-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				PRODUCT_NAME = Glint;
@@ -626,7 +588,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Glint_Prefix.pch;
-				INFOPLIST_FILE = "Glint-Info-Versioned.plist";
+				INFOPLIST_FILE = "Glint-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				PRODUCT_NAME = Glint;
@@ -717,34 +679,6 @@
 			};
 			name = Distribution;
 		};
-		2933F32D109DC35900F8F56D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_NAME = "Version Handling";
-			};
-			name = Debug;
-		};
-		2933F32E109DC35900F8F56D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				PRODUCT_NAME = "Version Handling";
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
-		2933F32F109DC35900F8F56D /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "Version Handling";
-			};
-			name = Distribution;
-		};
 		29F1026610A97E7C0055EA4F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -799,7 +733,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Glint_Prefix.pch;
-				INFOPLIST_FILE = "Glint-Info-Versioned.plist";
+				INFOPLIST_FILE = "Glint-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				PRODUCT_NAME = Glint;
@@ -864,16 +798,6 @@
 				291C0DB7101E22F700393E77 /* Debug */,
 				291C0DB8101E22F700393E77 /* Release */,
 				291C0DB9101E22F700393E77 /* Distribution */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2933F332109DC36A00F8F56D /* Build configuration list for PBXAggregateTarget "Version Handling" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2933F32D109DC35900F8F56D /* Debug */,
-				2933F32E109DC35900F8F56D /* Release */,
-				2933F32F109DC35900F8F56D /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
