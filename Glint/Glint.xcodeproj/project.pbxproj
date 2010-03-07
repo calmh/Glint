@@ -53,6 +53,7 @@
 		2941216B105AEEB900B2A524 /* RouteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941216A105AEEB900B2A524 /* RouteViewController.m */; };
 		294DDEDC106B54B3001FD08C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 294DDEDB106B54B3001FD08C /* Reachability.m */; };
 		294DDEED106B54E5001FD08C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 294DDEEC106B54E5001FD08C /* SystemConfiguration.framework */; };
+		294E25441143A65400BDF2A5 /* CMGlyphDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 294E25431143A65400BDF2A5 /* CMGlyphDrawing.m */; };
 		296729CF101CC745001BBEDF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296729CE101CC745001BBEDF /* MessageUI.framework */; };
 		2974387E101C727800DDBB6A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2974387D101C727800DDBB6A /* Default.png */; };
 		29760DE0102F125F00EE89CB /* SlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29760DDF102F125F00EE89CB /* SlideView.m */; };
@@ -143,6 +144,8 @@
 		294DDEDA106B54B3001FD08C /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = SharedCode/Reachability.h; sourceTree = "<group>"; };
 		294DDEDB106B54B3001FD08C /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = SharedCode/Reachability.m; sourceTree = "<group>"; };
 		294DDEEC106B54E5001FD08C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
+		294E25421143A65400BDF2A5 /* CMGlyphDrawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMGlyphDrawing.h; path = SharedCode/CMGlyphDrawing.h; sourceTree = "<group>"; };
+		294E25431143A65400BDF2A5 /* CMGlyphDrawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMGlyphDrawing.m; path = SharedCode/CMGlyphDrawing.m; sourceTree = "<group>"; };
 		296729CE101CC745001BBEDF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		2974387D101C727800DDBB6A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		29760DDE102F125F00EE89CB /* SlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideView.h; sourceTree = "<group>"; };
@@ -250,6 +253,8 @@
 		29886672101C95ED0051F368 /* Shared Code */ = {
 			isa = PBXGroup;
 			children = (
+				294E25421143A65400BDF2A5 /* CMGlyphDrawing.h */,
+				294E25431143A65400BDF2A5 /* CMGlyphDrawing.m */,
 				2941215C105AEDE800B2A524 /* CSMapRouteLayerView.h */,
 				2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */,
 				294DDEDA106B54B3001FD08C /* Reachability.h */,
@@ -554,6 +559,7 @@
 				294DDEDC106B54B3001FD08C /* Reachability.m in Sources */,
 				29B2D3A910A1DBE900A32201 /* RawTrackViewController.m in Sources */,
 				299888F310B084DA00E5B703 /* StringEditorController.m in Sources */,
+				294E25441143A65400BDF2A5 /* CMGlyphDrawing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
