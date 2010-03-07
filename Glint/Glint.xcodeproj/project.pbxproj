@@ -7,17 +7,6 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		2933F32C109DC35900F8F56D /* Version Handling */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 2933F332109DC36A00F8F56D /* Build configuration list for PBXAggregateTarget "Version Handling" */;
-			buildPhases = (
-				2933F32B109DC35900F8F56D /* ShellScript */,
-			);
-			dependencies = (
-			);
-			name = "Version Handling";
-			productName = "Version Handling";
-		};
 		29F1026510A97E7B0055EA4F /* Uncrustify */ = {
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 29F1026A10A97E9A0055EA4F /* Build configuration list for PBXAggregateTarget "Uncrustify" */;
@@ -53,6 +42,7 @@
 		2941216B105AEEB900B2A524 /* RouteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941216A105AEEB900B2A524 /* RouteViewController.m */; };
 		294DDEDC106B54B3001FD08C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 294DDEDB106B54B3001FD08C /* Reachability.m */; };
 		294DDEED106B54E5001FD08C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 294DDEEC106B54E5001FD08C /* SystemConfiguration.framework */; };
+		294E25441143A65400BDF2A5 /* CMGlyphDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 294E25431143A65400BDF2A5 /* CMGlyphDrawing.m */; };
 		296729CF101CC745001BBEDF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296729CE101CC745001BBEDF /* MessageUI.framework */; };
 		2974387E101C727800DDBB6A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2974387D101C727800DDBB6A /* Default.png */; };
 		29760DE0102F125F00EE89CB /* SlideView.m in Sources */ = {isa = PBXBuildFile; fileRef = 29760DDF102F125F00EE89CB /* SlideView.m */; };
@@ -107,13 +97,6 @@
 			remoteGlobalIDString = 291C0DB5101E22F600393E77;
 			remoteInfo = Tests;
 		};
-		2933F335109DC3D000F8F56D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2933F32C109DC35900F8F56D;
-			remoteInfo = "Version Handling";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -143,6 +126,8 @@
 		294DDEDA106B54B3001FD08C /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = SharedCode/Reachability.h; sourceTree = "<group>"; };
 		294DDEDB106B54B3001FD08C /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = SharedCode/Reachability.m; sourceTree = "<group>"; };
 		294DDEEC106B54E5001FD08C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
+		294E25421143A65400BDF2A5 /* CMGlyphDrawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMGlyphDrawing.h; path = SharedCode/CMGlyphDrawing.h; sourceTree = "<group>"; };
+		294E25431143A65400BDF2A5 /* CMGlyphDrawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMGlyphDrawing.m; path = SharedCode/CMGlyphDrawing.m; sourceTree = "<group>"; };
 		296729CE101CC745001BBEDF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		2974387D101C727800DDBB6A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		29760DDE102F125F00EE89CB /* SlideView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideView.h; sourceTree = "<group>"; };
@@ -250,6 +235,8 @@
 		29886672101C95ED0051F368 /* Shared Code */ = {
 			isa = PBXGroup;
 			children = (
+				294E25421143A65400BDF2A5 /* CMGlyphDrawing.h */,
+				294E25431143A65400BDF2A5 /* CMGlyphDrawing.m */,
 				2941215C105AEDE800B2A524 /* CSMapRouteLayerView.h */,
 				2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */,
 				294DDEDA106B54B3001FD08C /* Reachability.h */,
@@ -398,7 +385,6 @@
 				2933F31C109DBF6E00F8F56D /* PBXBuildRule */,
 			);
 			dependencies = (
-				2933F336109DC3D000F8F56D /* PBXTargetDependency */,
 				2933F301109DBC3C00F8F56D /* PBXTargetDependency */,
 			);
 			name = Glint;
@@ -447,7 +433,6 @@
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Glint */,
 				291C0DB5101E22F600393E77 /* Unit Tests */,
-				2933F32C109DC35900F8F56D /* Version Handling */,
 				29F1026510A97E7B0055EA4F /* Uncrustify */,
 			);
 		};
@@ -502,19 +487,6 @@
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2933F32B109DC35900F8F56D /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=/usr/local/bin:$PATH\ncd ${PROJECT_DIR}\nVER=`git describe | sed 's/^v//'`\nsed \"s/CURVERSION/$VER/\" < Glint-Info.plist > Glint-Info-Versioned.plist\nexit 0";
-		};
 		29F1026410A97E7B0055EA4F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -554,6 +526,7 @@
 				294DDEDC106B54B3001FD08C /* Reachability.m in Sources */,
 				29B2D3A910A1DBE900A32201 /* RawTrackViewController.m in Sources */,
 				299888F310B084DA00E5B703 /* StringEditorController.m in Sources */,
+				294E25441143A65400BDF2A5 /* CMGlyphDrawing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -576,11 +549,6 @@
 			isa = PBXTargetDependency;
 			target = 291C0DB5101E22F600393E77 /* Unit Tests */;
 			targetProxy = 2933F300109DBC3C00F8F56D /* PBXContainerItemProxy */;
-		};
-		2933F336109DC3D000F8F56D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2933F32C109DC35900F8F56D /* Version Handling */;
-			targetProxy = 2933F335109DC3D000F8F56D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -606,7 +574,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Glint_Prefix.pch;
-				INFOPLIST_FILE = "Glint-Info-Versioned.plist";
+				INFOPLIST_FILE = "Glint-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				PRODUCT_NAME = Glint;
@@ -620,7 +588,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Glint_Prefix.pch;
-				INFOPLIST_FILE = "Glint-Info-Versioned.plist";
+				INFOPLIST_FILE = "Glint-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				PRODUCT_NAME = Glint;
@@ -711,34 +679,6 @@
 			};
 			name = Distribution;
 		};
-		2933F32D109DC35900F8F56D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_NAME = "Version Handling";
-			};
-			name = Debug;
-		};
-		2933F32E109DC35900F8F56D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				PRODUCT_NAME = "Version Handling";
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
-		2933F32F109DC35900F8F56D /* Distribution */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "Version Handling";
-			};
-			name = Distribution;
-		};
 		29F1026610A97E7C0055EA4F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -772,7 +712,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 47;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -793,7 +733,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Glint_Prefix.pch;
-				INFOPLIST_FILE = "Glint-Info-Versioned.plist";
+				INFOPLIST_FILE = "Glint-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
 				PRODUCT_NAME = Glint;
@@ -805,7 +745,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 47;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -825,7 +765,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 46;
+				CURRENT_PROJECT_VERSION = 47;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -858,16 +798,6 @@
 				291C0DB7101E22F700393E77 /* Debug */,
 				291C0DB8101E22F700393E77 /* Release */,
 				291C0DB9101E22F700393E77 /* Distribution */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		2933F332109DC36A00F8F56D /* Build configuration list for PBXAggregateTarget "Version Handling" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				2933F32D109DC35900F8F56D /* Debug */,
-				2933F32E109DC35900F8F56D /* Release */,
-				2933F32F109DC35900F8F56D /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

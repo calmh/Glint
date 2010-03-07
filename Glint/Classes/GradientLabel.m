@@ -6,10 +6,8 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
+#import "CMGlyphDrawing.h"
 #import "GradientLabel.h"
-
-// Missing in standard headers.
-extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph[], size_t);
 
 @implementation GradientLabel
 
@@ -82,7 +80,7 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
 		CGContextSetFontSize(ctx, pointSize);
 
 		// Measure text dimensions.
-		CGFontGetGlyphsForUnichars(font, chars, glyphs, length);
+		CMFontGetGlyphsForUnichars(font, chars, glyphs, length);
 		CGContextSetTextDrawingMode(ctx, kCGTextInvisible);
 		CGContextSetTextPosition(ctx, 0, 0);
 		CGContextShowGlyphs(ctx, glyphs, length);
