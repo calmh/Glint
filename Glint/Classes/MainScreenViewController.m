@@ -94,6 +94,10 @@
 
 	CGRect pageDescriptionRect = CGRectMake(-145.0f, 344.0f / 2.0f, 314.0f, 24.0f);
 
+#ifdef DEBUG
+	self.measurementsLabel.textColor = [UIColor colorWithRed:1.0 green:0.3 blue:0.3 alpha:1.0];
+#endif
+
 	// Primary page
 
 	self.primaryScreenDescription.text = NSLocalizedString(@"Speed & Distance",nil);
