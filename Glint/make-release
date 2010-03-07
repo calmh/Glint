@@ -1,0 +1,16 @@
+#!/bin/sh
+
+export VER=$1
+
+git checkout -b release-$VER
+agvtool bump -all
+agvtool new-marketing-version $VER
+git commit -am "Bump version number to $VER."
+
+git checkout release
+git merge --no-ff release-$VER
+git tag -a $VER -m "Release $VER"
+
+git checkout master
+git merge release-$VER
+git branch -d release-$VER
