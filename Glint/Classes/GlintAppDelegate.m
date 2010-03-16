@@ -12,6 +12,10 @@
 
 @interface GlintAppDelegate ()
 - (void)loadRaceFile:(NSString*)raceAgainstFile;
+- (void)updateDefaultSettings;
+- (NSDictionary*)loadDefaultSettings;
+- (void)resumeRecordingToFile;
+- (void)resumeRacing;
 @end
 
 @implementation GlintAppDelegate
@@ -34,48 +38,15 @@
 - (void)applicationDidFinishLaunching:(UIApplication*)application
 {
 	self.queue = [[NSOperationQueue alloc] init];
-	NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-	// Check the preferences are up to speed, and load new defaults if not.
-	NSString *defaultsVersion = [[NSUserDefaults standardUserDefaults] stringForKey:@"current_version"];
-	if (defaultsVersion == nil || [currentVersion compare:defaultsVersion] != NSOrderedSame) {
-		NSString *pathStr = [[NSBundle mainBundle] bundlePath];
-		NSString *settingsBundlePath = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
-		NSString *finalPath = [settingsBundlePath stringByAppendingPathComponent:@"Root.plist"];
-
-		NSDictionary *settingsDict = [NSDictionary dictionaryWithContentsOfFile:finalPath];
-		NSArray *prefSpecifierArray = [settingsDict objectForKey:@"PreferenceSpecifiers"];
-
-		NSMutableDictionary *defaults = [[NSMutableDictionary alloc] init];
-		for (NSDictionary*prefItem in prefSpecifierArray) {
-			NSString *keyValueStr = [prefItem objectForKey:@"Key"];
-			id defaultValue = [prefItem objectForKey:@"DefaultValue"];
-			if (keyValueStr && defaultValue) {
-				[defaults setObject:defaultValue forKey:keyValueStr];
-				debug_NSLog(@"Setting preference: %@=%@", keyValueStr, [defaultValue description]);
-			}
-		}
-
-		[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
-		[[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:@"current_version"];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-		[defaults release];
-	}
 
 	[window addSubview:mainScreenViewController.view];
 	[window addSubview:navController.view];
 	[window bringSubviewToFront:mainScreenViewController.view];
 	[window makeKeyAndVisible];
 
-	// Load file to resume recording in, in the background
-	NSString *recordingFile;
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"restart_recording"] &&
-	    (recordingFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"recording_filename"]))
-		[self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:mainScreenViewController selector:@selector(resumeRecordingOnFile:) object:recordingFile] autorelease]];
-
-	// Load file to race against, in the background
-	NSString *raceAgainstFile;
-	if (raceAgainstFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"raceAgainstFile"])
-		[self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(loadRaceFile:) object:raceAgainstFile] autorelease]];
+	[self updateDefaultSettings];
+	[self resumeRecordingToFile];
+	[self resumeRacing];
 
 	reachManager = [[Reachability reachabilityForInternetConnection] retain];
 	[reachManager startNotifer];
@@ -258,6 +229,60 @@
 	GPXReader *reader = [[GPXReader alloc] initWithFilename:raceAgainstFile];
 	[[gpsManager math] setRaceLocations:[reader locations]];
 	[reader release];
+}
+
+- (void)updateDefaultSettings
+{
+	NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+	// Check the preferences are up to speed, and load new defaults if not.
+	NSString *defaultsVersion = [[NSUserDefaults standardUserDefaults] stringForKey:@"current_version"];
+	if (defaultsVersion == nil || [currentVersion compare:defaultsVersion] != NSOrderedSame) {
+		// Remind user about the need for GPS signal after upgrade.
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"have_shown_gps_instructions"];
+
+		// Register new defaults and save.
+		NSDictionary *defaults = [self loadDefaultSettings];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+		[[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:@"current_version"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+		[defaults release];
+	}
+}
+
+- (NSDictionary*)loadDefaultSettings
+{
+	NSString *pathStr = [[NSBundle mainBundle] bundlePath];
+	NSString *settingsBundlePath = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
+	NSString *finalPath = [settingsBundlePath stringByAppendingPathComponent:@"Root.plist"];
+
+	NSDictionary *settingsDict = [NSDictionary dictionaryWithContentsOfFile:finalPath];
+	NSArray *prefSpecifierArray = [settingsDict objectForKey:@"PreferenceSpecifiers"];
+
+	NSMutableDictionary *defaults = [[NSMutableDictionary alloc] init];
+	for (NSDictionary*prefItem in prefSpecifierArray) {
+		NSString *keyValueStr = [prefItem objectForKey:@"Key"];
+		id defaultValue = [prefItem objectForKey:@"DefaultValue"];
+		if (keyValueStr && defaultValue) {
+			[defaults setObject:defaultValue forKey:keyValueStr];
+			debug_NSLog(@"Setting preference: %@=%@", keyValueStr, [defaultValue description]);
+		}
+	}
+	return defaults;
+}
+
+- (void)resumeRecordingToFile
+{
+	NSString *recordingFile;
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:@"restart_recording"] &&
+	    (recordingFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"recording_filename"]))
+		[self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:mainScreenViewController selector:@selector(resumeRecordingOnFile:) object:recordingFile] autorelease]];
+}
+
+- (void)resumeRacing
+{
+	NSString *raceAgainstFile;
+	if (raceAgainstFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"raceAgainstFile"])
+		[self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(loadRaceFile:) object:raceAgainstFile] autorelease]];
 }
 
 @end
