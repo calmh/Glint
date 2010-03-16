@@ -12,14 +12,35 @@
  * Private methods
  */
 @interface MainScreenViewController ()
-- (void)positiveIndicator:(UILabel*)indicator;
-- (void)negativeIndicator:(UILabel*)indicator;
-- (void)disabledIndicator:(UILabel*)indicator;
+- (void)indicatePositiveState:(UILabel*)indicator;
+- (void)indicateNegativeState:(UILabel*)indicator;
+- (void)indicateDisabledState:(UILabel*)indicator;
 - (void)resetPage;
 - (void)switchPage;
 - (void)switchPageWithSpeed:(float)secs;
 - (void)switchPageWithoutAnimation;
 - (void)shiftViewsTo:(float)position;
+- (void)updateLapTimes;
+- (void)updateRacingIndicator;
+- (void)updateSignalIndicator;
+- (void)initializePrimaryPageWithDescriptionRect:(CGRect)pageDescriptionRect;
+- (void)initializeSecondaryPageWithDescriptionRect:(CGRect)pageDescriptionRect;
+- (void)initializeTertiaryPageWithDescriptionRect:(CGRect)pageDescriptionRect;
+- (void)loadSoundEffects;
+- (void)initializePages;
+- (void)initializeIndicators;
+- (void)initializeLocalizedElements;
+- (void)initializeTimers;
+- (void)updateLapTimes;
+- (void)updateRacingIndicator;
+- (void)updateSignalIndicator;
+- (void)updateLocationLabels:(CLLocation*)current;
+- (void)updateMeasurementsLabel;
+- (void)updateSpeedAndDistanceLabels;
+- (void)updateRacingLabels;
+- (void)updateSpeedLabels;
+- (void)updateTimeAndDistanceLabels;
+- (void)updateCourse;
 @end
 
 @implementation MainScreenViewController
@@ -63,89 +84,23 @@
 {
 	[super viewDidLoad];
 
-	delegate = [[UIApplication sharedApplication] delegate];
-	gpsManager = [delegate gpsManager];
-
-	[containerView addSubview:primaryView];
-	[containerView addSubview:secondaryView];
-	[containerView addSubview:tertiaryView];
-	[self shiftViewsTo:0.0f];
-	int numPages = [containerView.subviews count];
-	[pager setNumberOfPages:numPages];
-
-	badSound = [[SoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
-	goodSound = [[SoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
-	lapSound = [[SoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Ping" ofType:@"aiff"]];
 	firstMeasurementDate  = nil;
 	lastMeasurementDate = nil;
 	lockTimer = nil;
 	touchStartTime = nil;
 
-	[self disabledIndicator:signalIndicator];
-	[self disabledIndicator:recordingIndicator];
-	[self disabledIndicator:racingIndicator];
+	delegate = [[UIApplication sharedApplication] delegate];
+	gpsManager = [delegate gpsManager];
 
-	UIBarButtonItem *playPauseButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Pause",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(playPause:)] autorelease];
-	UIBarButtonItem *filesButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)] autorelease];
-	UIBarButtonItem *recordButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Record",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)] autorelease];
-	UIBarButtonItem *stopRaceButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)] autorelease];
-	toolbarItems = [[NSArray arrayWithObjects:playPauseButton, filesButton, recordButton, stopRaceButton, nil] retain];
-	[toolbar setItems:toolbarItems animated:YES];
-
-	CGRect pageDescriptionRect = CGRectMake(-145.0f, 344.0f / 2.0f, 314.0f, 24.0f);
+	[self loadSoundEffects];
+	[self initializePages];
+	[self initializeIndicators];
+	[self initializeLocalizedElements];
+	[self initializeTimers];
 
 #ifdef DEBUG
 	self.measurementsLabel.textColor = [UIColor colorWithRed:1.0 green:0.3 blue:0.3 alpha:1.0];
 #endif
-
-	// Primary page
-
-	self.primaryScreenDescription.text = NSLocalizedString(@"Speed & Distance",nil);
-	self.primaryScreenDescription.frame = pageDescriptionRect;
-	self.primaryScreenDescription.transform = CGAffineTransformMakeRotation(-M_PI / 2.0f);
-	self.elapsedTimeLabel.text = [delegate formatTimestamp:0.0f maxTime:86400.0f allowNegatives:NO];
-	self.totalDistanceLabel.text = [delegate formatDistance:0.0f];
-	self.currentSpeedLabel.text = [delegate formatSpeed:0.0f];
-	self.averageSpeedLabel.text = [delegate formatSpeed:0.0f];
-	self.currentTimePerDistanceLabel.text = @"?";
-	self.elapsedTimeDescrLabel.text = NSLocalizedString(@"elapsed", nil);
-	self.totalDistanceDescrLabel.text = NSLocalizedString(@"total distance", nil);
-	self.currentSpeedDescrLabel.text = NSLocalizedString(@"cur speed", nil);
-
-	// Secondary page
-
-	self.secondaryScreenDescription.text = NSLocalizedString(@"Position & Course",nil);
-	self.secondaryScreenDescription.frame = pageDescriptionRect;
-	self.secondaryScreenDescription.transform = CGAffineTransformMakeRotation(-M_PI / 2.0f);
-	self.latitudeLabel.text = @"-";
-	self.longitudeLabel.text = @"-";
-	self.elevationLabel.text = @"-";
-	self.horAccuracyLabel.text = @"-";
-	self.verAccuracyLabel.text = @"-";
-	self.courseLabel.text = @"?";
-	self.latitudeDescrLabel.text = NSLocalizedString(@"latitude", nil);
-	self.longitudeDescrLabel.text = NSLocalizedString(@"longitude", nil);
-	self.elevationDescrLabel.text = NSLocalizedString(@"altitude", nil);
-	self.horAccuracyDescrLabel.text = NSLocalizedString(@"h. accuracy", nil);
-	self.verAccuracyDescrLabel.text = NSLocalizedString(@"v. accuracy", nil);
-	self.courseDescrLabel.text = NSLocalizedString(@"course", nil);
-
-	// Tertiary page
-
-	self.tertiaryScreenDescription.text = NSLocalizedString(@"Lap Times",nil);
-	self.tertiaryScreenDescription.frame = pageDescriptionRect;
-	self.tertiaryScreenDescription.transform = CGAffineTransformMakeRotation(-M_PI / 2.0f);
-
-	self.measurementsLabel.text = [NSString stringWithFormat:@"0 %@", NSLocalizedString(@"measurements",nil)];
-
-	NSTimer *displayUpdater = [NSTimer timerWithTimeInterval:DISPLAY_THREAD_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
-	[[NSRunLoop currentRunLoop] addTimer:displayUpdater forMode:NSDefaultRunLoopMode];
-
-	NSTimer *statusUpdater = [NSTimer timerWithTimeInterval:STATUS_THREAD_INTERVAL target:self selector:@selector(updateStatus:) userInfo:nil repeats:YES];
-	[[NSRunLoop currentRunLoop] addTimer:statusUpdater forMode:NSDefaultRunLoopMode];
-
-	[pager setCurrentPage:USERPREF_CURRENTPAGE];
-	[self switchPageWithoutAnimation];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -219,37 +174,132 @@
 
 - (void)updateStatus:(NSTimer*)timer
 {
-	static BOOL prevStateGood = NO;
+	[self updateSignalIndicator];
+	[self updateRacingIndicator];
+	[self updateLapTimes];
+}
 
-	// Update color of signal indicator, play sound on change
+- (void)updateDisplay:(NSTimer*)timer
+{
+	if ([[UIDevice currentDevice] proximityState])
+		// Don't update the display if it's turned off by the proximity sensor.
+		// Saves CPU cycles and battery time, I hope.
+		return;
 
-	if (!gpsManager.isGPSEnabled)
-		[self disabledIndicator:signalIndicator];
-	else {
-		if (gpsManager.isPrecisionAcceptable)
-			[self positiveIndicator:signalIndicator];
+	[self updateLocationLabels:gpsManager.location];
+	[self updateTimeAndDistanceLabels];
+	[self updateSpeedLabels];
+	[self updateMeasurementsLabel];
+	[self updateCourse];
+
+	if (!gpsManager.isPaused) {
+		if ([[gpsManager math] raceLocations] != nil)
+			[self updateRacingLabels];
 		else
-			[self negativeIndicator:signalIndicator];
-
-		if (USERPREF_SOUNDS && prevStateGood != gpsManager.isPrecisionAcceptable) {
-			if (gpsManager.isPrecisionAcceptable)
-				[goodSound play];
-			else
-				[badSound play];
-		}
-		prevStateGood = gpsManager.isPrecisionAcceptable;
+			[self updateSpeedAndDistanceLabels];
 	}
+}
 
-	LocationMath *tmath = [gpsManager math];
-	NSArray *tloc = [tmath raceLocations];
+/*
+ * Private methods
+ */
 
-	if (tloc != nil)
-		[self positiveIndicator:racingIndicator];
-	else
-		[self disabledIndicator:racingIndicator];
+- (void)initializePrimaryPageWithDescriptionRect:(CGRect)pageDescriptionRect
+{
+	self.primaryScreenDescription.text = NSLocalizedString(@"Speed & Distance",nil);
+	self.primaryScreenDescription.frame = pageDescriptionRect;
+	self.primaryScreenDescription.transform = CGAffineTransformMakeRotation(-M_PI / 2.0f);
+	self.elapsedTimeLabel.text = [delegate formatTimestamp:0.0f maxTime:86400.0f allowNegatives:NO];
+	self.totalDistanceLabel.text = [delegate formatDistance:0.0f];
+	self.currentSpeedLabel.text = [delegate formatSpeed:0.0f];
+	self.averageSpeedLabel.text = [delegate formatSpeed:0.0f];
+	self.currentTimePerDistanceLabel.text = @"?";
+	self.elapsedTimeDescrLabel.text = NSLocalizedString(@"elapsed", nil);
+	self.totalDistanceDescrLabel.text = NSLocalizedString(@"total distance", nil);
+	self.currentSpeedDescrLabel.text = NSLocalizedString(@"cur speed", nil);
+}
 
-	// Update lap times
+- (void)initializeSecondaryPageWithDescriptionRect:(CGRect)pageDescriptionRect
+{
+	self.secondaryScreenDescription.text = NSLocalizedString(@"Position & Course",nil);
+	self.secondaryScreenDescription.frame = pageDescriptionRect;
+	self.secondaryScreenDescription.transform = CGAffineTransformMakeRotation(-M_PI / 2.0f);
+	self.latitudeLabel.text = @"-";
+	self.longitudeLabel.text = @"-";
+	self.elevationLabel.text = @"-";
+	self.horAccuracyLabel.text = @"-";
+	self.verAccuracyLabel.text = @"-";
+	self.courseLabel.text = @"?";
+	self.latitudeDescrLabel.text = NSLocalizedString(@"latitude", nil);
+	self.longitudeDescrLabel.text = NSLocalizedString(@"longitude", nil);
+	self.elevationDescrLabel.text = NSLocalizedString(@"altitude", nil);
+	self.horAccuracyDescrLabel.text = NSLocalizedString(@"h. accuracy", nil);
+	self.verAccuracyDescrLabel.text = NSLocalizedString(@"v. accuracy", nil);
+	self.courseDescrLabel.text = NSLocalizedString(@"course", nil);
+}
 
+- (void)initializeTertiaryPageWithDescriptionRect:(CGRect)pageDescriptionRect
+{
+	self.tertiaryScreenDescription.text = NSLocalizedString(@"Lap Times",nil);
+	self.tertiaryScreenDescription.frame = pageDescriptionRect;
+	self.tertiaryScreenDescription.transform = CGAffineTransformMakeRotation(-M_PI / 2.0f);
+}
+
+- (void)loadSoundEffects
+{
+	badSound = [[SoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Basso" ofType:@"aiff"]];
+	goodSound = [[SoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Purr" ofType:@"aiff"]];
+	lapSound = [[SoundEffect alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Ping" ofType:@"aiff"]];
+}
+
+- (void)initializePages
+{
+	[containerView addSubview:primaryView];
+	[containerView addSubview:secondaryView];
+	[containerView addSubview:tertiaryView];
+	[self shiftViewsTo:0.0f];
+	int numPages = [containerView.subviews count];
+	[pager setNumberOfPages:numPages];
+
+	CGRect pageDescriptionRect = CGRectMake(-145.0f, 344.0f / 2.0f, 314.0f, 24.0f);
+	[self initializePrimaryPageWithDescriptionRect:pageDescriptionRect];
+	[self initializeSecondaryPageWithDescriptionRect:pageDescriptionRect];
+	[self initializeTertiaryPageWithDescriptionRect:pageDescriptionRect];
+
+	[pager setCurrentPage:USERPREF_CURRENTPAGE];
+	[self switchPageWithoutAnimation];
+}
+
+- (void)initializeIndicators
+{
+	[self indicateDisabledState:signalIndicator];
+	[self indicateDisabledState:recordingIndicator];
+	[self indicateDisabledState:racingIndicator];
+}
+
+- (void)initializeLocalizedElements
+{
+	self.measurementsLabel.text = [NSString stringWithFormat:@"0 %@", NSLocalizedString(@"measurements",nil)];
+
+	UIBarButtonItem *playPauseButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Pause",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(playPause:)] autorelease];
+	UIBarButtonItem *filesButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)] autorelease];
+	UIBarButtonItem *recordButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Record",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)] autorelease];
+	UIBarButtonItem *stopRaceButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race",nil) style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)] autorelease];
+	toolbarItems = [[NSArray arrayWithObjects:playPauseButton, filesButton, recordButton, stopRaceButton, nil] retain];
+	[toolbar setItems:toolbarItems animated:YES];
+}
+
+- (void)initializeTimers
+{
+	NSTimer *displayUpdater = [NSTimer timerWithTimeInterval:DISPLAY_THREAD_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
+	[[NSRunLoop currentRunLoop] addTimer:displayUpdater forMode:NSDefaultRunLoopMode];
+
+	NSTimer *statusUpdater = [NSTimer timerWithTimeInterval:STATUS_THREAD_INTERVAL target:self selector:@selector(updateStatus:) userInfo:nil repeats:YES];
+	[[NSRunLoop currentRunLoop] addTimer:statusUpdater forMode:NSDefaultRunLoopMode];
+}
+
+- (void)updateLapTimes
+{
 	NSArray *newLaptimes = [gpsManager queuedLapTimes];
 	if ([newLaptimes count] > 0) {
 		[lapSound play];
@@ -260,128 +310,137 @@
 	}
 }
 
-- (void)updateDisplay:(NSTimer*)timer
+- (void)updateRacingIndicator
 {
-	// Don't update the display if it's turned off by the proximity sensor.
-	// Saves CPU cycles and battery time, I hope.
+	LocationMath *tmath = [gpsManager math];
+	NSArray *tloc = [tmath raceLocations];
 
-	if ([[UIDevice currentDevice] proximityState])
+	if (tloc != nil)
+		[self indicatePositiveState:racingIndicator];
+	else
+		[self indicateDisabledState:racingIndicator];
+}
+
+- (void)updateSignalIndicator
+{
+	static BOOL prevStateGood = NO;
+
+	if (!gpsManager.isGPSEnabled)
+		[self indicateDisabledState:signalIndicator];
+	else {
+		if (gpsManager.isPrecisionAcceptable)
+			[self indicatePositiveState:signalIndicator];
+		else
+			[self indicateNegativeState:signalIndicator];
+
+		if (USERPREF_SOUNDS && prevStateGood != gpsManager.isPrecisionAcceptable) {
+			if (gpsManager.isPrecisionAcceptable)
+				[goodSound play];
+			else
+				[badSound play];
+		}
+		prevStateGood = gpsManager.isPrecisionAcceptable;
+	}
+}
+
+- (void)updateLocationLabels:(CLLocation*)current
+{
+	if (!current)
 		return;
 
-	CLLocation *current = gpsManager.location;
-	[current retain];
+	self.latitudeLabel.text = [delegate formatLat:current.coordinate.latitude];
+	self.longitudeLabel.text = [delegate formatLon:current.coordinate.longitude];
+	self.elevationLabel.text = [delegate formatShortDistance:current.altitude];
 
-	// Position and accuracy
+	if (current.horizontalAccuracy >= 0)
+		self.horAccuracyLabel.text = [delegate formatShortDistance:current.horizontalAccuracy];
+	else
+		self.horAccuracyLabel.text = @"±inf";
 
-	if (current) {
-		//self.positionLabel.text = [NSString stringWithFormat:@"%@\n%@\nelev %.0f m", [delegate formatLat: current.coordinate.latitude], [delegate formatLon: current.coordinate.longitude], current.altitude];
-		self.latitudeLabel.text = [delegate formatLat:current.coordinate.latitude];
-		self.longitudeLabel.text = [delegate formatLon:current.coordinate.longitude];
-		self.elevationLabel.text = [delegate formatShortDistance:current.altitude];
-		//self.positionLabel.textColor = [UIColor whiteColor];
-		if (current.horizontalAccuracy >= 0)
-			self.horAccuracyLabel.text = [delegate formatShortDistance:current.horizontalAccuracy];
-		else
-			self.horAccuracyLabel.text = @"±inf";
+	if (current.verticalAccuracy >= 0)
+		self.verAccuracyLabel.text = [delegate formatShortDistance:current.verticalAccuracy];
+	else
+		self.verAccuracyLabel.text = @"±inf";
+}
 
-		if (current.verticalAccuracy >= 0)
-			self.verAccuracyLabel.text = [delegate formatShortDistance:current.verticalAccuracy];
-		else
-			self.verAccuracyLabel.text = @"±inf";
-	}
+- (void)updateMeasurementsLabel
+{
+	if (gpsManager.isRecording)
+		self.measurementsLabel.text = [NSString stringWithFormat:@"%d %@", [gpsManager numSavedMeasurements], NSLocalizedString(@"measurements", nil)];
+}
 
-	// Timer
+- (void)updateSpeedAndDistanceLabels
+{
+	self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF / 255.0f green:0x80 / 255.0f blue:0x00 / 255.0f alpha:1.0f];
+	self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66 / 255.0f green:0xFF / 255.0f blue:0x66 / 255.0f alpha:1.0f];
 
-	self.elapsedTimeLabel.text =  [delegate formatTimestamp:[[gpsManager math] estimatedElapsedTime] maxTime:86400 allowNegatives:NO];
+	self.averageSpeedLabel.text = [delegate formatSpeed:[[gpsManager math] averageSpeed]];
+	self.averageSpeedDescrLabel.text = NSLocalizedString(@"avg speed", nil);
 
-	// Total distance
+	float secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / [[gpsManager math] currentSpeed];
+	self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:secsPerEstDist maxTime:86400 allowNegatives:NO];
+	NSString *distStr = [delegate formatDistance:USERPREF_ESTIMATE_DISTANCE * 1000.0];
+	self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
+}
 
-	self.totalDistanceLabel.text = [delegate formatDistance:[[gpsManager math] totalDistance]];
+- (void)updateRacingLabels
+{
+	// TODO: Needs refactoring to clear up what's going on
 
-	// Current speed
+	float distDiff = [[gpsManager math] distDifferenceInRace];
+	if (!isnan(distDiff)) {
+		NSString *distString = [delegate formatDistance:distDiff];
+		self.averageSpeedLabel.text = [distDiff < 0.0 ? @"":@"+" stringByAppendingString:distString];
+	} else
+		self.averageSpeedLabel.text = @"?";
+	self.averageSpeedDescrLabel.text = NSLocalizedString(@"dist diff", nil);
+	if (distDiff < 0.0)
+		self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF / 255.0 green:0x40 / 255.0 blue:0x40 / 255.0 alpha:1.0];
+	else
+		self.averageSpeedLabel.textColor = [UIColor colorWithRed:0x40 / 255.0 green:0xFF / 255.0 blue:0x40 / 255.0 alpha:1.0];
 
+	float timeDiff = [[gpsManager math] timeDifferenceInRace];
+	self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:timeDiff maxTime:86400 allowNegatives:YES];
+	self.currentTimePerDistanceDescrLabel.text = NSLocalizedString(@"time diff", nil);
+	if (timeDiff > 0.0)
+		self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF / 255.0 green:0x40 / 255.0 blue:0x40 / 255.0 alpha:1.0];
+	else
+		self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x40 / 255.0 green:0xFF / 255.0 blue:0x40 / 255.0 alpha:1.0];
+}
+
+- (void)updateSpeedLabels
+{
 	if ([[gpsManager math] currentSpeed] >= 0.0)
 		self.currentSpeedLabel.text = [delegate formatSpeed:[[gpsManager math] currentSpeed]];
 	else
 		self.currentSpeedLabel.text = @"?";
-
-	//if (currentDataSource == kGlintDataSourceMovement)
-	//        self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xCC/255.0 green:0xFF/255.0 blue:0x66/255.0 alpha:1.0];
-	//else if (currentDataSource == kGlintDataSourceTimer)
-	//        self.currentSpeedLabel.textColor = [UIColor colorWithRed:0xA0/255.0 green:0xB5/255.0 blue:0x66/255.0 alpha:1.0];
-
-	if (!gpsManager.isPaused) {
-		if (![[gpsManager math] raceLocations]) {
-			self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF / 255.0f green:0x80 / 255.0f blue:0x00 / 255.0f alpha:1.0f];
-			self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x66 / 255.0f green:0xFF / 255.0f blue:0x66 / 255.0f alpha:1.0f];
-
-			// Average speed and time per configured distance
-
-			self.averageSpeedLabel.text = [delegate formatSpeed:[[gpsManager math] averageSpeed]];
-			self.averageSpeedDescrLabel.text = NSLocalizedString(@"avg speed", nil);
-
-			float secsPerEstDist = USERPREF_ESTIMATE_DISTANCE * 1000.0 / [[gpsManager math] currentSpeed];
-			self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:secsPerEstDist maxTime:86400 allowNegatives:NO];
-			NSString *distStr = [delegate formatDistance:USERPREF_ESTIMATE_DISTANCE * 1000.0];
-			self.currentTimePerDistanceDescrLabel.text = [NSString stringWithFormat:@"%@ %@",NSLocalizedString(@"per", @"... per (distance)"), distStr];
-		} else {
-			// Difference in time and distance against raceAgainstLocations.
-
-			float distDiff = [[gpsManager math] distDifferenceInRace];
-			if (!isnan(distDiff)) {
-				NSString *distString = [delegate formatDistance:distDiff];
-				self.averageSpeedLabel.text = [distDiff < 0.0 ? @"":@"+" stringByAppendingString:distString];
-			} else
-				self.averageSpeedLabel.text = @"?";
-			self.averageSpeedDescrLabel.text = NSLocalizedString(@"dist diff", nil);
-			if (distDiff < 0.0)
-				self.averageSpeedLabel.textColor = [UIColor colorWithRed:0xFF / 255.0 green:0x40 / 255.0 blue:0x40 / 255.0 alpha:1.0];
-			else
-				self.averageSpeedLabel.textColor = [UIColor colorWithRed:0x40 / 255.0 green:0xFF / 255.0 blue:0x40 / 255.0 alpha:1.0];
-
-			float timeDiff = [[gpsManager math] timeDifferenceInRace];
-			self.currentTimePerDistanceLabel.text = [delegate formatTimestamp:timeDiff maxTime:86400 allowNegatives:YES];
-			self.currentTimePerDistanceDescrLabel.text = NSLocalizedString(@"time diff", nil);
-			if (timeDiff > 0.0)
-				self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0xFF / 255.0 green:0x40 / 255.0 blue:0x40 / 255.0 alpha:1.0];
-			else
-				self.currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0x40 / 255.0 green:0xFF / 255.0 blue:0x40 / 255.0 alpha:1.0];
-		}
-	}
-
-	// Number of saved measurements
-
-	if (gpsManager.isRecording)
-		self.measurementsLabel.text = [NSString stringWithFormat:@"%d %@", [gpsManager numSavedMeasurements], NSLocalizedString(@"measurements", nil)];
-
-	// Current course
-
-	self.compass.course = [[gpsManager math] currentCourse];
-	self.courseLabel.text = [NSString stringWithFormat:@"%.0f°", [[gpsManager math] currentCourse]];
-
-	[current release];
 }
 
-/*
- * Private methods
- */
+- (void)updateTimeAndDistanceLabels
+{
+	self.elapsedTimeLabel.text =  [delegate formatTimestamp:[[gpsManager math] estimatedElapsedTime] maxTime:86400 allowNegatives:NO];
+	self.totalDistanceLabel.text = [delegate formatDistance:[[gpsManager math] totalDistance]];
+}
 
-// Color the specified UILabel green
-- (void)positiveIndicator:(UILabel*)indicator
+- (void)updateCourse
+{
+	self.compass.course = [[gpsManager math] currentCourse];
+	self.courseLabel.text = [NSString stringWithFormat:@"%.0f°", [[gpsManager math] currentCourse]];
+}
+
+- (void)indicatePositiveState:(UILabel*)indicator
 {
 	indicator.backgroundColor = [UIColor colorWithRed:0.4 green:1.0 blue:0.4 alpha:1.0];
 	indicator.textColor = [UIColor colorWithRed:0.0 green:0.5 blue:0.0 alpha:1.0];
 }
 
-// Color the specified UILabel red
-- (void)negativeIndicator:(UILabel*)indicator
+- (void)indicateNegativeState:(UILabel*)indicator
 {
 	indicator.backgroundColor = [UIColor colorWithRed:1.0 green:0.4 blue:0.4 alpha:1.0];
 	indicator.textColor = [UIColor colorWithRed:0.5 green:0.0 blue:0.0 alpha:1.0];
 }
 
-// Color the specified UILabel gray
-- (void)disabledIndicator:(UILabel*)indicator
+- (void)indicateDisabledState:(UILabel*)indicator
 {
 	indicator.backgroundColor = [UIColor colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
 	indicator.textColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1.0];
@@ -539,7 +598,7 @@
 	if (![gpsManager isRecording]) {
 		NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
 		[formatter setDateFormat:@"yyyyMMdd-HHmmss"];
-		[self positiveIndicator:recordingIndicator];
+		[self indicatePositiveState:recordingIndicator];
 		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 		NSString *documentsDirectory = [paths objectAtIndex:0];
 		NSString *filename = [NSString stringWithFormat:@"%@/track-%@.gpx", documentsDirectory, [formatter stringFromDate:[NSDate date]]];
@@ -547,7 +606,7 @@
 		[gpsManager startRecordingOnFile:filename];
 	} else {
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"recording_filename"];
-		[self disabledIndicator:recordingIndicator];
+		[self indicateDisabledState:recordingIndicator];
 		[gpsManager stopRecording];
 	}
 	[self lock:sender];
@@ -556,7 +615,7 @@
 - (void)resumeRecordingOnFile:(NSString*)filename
 {
 	[gpsManager resumeRecordingOnFile:filename];
-	[self performSelectorOnMainThread:@selector(positiveIndicator:) withObject:recordingIndicator waitUntilDone:NO];
+	[self performSelectorOnMainThread:@selector(indicatePositiveState:) withObject:recordingIndicator waitUntilDone:NO];
 }
 
 - (void)endRace:(id)sender
