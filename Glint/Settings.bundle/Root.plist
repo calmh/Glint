@@ -23,19 +23,19 @@
 			<string>200</string>
 			<key>Titles</key>
 			<array>
-				<string>25 m</string>
 				<string>50 m</string>
 				<string>100 m</string>
 				<string>200 m</string>
+				<string>500 m</string>
 				<string>1000 m</string>
 				<string>Any</string>
 			</array>
 			<key>Values</key>
 			<array>
-				<string>25</string>
 				<string>50</string>
 				<string>100</string>
 				<string>200</string>
+				<string>500</string>
 				<string>1000</string>
 				<string>10000</string>
 			</array>
@@ -155,26 +155,6 @@
 				<string>16.09344</string>
 				<string>160.9344</string>
 			</array>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Proximity Sensor</string>
-			<key>Key</key>
-			<string>enable_proximity</string>
-			<key>DefaultValue</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Disable Idle Timer</string>
-			<key>Key</key>
-			<string>disable_idle</string>
-			<key>DefaultValue</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>Type</key>

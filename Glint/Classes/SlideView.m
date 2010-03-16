@@ -6,10 +6,8 @@
 //  Copyright 2009 Jakob Borg. All rights reserved.
 //
 
+#import "CMGlyphDrawing.h"
 #import "SlideView.h"
-
-// Missing in standard headers.
-extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph[], size_t);
 
 @implementation SlideMarkerView
 
@@ -47,7 +45,7 @@ extern void CGFontGetGlyphsForUnichars(CGFontRef, const UniChar[], const CGGlyph
 	CGContextSetFont(ctx, font);
 	CGContextSetFontSize(ctx, 40.0f);
 	CGContextSetGrayFillColor(ctx, 1.0f, 1.0f);
-	CGFontGetGlyphsForUnichars(font, chars, glyphs, length);
+	CMFontGetGlyphsForUnichars(font, chars, glyphs, length);
 	CGContextShowGlyphsAtPoint(ctx, rect.size.width / 2.0f - 19.0f, rect.size.height / 2.0f + 14.0f, glyphs, length);
 }
 

@@ -42,6 +42,9 @@
 "per" = "tid per";
 "dist diff" = "distansskillnad";
 "time diff" = "tidsskillnad";
+"GPS Signal Required" = "GPS-signal krävs";
+"Glint needs a GPS signal. For best results, please make sure that you are outdoors and have a clear view of the sky." = "Glint kräver en GPS-signal. För bästa resultat, se till att du är utomhus under bar himmel.";
+"I understand" = "Jag förstår";
 
 // Secondary page
 "latitude" = "latitud";
