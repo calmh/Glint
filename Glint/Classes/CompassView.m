@@ -44,7 +44,7 @@
 
 	animationTimer = nil;
 	course = 0.0;
-	markers = [NSDictionary                    dictionaryWithObjectsAndKeys:
+	markers = [NSDictionary dictionaryWithObjectsAndKeys:
 	           NSLocalizedString(@"N", @"N"), [NSNumber     numberWithFloat:0.0],
 	           NSLocalizedString(@"NNE", @"NNE"), [NSNumber numberWithFloat:22.5],
 	           NSLocalizedString(@"NE", @"NE"), [NSNumber   numberWithFloat:2 * 22.5],
