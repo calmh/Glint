@@ -41,6 +41,7 @@
 - (void)updateSpeedLabels;
 - (void)updateTimeAndDistanceLabels;
 - (void)updateCourse;
+- (void)displayGPSInstructions;
 @end
 
 @implementation MainScreenViewController
@@ -101,6 +102,8 @@
 #ifdef DEBUG
 	self.measurementsLabel.textColor = [UIColor colorWithRed:1.0 green:0.3 blue:0.3 alpha:1.0];
 #endif
+
+	[self displayGPSInstructions];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -623,6 +626,16 @@
 	[[gpsManager math] setRaceLocations:nil];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"raceAgainstFile"];
 	[self lock:sender];
+}
+
+- (void)displayGPSInstructions
+{
+	bool instructions_shown = [[NSUserDefaults standardUserDefaults] boolForKey:@"have_shown_gps_instructions"];
+	if (!instructions_shown) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"GPS Signal Required",nil) message:NSLocalizedString(@"Glint needs a GPS signal. For best results, please make sure that you are outdoors and have a clear view of the sky.",nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"I understand",nil) otherButtonTitles:nil];
+		[alert show];
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"have_shown_gps_instructions"];
+	}
 }
 
 @end
