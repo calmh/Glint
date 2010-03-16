@@ -8,8 +8,23 @@
 
 #import "LapTimeViewController.h"
 
+@interface LapTimeViewController (Private)
+- (UITableViewCell*)getInstructionsCell;
+- (UITableViewCell*)getInformationCellWithIdentifier:(NSString*)CellIdentifier inTableView:(UITableView*)tableView withPadding:(float)padding;
+- (void)setInformationCellValues:(NSIndexPath*)indexPath cell:(UITableViewCell*)cell;
+- (void)setInformationCellAbsoluteValues:(UITableViewCell*)cell distance:(float)distance lapTime:(float)lapTime;
+- (void)setInformationCellDeltaValues:(UITableViewCell*)cell lapTime:(float)lapTime difference:(float)difference indexPath:(NSIndexPath*)indexPath;
+@end
+
 
 @implementation LapTimeViewController
+
+- (void)dealloc
+{
+	[times release];
+	[distances release];
+	[super dealloc];
+}
 
 - (void)addLapTime:(float)seconds forDistance:(float)distance
 {
@@ -30,11 +45,9 @@
 	[(UITableView*)self.view reloadData];
 }
 
-- (void)dealloc
+- (int)numberOfLapTimes
 {
-	[times release];
-	[distances release];
-	[super dealloc];
+	return [times count];
 }
 
 - (void)viewDidLoad
@@ -53,7 +66,6 @@
 	return 1;
 }
 
-// Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if ([times count] > 0)
@@ -62,7 +74,6 @@
 		return 1;
 }
 
-// Customize the appearance of table view cells.
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
 	const float maxWidth = 270.f;
@@ -72,70 +83,11 @@
 
 	if ([times count] > 0) {
 		static NSString *CellIdentifier = @"Cell";
-		UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (cell == nil) {
-			// The usual data cell.
-
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-			[cell.textLabel removeFromSuperview];
-			[cell.detailTextLabel removeFromSuperview];
-			[cell.imageView removeFromSuperview];
-
-			GradientLabel *newLabel;
-			newLabel = [[[GradientLabel alloc] initWithFrame:CGRectMake(padding + 0.0f, 5.0f, 80.0f, FONTSIZE)] autorelease];
-			newLabel.font = [UIFont fontWithName:@"Helvetica" size:FONTSIZE];
-			newLabel.backgroundColor = [UIColor blackColor];
-			newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
-			newLabel.textAlignment = UITextAlignmentRight;
-			[cell.contentView addSubview:newLabel];
-
-			newLabel = [[[GradientLabel alloc] initWithFrame:CGRectMake(padding + 90.0f, 5.0f, 85.0f, FONTSIZE)] autorelease];
-			newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:FONTSIZE];
-			newLabel.backgroundColor = [UIColor blackColor];
-			newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
-			newLabel.textAlignment = UITextAlignmentRight;
-			[cell.contentView addSubview:newLabel];
-
-			newLabel = [[[GradientLabel alloc] initWithFrame:CGRectMake(padding + 185.0f, 5.0f, 85.0f, FONTSIZE)] autorelease];
-			newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:FONTSIZE];
-			newLabel.backgroundColor = [UIColor blackColor];
-			newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
-			newLabel.textAlignment = UITextAlignmentRight;
-			[cell.contentView addSubview:newLabel];
-		}
-
-		float lapTime = [[times objectAtIndex:indexPath.row] floatValue];
-		float distance = [[distances objectAtIndex:indexPath.row] floatValue];
-		float difference = 0.0f;
-		if (indexPath.row > 0)
-			difference = lapTime - [[times objectAtIndex:indexPath.row - 1] floatValue];
-		((GradientLabel*) [cell.contentView.subviews objectAtIndex:0]).text = [delegate formatDistance:distance];
-		((GradientLabel*) [cell.contentView.subviews objectAtIndex:1]).text = [delegate formatTimestamp:lapTime maxTime:86400 allowNegatives:NO];
-		if (indexPath.row > 0) {
-			NSString *plusOrMinus = [delegate formatTimestamp:difference maxTime:86400 allowNegatives:YES];
-			debug_NSLog(@"Lap time delta: %@", plusOrMinus);
-			((GradientLabel*) [cell.contentView.subviews objectAtIndex:2]).text = plusOrMinus;
-			if (difference > lapTime * 0.05) // Highlight differences of at least 10%, positive and negative
-				((GradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:1.0f green:0.5f blue:0.5f alpha:1.0f];
-			else if (difference < lapTime * -0.05)
-				((GradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:0.5f green:1.0f blue:0.5f alpha:1.0f];
-			else
-				((GradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
-		}
-
+		UITableViewCell *cell = [self getInformationCellWithIdentifier:CellIdentifier inTableView:tableView withPadding:padding];
+		[self setInformationCellValues:indexPath cell:cell];
 		return cell;
-	} else {
-		// Instructions cell.
-
-		UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"InstructionsCell"] autorelease];
-		cell.textLabel.text = NSLocalizedString(@"NoLapTimesInstructions",nil);
-		cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
-		cell.textLabel.textAlignment = UITextAlignmentCenter;
-		cell.textLabel.numberOfLines = 0;
-		cell.textLabel.textColor = [UIColor lightTextColor];
-		return cell;
-	}
+	} else
+		return [self getInstructionsCell];
 }
 
 - (CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
@@ -146,9 +98,87 @@
 		return FONTSIZE + 3.0f;
 }
 
-- (int)numberOfLapTimes
+/*
+ * Private methods
+ */
+
+- (UITableViewCell*)getInstructionsCell
 {
-	return [times count];
+	UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"InstructionsCell"] autorelease];
+	cell.textLabel.text = NSLocalizedString(@"NoLapTimesInstructions",nil);
+	cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+	cell.textLabel.textAlignment = UITextAlignmentCenter;
+	cell.textLabel.numberOfLines = 0;
+	cell.textLabel.textColor = [UIColor lightTextColor];
+	return cell;
+}
+
+- (UITableViewCell*)getInformationCellWithIdentifier:(NSString*)CellIdentifier inTableView:(UITableView*)tableView withPadding:(float)padding
+{
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil) {
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		[cell.textLabel removeFromSuperview];
+		[cell.detailTextLabel removeFromSuperview];
+		[cell.imageView removeFromSuperview];
+
+		GradientLabel *newLabel;
+		newLabel = [[[GradientLabel alloc] initWithFrame:CGRectMake(padding + 0.0f, 5.0f, 80.0f, FONTSIZE)] autorelease];
+		newLabel.font = [UIFont fontWithName:@"Helvetica" size:FONTSIZE];
+		newLabel.backgroundColor = [UIColor blackColor];
+		newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
+		newLabel.textAlignment = UITextAlignmentRight;
+		[cell.contentView addSubview:newLabel];
+
+		newLabel = [[[GradientLabel alloc] initWithFrame:CGRectMake(padding + 90.0f, 5.0f, 85.0f, FONTSIZE)] autorelease];
+		newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:FONTSIZE];
+		newLabel.backgroundColor = [UIColor blackColor];
+		newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
+		newLabel.textAlignment = UITextAlignmentRight;
+		[cell.contentView addSubview:newLabel];
+
+		newLabel = [[[GradientLabel alloc] initWithFrame:CGRectMake(padding + 185.0f, 5.0f, 85.0f, FONTSIZE)] autorelease];
+		newLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:FONTSIZE];
+		newLabel.backgroundColor = [UIColor blackColor];
+		newLabel.textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
+		newLabel.textAlignment = UITextAlignmentRight;
+		[cell.contentView addSubview:newLabel];
+	}
+	return cell;
+}
+
+- (void)setInformationCellValues:(NSIndexPath*)indexPath cell:(UITableViewCell*)cell
+{
+	float lapTime = [[times objectAtIndex:indexPath.row] floatValue];
+	float distance = [[distances objectAtIndex:indexPath.row] floatValue];
+	float difference = 0.0f;
+	if (indexPath.row > 0)
+		difference = lapTime - [[times objectAtIndex:indexPath.row - 1] floatValue];
+
+	[self setInformationCellAbsoluteValues:cell distance:distance lapTime:lapTime];
+	[self setInformationCellDeltaValues:cell lapTime:lapTime difference:difference indexPath:indexPath];
+}
+
+- (void)setInformationCellAbsoluteValues:(UITableViewCell*)cell distance:(float)distance lapTime:(float)lapTime
+{
+	((GradientLabel*) [cell.contentView.subviews objectAtIndex:0]).text = [delegate formatDistance:distance];
+	((GradientLabel*) [cell.contentView.subviews objectAtIndex:1]).text = [delegate formatTimestamp:lapTime maxTime:86400 allowNegatives:NO];
+}
+
+- (void)setInformationCellDeltaValues:(UITableViewCell*)cell lapTime:(float)lapTime difference:(float)difference indexPath:(NSIndexPath*)indexPath
+{
+	if (indexPath.row > 0) {
+		NSString *plusOrMinus = [delegate formatTimestamp:difference maxTime:86400 allowNegatives:YES];
+		debug_NSLog(@"Lap time delta: %@", plusOrMinus);
+		((GradientLabel*) [cell.contentView.subviews objectAtIndex:2]).text = plusOrMinus;
+		if (difference > lapTime * 0.05) // Highlight differences of at least 10%, positive and negative
+			((GradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:1.0f green:0.5f blue:0.5f alpha:1.0f];
+		else if (difference < lapTime * -0.05)
+			((GradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:0.5f green:1.0f blue:0.5f alpha:1.0f];
+		else
+			((GradientLabel*) [cell.contentView.subviews objectAtIndex:2]).textColor = [UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:1.0f];
+	}
 }
 
 @end

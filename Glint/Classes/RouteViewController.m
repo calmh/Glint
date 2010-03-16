@@ -8,6 +8,11 @@
 
 #import "RouteViewController.h"
 
+@interface RouteViewController (Private)
+- (void)verifyNetworkConnectivity;
+@end
+
+
 @implementation RouteViewController
 
 @synthesize locations;
@@ -17,15 +22,6 @@
 	[locations release];
 	[super dealloc];
 }
-
-/*
-   - (void)setLocations:(NSArray *)newLocations {
-        if (locations != newLocations) {
-                [locations release];
-                locations = [newLocations retain];
-        }
-   }
- */
 
 - (void)viewDidLoad
 {
@@ -51,6 +47,15 @@
 	[super viewDidAppear:animated];
 	routeLayer = [[CSMapRouteLayerView alloc] initWithRoute:locations mapView:(MKMapView*)self.view];
 
+	[self verifyNetworkConnectivity];
+}
+
+/*
+ * Private methods
+ */
+
+- (void)verifyNetworkConnectivity
+{
 	GlintAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
 	NetworkStatus netStatus = [[delegate reachManager] currentReachabilityStatus];
 	if (netStatus == NotReachable) {
