@@ -16,7 +16,7 @@ typedef enum {
 	Elevation
 } CurrentlyReadingEnum;
 
-@interface GPXReader : NSObject {
+@interface GPXReader : NSObject<NSXMLParserDelegate> {
 	LocationMath *locationMath;
 
 	NSDate *lastReadDate;

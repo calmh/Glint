@@ -15,11 +15,11 @@ NSInteger sortByDate(NSString *a, NSString *b, void *context)
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 
 	NSString *fullFilename = [NSString stringWithFormat:@"%@/%@", documentsDirectory, a];
-	NSDictionary *attrs = [[NSFileManager defaultManager] fileAttributesAtPath:fullFilename traverseLink:NO];
+	NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:fullFilename error:nil];
 	NSDate *createdA = [attrs objectForKey:NSFileModificationDate];
 
 	fullFilename = [NSString stringWithFormat:@"%@/%@", documentsDirectory, b];
-	attrs = [[NSFileManager defaultManager] fileAttributesAtPath:fullFilename traverseLink:NO];
+	attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:fullFilename error:nil];
 	NSDate *createdB = [attrs objectForKey:NSFileModificationDate];
 
 	return [createdA compare:createdB];
@@ -176,7 +176,7 @@ NSInteger sortByDate(NSString *a, NSString *b, void *context)
 - (NSString*)sectionDescriptionForFile:(NSString*)fileName
 {
 	NSString *fullFileName = [NSString stringWithFormat:@"%@/%@", documentsDirectory, fileName];
-	NSDictionary *attrs = [[NSFileManager defaultManager] fileAttributesAtPath:fullFileName traverseLink:NO];
+	NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:fullFileName error:nil];
 	NSDate *created = [attrs objectForKey:NSFileModificationDate];
 
 	NSDateComponents *comps = [[NSCalendar currentCalendar] components:NSYearCalendarUnit | NSMonthCalendarUnit | NSWeekCalendarUnit | NSDayCalendarUnit fromDate:created /* toDate:compare options:0*/];
