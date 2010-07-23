@@ -7,6 +7,7 @@
 //
 
 #import "GlintUnitTests.h"
+#import <unistd.h>
 
 @interface GlintUnitTests ()
 

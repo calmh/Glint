@@ -48,16 +48,17 @@
 		isPrecisionAcceptable = NO;
 		isPaused = NO;
 		passedLapTimes = [[NSMutableArray alloc] init];
-	}
-	[self enableGPS];
-	NSTimer *averagedMeasurementTaker = [NSTimer timerWithTimeInterval:MEASUREMENT_THREAD_INTERVAL target:self selector:@selector(takeAveragedMeasurement:) userInfo:nil repeats:YES];
-	[[NSRunLoop currentRunLoop] addTimer:averagedMeasurementTaker forMode:NSDefaultRunLoopMode];
+
+		[self enableGPS];
+
+		NSTimer *averagedMeasurementTaker = [NSTimer timerWithTimeInterval:MEASUREMENT_THREAD_INTERVAL target:self selector:@selector(takeAveragedMeasurement:) userInfo:nil repeats:YES];
+		[[NSRunLoop currentRunLoop] addTimer:averagedMeasurementTaker forMode:NSDefaultRunLoopMode];
 
 #ifdef FAKE_MOVEMENT
-	NSTimer *faker = [NSTimer timerWithTimeInterval:4.0f target:self selector:@selector(fakeMovement:) userInfo:nil repeats:YES];
-	[[NSRunLoop currentRunLoop] addTimer:faker forMode:NSDefaultRunLoopMode];
+		NSTimer *faker = [NSTimer timerWithTimeInterval:4.0f target:self selector:@selector(fakeMovement:) userInfo:nil repeats:YES];
+		[[NSRunLoop currentRunLoop] addTimer:faker forMode:NSDefaultRunLoopMode];
 #endif
-
+	}
 	return self;
 }
 
