@@ -7,16 +7,17 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		29F1026510A97E7B0055EA4F /* Uncrustify */ = {
+		29F651131216BE190090AE65 /* Glint and Tests */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 29F1026A10A97E9A0055EA4F /* Build configuration list for PBXAggregateTarget "Uncrustify" */;
+			buildConfigurationList = 29F651201216BE340090AE65 /* Build configuration list for PBXAggregateTarget "Glint and Tests" */;
 			buildPhases = (
-				29F1026410A97E7B0055EA4F /* ShellScript */,
 			);
 			dependencies = (
+				29F651181216BE210090AE65 /* PBXTargetDependency */,
+				29F6511A1216BE260090AE65 /* PBXTargetDependency */,
 			);
-			name = Uncrustify;
-			productName = Uncrustify;
+			name = "Glint and Tests";
+			productName = "Glint and Tests";
 		};
 /* End PBXAggregateTarget section */
 
@@ -90,12 +91,19 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
-		2933F300109DBC3C00F8F56D /* PBXContainerItemProxy */ = {
+		29F651171216BE210090AE65 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 291C0DB5101E22F600393E77;
-			remoteInfo = Tests;
+			remoteGlobalIDString = 291C0DB5101E22F600393E77 /* Unit Tests */;
+			remoteInfo = "Unit Tests";
+		};
+		29F651191216BE260090AE65 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1D6058900D05DD3D006BFB54 /* Glint */;
+			remoteInfo = Glint;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -385,7 +393,6 @@
 				2933F31C109DBF6E00F8F56D /* PBXBuildRule */,
 			);
 			dependencies = (
-				2933F301109DBC3C00F8F56D /* PBXTargetDependency */,
 			);
 			name = Glint;
 			productName = Glint;
@@ -433,7 +440,7 @@
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Glint */,
 				291C0DB5101E22F600393E77 /* Unit Tests */,
-				29F1026510A97E7B0055EA4F /* Uncrustify */,
+				29F651131216BE190090AE65 /* Glint and Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -487,19 +494,6 @@
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 			showEnvVarsInLog = 0;
 		};
-		29F1026410A97E7B0055EA4F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export PATH=~/bin:$PATH\nuncrustify -l oc -c Resources/uncrustify.cfg --replace --no-backup Classes/* SharedCode/* Tests/* main.m\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -545,10 +539,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		2933F301109DBC3C00F8F56D /* PBXTargetDependency */ = {
+		29F651181216BE210090AE65 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 291C0DB5101E22F600393E77 /* Unit Tests */;
-			targetProxy = 2933F300109DBC3C00F8F56D /* PBXContainerItemProxy */;
+			targetProxy = 29F651171216BE210090AE65 /* PBXContainerItemProxy */;
+		};
+		29F6511A1216BE260090AE65 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1D6058900D05DD3D006BFB54 /* Glint */;
+			targetProxy = 29F651191216BE260090AE65 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -679,31 +678,31 @@
 			};
 			name = Distribution;
 		};
-		29F1026610A97E7C0055EA4F /* Debug */ = {
+		29F651141216BE190090AE65 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				PRODUCT_NAME = Uncrustify;
+				PRODUCT_NAME = "Glint and Tests";
 			};
 			name = Debug;
 		};
-		29F1026710A97E7C0055EA4F /* Release */ = {
+		29F651151216BE190090AE65 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				PRODUCT_NAME = Uncrustify;
+				PRODUCT_NAME = "Glint and Tests";
 				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
-		29F1026810A97E7C0055EA4F /* Distribution */ = {
+		29F651161216BE190090AE65 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = Uncrustify;
+				PRODUCT_NAME = "Glint and Tests";
 			};
 			name = Distribution;
 		};
@@ -805,12 +804,12 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		29F1026A10A97E9A0055EA4F /* Build configuration list for PBXAggregateTarget "Uncrustify" */ = {
+		29F651201216BE340090AE65 /* Build configuration list for PBXAggregateTarget "Glint and Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				29F1026610A97E7C0055EA4F /* Debug */,
-				29F1026710A97E7C0055EA4F /* Release */,
-				29F1026810A97E7C0055EA4F /* Distribution */,
+				29F651141216BE190090AE65 /* Debug */,
+				29F651151216BE190090AE65 /* Release */,
+				29F651161216BE190090AE65 /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
