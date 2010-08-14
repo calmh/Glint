@@ -41,6 +41,9 @@
 // Which unit set to use. See unitsets.plist.
 #define USERPREF_UNITSET [[NSUserDefaults standardUserDefaults] integerForKey:@"units"]
 
+// Whether to turn on the proximity sensor or not.
+#define USERPREF_ENABLE_PROXIMITY [[NSUserDefaults standardUserDefaults] boolForKey:@"enable_proximity"]
+
 // Estimate time over what distance (in km), for the main screen.
 #define USERPREF_ESTIMATE_DISTANCE [[NSUserDefaults standardUserDefaults] doubleForKey:@"estimate_distance"]
 

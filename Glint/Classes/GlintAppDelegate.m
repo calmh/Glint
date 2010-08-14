@@ -212,14 +212,18 @@
 
 - (void)enableProximitySensor
 {
-        [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-        debug_NSLog(@"Enabling proximity sensor");
+        if (USERPREF_ENABLE_PROXIMITY) {
+                [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+                debug_NSLog(@"Enabling proximity sensor");
+        }
 }
 
 - (void)disableProximitySensor
 {
-        [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-        debug_NSLog(@"Disabling proximity sensor");
+        if (USERPREF_ENABLE_PROXIMITY) {
+                [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+                debug_NSLog(@"Disabling proximity sensor");
+        }
 }
 
 // Private
