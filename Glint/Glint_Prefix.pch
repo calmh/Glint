@@ -22,6 +22,9 @@
 // How often to check if it's time to record a new trackpoint (in seconds)
 #define MEASUREMENT_THREAD_INTERVAL 5.0
 
+// How long to wait before locking buttons with slider
+#define SLIDER_DELAY_INTERVAL 10.0
+
 // Radius of the compass rose (in pixels)
 #define COMPASS_RADIUS 250.0
 

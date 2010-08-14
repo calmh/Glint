@@ -561,7 +561,7 @@
 			[lockTimer invalidate];
 			[lockTimer release];
 		}
-		lockTimer = [NSTimer timerWithTimeInterval:5.0 target:self selector:@selector(lock:) userInfo:nil repeats:NO];
+		lockTimer = [NSTimer timerWithTimeInterval:SLIDER_DELAY_INTERVAL target:self selector:@selector(lock:) userInfo:nil repeats:NO];
 		[lockTimer retain];
 		[[NSRunLoop currentRunLoop] addTimer:lockTimer forMode:NSDefaultRunLoopMode];
 		debug_NSLog(@"unlock: done");
