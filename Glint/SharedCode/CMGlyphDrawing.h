@@ -1,5 +1,5 @@
 //
-//  CMGlyphDrawing.h
+// CMGlyphDrawing.h
 //
 
 #import <Foundation/Foundation.h>

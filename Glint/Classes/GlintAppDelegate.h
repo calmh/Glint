@@ -1,9 +1,9 @@
 //
-//  GlintAppDelegate.h
-//  Glint
+// GlintAppDelegate.h
+// Glint
 //
-//  Created by Jakob Borg on 6/26/09.
-//  Copyright Jakob Borg 2009. All rights reserved.
+// Created by Jakob Borg on 6/26/09.
+// Copyright Jakob Borg 2009. All rights reserved.
 //
 
 #import "GPSManager.h"
@@ -14,13 +14,13 @@
 @class FilesViewController;
 
 @interface GlintAppDelegate : NSObject <UIApplicationDelegate> {
-	UIWindow *window;
-	MainScreenViewController *mainScreenViewController;
-	FilesViewController *sendFilesViewController;
-	UINavigationController *navController;
-	NSOperationQueue *queue;
-	GPSManager *gpsManager;
-	Reachability *reachManager;
+        UIWindow *window;
+        MainScreenViewController *mainScreenViewController;
+        FilesViewController *sendFilesViewController;
+        UINavigationController *navController;
+        NSOperationQueue *queue;
+        GPSManager *gpsManager;
+        Reachability *reachManager;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;

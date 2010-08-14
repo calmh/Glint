@@ -1,9 +1,9 @@
 //
-//  GPSManager.h
-//  Glint
+// GPSManager.h
+// Glint
 //
-//  Created by Jakob Borg on 9/22/09.
-//  Copyright 2009 Jakob Borg. All rights reserved.
+// Created by Jakob Borg on 9/22/09.
+// Copyright 2009 Jakob Borg. All rights reserved.
 //
 
 #import "GPXReader.h"
@@ -14,8 +14,8 @@
 
 @interface LapTime : NSObject
 {
-	float distance;
-	float elapsedTime;
+        float distance;
+        float elapsedTime;
 }
 
 - (id)initWithDistance:(float)idistance andTime:(float)ielapsedTime;
@@ -26,14 +26,14 @@
 @end
 
 @interface GPSManager : NSObject <CLLocationManagerDelegate> {
-	CLLocationManager *locationManager;
-	LocationMath *math;
-	GPXWriter *gpxWriter;
-	NSMutableArray *passedLapTimes;
-	BOOL isPaused;
-	BOOL isGPSEnabled;
-	BOOL isPrecisionAcceptable;
-	NSDate *started;
+        CLLocationManager *locationManager;
+        LocationMath *math;
+        GPXWriter *gpxWriter;
+        NSMutableArray *passedLapTimes;
+        BOOL isPaused;
+        BOOL isGPSEnabled;
+        BOOL isPrecisionAcceptable;
+        NSDate *started;
 }
 
 - (NSArray*)queuedLapTimes;

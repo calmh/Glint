@@ -7,9 +7,9 @@
 
 @interface CSMapRouteLayerView : UIView <MKMapViewDelegate>
 {
-	MKMapView *_mapView;
-	NSArray *_points;
-	UIColor *_lineColor;
+        MKMapView *_mapView;
+        NSArray *_points;
+        UIColor *_lineColor;
 }
 
 - (id)initWithRoute:(NSArray*)routePoints mapView:(MKMapView*)mapView;

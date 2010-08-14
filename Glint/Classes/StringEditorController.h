@@ -1,9 +1,9 @@
 //
-//  StringEditorController.h
-//  Glint
+// StringEditorController.h
+// Glint
 //
-//  Created by Jakob Borg on 11/15/09.
-//  Copyright 2009 Jakob Borg. All rights reserved.
+// Created by Jakob Borg on 11/15/09.
+// Copyright 2009 Jakob Borg. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -14,9 +14,9 @@
 
 
 @interface StringEditorController : UIViewController {
-	UITextField *textField;
-	UILabel *label;
-	NSObject<StringEditorControllerDelegate> *delegate;
+        UITextField *textField;
+        UILabel *label;
+        NSObject<StringEditorControllerDelegate> *delegate;
 }
 
 @property (nonatomic, retain) IBOutlet UITextField *textField;

@@ -1,9 +1,9 @@
 //
-//  FileDetailViewController.h
-//  Glint
+// FileDetailViewController.h
+// Glint
 //
-//  Created by Jakob Borg on 8/2/09.
-//  Copyright 2009 Jakob Borg. All rights reserved.
+// Created by Jakob Borg on 8/2/09.
+// Copyright 2009 Jakob Borg. All rights reserved.
 //
 
 #import "GPXReader.h"
@@ -17,21 +17,21 @@
 #import <UIKit/UIKit.h>
 
 @interface FileDetailViewController : UIViewController <MFMailComposeViewControllerDelegate, StringEditorControllerDelegate> {
-	GlintAppDelegate *delegate;
-	GPXReader *reader;
-	LocationMath *math;
-	BOOL loading;
+        GlintAppDelegate *delegate;
+        GPXReader *reader;
+        LocationMath *math;
+        BOOL loading;
 
-	UINavigationController *navigationController;
-	UITableView *tableView;
-	UITabBarItem *emailButton, *raceButton;
-	NSArray *toolbarItems;
-	LapTimeViewController *lapTimeController;
-	RouteViewController *routeController;
-	RawTrackViewController *rawTrackController;
-	StringEditorController *stringEditorController;
+        UINavigationController *navigationController;
+        UITableView *tableView;
+        UITabBarItem *emailButton, *raceButton;
+        NSArray *toolbarItems;
+        LapTimeViewController *lapTimeController;
+        RouteViewController *routeController;
+        RawTrackViewController *rawTrackController;
+        StringEditorController *stringEditorController;
 
-	NSString *filename, *startTime, *endTime, *distance, *averageSpeed;
+        NSString *filename, *startTime, *endTime, *distance, *averageSpeed;
 }
 
 @property (retain, nonatomic) IBOutlet UINavigationController *navigationController;

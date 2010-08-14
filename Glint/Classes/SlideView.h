@@ -1,9 +1,9 @@
 //
-//  SlideView.h
-//  Glint
+// SlideView.h
+// Glint
 //
-//  Created by Jakob Borg on 8/9/09.
-//  Copyright 2009 Jakob Borg. All rights reserved.
+// Created by Jakob Borg on 8/9/09.
+// Copyright 2009 Jakob Borg. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -12,13 +12,13 @@
 - (void)slided:(id)sender;
 @end
 
-@interface SlideMarkerView : UIView {}
+@interface SlideMarkerView : UIView { }
 
 @end
 
 @interface SlideView : UIView {
-	id <SlideViewDelegate> delegate;
-	SlideMarkerView *marker;
+        id <SlideViewDelegate> delegate;
+        SlideMarkerView *marker;
 }
 
 @property (retain, nonatomic) IBOutlet id <SlideViewDelegate> delegate;

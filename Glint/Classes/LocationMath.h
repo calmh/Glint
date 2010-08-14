@@ -1,23 +1,23 @@
 //
-//  JBLocationMath.h
-//  Glint
+// JBLocationMath.h
+// Glint
 //
-//  Created by Jakob Borg on 7/26/09.
-//  Copyright 2009 Jakob Borg. All rights reserved.
+// Created by Jakob Borg on 7/26/09.
+// Copyright 2009 Jakob Borg. All rights reserved.
 //
 
 #import <CoreLocation/CoreLocation.h>
 #import <Foundation/Foundation.h>
 
 @interface LocationMath : NSObject {
-	float currentSpeed;
-	float currentCourse;
-	float totalDistance;
-	float elapsedTime;
-	NSDate *firstMeasurement;
-	CLLocation *lastKnownPosition;
-	NSMutableArray *locations;
-	NSArray *raceLocations;
+        float currentSpeed;
+        float currentCourse;
+        float totalDistance;
+        float elapsedTime;
+        NSDate *firstMeasurement;
+        CLLocation *lastKnownPosition;
+        NSMutableArray *locations;
+        NSArray *raceLocations;
 }
 
 @property (readonly) float currentSpeed;

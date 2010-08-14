@@ -1,9 +1,9 @@
 //
-//  SendFilesViewController.h
-//  Glint
+// SendFilesViewController.h
+// Glint
 //
-//  Created by Jakob Borg on 7/16/09.
-//  Copyright 2009 Jakob Borg. All rights reserved.
+// Created by Jakob Borg on 7/16/09.
+// Copyright 2009 Jakob Borg. All rights reserved.
 //
 
 #import "FileDetailViewController.h"
@@ -12,14 +12,14 @@
 #import <UIKit/UIKit.h>
 
 @interface FilesViewController : UITableViewController {
-	GlintAppDelegate *delegate;
-	NSMutableArray *files;
-	NSMutableArray *sections;
-	NSString *documentsDirectory;
-	UINavigationController *navigationController;
-	FileDetailViewController *detailViewController;
-	UITableView *tableView;
-	UIBarButtonItem *doneButton;
+        GlintAppDelegate *delegate;
+        NSMutableArray *files;
+        NSMutableArray *sections;
+        NSString *documentsDirectory;
+        UINavigationController *navigationController;
+        FileDetailViewController *detailViewController;
+        UITableView *tableView;
+        UIBarButtonItem *doneButton;
 }
 
 @property (retain, nonatomic) IBOutlet UINavigationController *navigationController;
