@@ -30,7 +30,7 @@
 
 // Constant in the currentSpeed formula:
 //   currentSpeed = (SOFTNESS_FACTOR * newCurrentSpeed + oldCurrentSpeed) / (1 + SOFTNESS_FACTOR)
-#define SOFTNESS_FACTOR 0.5
+#define SOFTNESS_FACTOR 0.33
 
 // How often to save a new trackpoint, when recording
 #define USERPREF_MEASUREMENT_INTERVAL [[NSUserDefaults standardUserDefaults] integerForKey:@"average_interval"]
