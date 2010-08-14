@@ -48,7 +48,7 @@
 
 - (void)addTrackPoint:(CLLocation*)point
 {
-	if (last && [point getDistanceFrom:last] == 0.0) {
+	if (last && [point distanceFromLocation:last] == 0.0) {
 		debug_NSLog(@"addTrackPoint: Ignored identical waypoint");
 		return;
 	}
@@ -62,7 +62,7 @@
 	maxLat = MAX(maxLat, point.coordinate.latitude);
 
 	if (last)
-		totalDistance += [point getDistanceFrom:last];
+		totalDistance += [point distanceFromLocation:last];
 
 	[last release];
 	last = [point retain];

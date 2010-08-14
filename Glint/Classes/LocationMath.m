@@ -60,7 +60,7 @@
 
 		CLLocation *reference = self.lastRecordedPosition;
 		if (![LocationMath isBreakMarker:reference] && [location.timestamp timeIntervalSinceDate:reference.timestamp] > 0.0f) {
-			float dist = [reference getDistanceFrom:location];
+			float dist = [reference distanceFromLocation:location];
 			totalDistance += dist;
 			[self updateCurrentSpeed:dist / [location.timestamp timeIntervalSinceDate:reference.timestamp]];
 			currentCourse = [self bearingFromLocation:reference toLocation:location];
@@ -99,7 +99,7 @@
 		td = -td;
 	if (td == 0.0)
 		return 0.0;
-	float dist = [locA getDistanceFrom:locB];
+	float dist = [locA distanceFromLocation:locB];
 	return dist / td;
 }
 
@@ -135,7 +135,7 @@
 	for (CLLocation*point in locationList) {
 		if (![LocationMath isBreakMarker:pointOne] && ![LocationMath isBreakMarker:point]) {
 			time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
-			distance += [pointOne getDistanceFrom:point];
+			distance += [pointOne distanceFromLocation:point];
 		}
 		if (time <= targetTime)
 			pointOne = point;
@@ -148,7 +148,7 @@
 	float remainingTime = targetTime - time;
 	float timeBetweenP1andP2 = [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
 	float factor = remainingTime / timeBetweenP1andP2;
-	float targetDistance = distance + factor * [pointTwo getDistanceFrom:pointOne];
+	float targetDistance = distance + factor * [pointTwo distanceFromLocation:pointOne];
 	return targetDistance;
 }
 
@@ -169,7 +169,7 @@
 	for (CLLocation*point in locationList) {
 		if (![LocationMath isBreakMarker:point] && ![LocationMath isBreakMarker:pointOne]) {
 			time += [point.timestamp timeIntervalSinceDate:pointOne.timestamp];
-			distance += [pointOne getDistanceFrom:point];
+			distance += [pointOne distanceFromLocation:point];
 		}
 		if (distance <= targetDistance)
 			pointOne = point;
@@ -183,7 +183,7 @@
 		return NAN;
 
 	float remainingDistance = targetDistance - distance;
-	float factor = remainingDistance / [pointTwo getDistanceFrom:pointOne];
+	float factor = remainingDistance / [pointTwo distanceFromLocation:pointOne];
 	float targetTime = time + factor * [pointTwo.timestamp timeIntervalSinceDate:pointOne.timestamp];
 	return targetTime;
 }
@@ -194,7 +194,7 @@
 	CLLocation *last = nil;
 	for (CLLocation*loc in locationList) {
 		if (![LocationMath isBreakMarker:last] && ![LocationMath isBreakMarker:loc])
-			distance += [loc getDistanceFrom:last];
+			distance += [loc distanceFromLocation:last];
 		last = loc;
 	}
 	return distance;
@@ -346,7 +346,7 @@
 
 - (NSArray*)hermiteCurveFromSource:(CLLocation*)origin toDestination:(CLLocation*)destination fromPrev:(CLLocation*)prev toNext:(CLLocation*)next
 {
-	int steps = (int)([destination getDistanceFrom:origin] / 5) + 1;
+	int steps = (int)([destination distanceFromLocation:origin] / 5) + 1;
 	NSMutableArray *result = [[[NSMutableArray alloc] initWithCapacity:steps] autorelease];
 	float *lat = [self hermiteInterpolate1dWithSteps:steps y0:prev.coordinate.latitude y1:origin.coordinate.latitude y2:destination.coordinate.latitude y3:next.coordinate.latitude];
 	float *lon = [self hermiteInterpolate1dWithSteps:steps y0:prev.coordinate.longitude y1:origin.coordinate.longitude y2:destination.coordinate.longitude y3:next.coordinate.longitude];
