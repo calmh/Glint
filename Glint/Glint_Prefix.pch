@@ -50,9 +50,6 @@
 // Email address to send recorded tracks to.
 #define USERPREF_EMAIL_ADDRESS [[NSUserDefaults standardUserDefaults] stringForKey:@"email_address"]
 
-// Whether to shut down the GPS between trackpoints when the recording interval allows.
-#define USERPREF_POWERSAVE [[NSUserDefaults standardUserDefaults] boolForKey:@"gps_powersave"]
-
 // Whether to play sounds or not.
 #define USERPREF_SOUNDS [[NSUserDefaults standardUserDefaults] boolForKey:@"sounds_enabled"]
 

@@ -76,16 +76,6 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Power Save</string>
-			<key>Key</key>
-			<string>gps_powersave</string>
-			<key>DefaultValue</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
 			<string>Restart Recording on Startup</string>
 			<key>Key</key>
 			<string>restart_recording</string>

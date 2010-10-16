@@ -10,7 +10,7 @@
 
 @interface GPSManager ()
 - (bool)precisionAcceptable:(CLLocation*)location;
-- (void)takeAveragedMeasurement:(NSTimer*)timer;
+- (void)takeAveragedMeasurement;
 #ifdef FAKE_MOVEMENT
 - (void)fakeMovement:(NSTimer*)timer;
 #endif
@@ -49,9 +49,6 @@
                 passedLapTimes = [[NSMutableArray alloc] init];
 
                 [self enableGPS];
-
-                NSTimer *averagedMeasurementTaker = [NSTimer timerWithTimeInterval:MEASUREMENT_THREAD_INTERVAL target:self selector:@selector(takeAveragedMeasurement:) userInfo:nil repeats:YES];
-                [[NSRunLoop currentRunLoop] addTimer:averagedMeasurementTaker forMode:NSDefaultRunLoopMode];
 
 #ifdef FAKE_MOVEMENT
                 NSTimer *faker = [NSTimer timerWithTimeInterval:4.0f target:self selector:@selector(fakeMovement:) userInfo:nil repeats:YES];
@@ -183,6 +180,7 @@
         isPrecisionAcceptable = [self precisionAcceptable:newLocation];
         if (isPrecisionAcceptable) {
                 [math updateLocation:newLocation];
+                [self takeAveragedMeasurement];
                 if ([math totalDistance] >= numLaps * lapLength) {
                         debug_NSLog(@"Adding passed lap time at %f m", [math totalDistance]);
                         float lapTime = [math timeAtLocationByDistance:numLaps * USERPREF_LAPLENGTH];
@@ -207,27 +205,16 @@
         return currentPrec > 0.0 && currentPrec <= minPrec;
 }
 
-- (void)takeAveragedMeasurement:(NSTimer*)timer
+- (void)takeAveragedMeasurement
 {
         static NSDate *lastWrittenDate = nil;
         static float averageInterval = 0.0;
-        static BOOL powersave = NO;
         NSDate *now = [NSDate date];
 
         // Load user preferences the first time we need them.
 
-        if (averageInterval == 0.0) {
+        if (averageInterval == 0.0)
                 averageInterval = USERPREF_MEASUREMENT_INTERVAL;
-                powersave = USERPREF_POWERSAVE;
-        }
-
-        // Check if the GPS is disabled, and if so if we should enable it to do a measurement.
-        if (!isGPSEnabled // The GPS is off
-            && gpxWriter // We are recording
-            && [now timeIntervalSinceDate:lastWrittenDate] > averageInterval - 10) { // It is soon time for a new measurement
-                [self enableGPS];
-                return;
-        }
 
         // Check if it's time to save a trackpoint, and if we have enough precision.
         // If so, save it. If we dont have enough precision, create a break in the
@@ -247,14 +234,6 @@
                 } else
                         debug_NSLog(@"Bad precision, waiting for waypoint");
         }
-
-        if (powersave // Power saving is enabled
-            && isGPSEnabled // The GPS is enabled
-            && gpxWriter // We are recording
-            && averageInterval >= 30 // Recording interval is at least 30 seconds
-            && lastWrittenDate // We have written at least one position
-            && [now timeIntervalSinceDate:lastWrittenDate] < averageInterval - 10) // It is less than averageInterval-10 seconds since the last measurement
-                [self disableGPS];
 }
 
 #ifdef FAKE_MOVEMENT
