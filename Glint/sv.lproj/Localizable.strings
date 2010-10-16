@@ -55,7 +55,6 @@
 "course" = "kurs";
 
 "Go" = "Starta";
-"Pause" = "Pausa";
 "Files" = "Filer";
 "Record" = "Spela in";
 "End Recording" = "Bryt insp.";
@@ -120,7 +119,7 @@
 ** Raw track screen
 */
 "Break in recording" = "Avbrott i inspelning";
-"Paused or lost GPS reception" = "Pausad eller brist på GPS-signal";
+"Lost GPS reception" = "Förlorade GPS-signal";
 
 /*
 ** Renaming screen

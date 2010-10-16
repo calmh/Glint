@@ -33,7 +33,7 @@
 
 @implementation GPSManager
 
-@synthesize math, isPaused, isPrecisionAcceptable, isGPSEnabled;
+@synthesize math, isPrecisionAcceptable, isGPSEnabled;
 
 /*
  * Public methods and properties.
@@ -46,7 +46,6 @@
                 gpxWriter = nil;
                 isGPSEnabled = NO;
                 isPrecisionAcceptable = NO;
-                isPaused = NO;
                 passedLapTimes = [[NSMutableArray alloc] init];
 
                 [self enableGPS];
@@ -111,23 +110,6 @@
         [gpxWriter commit];
         [gpxWriter release];
         gpxWriter = nil;
-}
-
-- (void)pauseUpdates
-{
-        if (!isPaused) {
-                isPaused = YES;
-                [math insertBreakMarker];
-                if (gpxWriter)
-                        [gpxWriter addTrackSegment];
-                [self disableGPS];
-        }
-}
-
-- (void)resumeUpdates
-{
-        isPaused = NO;
-        [self enableGPS];
 }
 
 - (CLLocation*)location
@@ -200,15 +182,13 @@
 
         isPrecisionAcceptable = [self precisionAcceptable:newLocation];
         if (isPrecisionAcceptable) {
-                if (!isPaused) {
-                        [math updateLocation:newLocation];
-                        if ([math totalDistance] >= numLaps * lapLength) {
-                                debug_NSLog(@"Adding passed lap time at %f m", [math totalDistance]);
-                                float lapTime = [math timeAtLocationByDistance:numLaps * USERPREF_LAPLENGTH];
-                                [passedLapTimes addObject:[[[LapTime alloc] initWithDistance:numLaps * USERPREF_LAPLENGTH andTime:lapTime - prevLapTime] autorelease]];
-                                numLaps++;
-                                prevLapTime = lapTime;
-                        }
+                [math updateLocation:newLocation];
+                if ([math totalDistance] >= numLaps * lapLength) {
+                        debug_NSLog(@"Adding passed lap time at %f m", [math totalDistance]);
+                        float lapTime = [math timeAtLocationByDistance:numLaps * USERPREF_LAPLENGTH];
+                        [passedLapTimes addObject:[[[LapTime alloc] initWithDistance:numLaps * USERPREF_LAPLENGTH andTime:lapTime - prevLapTime] autorelease]];
+                        numLaps++;
+                        prevLapTime = lapTime;
                 } else
                         [math updateLocationForDisplayOnly:newLocation];
         }
@@ -240,10 +220,6 @@
                 averageInterval = USERPREF_MEASUREMENT_INTERVAL;
                 powersave = USERPREF_POWERSAVE;
         }
-
-        // If we are paused, do nothing.
-        if (isPaused)
-                return;
 
         // Check if the GPS is disabled, and if so if we should enable it to do a measurement.
         if (!isGPSEnabled // The GPS is off

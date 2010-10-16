@@ -70,7 +70,7 @@
         CLLocation *loc = [locations objectAtIndex:indexPath.row];
         if ([LocationMath isBreakMarker:loc]) {
                 cell.textLabel.text = NSLocalizedString(@"Break in recording", nil);
-                cell.detailTextLabel.text = NSLocalizedString(@"Paused or lost GPS reception", nil);
+                cell.detailTextLabel.text = NSLocalizedString(@"Lost GPS reception", nil);
         } else {
                 cell.textLabel.text = [NSString stringWithFormat:@"%@; %@; %@", [delegate formatLat:loc.coordinate.latitude], [delegate formatLon:loc.coordinate.longitude], [delegate formatShortDistance:loc.altitude]];
 

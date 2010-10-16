@@ -30,7 +30,6 @@
         LocationMath *math;
         GPXWriter *gpxWriter;
         NSMutableArray *passedLapTimes;
-        BOOL isPaused;
         BOOL isGPSEnabled;
         BOOL isPrecisionAcceptable;
         NSDate *started;
@@ -40,14 +39,11 @@
 - (void)startRecordingOnFile:(NSString*)fileName;
 - (void)resumeRecordingOnFile:(NSString*)fileName;
 - (void)stopRecording;
-- (void)pauseUpdates;
-- (void)resumeUpdates;
 - (void)commit;
 - (void)enableGPS;
 - (void)disableGPS;
 
 @property (retain) LocationMath *math;
-@property (readonly) BOOL isPaused;
 @property (readonly) BOOL isGPSEnabled;
 @property (readonly) BOOL isPrecisionAcceptable;
 @property (readonly) CLLocation *location;

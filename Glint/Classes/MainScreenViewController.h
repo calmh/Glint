@@ -92,7 +92,6 @@
 @property (nonatomic, retain) IBOutlet UILabel *tertiaryScreenDescription;
 @property (nonatomic, retain) IBOutlet LapTimeViewController *lapTimeController;
 
-- (void)playPause:(id)sender;
 - (void)startStopRecording:(id)sender;
 - (void)resumeRecordingOnFile:(NSString*)filename;
 - (void)slided:(id)sender;

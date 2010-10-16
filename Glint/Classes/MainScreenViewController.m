@@ -195,12 +195,10 @@
         [self updateMeasurementsLabel];
         [self updateCourse];
 
-        if (!gpsManager.isPaused) {
-                if ([[gpsManager math] raceLocations] != nil)
-                        [self updateRacingLabels];
-                else
-                        [self updateSpeedAndDistanceLabels];
-        }
+        if ([[gpsManager math] raceLocations] != nil)
+                [self updateRacingLabels];
+        else
+                [self updateSpeedAndDistanceLabels];
 }
 
 /*
@@ -284,11 +282,10 @@
 {
         self.measurementsLabel.text = [NSString stringWithFormat:@"0 %@", NSLocalizedString(@"measurements", nil)];
 
-        UIBarButtonItem *playPauseButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Pause", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(playPause:)] autorelease];
         UIBarButtonItem *filesButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Files", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(sendFiles:)] autorelease];
         UIBarButtonItem *recordButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Record", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(startStopRecording:)] autorelease];
         UIBarButtonItem *stopRaceButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)] autorelease];
-        toolbarItems = [[NSArray arrayWithObjects:playPauseButton, filesButton, recordButton, stopRaceButton, nil] retain];
+        toolbarItems = [[NSArray arrayWithObjects:filesButton, recordButton, stopRaceButton, nil] retain];
         [toolbar setItems:toolbarItems animated:YES];
 }
 
@@ -508,47 +505,19 @@
         }
 }
 
-- (void)playPause:(id)sender
-{
-        static UIColor *elapsedTimeColor, *totalDistanceColor, *currentSpeedColor, *averageSpeedColor, *timePerDistColor;
-
-        if (gpsManager.isPaused) {
-                [[toolbarItems objectAtIndex:0] setTitle:NSLocalizedString(@"Pause", nil)];
-                elapsedTimeLabel.textColor = [elapsedTimeColor autorelease];
-                totalDistanceLabel.textColor = [totalDistanceColor autorelease];
-                currentSpeedLabel.textColor = [currentSpeedColor autorelease];
-                averageSpeedLabel.textColor = [averageSpeedColor autorelease];
-                currentTimePerDistanceLabel.textColor = [timePerDistColor autorelease];
-                [gpsManager resumeUpdates];
-        } else {
-                [gpsManager pauseUpdates];
-                [[toolbarItems objectAtIndex:0] setTitle:NSLocalizedString(@"Go", nil)];
-                elapsedTimeColor = [elapsedTimeLabel.textColor retain];
-                elapsedTimeLabel.textColor = [UIColor colorWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f];
-                totalDistanceColor = [totalDistanceLabel.textColor retain];
-                totalDistanceLabel.textColor = [UIColor colorWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f];
-                currentSpeedColor = [currentSpeedLabel.textColor retain];
-                currentSpeedLabel.textColor = [UIColor colorWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f];
-                averageSpeedColor = [averageSpeedLabel.textColor retain];
-                averageSpeedLabel.textColor = [UIColor colorWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f];
-                timePerDistColor = [currentTimePerDistanceLabel.textColor retain];
-                currentTimePerDistanceLabel.textColor = [UIColor colorWithRed:0.8f green:0.8f blue:0.8f alpha:1.0f];
-        }
-}
-
 - (void)slided:(id)sender
 {
         @synchronized(self) {
                 debug_NSLog(@"unlock: start");
                 if ([gpsManager isRecording])
-                        [(UIBarButtonItem*) [toolbarItems objectAtIndex:2] setTitle:NSLocalizedString(@"End Recording", nil)];
+                        [(UIBarButtonItem*) [toolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"End Recording", nil)];
                 else
-                        [(UIBarButtonItem*) [toolbarItems objectAtIndex:2] setTitle:NSLocalizedString(@"Record", nil)];
+                        [(UIBarButtonItem*) [toolbarItems objectAtIndex:1] setTitle:NSLocalizedString(@"Record", nil)];
 
                 if ([[gpsManager math] raceLocations])
-                        [(UIBarButtonItem*) [toolbarItems objectAtIndex:3] setEnabled:YES];
+                        [(UIBarButtonItem*) [toolbarItems objectAtIndex:2] setEnabled:YES];
                 else
-                        [(UIBarButtonItem*) [toolbarItems objectAtIndex:3] setEnabled:NO];
+                        [(UIBarButtonItem*) [toolbarItems objectAtIndex:2] setEnabled:NO];
 
                 [UIView beginAnimations:nil context:NULL];
                 [UIView setAnimationDuration:0.3];

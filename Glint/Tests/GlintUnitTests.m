@@ -200,48 +200,6 @@
         [manager locationManager:nil didUpdateToLocation:loc fromLocation:oldLoc];
 }
 
-#ifdef LONG_UNIT_TESTS
-
-- (void)testGPSManagerPauseAndResume
-{
-        GPSManager *manager = [[GPSManager alloc] init];
-
-        // Assert start state
-        STAssertFalse(manager.isPaused, @"");
-        STAssertEquals(manager.math.elapsedTime, 0.0f, @"");
-        STAssertEquals(manager.math.totalDistance, 0.0f, @"");
-
-        // Move 100 meters during ten seconds.
-        [self fakeMovementForGPSManager:manager duringSeconds:10 atSpeed:10.0];
-
-        STAssertEqualsWithAccuracy(manager.math.elapsedTime, 10.0f, 0.5f, @"");
-        STAssertEqualsWithAccuracy(manager.math.totalDistance, 100.0f, 10.0f, @"");
-
-        // Start ignoreing updates
-        [manager pauseUpdates];
-        STAssertTrue(manager.isPaused, @"");
-
-        // Move 100 meters during ten seconds.
-        [self fakeMovementForGPSManager:manager duringSeconds:10 atSpeed:10.0];
-
-        // Nothing should have changed.
-        STAssertEqualsWithAccuracy(manager.math.elapsedTime, 10.0f, 0.5f, @"");
-        STAssertEqualsWithAccuracy(manager.math.totalDistance, 100.0f, 10.0f, @"");
-
-        // Restart measurements
-        [manager resumeUpdates];
-        STAssertFalse(manager.isPaused, @"");
-
-        // Move 100 meters during ten seconds.
-        [self fakeMovementForGPSManager:manager duringSeconds:10 atSpeed:10.0];
-
-        // We should have moved about 100 meters more
-        STAssertEqualsWithAccuracy(manager.math.elapsedTime, 20.0f, 0.5f, @"");
-        STAssertEqualsWithAccuracy(manager.math.totalDistance, 200.0f, 10.0f, @"");
-}
-
-#endif
-
 - (NSString*)bundlePath
 {
         NSBundle *myBundle = [NSBundle bundleForClass:[self class]];
