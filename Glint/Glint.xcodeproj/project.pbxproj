@@ -30,6 +30,7 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* MainScreenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MainScreenViewController.m */; };
 		290B269B1269C90800EB34BB /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 290B269A1269C90800EB34BB /* Icon@2x.png */; };
+		290B27381269D23500EB34BB /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 290B27371269D23500EB34BB /* Default@2x.png */; };
 		2913DBEB1024FD6B00F56A2A /* FileDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2913DBE91024FD6B00F56A2A /* FileDetailViewController.m */; };
 		2913DBEC1024FD6B00F56A2A /* FileDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2913DBEA1024FD6B00F56A2A /* FileDetailViewController.xib */; };
 		2913DE2010260A9F00F56A2A /* FilesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2913DE1F10260A9F00F56A2A /* FilesViewController.xib */; };
@@ -119,6 +120,7 @@
 		28D7ACF60DDB3853001CB0EB /* MainScreenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainScreenViewController.h; sourceTree = "<group>"; };
 		28D7ACF70DDB3853001CB0EB /* MainScreenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainScreenViewController.m; sourceTree = "<group>"; };
 		290B269A1269C90800EB34BB /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		290B27371269D23500EB34BB /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		2913DBE81024FD6B00F56A2A /* FileDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileDetailViewController.h; sourceTree = "<group>"; };
 		2913DBE91024FD6B00F56A2A /* FileDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileDetailViewController.m; sourceTree = "<group>"; };
 		2913DBEA1024FD6B00F56A2A /* FileDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = FileDetailViewController.xib; path = Resources/FileDetailViewController.xib; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				291C0D84101E206800393E77 /* Tests-Info.plist */,
 				2988668B101C96880051F368 /* unitsets.plist */,
 				2974387D101C727800DDBB6A /* Default.png */,
+				290B27371269D23500EB34BB /* Default@2x.png */,
 				29874F990FF776EB0080E20D /* Icon.png */,
 				290B269A1269C90800EB34BB /* Icon@2x.png */,
 				2913DBEA1024FD6B00F56A2A /* FileDetailViewController.xib */,
@@ -469,6 +472,7 @@
 				293D998A10625C4D00C86B6C /* Entitlements.plist in Resources */,
 				299888F410B084DA00E5B703 /* StringEditorController.xib in Resources */,
 				290B269B1269C90800EB34BB /* Icon@2x.png in Resources */,
+				290B27381269D23500EB34BB /* Default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
