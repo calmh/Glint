@@ -68,7 +68,23 @@
 {
         [gpsManager disableGPS];
         [self disableProximitySensor];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)applicationDidEnterBackground:(UIApplication*)application
+{
+        [self disableProximitySensor];
+        debug_NSLog(@"Entering background");
+        if (![gpsManager isRecording]) {
+                debug_NSLog(@"Entering background - disabled GPS");
+                [gpsManager disableGPS];
+        }
+}
+
+- (void)applicationWillEnterForeground:(UIApplication*)application
+{
+        debug_NSLog(@"Entering foreground");
+        [self enableProximitySensor];
+        [gpsManager enableGPS];
 }
 
 - (IBAction)switchToSendFilesView:(id)sender

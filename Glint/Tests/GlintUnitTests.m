@@ -71,7 +71,7 @@
         // Add 100 points at a speed of .001 degree per minute
         // i is time in minutes
         for (int i = 0; i < 100; i++) {
-                [locations addObject:[[CLLocation alloc] initWithCoordinate:coord altitude:0.0 horizontalAccuracy:10.0f verticalAccuracy:10.0 timestamp:[baseDate addTimeInterval:i * 60]]];
+                [locations addObject:[[CLLocation alloc] initWithCoordinate:coord altitude:0.0 horizontalAccuracy:10.0f verticalAccuracy:10.0 timestamp:[baseDate dateByAddingTimeInterval:i * 60]]];
                 coord.latitude += sin(0.3) * 0.001;
                 coord.longitude += cos(0.3) * 0.001;
         }
@@ -96,7 +96,7 @@
         // Add 100 points at a speed of .001 degree per minute.
         // i is time in minutes
         for (int i = 0; i < 100; i++) {
-                [locations addObject:[[CLLocation alloc] initWithCoordinate:coord altitude:0.0 horizontalAccuracy:10.0f verticalAccuracy:10.0 timestamp:[baseDate addTimeInterval:i * 60]]];
+                [locations addObject:[[CLLocation alloc] initWithCoordinate:coord altitude:0.0 horizontalAccuracy:10.0f verticalAccuracy:10.0 timestamp:[baseDate dateByAddingTimeInterval:i * 60]]];
                 coord.latitude += sin(0.3) * 0.001;
                 coord.longitude += cos(0.3) * 0.001;
         }

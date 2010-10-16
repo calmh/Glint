@@ -325,7 +325,7 @@
 {
         static BOOL prevStateGood = NO;
 
-        if (!gpsManager.isGPSEnabled)
+        if (!gpsManager.isGPSEnabled || USERPREF_MINIMUM_PRECISION == 0)
                 [self indicateDisabledState:signalIndicator];
         else {
                 if (gpsManager.isPrecisionAcceptable)

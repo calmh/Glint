@@ -131,31 +131,39 @@
 
 - (void)enableGPS
 {
-        debug_NSLog(@"Starting GPS");
+        if (!isGPSEnabled) {
+                debug_NSLog(@"Starting GPS");
 
-        // Update "started" time. We accept no updates earlier than this timestamp.
-        [started release];
-        started = [[NSDate date] retain];
+                // Update "started" time. We accept no updates earlier than this timestamp.
+                [started release];
+                started = [[NSDate date] retain];
 
-        // Start the GPS.
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.distanceFilter = FILTER_DISTANCE;
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+                // Start the GPS.
+                locationManager = [[CLLocationManager alloc] init];
 #ifndef FAKE_MOVEMENT
-        locationManager.delegate = self;
+                locationManager.delegate = self;
 #endif
-        [locationManager startUpdatingLocation];
-        isGPSEnabled = YES;
+                if (USERPREF_MINIMUM_PRECISION > 0) {
+                        locationManager.distanceFilter = FILTER_DISTANCE;
+                        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+                        [locationManager startUpdatingLocation];
+                } else
+                        [locationManager startMonitoringSignificantLocationChanges];
+                isGPSEnabled = YES;
+        }
 }
 
 - (void)disableGPS
 {
-        debug_NSLog(@"Stopping GPS");
-        locationManager.delegate = nil;
-        [locationManager stopUpdatingLocation];
-        [locationManager release];
-        locationManager = nil;
-        isGPSEnabled = NO;
+        if (isGPSEnabled) {
+                debug_NSLog(@"Stopping GPS");
+                locationManager.delegate = nil;
+                [locationManager stopUpdatingLocation];
+                [locationManager stopMonitoringSignificantLocationChanges];
+                [locationManager autorelease];
+                locationManager = nil;
+                isGPSEnabled = NO;
+        }
 }
 
 /*
@@ -202,7 +210,7 @@
         if (minPrec == 0.0)
                 minPrec = USERPREF_MINIMUM_PRECISION;
         float currentPrec = location.horizontalAccuracy;
-        return currentPrec > 0.0 && currentPrec <= minPrec;
+        return minPrec == 0 || (currentPrec > 0.0 && currentPrec <= minPrec);
 }
 
 - (void)takeAveragedMeasurement
