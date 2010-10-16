@@ -190,6 +190,7 @@
         static int lapLength = 0;
         if (lapLength == 0)
                 lapLength = USERPREF_LAPLENGTH;
+        NSAssert(lapLength, @"lapLength cannot be zero.");
 
         // Ignore data points that come from before we actually started measuring.
         // This is necessary because the location manager by default reports the last

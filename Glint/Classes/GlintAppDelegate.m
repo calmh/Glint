@@ -237,19 +237,19 @@
 
 - (void)updateDefaultSettings
 {
+        // Register defaults
+        NSDictionary *defaults = [self loadDefaultSettings];
+        [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+        [defaults release];
+
         NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
         // Check the preferences are up to speed, and load new defaults if not.
         NSString *defaultsVersion = [[NSUserDefaults standardUserDefaults] stringForKey:@"current_version"];
         if (defaultsVersion == nil || [currentVersion compare:defaultsVersion] != NSOrderedSame) {
                 // Remind user about the need for GPS signal after upgrade.
                 [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"have_shown_gps_instructions"];
-
-                // Register new defaults and save.
-                NSDictionary *defaults = [self loadDefaultSettings];
-                [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
                 [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:@"current_version"];
                 [[NSUserDefaults standardUserDefaults] synchronize];
-                [defaults release];
         }
 }
 
