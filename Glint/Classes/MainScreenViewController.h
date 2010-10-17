@@ -64,6 +64,10 @@
         // Tertiary page
         UILabel *tertiaryScreenDescription;
         LapTimeViewController *lapTimeController;
+
+        // Timers
+        BOOL displayTimerRunning;
+        BOOL statusTimerRunning;
 }
 
 @property (nonatomic, retain) IBOutlet UIView *containerView, *primaryView, *secondaryView, *tertiaryView;
@@ -99,4 +103,6 @@
 - (IBAction)pageChanged:(id)sender;
 - (void)updateStatus:(NSTimer*)timer;
 - (void)updateDisplay:(NSTimer*)timer;
+- (void)startTimers;
+- (void)stopTimers;
 @end

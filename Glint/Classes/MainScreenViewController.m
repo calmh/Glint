@@ -30,7 +30,6 @@
 - (void)initializePages;
 - (void)initializeIndicators;
 - (void)initializeLocalizedElements;
-- (void)initializeTimers;
 - (void)updateLapTimes;
 - (void)updateRacingIndicator;
 - (void)updateSignalIndicator;
@@ -97,7 +96,7 @@
         [self initializePages];
         [self initializeIndicators];
         [self initializeLocalizedElements];
-        [self initializeTimers];
+        [self startTimers];
 
 #ifdef DEBUG
         self.measurementsLabel.textColor = [UIColor colorWithRed:1.0 green:0.3 blue:0.3 alpha:1.0];
@@ -177,6 +176,11 @@
 
 - (void)updateStatus:(NSTimer*)timer
 {
+        if (!statusTimerRunning) {
+                [timer invalidate];
+                return;
+        }
+
         [self updateSignalIndicator];
         [self updateRacingIndicator];
         [self updateLapTimes];
@@ -184,6 +188,11 @@
 
 - (void)updateDisplay:(NSTimer*)timer
 {
+        if (!displayTimerRunning) {
+                [timer invalidate];
+                return;
+        }
+
         if ([[UIDevice currentDevice] proximityState])
                 // Don't update the display if it's turned off by the proximity sensor.
                 // Saves CPU cycles and battery time, I hope.
@@ -199,6 +208,23 @@
                 [self updateRacingLabels];
         else
                 [self updateSpeedAndDistanceLabels];
+}
+
+- (void)startTimers
+{
+        displayTimerRunning = YES;
+        NSTimer *displayUpdater = [NSTimer timerWithTimeInterval:DISPLAY_THREAD_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:displayUpdater forMode:NSDefaultRunLoopMode];
+
+        statusTimerRunning = YES;
+        NSTimer *statusUpdater = [NSTimer timerWithTimeInterval:STATUS_THREAD_INTERVAL target:self selector:@selector(updateStatus:) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:statusUpdater forMode:NSDefaultRunLoopMode];
+}
+
+- (void)stopTimers
+{
+        displayTimerRunning = NO;
+        statusTimerRunning = NO;
 }
 
 /*
@@ -287,15 +313,6 @@
         UIBarButtonItem *stopRaceButton = [[[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"End Race", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(endRace:)] autorelease];
         toolbarItems = [[NSArray arrayWithObjects:filesButton, recordButton, stopRaceButton, nil] retain];
         [toolbar setItems:toolbarItems animated:YES];
-}
-
-- (void)initializeTimers
-{
-        NSTimer *displayUpdater = [NSTimer timerWithTimeInterval:DISPLAY_THREAD_INTERVAL target:self selector:@selector(updateDisplay:) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:displayUpdater forMode:NSDefaultRunLoopMode];
-
-        NSTimer *statusUpdater = [NSTimer timerWithTimeInterval:STATUS_THREAD_INTERVAL target:self selector:@selector(updateStatus:) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:statusUpdater forMode:NSDefaultRunLoopMode];
 }
 
 - (void)updateLapTimes

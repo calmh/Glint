@@ -72,6 +72,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication*)application
 {
+        [mainScreenViewController stopTimers];
         [self disableProximitySensor];
         debug_NSLog(@"Entering background");
         if (![gpsManager isRecording]) {
@@ -85,6 +86,7 @@
         debug_NSLog(@"Entering foreground");
         [self enableProximitySensor];
         [gpsManager enableGPS];
+        [mainScreenViewController startTimers];
 }
 
 - (IBAction)switchToSendFilesView:(id)sender

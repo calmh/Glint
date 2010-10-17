@@ -41,7 +41,6 @@
 		291C0DE6101E265800393E77 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29FE32270FF4370200E9FE05 /* CoreLocation.framework */; };
 		293D38071039E74F00EB0F91 /* Ping.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 293D38061039E74F00EB0F91 /* Ping.aiff */; };
 		293D998A10625C4D00C86B6C /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 293D998910625C4D00C86B6C /* Entitlements.plist */; };
-		2941215E105AEDE800B2A524 /* CSMapRouteLayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */; };
 		2941216B105AEEB900B2A524 /* RouteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2941216A105AEEB900B2A524 /* RouteViewController.m */; };
 		294DDEDC106B54B3001FD08C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 294DDEDB106B54B3001FD08C /* Reachability.m */; };
 		294DDEED106B54E5001FD08C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 294DDEEC106B54E5001FD08C /* SystemConfiguration.framework */; };
@@ -131,8 +130,6 @@
 		291C0DCE101E23C500393E77 /* GlintUnitTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GlintUnitTests.m; path = Tests/GlintUnitTests.m; sourceTree = "<group>"; };
 		293D38061039E74F00EB0F91 /* Ping.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; name = Ping.aiff; path = Resources/Ping.aiff; sourceTree = "<group>"; };
 		293D998910625C4D00C86B6C /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
-		2941215C105AEDE800B2A524 /* CSMapRouteLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSMapRouteLayerView.h; path = SharedCode/CSMapRouteLayerView.h; sourceTree = "<group>"; };
-		2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSMapRouteLayerView.m; path = SharedCode/CSMapRouteLayerView.m; sourceTree = "<group>"; };
 		29412169105AEEB900B2A524 /* RouteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouteViewController.h; sourceTree = "<group>"; };
 		2941216A105AEEB900B2A524 /* RouteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouteViewController.m; sourceTree = "<group>"; };
 		294DDEDA106B54B3001FD08C /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = SharedCode/Reachability.h; sourceTree = "<group>"; };
@@ -249,8 +246,6 @@
 			children = (
 				294E25421143A65400BDF2A5 /* CMGlyphDrawing.h */,
 				294E25431143A65400BDF2A5 /* CMGlyphDrawing.m */,
-				2941215C105AEDE800B2A524 /* CSMapRouteLayerView.h */,
-				2941215D105AEDE800B2A524 /* CSMapRouteLayerView.m */,
 				294DDEDA106B54B3001FD08C /* Reachability.h */,
 				294DDEDB106B54B3001FD08C /* Reachability.m */,
 			);
@@ -523,7 +518,6 @@
 				2913DBEB1024FD6B00F56A2A /* FileDetailViewController.m in Sources */,
 				29760DE0102F125F00EE89CB /* SlideView.m in Sources */,
 				29EF16731037292800A0982A /* LapTimeViewController.m in Sources */,
-				2941215E105AEDE800B2A524 /* CSMapRouteLayerView.m in Sources */,
 				2941216B105AEEB900B2A524 /* RouteViewController.m in Sources */,
 				29FDFE2210694E8600F264F7 /* GPSManager.m in Sources */,
 				294DDEDC106B54B3001FD08C /* Reachability.m in Sources */,
@@ -585,7 +579,9 @@
 				INFOPLIST_FILE = "Glint-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = Glint;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -599,7 +595,9 @@
 				INFOPLIST_FILE = "Glint-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = Glint;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -726,7 +724,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_PREPROCESS = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -746,7 +744,9 @@
 				INFOPLIST_FILE = "Glint-Info.plist";
 				INFOPLIST_PREPROCESS = NO;
 				INFOPLIST_PREPROCESSOR_DEFINITIONS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = Glint;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Distribution;
 		};
@@ -758,11 +758,10 @@
 				CURRENT_PROJECT_VERSION = 50;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = "";
-				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_PREPROCESS = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DDEBUG=1";
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -783,7 +782,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_PREPROCESS = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "";
 				PREBINDING = NO;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
