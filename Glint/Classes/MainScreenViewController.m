@@ -595,6 +595,7 @@
                 [gpsManager startRecordingOnFile:filename];
         } else {
                 [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"recording_filename"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
                 [self indicateDisabledState:recordingIndicator];
                 [gpsManager stopRecording];
         }
