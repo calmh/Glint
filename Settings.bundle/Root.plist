@@ -29,7 +29,6 @@
 				<string>500 m</string>
 				<string>1000 m</string>
 				<string>Any</string>
-				<string>Cell Tower Changes Only</string>
 			</array>
 			<key>Values</key>
 			<array>
@@ -38,7 +37,6 @@
 				<string>200</string>
 				<string>500</string>
 				<string>1000</string>
-				<string>10000</string>
 				<string>0</string>
 			</array>
 		</dict>

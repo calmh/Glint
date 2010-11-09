@@ -142,7 +142,7 @@
 #ifndef FAKE_MOVEMENT
                 locationManager.delegate = self;
 #endif
-                if (USERPREF_MINIMUM_PRECISION > 0) {
+                if (USERPREF_MINIMUM_PRECISION > 0 || ![CLLocationManager significantLocationChangeMonitoringAvailable]) {
                         locationManager.distanceFilter = FILTER_DISTANCE;
                         locationManager.desiredAccuracy = kCLLocationAccuracyBest;
                         [locationManager startUpdatingLocation];
@@ -158,7 +158,8 @@
                 debug_NSLog(@"Stopping GPS");
                 locationManager.delegate = nil;
                 [locationManager stopUpdatingLocation];
-                [locationManager stopMonitoringSignificantLocationChanges];
+                if ([CLLocationManager significantLocationChangeMonitoringAvailable])
+                        [locationManager stopMonitoringSignificantLocationChanges];
                 [locationManager autorelease];
                 locationManager = nil;
                 isGPSEnabled = NO;
