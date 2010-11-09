@@ -35,7 +35,7 @@
         [super dealloc];
 }
 
-- (void)applicationDidFinishLaunching:(UIApplication*)application
+- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
         self.queue = [[NSOperationQueue alloc] init];
 
@@ -54,6 +54,8 @@
         [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 
         [self enableProximitySensor];
+
+        return YES;
 }
 
 - (GPSManager*)gpsManager
