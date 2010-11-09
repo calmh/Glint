@@ -99,7 +99,6 @@
                         [gpxWriter addTrackPoint:loc];
         }
         gpxWriter.autoCommit = YES;
-        [gpxWriter addTrackSegment];
 }
 
 - (void)stopRecording
