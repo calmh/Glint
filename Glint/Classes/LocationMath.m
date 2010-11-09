@@ -347,6 +347,8 @@
 - (NSArray*)hermiteCurveFromSource:(CLLocation*)origin toDestination:(CLLocation*)destination fromPrev:(CLLocation*)prev toNext:(CLLocation*)next
 {
         int steps = (int) ([destination distanceFromLocation:origin] / 5) + 1;
+        if (steps > 20)
+                steps = 20;
         NSMutableArray *result = [[[NSMutableArray alloc] initWithCapacity:steps] autorelease];
         float *lat = [self hermiteInterpolate1dWithSteps:steps y0:prev.coordinate.latitude y1:origin.coordinate.latitude y2:destination.coordinate.latitude y3:next.coordinate.latitude];
         float *lon = [self hermiteInterpolate1dWithSteps:steps y0:prev.coordinate.longitude y1:origin.coordinate.longitude y2:destination.coordinate.longitude y3:next.coordinate.longitude];
