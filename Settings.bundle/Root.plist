@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>GPS Settings</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Required GPS Precision</string>
+			<key>Key</key>
+			<string>gps_minprec</string>
+			<key>DefaultValue</key>
+			<string>200</string>
+			<key>Titles</key>
+			<array>
+				<string>50 m</string>
+				<string>100 m</string>
+				<string>200 m</string>
+				<string>500 m</string>
+				<string>1000 m</string>
+				<string>Any</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>50</string>
+				<string>100</string>
+				<string>200</string>
+				<string>500</string>
+				<string>1000</string>
+				<string>0</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Recording Interval</string>
+			<key>Key</key>
+			<string>average_interval</string>
+			<key>DefaultValue</key>
+			<string>10</string>
+			<key>Titles</key>
+			<array>
+				<string>5 s</string>
+				<string>10 s</string>
+				<string>30 s</string>
+				<string>1 min</string>
+				<string>5 min</string>
+				<string>10 min</string>
+				<string>15 min</string>
+				<string>30 min</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>5</string>
+				<string>10</string>
+				<string>30</string>
+				<string>60</string>
+				<string>300</string>
+				<string>600</string>
+				<string>900</string>
+				<string>1800</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Restart Recording on Startup</string>
+			<key>Key</key>
+			<string>restart_recording</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Display Settings</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Units</string>
+			<key>Key</key>
+			<string>units</string>
+			<key>DefaultValue</key>
+			<string>0</string>
+			<key>Titles</key>
+			<array>
+				<string>Metric</string>
+				<string>Nautical</string>
+				<string>Statute</string>
+				<string>ISO</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>0</string>
+				<string>1</string>
+				<string>2</string>
+				<string>3</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Estimate Time For</string>
+			<key>Key</key>
+			<string>estimate_distance</string>
+			<key>DefaultValue</key>
+			<string>10</string>
+			<key>Titles</key>
+			<array>
+				<string>1 km</string>
+				<string>10 km</string>
+				<string>100 km</string>
+				<string>1 M</string>
+				<string>10 M</string>
+				<string>100 M</string>
+				<string>1 mi</string>
+				<string>10 mi</string>
+				<string>100 mi</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>1</string>
+				<string>10</string>
+				<string>100</string>
+				<string>1.852</string>
+				<string>18.52</string>
+				<string>185.2</string>
+				<string>1.609344</string>
+				<string>16.09344</string>
+				<string>160.9344</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Proximity Sensor</string>
+			<key>Key</key>
+			<string>enable_proximity</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Sounds</string>
+			<key>Key</key>
+			<string>sounds_enabled</string>
+			<key>DefaultValue</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Lap Length</string>
+			<key>Key</key>
+			<string>lap_length</string>
+			<key>DefaultValue</key>
+			<string>1000</string>
+			<key>Titles</key>
+			<array>
+				<string>100 m</string>
+				<string>250 m</string>
+				<string>400 m</string>
+				<string>500 m</string>
+				<string>1 km</string>
+				<string>2 km</string>
+				<string>2.5 km</string>
+				<string>4 km</string>
+				<string>5 km</string>
+				<string>10 km</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>100</string>
+				<string>250</string>
+				<string>400</string>
+				<string>500</string>
+				<string>1000</string>
+				<string>2000</string>
+				<string>2500</string>
+				<string>4000</string>
+				<string>5000</string>
+				<string>10000</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Map Type</string>
+			<key>Key</key>
+			<string>map_type</string>
+			<key>DefaultValue</key>
+			<string>0</string>
+			<key>Titles</key>
+			<array>
+				<string>Standard</string>
+				<string>Satellite</string>
+				<string>Hybrid</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<string>0</string>
+				<string>1</string>
+				<string>2</string>
+			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Email Settings</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Email Address</string>
+			<key>Key</key>
+			<string>email_address</string>
+			<key>DefaultValue</key>
+			<string></string>
+			<key>KeyboardType</key>
+			<string>EmailAddress</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>About</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
+			<key>Title</key>
+			<string>Version</string>
+			<key>Key</key>
+			<string>current_version</string>
+			<key>DefaultValue</key>
+			<string>-</string>
+		</dict>
+	</array>
+</dict>
+</plist>

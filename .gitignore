@@ -1,8 +1,8 @@
-Glint/build
-Glint/Glint.xcodeproj/*.pbxuser
-Glint/Glint.xcodeproj/*.perspectivev3
-Glint/Glint.xcodeproj/*.mode2v3
-Glint/Glint.xcodeproj/*.mode1v3
-Glint/Glint.xcodeproj/*.tm_build_errors
+build
+*.pbxuser
+*.perspectivev3
+*.mode2v3
+*.mode1v3
+xcuserdata
 .DS_Store
 
