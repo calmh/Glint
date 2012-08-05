@@ -126,7 +126,7 @@
 - (NSString*)formatTimestamp:(float)seconds maxTime:(float)max allowNegatives:(bool)allowNegatives
 {
         bool negative = NO;
-        if (isnan(seconds) || seconds > max || !allowNegatives && seconds < 0)
+        if (isnan(seconds) || seconds > max || (!allowNegatives && seconds < 0))
                 return [NSString stringWithFormat:@"?"];
         else {
                 if (seconds < 0) {
@@ -305,7 +305,7 @@
 - (void)resumeRacing
 {
         NSString *raceAgainstFile;
-        if (raceAgainstFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"raceAgainstFile"])
+        if ((raceAgainstFile = [[NSUserDefaults standardUserDefaults] stringForKey:@"raceAgainstFile"]))
                 [self.queue addOperation:[[[NSInvocationOperation alloc] initWithTarget:self selector:@selector(loadRaceFile:) object:raceAgainstFile] autorelease]];
 }
 

@@ -1,24 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Scheme>
+<Scheme
+   version = "1.8">
    <BuildAction
-      buildConfiguration = "Debug"
-      parallelizeBuildables = "NO">
+      parallelizeBuildables = "NO"
+      buildImplicitDependencies = "YES">
    </BuildAction>
    <TestAction
-      failureAction = "0">
+      failureAction = "0"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      buildConfiguration = "Debug">
+      <Testables>
+      </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
+            BuildableName = "Glint.app"
+            BlueprintName = "Glint"
+            ReferencedContainer = "container:Glint.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
       loadSymbolsForSpecifiedModules = "NO"
       displayScaleIsEnabled = "NO"
-      displayScale = "1.00">
+      displayScale = "1.00"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Debug"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      allowLocationSimulation = "YES">
       <BuildableProductRunnable>
-         <BuildableProductReference
+         <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
+            BuildableName = "Glint.app"
+            BlueprintName = "Glint"
             ReferencedContainer = "container:Glint.xcodeproj">
-         </BuildableProductReference>
+         </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
@@ -27,20 +51,26 @@
       persistedCurrentAnalysisToolIdentifier = ""
       displayScaleIsEnabled = "NO"
       displayScale = "1.00"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Release"
+      debugDocumentVersioning = "YES">
       <BuildableProductRunnable>
-         <BuildableProductReference
+         <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
+            BuildableName = "Glint.app"
+            BlueprintName = "Glint"
             ReferencedContainer = "container:Glint.xcodeproj">
-         </BuildableProductReference>
+         </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
-   <ArchiveAction>
-      <ArchivingStrategy
-         StrategyType = "Xcode.IDEStandardArchivingStrategies.ArchivingStrategyType.DiskImage">
-         <StrategyContent>
-         </StrategyContent>
-      </ArchivingStrategy>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

@@ -123,7 +123,7 @@
         float len;
         NSString *marker;
         for (int i = 0; i < 720; i++) {
-                if (imin < imax && i >= imin && i <= imax || (imin > imax && (i >= imin || i <= imax))) {
+                if ((imin < imax && i >= imin && i <= imax) || (imin > imax && (i >= imin || i <= imax))) {
                         // This is the visible part of the rose, so draw it
 
                         // Thicker line at cardinal points

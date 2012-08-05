@@ -16,6 +16,6 @@
         NSDictionary *markers;
 }
 
-@property (assign) float course;
+@property (nonatomic, assign) float course;
 
 @end
