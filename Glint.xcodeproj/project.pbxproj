@@ -715,7 +715,10 @@
 		29FFE05B1013B8570091ACC8 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv7,
+					armv6,
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 53;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -751,7 +754,10 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv7,
+					armv6,
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 53;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -771,7 +777,10 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv7,
+					armv6,
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 53;
 				GCC_C_LANGUAGE_STANDARD = c99;
