@@ -39,12 +39,13 @@
 {
         self.queue = [[NSOperationQueue alloc] init];
 
+        [self updateDefaultSettings];
+
         [window addSubview:mainScreenViewController.view];
         [window addSubview:navController.view];
         [window bringSubviewToFront:mainScreenViewController.view];
         [window makeKeyAndVisible];
 
-        [self updateDefaultSettings];
         [self resumeRecordingToFile];
         [self resumeRacing];
 
