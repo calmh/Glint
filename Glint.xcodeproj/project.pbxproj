@@ -263,8 +263,11 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
+			indentWidth = 8;
 			name = CustomTemplate;
 			sourceTree = "<group>";
+			tabWidth = 8;
+			wrapsLines = 0;
 		};
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
