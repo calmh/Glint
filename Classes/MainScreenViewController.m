@@ -117,15 +117,18 @@
 - (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event
 {
         UITouch *touch = [touches anyObject];
+        [touchStartTime release];
         if (touch.view == containerView) {
                 touchStartPoint = [touch locationInView:containerView];
-                [touchStartTime release];
                 touchStartTime = [[NSDate date] retain];
-        }
+        } else
+                touchStartTime = nil;
 }
 
 - (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event
 {
+        if (!touchStartTime) return;
+
         UITouch *touch = [touches anyObject];
         CGPoint point = [touch locationInView:containerView];
         float xdiff = point.x - touchStartPoint.x;
@@ -137,6 +140,8 @@
 
 - (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event
 {
+        if (!touchStartTime) return;
+
         UITouch *touch = [touches anyObject];
         CGPoint point = [touch locationInView:containerView];
         float xdiff = point.x - touchStartPoint.x;
