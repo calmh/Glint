@@ -6,8 +6,8 @@
 // Copyright 2009 Jakob Borg. All rights reserved.
 //
 
-#import <CoreLocation/CoreLocation.h>
 #import "RouteViewController.h"
+#import <CoreLocation/CoreLocation.h>
 
 @interface RouteViewController (Private)
 - (void)verifyNetworkConnectivity;
